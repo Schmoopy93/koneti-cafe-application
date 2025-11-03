@@ -157,7 +157,8 @@ export default function AddDrink({
 
       const res = await apiRequest(endpoint, { 
         method, 
-        body: payload
+        body: payload,
+        useToken: true
       });
       if (res.ok) {
         const data = await res.json();

@@ -122,6 +122,7 @@ export default function AddCategory({ onClose, onSuccess }: AddCategoryProps) {
       const res = await apiRequest("/categories", {
         method: "POST",
         body: JSON.stringify(payload),
+        useToken: true
       });
 
       if (res.ok) {

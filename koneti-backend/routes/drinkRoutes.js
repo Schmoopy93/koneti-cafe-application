@@ -7,22 +7,24 @@ import {
   deleteDrink,
 } from "../controllers/drinkController.js";
 import { upload } from "../middleware/upload.js";
+import { protectAdmin } from "../middleware/adminMiddleware.js";
+import { generalLimiter } from "../middleware/security.js";
 
 const router = express.Router();
 
-// Create a new drink with image upload
-router.post("/", upload.single("image"), createDrink);
-
-// Update drink by ID with optional image upload
-router.put("/:id", upload.single("image"), updateDrink);
-
-// Get all drinks
+// Get all drinks (public - za meni)
 router.get("/", getDrinks);
 
-// Get drink by ID
+// Get drink by ID (public - za meni)
 router.get("/:id", getDrinkById);
 
-// Delete drink by ID
-router.delete("/:id", deleteDrink);
+// Create a new drink with image upload (admin only)
+router.post("/", protectAdmin, generalLimiter, upload.single("image"), createDrink);
+
+// Update drink by ID with optional image upload (admin only)
+router.put("/:id", protectAdmin, generalLimiter, upload.single("image"), updateDrink);
+
+// Delete drink by ID (admin only)
+router.delete("/:id", protectAdmin, generalLimiter, deleteDrink);
 
 export default router;

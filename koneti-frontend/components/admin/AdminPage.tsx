@@ -121,6 +121,7 @@ const AdminPage: React.FC = () => {
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [mounted, setMounted] = useState<boolean>(false);
+  const [updatingReservation, setUpdatingReservation] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -134,10 +135,12 @@ const AdminPage: React.FC = () => {
 
   const fetchData = async (): Promise<void> => {
     try {
+      // Cache-busting za production
+      const timestamp = Date.now();
       const [reservationsRes, drinksRes, categoriesRes] = await Promise.all([
-        apiRequest('/reservations'),
-        apiRequest('/drinks'),
-        apiRequest('/categories'),
+        apiRequest(`/reservations?_t=${timestamp}`),
+        apiRequest(`/drinks?_t=${timestamp}`),
+        apiRequest(`/categories?_t=${timestamp}`),
       ]);
 
       if (!reservationsRes.ok || !drinksRes.ok || !categoriesRes.ok) {
@@ -223,24 +226,52 @@ const AdminPage: React.FC = () => {
     reservationId: string,
     action: "approved" | "rejected"
   ): Promise<void> => {
+    console.log(`[DEBUG] Starting reservation action: ${action} for ID: ${reservationId}`);
+    setUpdatingReservation(reservationId);
+    
+    // Optimistic update - ažuriraj UI odmah
+    const updatedEvents = events.map(event => 
+      event._id === reservationId 
+        ? { ...event, status: action }
+        : event
+    );
+    setEvents(updatedEvents);
+    console.log(`[DEBUG] UI updated optimistically`);
+    
+    // Ažuriraj selectedEvent ako je otvoren
+    if (selectedEvent && selectedEvent._id === reservationId) {
+      setSelectedEvent({ ...selectedEvent, status: action });
+      console.log(`[DEBUG] Selected event updated`);
+    }
+    
     try {
+      console.log(`[DEBUG] Sending PATCH request to /reservations/${reservationId}`);
+      console.log(`[DEBUG] Token available:`, localStorage.getItem('adminToken') ? 'Yes' : 'No');
       const response = await apiRequest(`/reservations/${reservationId}`, {
         method: "PATCH",
-        body: JSON.stringify({ status: action })
+        body: JSON.stringify({ status: action }),
+        useToken: true
       });
 
+      console.log(`[DEBUG] Response status: ${response.status}`);
+      
       if (response.ok) {
+        console.log(`[DEBUG] Request successful, refreshing data`);
         await fetchData();
-        setSelectedEvent(null);
-        // Dodaj toast notifikaciju
         const actionText = action === "approved" ? "odobrena" : "odbijena";
-        console.log(`Rezervacija je uspešno ${actionText}!`);
+        console.log(`[DEBUG] Rezervacija je uspešno ${actionText}!`);
       } else {
+        console.log(`[DEBUG] Request failed, reverting state`);
         const errorData = await response.json();
-        console.error('Greška:', errorData.message);
+        console.error('[DEBUG] Greška:', errorData.message);
+        await fetchData();
       }
     } catch (error) {
-      console.error("Error updating reservation:", error);
+      console.error("[DEBUG] Network error:", error);
+      await fetchData();
+    } finally {
+      console.log(`[DEBUG] Clearing updating state`);
+      setUpdatingReservation(null);
     }
   };
 
@@ -568,18 +599,20 @@ const AdminPage: React.FC = () => {
                       onClick={() =>
                         handleReservationAction(selectedEvent._id, "approved")
                       }
+                      disabled={updatingReservation === selectedEvent._id}
                     >
                       <FontAwesomeIcon icon={faCheck} />{" "}
-                      {t("adminPage.event.confirm")}
+                      {updatingReservation === selectedEvent._id ? "Ažuriranje..." : t("adminPage.event.confirm")}
                     </button>
                     <button
                       className="btn-reject"
                       onClick={() =>
                         handleReservationAction(selectedEvent._id, "rejected")
                       }
+                      disabled={updatingReservation === selectedEvent._id}
                     >
                       <FontAwesomeIcon icon={faTimes} />{" "}
-                      {t("adminPage.event.reject")}
+                      {updatingReservation === selectedEvent._id ? "Ažuriranje..." : t("adminPage.event.reject")}
                     </button>
                   </>
                 )}

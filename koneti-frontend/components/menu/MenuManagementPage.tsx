@@ -71,6 +71,7 @@ const MenuManagementPage: React.FC<MenuManagementPageProps> = ({
     try {
       const res = await apiRequest(`/drinks/${drinkId}`, {
         method: "DELETE",
+        useToken: true
       });
       if (res.ok) {
         setDrinks((prev) => prev.filter((d) => d._id !== drinkId));
