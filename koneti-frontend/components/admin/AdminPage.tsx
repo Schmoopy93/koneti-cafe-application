@@ -226,8 +226,7 @@ const AdminPage: React.FC = () => {
     try {
       const response = await apiRequest(`/reservations/${reservationId}`, {
         method: "PATCH",
-        body: JSON.stringify({ status: action }),
-        requireCSRF: true // Dodaj CSRF zaštitu
+        body: JSON.stringify({ status: action })
       });
 
       if (response.ok) {

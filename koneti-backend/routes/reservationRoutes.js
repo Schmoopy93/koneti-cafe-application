@@ -15,6 +15,6 @@ router.post("/", reservationLimiter, validateReservation, createReservation);
 router.get("/", protectAdmin, generalLimiter, getReservations);
 
 // Update reservation status by ID (admin only)
-router.patch("/:id", protectAdmin, generalLimiter, validateObjectId, csrfProtection, updateReservationStatus);
+router.patch("/:id", protectAdmin, generalLimiter, validateObjectId, updateReservationStatus);
 
 export default router;
