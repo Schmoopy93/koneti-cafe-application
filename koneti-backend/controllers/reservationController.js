@@ -13,6 +13,7 @@ import {
  */
 export const createReservation = async (req, res) => {
   try {
+    console.log('[DEBUG] Creating reservation with data:', req.body);
     const { type, subType } = req.body;
     
     // Validate subType based on type
@@ -51,10 +52,15 @@ export const createReservation = async (req, res) => {
       ),
     ]);
 
-    res.status(201).json({
+    console.log('[DEBUG] Sending reservation response:', {
       success: true,
-      message:
-        "Rezervacija je uspešno primljena. Proverite svoj email za potvrdu.",
+      message: "Rezervacija je uspešno primljena. Proverite svoj email za potvrdu.",
+      data: newReservation,
+    });
+    
+    return res.status(201).json({
+      success: true,
+      message: "Rezervacija je uspešno primljena. Proverite svoj email za potvrdu.",
       data: newReservation,
     });
   } catch (error) {

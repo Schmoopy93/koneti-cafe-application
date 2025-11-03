@@ -231,7 +231,15 @@ export default function ReservationForm() {
         throw new Error(errorData.message || "Greška pri slanju rezervacije");
       }
 
-      const responseData = await res.json();
+      // Handle 204 No Content ili prazan response
+      let responseData = null;
+      if (res.status !== 204) {
+        try {
+          responseData = await res.json();
+        } catch (e) {
+          console.warn('[DEBUG] No JSON response body, treating as success');
+        }
+      }
       console.log('[DEBUG] Reservation success:', responseData);
       
       // Reset forme

@@ -46,7 +46,7 @@ if (!isDeploy) {
   app.use(securityHeaders);
   app.use(generalLimiter);
 }
-app.use(compression());
+// app.use(compression()); // Privremeno isključeno za testiranje
 
 // CORS konfiguracija
 if (NODE_ENV === 'development') {
