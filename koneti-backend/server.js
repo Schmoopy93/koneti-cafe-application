@@ -30,22 +30,22 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 // === Security Middleware ===
 app.set("trust proxy", 1);
 
-// PRIVREMENO ISKLJUČENO - Security middleware
-// const isDeploy = process.env.RENDER || process.env.VERCEL || process.env.CI;
-// if (!isDeploy) {
-//   app.use(helmet({
-//     contentSecurityPolicy: {
-//       directives: {
-//         defaultSrc: ["'self'"],
-//         styleSrc: ["'self'", "'unsafe-inline'"],
-//         scriptSrc: ["'self'"],
-//         imgSrc: ["'self'", "data:", "https:"],
-//       },
-//     },
-//   }));
-//   app.use(securityHeaders);
-//   app.use(generalLimiter);
-// }
+// Primeni security middleware samo ako nije deploy proces
+const isDeploy = process.env.RENDER || process.env.VERCEL || process.env.CI;
+if (!isDeploy) {
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'"],
+        imgSrc: ["'self'", "data:", "https:"],
+      },
+    },
+  }));
+  app.use(securityHeaders);
+  app.use(generalLimiter);
+}
 app.use(compression());
 
 // CORS konfiguracija
@@ -79,21 +79,21 @@ app.use(cookieParser());
 app.use(express.json({ limit: "5mb" })); // Smanjen limit
 app.use(express.urlencoded({ extended: true, limit: "5mb" }));
 
-// Globalna sanitizacija input-a - PRIVREMENO ISKLJUČENO
-// app.use(sanitizeInput);
+// Globalna sanitizacija input-a
+app.use(sanitizeInput);
 
 
-// === Security logging - PRIVREMENO ISKLJUČENO ===
-// if (!isDeploy) {
-//   import('./middleware/securityLogger.js').then(({ securityLogger }) => {
-//     app.use(securityLogger);
-//   }).catch(() => {});
-// } else {
-//   // U produkciji uvek koristi security logging
-//   import('./middleware/securityLogger.js').then(({ securityLogger }) => {
-//     app.use(securityLogger);
-//   }).catch(() => {});
-// }
+// === Security logging ===
+if (!isDeploy) {
+  import('./middleware/securityLogger.js').then(({ securityLogger }) => {
+    app.use(securityLogger);
+  }).catch(() => {});
+} else {
+  // U produkciji uvek koristi security logging
+  import('./middleware/securityLogger.js').then(({ securityLogger }) => {
+    app.use(securityLogger);
+  }).catch(() => {});
+}
 
 // === Static Files (bezbedno) ===
 app.use("/uploads", express.static(path.join(__dirname, "uploads"), {

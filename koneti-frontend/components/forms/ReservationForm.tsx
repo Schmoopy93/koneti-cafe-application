@@ -216,18 +216,23 @@ export default function ReservationForm() {
     }
 
     try {
+      console.log('[DEBUG] Sending reservation request:', formData);
       const res = await apiRequest('/reservations', {
         method: "POST",
         body: JSON.stringify(formData),
         useToken: false
       });
       
+      console.log('[DEBUG] Reservation response status:', res.status);
+      
       if (!res.ok) {
         const errorData = await res.json();
+        console.error('[DEBUG] Reservation error:', errorData);
         throw new Error(errorData.message || "Greška pri slanju rezervacije");
       }
 
       const responseData = await res.json();
+      console.log('[DEBUG] Reservation success:', responseData);
       
       // Reset forme
       setFormData({

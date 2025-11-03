@@ -53,8 +53,8 @@ export const adminLimiter = rateLimit({
 });
 
 export const reservationLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 2,
+  windowMs: 60 * 60 * 1000, // 1 sat
+  max: 10, // 10 rezervacija po satu
   message: {
     success: false,
     message: 'Previše pokušaja rezervacije, pokušajte ponovo kasnije.'
