@@ -1,0 +1,63 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.test
+.env.production
+.env.local
+
+# Build output
+dist/
+build/
+coverage/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Optional runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Debug files
+*.tgz
+*.bak
+*.tmp
+
+# Dependency directories
+jspm_packages/
+typings/
+
+# Cache
+.cache/
+.tmp/
+
+# Test coverage
+coverage/
+
+# Logs
+logs/
+*.log
+
+# Uploads (keep structure but ignore files)
+uploads/*
+!uploads/.gitkeep
+
+DEPLOYMENT_STEPS.md
+PRODUCTION_DEPLOYMENT_GUIDE.md
+SECURITY_IMPLEMENTATION.md
+START_DEVELOPMENT.md
+TEST_RESERVATION.md

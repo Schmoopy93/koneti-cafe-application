@@ -1,0 +1,28 @@
+.google-map-section {
+  text-align: center;
+  padding: 2rem 1rem;
+  background: linear-gradient(180deg, #e9dcc1 0%, #f9f2e4 100%);
+  border-top: 2px solid rgba(207, 166, 138, 0.3);
+
+  h4 {
+    font-size: 1.1rem;
+    color: #4b3821;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+
+  .google-map-frame {
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+
+    iframe {
+      border: none;
+      width: 100%;
+      height: 250px;
+      border-radius: 10px;
+    }
+  }
+}

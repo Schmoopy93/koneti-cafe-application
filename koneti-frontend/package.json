@@ -1,0 +1,51 @@
+{
+  "name": "koneti-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-brands-svg-icons": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.0",
+    "date-fns": "^4.1.0",
+    "framer-motion": "^12.23.24",
+    "i18next": "^25.6.0",
+    "i18next-browser-languagedetector": "^8.2.0",
+    "lucide-react": "^0.548.0",
+    "next": "16.0.0",
+    "react": "19.2.0",
+    "react-big-calendar": "^1.19.4",
+    "react-country-flag": "^3.1.0",
+    "react-dom": "19.2.0",
+    "react-easy-crop": "^5.5.3",
+    "react-hot-toast": "^2.6.0",
+    "react-i18next": "^16.2.0",
+    "react-modal": "^3.16.3",
+    "react-slick": "^0.31.0",
+    "react-tooltip": "^5.30.0",
+    "recharts": "^3.3.0",
+    "sass": "^1.93.2",
+    "slick-carousel": "^1.8.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-big-calendar": "^1.16.3",
+    "@types/react-dom": "^19",
+    "@types/react-easy-crop": "^1.16.0",
+    "@types/react-i18next": "^7.8.3",
+    "@types/react-modal": "^3.16.3",
+    "@types/react-slick": "^0.23.13",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.0",
+    "tailwindcss": "^4",
+    "typescript": "5.9.3"
+  }
+}

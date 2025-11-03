@@ -1,0 +1,333 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+.add-drink-form {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  max-height: 95vh;
+  overflow-y: auto;
+  animation: formFadeIn 0.4s ease-in-out;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(207, 166, 138, 0.3);
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(207, 166, 138, 0.1);
+  }
+
+  h2 {
+    display: none;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+
+    label {
+      font-weight: 600;
+      color: #5a3e36;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      border: 2px solid rgba(207, 166, 138, 0.3);
+      font-size: 0.95rem;
+      font-family: "Poppins", sans-serif;
+      background: rgba(255, 255, 255, 0.9);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-sizing: border-box;
+      color: #5a3e36;
+
+      &:focus {
+        border-color: #cfa68a;
+        box-shadow: 0 0 0 3px rgba(207, 166, 138, 0.2);
+        outline: none;
+        background: white;
+        transform: translateY(-2px);
+      }
+
+      &::placeholder {
+        color: #999;
+        font-style: italic;
+      }
+    }
+
+    /* === CUSTOM SELECT (desktop i mobil) === */
+    select {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border-radius: 10px;
+      border: 2px solid rgba(207, 166, 138, 0.3);
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #5a3e36;
+      font-family: "Poppins", sans-serif;
+      font-size: 0.95rem;
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg fill='%23926447' height='14' viewBox='0 0 24 24' width='14' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 14px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+
+      &:hover {
+        border-color: #cfa68a;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(207, 166, 138, 0.15);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: #cfa68a;
+        box-shadow: 0 0 0 3px rgba(207, 166, 138, 0.25);
+        background-color: #fff;
+      }
+
+      option {
+        color: #5a3e36;
+        background: #fff;
+        font-family: "Poppins", sans-serif;
+        font-size: 0.95rem;
+        padding: 0.5rem;
+      }
+    }
+
+    /* === MOBILE STYLING === */
+    @media (max-width: 768px) {
+      select {
+        font-size: 0.9rem; // smanjen font
+        padding: 0.6rem 0.8rem; // smanjen padding
+        text-align: center; // centriraj tekst
+        background-position: right 0.8rem center;
+      }
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, #cfa68a, #d4a574);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      font-family: "Poppins", sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(207, 166, 138, 0.3);
+      margin-top: 2rem;
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(207, 166, 138, 0.4);
+      }
+    }
+  }
+
+  /* === Slika i crop === */
+  .image-preview {
+    margin-top: 0.5rem;
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+  }
+
+  .cropper-wrapper {
+    margin-top: 1rem;
+    width: 100%;
+    height: 300px;
+    border: 2px dashed #cfae92;
+    border-radius: 1rem;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .reactEasyCrop_CropArea {
+      border-radius: 1rem;
+    }
+  }
+
+  .cropper-controls {
+    width: 90%;
+    margin-top: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+
+    label {
+      font-size: 0.9rem;
+      color: #5a3e36;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+  }
+
+  .cropper-buttons {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+
+    .btn-confirm-crop {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.85rem;
+      background: linear-gradient(135deg, #cfa68a, #d4a574);
+      color: white;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(207, 166, 138, 0.3);
+      }
+    }
+
+    .btn-cancel-crop {
+      padding: 0.5rem 1rem;
+      border: 1px solid rgba(231, 76, 60, 0.2);
+      border-radius: 8px;
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.85rem;
+      background: rgba(231, 76, 60, 0.1);
+      color: #e74c3c;
+
+      &:hover {
+        background: #e74c3c;
+        color: white;
+        transform: translateY(-1px);
+      }
+    }
+  }
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.3s ease;
+  border-color: #d9534f !important; /* crvena ivica za grešku */
+}
+.error {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  display: block;
+  animation: fadeIn 0.3s ease-in-out;
+  font-weight: 700;
+  background: rgba(231, 76, 60, 0.1);
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+  
+
+  @keyframes formFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* === Responsive === */
+  @media (max-width: 768px) {
+    gap: 0.6rem;
+
+    form {
+      gap: 0.6rem;
+
+      label {
+        font-size: 0.8rem;
+        margin-bottom: 0.1rem;
+      }
+
+      input,
+      select,
+      textarea {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.7rem;
+      }
+
+      select {
+        background-position: right 0.8rem center;
+        font-size: 0.85rem;
+      }
+
+      textarea {
+        min-height: 60px;
+      }
+
+      button[type="submit"] {
+        margin-top: 1rem;
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    .image-preview {
+      max-height: 150px;
+    }
+
+    .cropper-wrapper {
+      height: 250px;
+      margin-top: 0.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    form select {
+      padding: 0.6rem 0.8rem;
+      font-size: 0.8rem;
+      border-radius: 8px;
+      background-position: right 0.7rem center;
+    }
+  }
+}

@@ -1,0 +1,322 @@
+.hero-slider {
+  position: relative;
+  height: 90vh;
+  background: #000;
+  border-radius: 25px;
+  border-top: 1px solid #cfa68a;
+  margin-top: 0.2rem;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  animation: slideUpFade 1s ease-out 0.3s forwards;
+
+  /* --- Zajednički stilovi za sve slider delove --- */
+  .slick-slider,
+  .slick-list,
+  .slide,
+  .slide-image {
+    border-radius: 25px;
+    overflow: hidden;
+  }
+
+  /* --- Glavni slajd --- */
+  .slide,
+  .slide-image {
+    height: 90vh;
+  }
+
+  .slide-image {
+    background-size: cover;
+    background-position: center;
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+  }
+
+  /* --- Overlay --- */
+  .slide-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(207, 166, 138, 0.1), transparent);
+    z-index: 2;
+  }
+
+  /* --- Tekst na slici --- */
+  .slide-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    z-index: 3;
+    padding: 0 clamp(1.5rem, 4vw, 5%);
+  }
+
+  .slide-text {
+    max-width: 600px;
+    color: white;
+    animation: slideUpFade 1s ease-out;
+    font-family: "Poppins", sans-serif;
+
+    * {
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .slide-number {
+      display: block;
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 1rem;
+      letter-spacing: 2px;
+    }
+
+    .slide-title {
+      font-size: 3.2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      color: white;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .slide-subtitle {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #cfa68a;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .slide-description {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 2.5rem;
+    }
+
+    .slide-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+
+      .btn-primary,
+      .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem 2rem;
+        font-weight: 600;
+        font-size: 1rem;
+        border-radius: 50px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #cfa68a, #d4a574);
+        color: #fff;
+        box-shadow: 0 4px 20px rgba(207, 166, 138, 0.4);
+        border: none;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 25px rgba(207, 166, 138, 0.5);
+
+          svg {
+            transform: translateX(3px);
+          }
+        }
+
+        svg {
+          transition: transform 0.3s ease;
+        }
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          border-color: white;
+          transform: translateY(-2px);
+        }
+      }
+    }
+  }
+
+  /* --- Scroll indikator --- */
+  .hero-scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    z-index: 4;
+
+    .scroll-text {
+      font-size: 0.8rem;
+      margin-bottom: 0.3rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .scroll-arrow {
+      font-size: 1.2rem;
+      animation: bounceArrow 2s infinite;
+    }
+  }
+
+  /* --- Slick dots --- */
+  .slick-dots {
+    bottom: 2rem;
+    right: 2rem;
+    left: auto;
+    width: auto;
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    li {
+      margin: 0;
+
+      button {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+
+        &:before {
+          display: none;
+        }
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.6);
+          transform: scale(1.2);
+        }
+      }
+
+      &.slick-active button {
+        background: #cfa68a;
+        border-color: rgba(255, 255, 255, 0.8);
+        transform: scale(1.3);
+      }
+    }
+  }
+
+  /* --- Animacije --- */
+  @keyframes slideUpFade {
+    from {
+      opacity: 0;
+      transform: translateY(var(--offset, 30px)) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes bounceArrow {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-5px);
+    }
+    60% {
+      transform: translateY(-2px);
+    }
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 1200px) {
+    .slide-text .slide-title {
+      font-size: 3rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    height: 100vh;
+
+    .slide,
+    .slide-image {
+      height: 100vh;
+    }
+
+    .slide-content {
+      text-align: center;
+      justify-content: center;
+    }
+
+    .slide-text {
+      max-width: 100%;
+
+      .slide-title {
+        font-size: 2.2rem;
+      }
+
+      .slide-subtitle {
+        font-size: 1.2rem;
+      }
+
+      .slide-description {
+        font-size: 1rem;
+      }
+
+      .slide-actions {
+        justify-content: center;
+        gap: 1rem;
+
+        .btn-primary,
+        .btn-secondary {
+          padding: 0.8rem 1.5rem;
+          font-size: 0.9rem;
+        }
+      }
+    }
+
+    .slick-dots {
+      bottom: 1rem;
+      right: 50%;
+      transform: translateX(50%);
+      flex-direction: row;
+    }
+
+    .hero-scroll-indicator {
+      bottom: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .slide-text {
+      .slide-title {
+        font-size: 2rem;
+      }
+
+      .slide-actions {
+        flex-direction: column;
+        align-items: center;
+
+        .btn-primary,
+        .btn-secondary {
+          width: 100%;
+          max-width: 250px;
+        }
+      }
+    }
+  }
+}

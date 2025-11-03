@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+
+.menu-management-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f9f6f2 0%, #f2ede7 50%, #ebe4dc 100%);
+  font-family: "Poppins", sans-serif;
+
+  .back-btn-container {
+    margin-bottom: 2rem;
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      background: rgba(207, 166, 138, 0.1);
+      color: #5a3e36;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      border: 1px solid rgba(207, 166, 138, 0.2);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(207, 166, 138, 0.2);
+        transform: translateY(-1px);
+      }
+    }
+  }
+
+  .page-content {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+}
+
+/* ===== React Modal Global Styles ===== */
+.ReactModal__Overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(90, 62, 54, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.ReactModal__Content {
+  background: linear-gradient(135deg, #ffffff 0%, #fdfaf6 50%, #f8f5f1 100%);
+  border-radius: 1.5rem;
+  max-width: 600px;
+  width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(90, 62, 54, 0.4);
+  border: 2px solid #e9d9c6;
+  position: relative;
+  margin: auto;
+  outline: none;
+  padding: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #cfa68a, #d4a574, #cfa68a);
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2rem 1rem;
+
+    h3 {
+      margin: 0;
+      color: #5a3e36;
+      font-weight: 700;
+      font-size: 1.5rem;
+      font-family: 'Poppins', sans-serif;
+      flex: 1;
+    }
+
+    button {
+      font-size: 1.5rem;
+      background: rgba(207, 166, 138, 0.1);
+      border: 1px solid #e9d9c6;
+      cursor: pointer;
+      color: #cfa68a;
+      transition: all 0.3s ease;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+
+      &:hover {
+        background: #cfa68a;
+        color: #fff;
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  .modal-body {
+    padding: 0 2rem 2rem;
+  }
+}
+
+/* Tall Modal Variant */
+.ReactModal__Content--tall-modal {
+  max-width: 800px;
+  width: 95vw;
+  max-height: 95vh;
+
+  .modal-body {
+    max-height: calc(95vh - 100px);
+    overflow-y: auto;
+    padding: 0 1rem 1rem;
+  }
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9) rotateX(10deg);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-10px) scale(1.02) rotateX(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0deg);
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .menu-management-page {
+    .page-content {
+      padding: 1rem;
+    }
+  }
+
+  .ReactModal__Content {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+
+    .modal-header {
+      padding: 1rem;
+
+      h3 {
+        font-size: 1.2rem;
+      }
+
+      button {
+        width: 30px;
+        height: 30px;
+        font-size: 1.2rem;
+      }
+    }
+
+    .modal-body {
+      padding: 0 1rem 1rem;
+    }
+  }
+
+  .ReactModal__Content--tall-modal .modal-body {
+    padding: 0 0.5rem 0.5rem;
+    max-height: calc(100vh - 80px);
+  }
+}

@@ -1,0 +1,415 @@
+{
+  "header": {
+    "home": "Početna",
+    "menu": "Meni",
+    "reservation": "Rezervacije",
+    "gallery": "Galerija",
+    "admin": "Administracija",
+    "career": "Karijera"
+  },
+  "home": {
+    "reservation": {
+      "title1": "Rezervišite Vaše",
+      "title2": "Koneti Iskustvo",
+      "intro": "Dobrodošli u Koneti - ekskluzivno mesto u srcu Novog Sada! Izaberite tip rezervacije koji najbolje odgovara vašim potrebama:",
+      "typeLabel": "Tip rezervacije:",
+      "packageLabel": "Izaberite paket:",
+      "tooltip": "Pogledajte naše ponude i rezervišite svoje mesto još danas!",
+      "types": {
+        "business": "Poslovni sastanci/ prezentacije",
+        "experience": "Proslave"
+      },
+      "packages": {
+        "basic": "Basic",
+        "premium": "Premium",
+        "vip": "VIP"
+      },
+      "form": {
+        "name": "Ime i prezime",
+        "email": "Email",
+        "phone": "Telefon",
+        "date": "Datum",
+        "time": "Vreme",
+        "guests": "Broj gostiju",
+        "message": "Poruka"
+      },
+      "errors": {
+        "type": "Odaberite tip rezervacije",
+        "subType": "Odaberite paket",
+        "name": "Unesite ime i prezime",
+        "email": "Unesite email",
+        "emailInvalid": "Unesite validan email",
+        "phone": "Unesite telefon",
+        "date": "Odaberite datum",
+        "datePast": "Datum ne može biti u prošlosti",
+        "time": "Odaberite vreme",
+        "timePast": "Vreme ne može biti u prošlosti",
+        "guests": "Unesite broj gostiju",
+        "submit": "Došlo je do greške prilikom slanja rezervacije. Pokušajte ponovo."
+      },
+      "submit": "Pošalji rezervaciju",
+      "success": {
+        "title": "Uspešno poslato!",
+        "message": "Vaša rezervacija je primljena. Odgovorićemo uskoro."
+      },
+      "popups": {
+        "business": {
+          "title": "Poslovni sastanci / prezentacije 💼",
+          "description": "Finger food + kafa + voda + opciono vino. Idealno za timske sastanke, prezentacije ili poslovne ručkove.",
+          "details": [
+            "🪑 35 mesta / do 50 koktel postavka",
+            "📶 Wi-Fi i tehnička oprema",
+            "☕ Prijatna atmosfera"
+          ],
+          "price": "35€ po osobi ili minimum 500€",
+          "extraInfo": "Rezervišite prostor za profesionalan i prijatan događaj."
+        },
+        "experience": {
+          "title": "Koneti Experience 🥂",
+          "description": "Ekskluzivno iskustvo u srcu Novog Sada. Tri nivoa luksuza prilagođena vašim potrebama.",
+          "details": [
+            "🎭 Tri različita paketa (Basic, Premium, VIP)",
+            "🍽️ Personalizovani meni i napici",
+            "🎵 Ambijentalna muzika i dekoracija",
+            "📸 Mogućnost dodatnih usluga",
+            "🏛️ Elegantan prostor u centru grada"
+          ],
+          "price": "Od 35€ do 60€ po osobi",
+          "extraInfo": "Izaberite paket koji najbolje odgovara vašoj prilici i budžetu."
+        },
+        "basic": {
+          "title": "Koneti Experience – Basic 🥉",
+          "description": "Manja okupljanja / rođendani.",
+          "details": [
+            "🍷 Domaći napici + meze",
+            "🪑 35 mesta / do 50 koktel postavka"
+          ],
+          "price": "35€ po osobi ili minimum 450€",
+          "extraInfo": "Savršeno za intimna i opuštena druženja."
+        },
+        "premium": {
+          "title": "Koneti Experience – Premium ⭐",
+          "description": "Posebne proslave / strani gosti.",
+          "details": [
+            "🥂 Premium pića + finger food & kanapeji",
+            "🪑 35 mesta / do 50 koktel postavka"
+          ],
+          "price": "45€ po osobi ili minimum 600€",
+          "extraInfo": "Za elegantne i moderno organizovane proslave."
+        },
+        "vip": {
+          "title": "Koneti Experience – VIP 👑",
+          "description": "Luksuzne večere i privatne proslave.",
+          "details": [
+            "🍾 Ekskluzivna pića + prošireni finger food + desert",
+            "🎨 Posebna dekoracija i ambijent",
+            "📸 Fotograf, DJ i torta po izboru",
+            "🪑 35 mesta / do 50 koktel postavka"
+          ],
+          "price": "60€ po osobi ili minimum 800€",
+          "extraInfo": "Za one koji žele vrhunsko Koneti iskustvo."
+        }
+      }
+    },
+    "hero": {
+      "slide1": {
+        "title": "Dobrodošli u Café Koneti",
+        "subtitle": "Gde se svaki trenutak računa",
+        "description": "Uživajte u vrhunskoj kafi i toploj atmosferi našeg kafića"
+      },
+      "slide2": {
+        "title": "Autentični ukusi kafe",
+        "subtitle": "Pažljivo odabrana zrna",
+        "description": "Svaka šolja je priprema sa ljubavlju i preciznošću naših barista"
+      },
+      "slide3": {
+        "title": "Vaš omiljeni kutak",
+        "subtitle": "Za nezaboravne trenutke",
+        "description": "Idealno mesto za sastanke, rad ili opuštanje uz odličnu kafu"
+      },
+      "exploreMenu": "Istražite meni",
+      "reserveTable": "Rezervišite mesto",
+      "scrollDown": "Skrolujte dole"
+    },
+    "offer": {
+      "title": "Naša ponuda",
+      "subtitle": "Otkrijte naš izbor premium kafa i specijaliteta",
+      "services": {
+        "coffee": {
+          "title": "Vrhunska kafa",
+          "subtitle": "Autentični ukusi",
+          "description": "Uživajte u pažljivo odabranim zrnima kafe iz celog sveta. Naši baristi pripremaju svaku šolju sa ljubavlju i preciznošću.",
+          "features": ["Espresso", "Cappuccino", "Latte", "Americano"],
+          "linkText": "Pogledaj meni"
+        },
+        "business": {
+          "title": "Poslovni prostor",
+          "subtitle": "Idealno za sastanke",
+          "description": "Moderno opremljen prostor sa WiFi konekcijom, idealan za poslovne sastanke, prezentacije i kreativne sesije.",
+          "features": ["Free WiFi", "Projektor", "Tiho okruženje", "Parking"],
+          "linkText": "Rezerviši prostor"
+        },
+        "party": {
+          "title": "Privatne proslave",
+          "subtitle": "Nezaboravni događaji",
+          "description": "Organizujte rođendane, devojačke/momačke večeri ili bilo koju proslavu u našem toplom i prijatnom ambijentu.",
+          "features": ["Dekoracija", "Muzika", "Catering", "Fotografisanje"],
+          "linkText": "Planiraj događaj"
+        }
+      }
+    },
+    "contact": {
+      "title": "Kontaktirajte nas",
+      "subtitle": "Pošaljite nam poruku ili nas pozovite direktno",
+      "form": {
+        "fullName": {
+          "label": "👤 Ime i prezime",
+          "placeholder": "Unesite vaše ime i prezime",
+          "error": "Unesite ime i prezime"
+        },
+        "email": {
+          "label": "📧 Email adresa",
+          "placeholder": "vas.email@example.com",
+          "error": "Unesite email adresu",
+          "invalid": "Email adresa nije validna"
+        },
+        "phone": {
+          "label": "📱 Broj telefona",
+          "placeholder": "+381 xx xxx xxxx",
+          "error": "Unesite broj telefona"
+        },
+        "message": {
+          "label": "💭 Vaša poruka",
+          "placeholder": "Opišite kako možemo da vam pomognemo...",
+          "error": "Unesite poruku"
+        },
+        "submit": {
+          "sending": "Šalje se...",
+          "send": "Pošaljite poruku"
+        },
+        "call": {
+          "or": "ili",
+          "call": "Pozovite nas direktno"
+        },
+        "success": {
+          "title": "Poruka je uspešno poslata!",
+          "message": "Odgovoriće vam u najkraćem mogućem roku."
+        }
+      }
+    },
+    "footer": {
+      "welcome": "Dobrodošli u <strong>Café Koneti</strong> - vaš omiljeni kutak za savršenu kafu i nezaboravne trenutke.",
+      "contact": "Kontakt",
+      "address": "Adresa",
+      "phone": "Telefon",
+      "email": "Email",
+      "hours": "Radno vreme",
+      "mondayFriday": "Ponedeljak - Petak",
+      "saturday": "Subota",
+      "sunday": "Nedelja",
+      "followUs": "Pratite nas",
+      "facebook": "Posetite našu Facebook stranicu",
+      "instagram": "Pratite naše fotografije",
+      "tiktok": "Zabavni sadržaji o kafi",
+      "location": "Naša lokacija",
+      "copyright": "© {{year}} <strong>Café Koneti</strong> - Sva prava zadržana.",
+      "tagline": "\"Gde se svaki gutljaj računa\" ☕"
+    }
+  },
+  "admin": {
+    "title": "Administracija",
+    "closeButton": "×",
+    "addDrink": {
+      "title": "Dodaj novo piće",
+      "editTitle": "Uredi piće",
+      "name": "Naziv",
+      "price": "Cena",
+      "category": "Kategorija",
+      "description": "Opis",
+      "image": "Slika",
+      "save": "Sačuvaj",
+      "addButton": "Dodaj piće",
+      "errors": {
+        "name": "Naziv je obavezan.",
+        "price": "Cena je obavezna.",
+        "priceInvalid": "Cena mora biti pozitivan broj.",
+        "category": "Morate izabrati kategoriju.",
+        "description": "Opis ne sme biti duži od 250 karaktera.",
+        "image": "Morate dodati sliku.",
+        "imageFormat": "Dozvoljeni formati: JPG, PNG.",
+        "imageSize": "Maksimalna veličina slike: 2MB."
+      }
+    },
+    "addCategory": {
+      "title": "Dodaj novu kategoriju",
+      "name": "Naziv kategorije",
+      "icon": "Izaberi ikonicu",
+      "save": "Sačuvaj",
+      "addButton": "Dodaj kategoriju",
+      "errors": {
+        "name": "Naziv kategorije je obavezan.",
+        "icon": "Morate izabrati ikonicu."
+      }
+    },
+    "menuManagement": {
+      "searchPlaceholder": "Pretraži pića...",
+      "allCategories": "Sve kategorije",
+      "allDrinks": "Sva pića",
+      "sortLabel": "Sortiraj po:",
+      "sortOptions": {
+        "name": "A-Z",
+        "priceLow": "Najjeftiniji",
+        "priceHigh": "Najskuplji"
+      },
+      "pagination": {
+        "prev": "Prethodna",
+        "next": "Sledeća"
+      },
+      "currency": "RSD",
+      "deleteConfirm": {
+        "title": "Potvrda brisanja",
+        "message": "Da li ste sigurni da želite da obrišete piće",
+        "cancel": "Otkaži",
+        "delete": "Obriši"
+      }
+    }
+  },
+  "menu": {
+    "searchPlaceholder": "Pretražite piće...",
+    "sortLabel": "Sortiraj po:",
+    "sortOptions": {
+      "name": "A-Z",
+      "priceLow": "Najjeftiniji",
+      "priceHigh": "Najskuplji"
+    },
+    "pagination": {
+      "prev": "Prethodni",
+      "next": "Sledeći"
+    },
+    "currency": "RSD"
+  },
+  "staffLogin": {
+    "title": "Koneti Café",
+    "subtitle": "Administratorski pristup",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Unesite email adresu",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Unesite lozinku",
+    "loginButton": "Prijavite se",
+    "loggingIn": "Prijavljivanje...",
+    "serverError": "Server nije vratio JSON"
+  },
+  "adminPage": {
+    "stats": {
+      "totalDrinks": "Ukupno pića",
+      "totalCategories": "Kategorije",
+      "totalReservations": "Rezervacije"
+    },
+    "actions": {
+      "manageMenu": "Upravljaj menijem",
+      "manageMenuDesc": "Upravljanje stavkama u meniju",
+      "calendar": "Kalendar",
+      "calendarDesc": "Pregled rezervacija",
+      "logout": "Odjavi se",
+      "logoutDesc": "Izađi iz admin panela",
+      "statistics": "Statistika rezervacija",
+      "statisticsDesc": "Prikazivanje statistike rezervacija"
+      
+    },
+    "calendar": {
+      "title": "Kalendar rezervacija",
+      "totalEvents": "Ukupno događaja:"
+    },
+    "event": {
+      "businessMeeting": "Biznis sastanak",
+      "konetiExperience": "Koneti Experience",
+      "type": "Tip:",
+      "email": "Email:",
+      "phone": "Telefon:",
+      "date": "Datum:",
+      "time": "Vreme:",
+      "guests": "Gosti:",
+      "menu": "Meni:",
+      "message": "Poruka:",
+      "confirm": "Potvrdi",
+      "reject": "Odbij",
+      "status": "Status:"
+      
+    },
+    "status": {
+      "pending": "Na čekanju",
+      "approved": "Prihvaćen",
+      "rejected": "Odbijen"
+    }
+  },
+  "cookieConsent": {
+    "message": "Ovaj sajt koristi kolačiće (cookies) da bi vam pružio najbolje iskustvo. Nastavkom korišćenja sajta pristajete na upotrebu kolačića.",
+    "accept": "Prihvatam"
+  },
+  "eventStats": {
+    "title": "📊 Statistika rezervacija",
+    "monthlyTitle": "Broj rezervacija po mesecu",
+    "statusTitle": "Status rezervacija",
+    "loading": "⏳ Učitavanje statistike...",
+    "fetchError": "Greška pri učitavanju podataka.",
+    "statuses": {
+      "approved": "Odobreno",
+      "pending": "Na čekanju",
+      "rejected": "Odbijeno",
+      "cancelled": "Otkazano"
+    }
+  },
+  "career": {
+    "title": "Postanite deo Koneti porodice",
+    "subtitle": "Karijera u našem kafeu",
+    "description": "Tražimo strastvene i posvećene ljude koji žele da budu deo našeg tima. Prijavite se i pokažite nam zašto ste savršen izbor za Koneti.",
+    "form": {
+      "position": "Pozicija *",
+      "selectPosition": "Izaberite poziciju",
+      "firstName": "Ime *",
+      "lastName": "Prezime *",
+      "email": "Email *",
+      "phone": "Telefon *",
+      "coverLetter": "Motivaciono pismo *",
+      "cv": "CV (opciono)",
+      "submit": "Pošalji prijavu",
+      "submitting": "Šalje se..."
+    },
+    "placeholders": {
+      "firstName": "Unesite vaše ime",
+      "lastName": "Unesite vaše prezime",
+      "email": "vasa.email@example.com",
+      "phone": "+381 60 123 4567",
+      "coverLetter": "Objasnite zašto ste idealan kandidat za ovu poziciju..."
+    },
+    "upload": {
+      "clickToUpload": "Kliknite da otpremite CV",
+      "fileFormats": "PDF, DOC, DOCX (max 5MB)",
+      "fileTooLarge": "Fajl je prevelik. Maksimalna veličina je 5MB.",
+      "invalidFormat": "Dozvoljen je samo PDF, DOC ili DOCX format."
+    },
+    "errors": {
+      "firstName": "Ime je obavezno",
+      "lastName": "Prezime je obavezno",
+      "email": "Email je obavezan",
+      "emailInvalid": "Email format nije valjan",
+      "phone": "Telefon je obavezan",
+      "phoneInvalid": "Telefon format nije valjan",
+      "position": "Pozicija je obavezna",
+      "coverLetter": "Motivaciono pismo je obavezno"
+    },
+    "positions": {
+      "waiter": "Konobar/Konobarica",
+      "barista": "Barista",
+      "cook": "Kuvar/Kuvarica",
+      "shiftManager": "Menadžer smene",
+      "cleaner": "Čistačica"
+    },
+    "departments": {
+      "service": "Usluga",
+      "kitchen": "Kuhinja",
+      "management": "Menadžment",
+      "maintenance": "Održavanje"
+    }
+  }
+}

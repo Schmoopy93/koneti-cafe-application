@@ -1,0 +1,266 @@
+.offer {
+  background: #fdfaf6;
+  padding: 5rem 2rem;
+  position: relative;
+
+  /* ===== HEADER ===== */
+  .offer-header {
+    text-align: center;
+    margin: 0 auto 4rem;
+    max-width: 700px;
+
+    .section-subtitle {
+      font-family: "Poppins", system-ui, sans-serif;
+      color: #cfa68a;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+      display: inline-block;
+      position: relative;
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        width: 100%;
+        height: 2px;
+        background: #cfa68a;
+        border-radius: 2px;
+      }
+    }
+
+    .section-title {
+      font-family: "Playfair Display", "Times New Roman", serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: #5a3e36;
+      margin: 1rem 0 0;
+      letter-spacing: 0.3px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+
+      .title-icon {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+
+  /* ===== GRID ===== */
+  .offer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5rem;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  /* ===== SERVICE CARD ===== */
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    background: rgba(207, 166, 138, 0.07); /* svetla, elegantna pozadina */
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(90, 62, 54, 0.1);
+    border: 1px solid rgba(207, 166, 138, 0.15);
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &.in-view {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    &:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(90, 62, 54, 0.2);
+
+      .card-image {
+        transform: scale(1.08);
+      }
+
+      .feature-tag {
+        transform: translateY(-2px);
+        background: rgba(207, 166, 138, 0.25);
+      }
+    }
+
+    /* Header sa slikom */
+    .card-header {
+      position: relative;
+      height: 260px;
+      overflow: hidden;
+
+      .card-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
+    }
+
+    /* Glavni sadržaj */
+    .card-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.5rem;
+      background: rgba(207, 166, 138, 0.08); /* proširuje pozadinu */
+      border-top: 1px solid rgba(207, 166, 138, 0.2);
+
+      .card-title-section {
+        margin-bottom: 1.5rem;
+
+        h3 {
+          font-family: "Playfair Display", serif;
+          font-weight: 700;
+          font-size: 1.6rem;
+          color: #5a3e36;
+          margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+          font-family: "Poppins", sans-serif;
+          color: #cfa68a;
+          font-weight: 700;
+          font-size: 0.9rem;
+          text-transform: uppercase;
+          letter-spacing: 1.4px;
+          position: relative;
+          display: inline-block;
+
+          &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 100%;
+            height: 2px;
+            background: #cfa68a;
+            border-radius: 2px;
+          }
+        }
+      }
+
+      .description {
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 1rem;
+        color: #4a3529;
+        line-height: 1.75;
+        font-weight: 500;
+        margin-bottom: 1.2rem;
+        letter-spacing: 0.15px;
+      }
+
+      .features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+        margin-bottom: 1.5rem;
+
+        .feature-tag {
+          background: linear-gradient(
+            180deg,
+            rgba(207, 166, 138, 0.22),
+            rgba(207, 166, 138, 0.12)
+          );
+          color: #5a3e36;
+          padding: 0.4rem 0.75rem;
+          border-radius: 12px;
+          font-size: 0.8rem;
+          font-weight: 700;
+          border: 1px solid rgba(207, 166, 138, 0.45);
+          transition: all 0.25s ease;
+          box-shadow: 0 2px 5px rgba(207, 166, 138, 0.25);
+          letter-spacing: 0.2px;
+          backdrop-filter: saturate(110%);
+          white-space: nowrap;
+
+          &:hover {
+            background: rgba(207, 166, 138, 0.28);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(207, 166, 138, 0.35);
+            border-color: rgba(207, 166, 138, 0.65);
+          }
+        }
+      }
+
+      .btn-card {
+        align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem 2rem;
+        background: linear-gradient(135deg, #cfa68a, #d4a574);
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        font-weight: 700;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(207, 166, 138, 0.3);
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(207, 166, 138, 0.4);
+
+          svg {
+            transform: translateX(3px);
+          }
+        }
+
+        svg {
+          transition: transform 0.3s ease;
+        }
+      }
+    }
+  }
+
+  /* ===== MEDIA QUERIES ===== */
+  @media (max-width: 992px) {
+    padding: 4rem 1.5rem;
+
+    .offer-header .section-title {
+      font-size: 2.2rem;
+    }
+
+    .offer-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 3rem 1rem;
+
+    .offer-header {
+      margin-bottom: 2.5rem;
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .section-subtitle {
+        font-size: 1rem;
+      }
+    }
+
+    .service-card {
+      .card-header {
+        height: 220px;
+      }
+
+      .card-content {
+        padding: 1.2rem;
+
+        .card-title-section h3 {
+          font-size: 1.3rem;
+        }
+      }
+    }
+  }
+}

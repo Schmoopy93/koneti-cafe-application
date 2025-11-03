@@ -1,0 +1,825 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+/* ========== VARIABLES (quick inline) ========== */
+$accent-1: #cfa68a;
+$accent-2: #d4a574;
+$text-1: #3a2e1d;
+$text-2: #5a3e36;
+$bg-light: rgba(255, 255, 255, 0.9);
+$card-shadow: 0 12px 30px rgba(0, 0, 0, 0.08),
+  0 2px 6px rgba(207, 166, 138, 0.15);
+$transition-std: all 0.3s ease;
+$radius-lg: 20px;
+$radius-md: 12px;
+
+/* ========== BASE ========== */
+.menu-management {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 2rem;
+  color: $text-1;
+}
+
+/* ===== SHARED COMPONENTS ===== */
+%btn-base {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.input-base,
+.select-base {
+  padding: 0.7rem 1rem;
+  border-radius: 15px;
+  border: 1.25px solid rgba(207, 166, 138, 0.3);
+  background: $bg-light;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.95rem;
+  color: $text-1;
+  box-shadow: 0 2px 6px rgba(207, 166, 138, 0.15);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $accent-1;
+    box-shadow: 0 0 0 3px rgba(207, 166, 138, 0.18);
+  }
+}
+
+/* ===== HEADER ===== */
+.management-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+
+  /* Search */
+  .search-section {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.5rem 0;
+
+    .search-box {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      flex: 1;
+
+      svg {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #7d5a4f;
+        font-size: 1rem;
+        pointer-events: none;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.8rem 1rem 0.8rem 2.5rem;
+        border: 2px solid rgba(207, 166, 138, 0.3);
+        border-radius: 25px;
+        font-size: 0.95rem;
+        background: $bg-light;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+
+        &:focus {
+          border-color: $accent-1;
+          box-shadow: 0 0 0 3px rgba(207, 166, 138, 0.2);
+          outline: none;
+        }
+      }
+    }
+
+    /* responsive search adjustments handled below */
+  }
+
+  /* Action buttons (grouped) */
+  .action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+
+    button {
+      @extend %btn-base;
+      &.btn-add-drink {
+        background: linear-gradient(135deg, $accent-1, $accent-2);
+        color: white;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(207, 166, 138, 0.3);
+        }
+      }
+
+      &.btn-add-category {
+        background: rgba(207, 166, 138, 0.1);
+        color: $text-2;
+        border: 1px solid rgba(207, 166, 138, 0.3);
+
+        &:hover {
+          background: rgba(207, 166, 138, 0.2);
+          transform: translateY(-2px);
+        }
+      }
+    }
+  }
+
+  /* Category tabs */
+  .category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.8rem 0;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 14px rgba(207, 166, 138, 0.15);
+    transition: $transition-std;
+
+    button {
+      position: relative;
+      padding: 0.55rem 1.2rem;
+      border: none;
+      border-radius: 1.6rem;
+      background: linear-gradient(145deg, #fffaf4, #f7efe6);
+      color: $text-2;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      box-shadow: 0 2px 6px rgba(90, 62, 54, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+      &:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(135deg, #f3e2cf, #fff8ef);
+        box-shadow: 0 4px 12px rgba(207, 166, 138, 0.25);
+      }
+
+      &.active {
+        background: linear-gradient(135deg, $accent-1, $accent-2);
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(207, 166, 138, 0.35);
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: -3px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 40%;
+          height: 3px;
+          border-radius: 2px;
+          background: rgba(255, 255, 255, 0.8);
+        }
+      }
+
+      &:active {
+        transform: scale(0.96);
+      }
+    }
+  }
+
+  /* Filters (sort + filter) */
+  .filter-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+
+    .filter-label {
+      font-size: 1rem;
+      font-weight: 500;
+      color: $text-1;
+    }
+
+    select {
+      @extend .select-base;
+      padding-right: 2rem;
+      min-width: 180px;
+      text-align: center;
+    }
+
+    .filter-icon {
+      color: #cfa68a;
+      font-size: 1.1rem;
+    }
+
+    &::after {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #7d5a4f;
+      font-size: 0.7rem;
+      pointer-events: none;
+    }
+
+    .sort-select-wrapper {
+      position: relative;
+      width: 200px;
+
+      select {
+        width: 100%;
+        padding: 0.7rem 2.5rem 0.7rem 1rem;
+        appearance: none;
+      }
+
+      &::after {
+        content: "▼";
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.8rem;
+        color: #7d5a4f;
+        pointer-events: none;
+      }
+    }
+  }
+}
+
+/* ========== DRINKS SECTION ========== */
+.admin-drinks-section {
+  opacity: 0;
+  animation: fadeUp 0.7s ease-out forwards;
+  animation-delay: 0.1s;
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $text-1;
+    margin-bottom: 1rem;
+  }
+
+  /* Grid layout */
+  .admin-drinks-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    justify-items: center;
+    width: 100%;
+    min-height: 300px;
+  }
+
+  /* Card styling */
+  .admin-drink-card {
+    width: 100%;
+    max-width: 250px;
+    background: linear-gradient(145deg, #fff9f3, #f4e7d8, #fffaf4);
+    border-radius: $radius-lg;
+    border: 2px solid rgba(207, 166, 138, 0.3);
+    box-shadow: $card-shadow;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba(207, 166, 138, 0.6);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12),
+        0 5px 15px rgba(207, 166, 138, 0.25);
+
+      img {
+        transform: scale(1.08);
+      }
+      .price {
+        background: linear-gradient(135deg, $accent-2, $accent-1);
+        color: #fff;
+        transform: scale(1.05);
+        box-shadow: 0 3px 10px rgba(207, 166, 138, 0.4);
+      }
+    }
+
+    img,
+    .drink-image {
+      width: 100%;
+      height: 150px;
+      object-fit: contain;
+      background: #fffdf9;
+      border-bottom: 1px solid rgba(207, 166, 138, 0.2);
+      transition: transform 0.4s ease;
+    }
+
+    .admin-card-content {
+      flex-grow: 1;
+      padding: 1.2rem;
+      text-align: center;
+      background: linear-gradient(180deg, #fffaf4 0%, #fdf6ed 100%);
+      border-radius: 0 0 $radius-lg $radius-lg;
+
+      h4 {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: $text-1;
+        margin-bottom: 0.6rem;
+      }
+
+      p {
+        font-size: 0.85rem;
+        color: #7a6a4d;
+        margin-bottom: 0.8rem;
+      }
+
+      .price {
+        display: inline-block;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: $text-2;
+        padding: 0.45rem 0.9rem;
+        border-radius: 12px;
+        background: linear-gradient(145deg, #fff8f0, #f1e2cf);
+        border: 1px solid rgba(207, 166, 138, 0.25);
+        box-shadow: 0 3px 8px rgba(207, 166, 138, 0.15),
+          inset 0 1px 1px rgba(255, 255, 255, 0.6);
+        transition: $transition-std;
+      }
+    }
+
+    .admin-drink-actions {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.7rem;
+      background: rgba(245, 238, 224, 0.7);
+      border-top: 1px solid rgba(215, 198, 163, 0.35);
+
+      button {
+        flex: 1;
+        border: none;
+        border-radius: 8px;
+        padding: 0.45rem 0.6rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(90, 62, 54, 0.15);
+
+        &.edit-btn {
+          background: linear-gradient(135deg, #e8d2af, #d6b985);
+          &:hover {
+            background: linear-gradient(135deg, #d6b985, #cfa974);
+          }
+        }
+
+        &.delete-btn {
+          background: linear-gradient(135deg, #f6b3a1, #e48d7a);
+          color: white;
+          &:hover {
+            background: linear-gradient(135deg, #e48d7a, #d36b5a);
+          }
+        }
+      }
+    }
+  }
+
+  /* PAGINATION */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    button {
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(207, 166, 138, 0.4);
+      background: rgba(255, 255, 255, 0.8);
+      color: $text-1;
+      font-weight: 500;
+      cursor: pointer;
+      transition: $transition-std;
+
+      &:hover {
+        background: linear-gradient(135deg, $accent-1, $accent-2);
+        color: #fff;
+      }
+      &.active {
+        background: linear-gradient(135deg, $accent-1, $accent-2);
+        color: #fff;
+        border: none;
+      }
+    }
+  }
+}
+
+/* ===== OVERLAYS / POPUPS (shared) ===== */
+.overlay-base {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+  backdrop-filter: blur(6px);
+  animation: fadeIn 0.3s ease;
+}
+
+.delete-confirm-overlay {
+  @extend .overlay-base;
+  background: rgba(90, 62, 54, 0.8);
+}
+
+.popup-base {
+  background: linear-gradient(135deg, #ffffff 0%, #fdfaf6 50%, #f8f5f1 100%);
+  border-radius: 20px;
+  padding: 2.5rem;
+  max-width: 500px;
+  width: 100%;
+  min-height: 250px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(90, 62, 54, 0.4);
+  border: 2px solid #e9d9c6;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, $accent-1, $accent-2, $accent-1);
+  }
+
+  h3 {
+    color: $text-2;
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    font-family: "Poppins", sans-serif;
+  }
+  p {
+    color: #7d5a4f;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+  .confirm-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  button {
+    padding: 1rem 2rem;
+    border-radius: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: "Poppins", sans-serif;
+    font-size: 0.95rem;
+    min-width: 120px;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: left 0.5s ease;
+    }
+
+    &.btn-cancel {
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.9),
+        rgba(248, 244, 240, 0.8)
+      );
+      color: $text-2;
+      border: 2px solid rgba(207, 166, 138, 0.3);
+      box-shadow: 0 4px 15px rgba(207, 166, 138, 0.1);
+
+      &:hover {
+        background: linear-gradient(135deg, $accent-1, $accent-2);
+        color: #fff;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(207, 166, 138, 0.3);
+        &::before {
+          left: 100%;
+        }
+      }
+    }
+
+    &.btn-confirm {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+      box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+      border: 2px solid transparent;
+
+      &:hover {
+        background: linear-gradient(135deg, #c0392b, #a93226);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(231, 76, 60, 0.5);
+        &::before {
+          left: 100%;
+        }
+      }
+    }
+  }
+}
+
+/* ===== DELETE CONFIRM MODAL ===== */
+.delete-confirm-overlay {
+  @extend .overlay-base;
+  background: rgba(90, 62, 54, 0.8);
+}
+
+.delete-confirm-popup {
+  @extend .popup-base;
+  max-width: 480px;
+
+  h3 {
+    color: #c0392b;
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  p {
+    color: #7d5a4f;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .confirm-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+
+    button {
+      padding: 0.8rem 1.8rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 120px;
+
+      &.btn-cancel {
+        background: linear-gradient(135deg, #fdf8f4, #f6efe8);
+        color: $text-2;
+        border: 2px solid rgba(207, 166, 138, 0.4);
+
+        &:hover {
+          background: linear-gradient(135deg, $accent-1, $accent-2);
+          color: #fff;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(207, 166, 138, 0.3);
+        }
+      }
+
+      &.btn-confirm {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: #fff;
+        border: none;
+        box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+
+        &:hover {
+          background: linear-gradient(135deg, #c0392b, #a93226);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(231, 76, 60, 0.5);
+        }
+      }
+    }
+  }
+}
+
+.add-category-overlay {
+  @extend .overlay-base;
+}
+.add-category-popup {
+  @extend .popup-base;
+}
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ========== RESPONSIVE ========== */
+
+/* 💻 TABLET LANDSCAPE (max 992px) */
+@media (max-width: 992px) {
+  .menu-management {
+    padding: 1.5rem;
+  }
+
+  .admin-drinks-section {
+    .admin-drinks-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    .admin-drink-card {
+      max-width: 230px;
+
+      img {
+        height: 130px;
+      }
+
+      .admin-card-content {
+        padding: 1rem;
+
+        h4 {
+          font-size: 0.95rem;
+        }
+
+        p {
+          font-size: 0.8rem;
+        }
+
+        .price {
+          font-size: 1rem;
+          padding: 0.4rem 0.8rem;
+        }
+      }
+    }
+  }
+
+  .action-buttons {
+    justify-content: center;
+    gap: 0.8rem;
+
+    button {
+      min-width: 140px;
+      justify-content: center;
+    }
+  }
+
+  .category-tabs {
+    button {
+      font-size: 0.85rem;
+      padding: 0.45rem 1rem;
+    }
+  }
+}
+
+/* 📱 TABLET PORTRAIT / MOBILE LARGE (max 768px) */
+@media (max-width: 768px) {
+  .menu-management {
+    padding: 1rem;
+  }
+
+  .admin-drinks-section {
+    .admin-drinks-grid {
+      grid-template-columns: repeat(2, 1fr); /* 🔹 dve kolone umesto 1 */
+      gap: 1rem;
+    }
+
+    .admin-drink-card {
+      max-width: 100%;
+      margin: 0 auto;
+
+      img {
+        height: 120px;
+      }
+    }
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+
+    button {
+      width: 100%;
+      max-width: 260px;
+      justify-content: center;
+    }
+  }
+
+  .category-tabs {
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: 0.4rem;
+
+    button {
+      white-space: nowrap;
+      flex: 0 0 auto;
+      font-size: 0.8rem;
+      padding: 0.4rem 0.9rem;
+    }
+  }
+
+  .filter-container {
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .sort-select-wrapper {
+      width: 100%;
+      max-width: 250px;
+    }
+  }
+}
+
+/* 📱 SMALL MOBILE (max 480px) */
+@media (max-width: 480px) {
+  .menu-management {
+    padding: 0.75rem;
+  }
+
+  .search-section .search-box input {
+    font-size: 0.85rem;
+    padding: 0.7rem 0.9rem 0.7rem 2.2rem;
+  }
+
+  .category-tabs button {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.7rem;
+  }
+
+  .admin-drinks-section .admin-drinks-grid {
+    grid-template-columns: 1fr; /* samo 1 kolona */
+    justify-items: center;
+  }
+
+  .admin-drinks-section .admin-drink-card {
+    max-width: 280px;
+
+    img {
+      height: 110px;
+    }
+
+    .admin-card-content {
+      padding: 0.9rem;
+      h4 {
+        font-size: 0.9rem;
+      }
+      p {
+        font-size: 0.75rem;
+      }
+      .price {
+        font-size: 0.95rem;
+      }
+    }
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+
+    button {
+      width: 100%;
+      max-width: 240px;
+      justify-content: center;
+    }
+  }
+}

@@ -1,0 +1,106 @@
+.event-stats {
+  h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #5a3e36;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    position: relative;
+    padding-bottom: 0.75rem;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #cfa68a, transparent);
+      border-radius: 2px;
+    }
+  }
+
+  h3 {
+    font-family: "Playfair Display", serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #4e372b;
+    margin-bottom: 0.85rem;
+    text-align: center;
+    letter-spacing: 0.3px;
+    position: relative;
+    padding-bottom: 0.35rem;
+    transition: color 0.3s ease;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 55px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #b88a64, transparent);
+      border-radius: 2px;
+    }
+
+    &:hover {
+      color: #7b5944;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .status-chart {
+      min-height: 300px !important;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      h3 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .recharts-pie-label-text {
+        font-size: 0.7rem !important;
+      }
+
+      .recharts-legend-wrapper {
+        padding-top: 0.5rem;
+
+        .recharts-legend {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 0.6rem;
+        }
+
+        .recharts-legend-item {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .status-chart {
+      min-height: 260px !important;
+      padding: 0 0.5rem;
+
+      h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.6rem;
+      }
+
+      .recharts-pie-label-text {
+        display: none !important; // skriva tekst koji ide iza pite
+      }
+
+      .recharts-legend-item {
+        font-size: 0.75rem;
+      }
+    }
+  }
+}

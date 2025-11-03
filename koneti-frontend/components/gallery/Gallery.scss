@@ -1,0 +1,54 @@
+.gallery-wrapper {
+  padding: 4rem 2rem;
+  background: linear-gradient(145deg, #fdf6f0, #f7e6d4);
+  text-align: center;
+  min-height: 100vh;
+
+  .gallery-title {
+    font-family: "Playfair Display", serif;
+    color: #5a3e36;
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+
+    &::after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 3px;
+      background-color: #2e8b8b;
+      margin: 0.8rem auto 0;
+      border-radius: 2px;
+    }
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    justify-items: center;
+
+    .gallery-item {
+      overflow: hidden;
+      border-radius: 1rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+
+        img {
+          transform: scale(1.08);
+        }
+      }
+    }
+  }
+}

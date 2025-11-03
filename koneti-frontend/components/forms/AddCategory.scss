@@ -1,0 +1,192 @@
+.add-category-form {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  animation: formFadeIn 0.4s ease-in-out; // ✅ isti fade efekat kao kod drink forme
+
+  h2, h3 {
+    display: none;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+
+    label {
+      font-weight: 600;
+      color: #5a3e36;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      border: 2px solid rgba(207, 166, 138, 0.3);
+      font-size: 0.95rem;
+      font-family: "Poppins", sans-serif;
+      background: rgba(255, 255, 255, 0.9);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-sizing: border-box;
+      color: #5a3e36;
+
+      &:focus {
+        border-color: #cfa68a;
+        box-shadow: 0 0 0 3px rgba(207, 166, 138, 0.2);
+        outline: none;
+        background: white;
+        transform: translateY(-2px);
+      }
+
+      &::placeholder {
+        color: #999;
+        font-style: italic;
+      }
+    }
+
+    /* === ICON PICKER === */
+    .icon-picker {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+      animation: fadeIn 0.4s ease-in-out; // ✅ isti fade-in kao kod drink grid-a
+
+      .icon-wrap {
+        position: relative;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .icon-btn {
+        background: #cfa68a;
+        border: 2px solid transparent;
+        border-radius: 0.5rem;
+        padding: 0.55rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: #fff;
+        transition: all 0.3s ease;
+
+        &:hover {
+          border-color: #caa27e;
+          transform: translateY(-2px);
+        }
+
+        &.selected {
+          background-color: #fff;
+          border-color: #926447;
+          color: #926447;
+          transform: scale(1.15);
+          box-shadow: 0 0 10px rgba(146, 100, 71, 0.4);
+        }
+      }
+
+      .icon-tooltip.koneti-tooltip {
+        position: absolute;
+        bottom: calc(100% + 0.5rem);
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(207, 166, 138, 0.95);
+        color: #5a3e36;
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        font-weight: 700;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        border: 1px solid rgba(146, 100, 71, 0.4);
+        box-shadow: 0 2px 8px rgba(207, 166, 138, 0.35);
+      }
+
+      .icon-wrap:hover .icon-tooltip.koneti-tooltip {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-2px);
+      }
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, #cfa68a, #d4a574);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      font-family: "Poppins", sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(207, 166, 138, 0.3);
+      margin-top: 1.5rem;
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(207, 166, 138, 0.4);
+      }
+    }
+  }
+
+  /* === ERROR ANIMATION === */
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
+  }
+
+  .shake {
+    animation: shake 0.3s ease;
+    border-color: #d9534f !important;
+  }
+
+  .error {
+    color: #e74c3c;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+    font-weight: 700;
+    background: rgba(231, 76, 60, 0.1);
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(231, 76, 60, 0.2);
+  }
+
+  /* === ANIMATIONS === */
+  @keyframes formFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+}

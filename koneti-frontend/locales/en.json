@@ -1,0 +1,418 @@
+{
+  "header": {
+    "home": "Home",
+    "menu": "Menu",
+    "reservation": "Reservations",
+    "gallery": "Gallery",
+    "admin": "Administration",
+    "career": "Career"
+  },
+  "home": {
+    "reservation": {
+      "title1": "Book Your",
+      "title2": "Koneti Experience",
+      "intro": "Welcome to Koneti - an exclusive place in the heart of Novi Sad! Choose the reservation type that best suits your needs:",
+      "typeLabel": "Reservation type:",
+      "packageLabel": "Choose package:",
+      "tooltip": "Check our offers and book your reservation today!",
+      "types": {
+        "business": "Business meetings / presentations",
+        "experience": "Koneti Experience"
+      },
+      "packages": {
+        "basic": "Basic",
+        "premium": "Premium",
+        "vip": "VIP"
+      },
+      "form": {
+        "name": "Full name",
+        "email": "Email",
+        "phone": "Phone",
+        "date": "Date",
+        "time": "Time",
+        "guests": "Number of guests",
+        "message": "Message"
+      },
+      "errors": {
+        "type": "Select reservation type",
+        "subType": "Select package",
+        "name": "Enter full name",
+        "email": "Enter email",
+        "emailInvalid": "Enter valid email",
+        "phone": "Enter phone",
+        "date": "Select date",
+        "datePast": "Date cannot be in the past",
+        "time": "Select time",
+        "timePast": "Time cannot be in the past",
+        "guests": "Enter number of guests",
+        "submit": "An error occurred while sending the reservation. Please try again."
+      },
+      "submit": "Send reservation",
+      "success": {
+        "title": "Successfully sent!",
+        "message": "Your reservation has been received. We will respond soon."
+      },
+      "popups": {
+        "business": {
+          "title": "Business meetings / presentations 💼",
+          "description": "Finger food + coffee + water + optional wine. Ideal for team meetings, presentations or business lunches.",
+          "details": [
+            "🪑 35 seats / up to 50 cocktail setup",
+            "📶 Wi-Fi and technical equipment",
+            "☕ Pleasant atmosphere"
+          ],
+          "price": "35€ per person or minimum 500€",
+          "extraInfo": "Reserve space for a professional and pleasant event."
+        },
+        "experience": {
+          "title": "Koneti Experience 🥂",
+          "description": "Exclusive experience in the heart of Novi Sad. Three levels of luxury tailored to your needs.",
+          "details": [
+            "🎭 Three different packages (Basic, Premium, VIP)",
+            "🍽️ Personalized menu and drinks",
+            "🎵 Ambient music and decoration",
+            "📸 Possibility of additional services",
+            "🏛️ Elegant space in the city center"
+          ],
+          "price": "From 35€ to 60€ per person",
+          "extraInfo": "Choose the package that best suits your occasion and budget."
+        },
+        "basic": {
+          "title": "Koneti Experience – Basic 🥉",
+          "description": "Small gatherings / birthdays.",
+          "details": [
+            "🍷 Local drinks + meze",
+            "🪑 35 seats / up to 50 cocktail setup"
+          ],
+          "price": "35€ per person or minimum 450€",
+          "extraInfo": "Perfect for intimate and relaxed gatherings."
+        },
+        "premium": {
+          "title": "Koneti Experience – Premium ⭐",
+          "description": "Special celebrations / foreign guests.",
+          "details": [
+            "🥂 Premium drinks + finger food & canapés",
+            "🪑 35 seats / up to 50 cocktail setup"
+          ],
+          "price": "45€ per person or minimum 600€",
+          "extraInfo": "For elegant and modern organized celebrations."
+        },
+        "vip": {
+          "title": "Koneti Experience – VIP 👑",
+          "description": "Luxury dinners and private celebrations.",
+          "details": [
+            "🍾 Exclusive drinks + extended finger food + dessert",
+            "🎨 Special decoration and ambiance",
+            "📸 Photographer, DJ and cake of choice",
+            "🪑 35 seats / up to 50 cocktail setup"
+          ],
+          "price": "60€ per person or minimum 800€",
+          "extraInfo": "For those who want the ultimate Koneti experience."
+        }
+      }
+    },
+    "hero": {
+      "slide1": {
+        "title": "Welcome to Café Koneti",
+        "subtitle": "Where every moment counts",
+        "description": "Enjoy premium coffee and the warm atmosphere of our café"
+      },
+      "slide2": {
+        "title": "Authentic coffee flavors",
+        "subtitle": "Carefully selected beans",
+        "description": "Each cup is prepared with love and precision by our baristas"
+      },
+      "slide3": {
+        "title": "Your favorite corner",
+        "subtitle": "For unforgettable moments",
+        "description": "The perfect place for meetings, work or relaxation with great coffee"
+      },
+      "exploreMenu": "Explore menu",
+      "reserveTable": "Reserve a table",
+      "scrollDown": "Scroll down"
+    },
+    "offer": {
+      "title": "Our Offer",
+      "subtitle": "Discover our selection of premium coffees and specialties",
+      "services": {
+        "coffee": {
+          "title": "Premium Coffee",
+          "subtitle": "Authentic flavors",
+          "description": "Enjoy carefully selected coffee beans from around the world. Our baristas prepare each cup with love and precision.",
+          "features": ["Espresso", "Cappuccino", "Latte", "Americano"],
+          "linkText": "View menu"
+        },
+        "business": {
+          "title": "Business Space",
+          "subtitle": "Perfect for meetings",
+          "description": "Modern equipped space with WiFi connection, ideal for business meetings, presentations and creative sessions.",
+          "features": [
+            "Free WiFi",
+            "Projector",
+            "Quiet environment",
+            "Parking"
+          ],
+          "linkText": "Reserve space"
+        },
+        "party": {
+          "title": "Private Celebrations",
+          "subtitle": "Unforgettable events",
+          "description": "Organize birthdays, bachelorette/bachelor parties or any celebration in our warm and friendly atmosphere.",
+          "features": ["Decoration", "Music", "Catering", "Photography"],
+          "linkText": "Plan event"
+        }
+      }
+    },
+    "contact": {
+      "title": "Contact Us",
+      "subtitle": "Send us a message or call us directly",
+      "form": {
+        "fullName": {
+          "label": "👤 Full name",
+          "placeholder": "Enter your full name",
+          "error": "Please enter your full name"
+        },
+        "email": {
+          "label": "📧 Email address",
+          "placeholder": "your.email@example.com",
+          "error": "Please enter email address",
+          "invalid": "Email address is not valid"
+        },
+        "phone": {
+          "label": "📱 Phone number",
+          "placeholder": "+381 xx xxx xxxx",
+          "error": "Please enter phone number"
+        },
+        "message": {
+          "label": "💭 Your message",
+          "placeholder": "Describe how we can help you...",
+          "error": "Please enter a message"
+        },
+        "submit": {
+          "sending": "Sending...",
+          "send": "Send message"
+        },
+        "call": {
+          "or": "or",
+          "call": "Call us directly"
+        },
+        "success": {
+          "title": "Message sent successfully!",
+          "message": "We will respond as soon as possible."
+        }
+      }
+    },
+    "footer": {
+      "welcome": "Welcome to <strong>Café Koneti</strong> - your favorite spot for perfect coffee and unforgettable moments.",
+      "contact": "Contact",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Opening Hours",
+      "mondayFriday": "Monday - Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday",
+      "followUs": "Follow Us",
+      "facebook": "Visit our Facebook page",
+      "instagram": "Follow our photos",
+      "tiktok": "Fun coffee content",
+      "location": "Our Location",
+      "copyright": "© {{year}} <strong>Café Koneti</strong> - All rights reserved.",
+      "tagline": "\"Where every sip counts\" ☕"
+    }
+  },
+  "admin": {
+    "title": "Administration",
+    "closeButton": "×",
+    "addDrink": {
+      "title": "Add New Drink",
+      "editTitle": "Edit Drink",
+      "name": "Name",
+      "price": "Price",
+      "category": "Category",
+      "description": "Description",
+      "image": "Image",
+      "save": "Save",
+      "addButton": "Add Drink",
+      "errors": {
+        "name": "Name is required.",
+        "price": "Price is required.",
+        "priceInvalid": "Price must be a positive number.",
+        "category": "Category is required.",
+        "description": "Description cannot exceed 250 characters.",
+        "image": "Image is required.",
+        "imageFormat": "Allowed formats: JPG, PNG.",
+        "imageSize": "Maximum image size: 2MB."
+      }
+    },
+    "addCategory": {
+      "title": "Add New Category",
+      "name": "Category Name",
+      "icon": "Select Icon",
+      "save": "Save",
+      "addButton": "Add Category",
+      "errors": {
+        "name": "Category name is required.",
+        "icon": "Icon is required."
+      }
+    },
+    "menuManagement": {
+      "searchPlaceholder": "Search drinks...",
+      "allCategories": "All categories",
+      "allDrinks": "All drinks",
+      "sortLabel": "Sort by:",
+      "sortOptions": {
+        "name": "A-Z",
+        "priceLow": "Cheapest",
+        "priceHigh": "Most expensive"
+      },
+      "pagination": {
+        "prev": "Previous",
+        "next": "Next"
+      },
+      "currency": "RSD",
+      "deleteConfirm": {
+        "title": "Delete Confirmation",
+        "message": "Are you sure you want to delete the drink",
+        "cancel": "Cancel",
+        "delete": "Delete"
+      }
+    }
+  },
+  "menu": {
+    "searchPlaceholder": "Search for drinks...",
+    "sortLabel": "Sort by:",
+    "sortOptions": {
+      "name": "A-Z",
+      "priceLow": "Cheapest",
+      "priceHigh": "Most expensive"
+    },
+    "pagination": {
+      "prev": "Prev",
+      "next": "Next"
+    },
+    "currency": "RSD"
+  },
+  "staffLogin": {
+    "title": "Koneti Café",
+    "subtitle": "Administrative Access",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter email address",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter password",
+    "loginButton": "Log in",
+    "loggingIn": "Logging in...",
+    "serverError": "Server did not return JSON"
+  },
+  "adminPage": {
+    "stats": {
+      "totalDrinks": "Total Drinks",
+      "totalCategories": "Categories",
+      "totalReservations": "Reservations"
+    },
+    "actions": {
+      "manageMenu": "Manage Menu",
+      "manageMenuDesc": "Manage menu items",
+      "calendar": "Calendar",
+      "calendarDesc": "View reservations",
+      "logout": "Log out",
+      "logoutDesc": "Exit admin panel",
+      "statistics": "Reservation statistics",
+      "statisticsDesc": "View reservation statistics"
+    },
+    "calendar": {
+      "title": "Reservation Calendar",
+      "totalEvents": "Total events:"
+    },
+    "event": {
+      "businessMeeting": "Business Meeting",
+      "konetiExperience": "Koneti Experience",
+      "type": "Type:",
+      "email": "Email:",
+      "phone": "Phone:",
+      "date": "Date:",
+      "time": "Time:",
+      "guests": "Guests:",
+      "menu": "Menu:",
+      "message": "Message:",
+      "confirm": "Confirm",
+      "reject": "Reject",
+      "status": "Status:"
+    },
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    }
+  },
+  "cookieConsent": {
+    "message": "This website uses cookies to provide you with the best experience. By continuing to use the site, you agree to the use of cookies.",
+    "accept": "Accept"
+  },
+  "eventStats": {
+    "title": "📊 Reservation Statistics",
+    "monthlyTitle": "Reservations per Month",
+    "statusTitle": "Reservation Status",
+    "loading": "⏳ Loading statistics...",
+    "fetchError": "Error loading data.",
+    "statuses": {
+      "approved": "Approved",
+      "pending": "Pending",
+      "rejected": "Rejected",
+      "cancelled": "Cancelled"
+    }
+  },
+  "career": {
+    "title": "Join the Koneti Family",
+    "subtitle": "Career at Our Café",
+    "description": "We are looking for passionate and dedicated people who want to be part of our team. Apply and show us why you are the perfect choice for Koneti.",
+    "form": {
+      "position": "Position *",
+      "selectPosition": "Select position",
+      "firstName": "First Name *",
+      "lastName": "Last Name *",
+      "email": "Email *",
+      "phone": "Phone *",
+      "coverLetter": "Cover Letter *",
+      "cv": "CV (optional)",
+      "submit": "Submit Application",
+      "submitting": "Submitting..."
+    },
+    "placeholders": {
+      "firstName": "Enter your first name",
+      "lastName": "Enter your last name",
+      "email": "your.email@example.com",
+      "phone": "+381 60 123 4567",
+      "coverLetter": "Explain why you are the ideal candidate for this position..."
+    },
+    "upload": {
+      "clickToUpload": "Click to upload CV",
+      "fileFormats": "PDF, DOC, DOCX (max 5MB)",
+      "fileTooLarge": "File is too large. Maximum size is 5MB.",
+      "invalidFormat": "Only PDF, DOC or DOCX format allowed."
+    },
+    "errors": {
+      "firstName": "First name is required",
+      "lastName": "Last name is required",
+      "email": "Email is required",
+      "emailInvalid": "Email format is not valid",
+      "phone": "Phone is required",
+      "phoneInvalid": "Phone format is not valid",
+      "position": "Position is required",
+      "coverLetter": "Cover letter is required"
+    },
+    "positions": {
+      "waiter": "Waiter/Waitress",
+      "barista": "Barista",
+      "cook": "Cook",
+      "shiftManager": "Shift Manager",
+      "cleaner": "Cleaner"
+    },
+    "departments": {
+      "service": "Service",
+      "kitchen": "Kitchen",
+      "management": "Management",
+      "maintenance": "Maintenance"
+    }
+  }
+}
