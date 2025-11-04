@@ -269,16 +269,180 @@ const getRejectedEmailHTML = (reservation) => {
   `;
 };
 
+const getCareerStatusHTML = (application, status) => {
+  const safeFirstName = DOMPurify.sanitize(application.firstName || '');
+  const safeLastName = DOMPurify.sanitize(application.lastName || '');
+  const safePosition = DOMPurify.sanitize(application.position || '');
+  
+  const statusMessages = {
+    contacted: {
+      title: '📞 Kontaktiraćemo Vas uskoro!',
+      message: 'Vaša prijava je pregledana i zainteresovani smo za razgovor sa Vama.',
+      description: 'Naš tim će Vas kontaktirati u narednih nekoliko dana radi dogovaranja intervjua.'
+    },
+    reviewed: {
+      title: '👀 Vaša prijava je pregledana',
+      message: 'Hvala Vam na interesovanju za rad u Koneti Café.',
+      description: 'Vaša prijava je pregledana i obavestićemo Vas o daljem toku procesa.'
+    },
+    rejected: {
+      title: '🙏 Hvala na prijavi',
+      message: 'Nažalost, trenutno ne možemo da Vam ponudimo poziciju.',
+      description: 'Čuvaćemo Vašu prijavu i kontaktirati Vas ako se ukaže prilika u budućnosti.'
+    }
+  };
+  
+  const statusInfo = statusMessages[status] || statusMessages.reviewed;
+  
+  return `
+    <div style="${baseStyle}">
+      <div style="${cardStyle}">
+        <div style="${headerStyle}">
+          <h2 style="margin:0; font-size:24px;">${statusInfo.title}</h2>
+        </div>
+        
+        ${logoTemplate}
+        
+        <div style="background:#f8f9fa; padding:20px; border-radius:10px; margin:20px 0;">
+          <p style="font-size:18px; margin:0 0 10px 0;">Zdravo <strong style="color:#5a3e36;">${safeFirstName} ${safeLastName}</strong>! 👋</p>
+          <p style="margin:0; line-height:1.6;">${statusInfo.message}</p>
+        </div>
+
+        <div style="background:#ffffff; padding:25px; border-radius:15px; margin:25px 0; border: 2px solid #f3e5ab;">
+          <h3 style="color:#5a3e36; margin:0 0 20px 0; text-align:center; font-size:20px;">💼 ${safePosition}</h3>
+          <p style="text-align:center; margin:0; line-height:1.6;">${statusInfo.description}</p>
+        </div>
+
+        <div style="border-top:2px solid #f3e5ab; padding-top:20px; text-align:center;">
+          <p style="margin:0; color:#5a3e36; font-size:16px;">Srdačan pozdrav,</p>
+          <p style="margin:5px 0 0 0; font-weight:700; color:#5a3e36; font-size:18px;">Vaš Koneti Café Tim ☕</p>
+        </div>
+      </div>
+    </div>
+  `;
+};
+
+const getCareerConfirmationHTML = (application) => {
+  const safeFirstName = DOMPurify.sanitize(application.firstName || '');
+  const safeLastName = DOMPurify.sanitize(application.lastName || '');
+  const safePosition = DOMPurify.sanitize(application.position || '');
+  
+  return `
+    <div style="${baseStyle}">
+      <div style="${cardStyle}">
+        <div style="${headerStyle}">
+          <h2 style="margin:0; font-size:24px;">✨ Potvrda Prijema Prijave</h2>
+        </div>
+        
+        ${logoTemplate}
+        
+        <div style="background:#f8f9fa; padding:20px; border-radius:10px; margin:20px 0;">
+          <p style="font-size:18px; margin:0 0 10px 0;">Zdravo <strong style="color:#5a3e36;">${safeFirstName} ${safeLastName}</strong>! 👋</p>
+          <p style="margin:0; line-height:1.6;">Hvala Vam što ste se prijavili za poziciju u <strong>Koneti Café</strong>. Vaša prijava je uspešno primljena i uskoro ćemo Vas kontaktirati.</p>
+        </div>
+
+        <div style="background:#ffffff; padding:25px; border-radius:15px; margin:25px 0; border: 2px solid #f3e5ab;">
+          <h3 style="color:#5a3e36; margin:0 0 20px 0; text-align:center; font-size:20px;">💼 Detalji Vaše Prijave</h3>
+          <div style="display:grid; gap:15px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(90,62,54,0.1);">
+              <span style="font-weight:600; color:#5a3e36;">👤 Kandidat:</span>
+              <span style="${badgeStyle}">${safeFirstName} ${safeLastName}</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0;">
+              <span style="font-weight:600; color:#5a3e36;">💼 Pozicija:</span>
+              <span style="${badgeStyle}">${safePosition}</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center; margin:30px 0;">
+          <p style="color:#666; font-style:italic; margin:0;">Bićete obavešteni kada pregledam Vašu prijavu.</p>
+        </div>
+
+        <div style="border-top:2px solid #f3e5ab; padding-top:20px; text-align:center;">
+          <p style="margin:0; color:#5a3e36; font-size:16px;">Srdačan pozdrav,</p>
+          <p style="margin:5px 0 0 0; font-weight:700; color:#5a3e36; font-size:18px;">Vaš Koneti Café Tim ☕</p>
+        </div>
+      </div>
+    </div>
+  `;
+};
+
+const getCareerApplicationHTML = (application) => {
+  const safeFirstName = DOMPurify.sanitize(application.firstName || '');
+  const safeLastName = DOMPurify.sanitize(application.lastName || '');
+  const safeEmail = DOMPurify.sanitize(application.email || '');
+  const safePhone = DOMPurify.sanitize(application.phone || '');
+  const safePosition = DOMPurify.sanitize(application.position || '');
+  const safeCoverLetter = DOMPurify.sanitize(application.coverLetter || '');
+  
+  return `
+    <div style="${baseStyle}">
+      <div style="${cardStyle}">
+        <div style="${headerStyle}; border-color: #28a745; color: #28a745;">
+          <h2 style="margin:0; font-size:24px;">💼 Nova Prijava za Posao!</h2>
+        </div>
+        
+        ${logoTemplate}
+        
+        <div style="background:#d4edda; border:1px solid #c3e6cb; padding:15px; border-radius:10px; margin:20px 0;">
+          <p style="margin:0; color:#155724; font-weight:600;">📋 Nova prijava za posao je stigla!</p>
+        </div>
+
+        <div style="background:#ffffff; padding:25px; border-radius:15px; margin:25px 0; border: 2px solid #f3e5ab;">
+          <h3 style="color:#28a745; margin:0 0 20px 0; text-align:center; font-size:20px;">👤 Podaci o Kandidatu</h3>
+          
+          <div style="background:white; padding:20px; border-radius:10px; margin-bottom:15px;">
+            <div style="display:grid; gap:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #eee;">
+                <span style="font-weight:600; color:#28a745;">👤 Ime:</span>
+                <span style="${badgeStyle}">${safeFirstName} ${safeLastName}</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #eee;">
+                <span style="font-weight:600; color:#28a745;">📧 Email:</span>
+                <a href="mailto:${safeEmail}" style="${badgeStyle}; text-decoration:none; color:#5a3e36;">${safeEmail}</a>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #eee;">
+                <span style="font-weight:600; color:#28a745;">📞 Telefon:</span>
+                <a href="tel:${safePhone}" style="${badgeStyle}; text-decoration:none; color:#5a3e36;">${safePhone}</a>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0;">
+                <span style="font-weight:600; color:#28a745;">💼 Pozicija:</span>
+                <span style="${badgeStyle}; background:#d4edda; color:#155724;">${safePosition}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div style="background:#f8f9fa; padding:20px; border-radius:10px; margin-top:20px;">
+            <h4 style="color:#28a745; margin:0 0 15px 0;">📝 Propratno Pismo:</h4>
+            <p style="margin:0; line-height:1.6; white-space:pre-wrap;">${safeCoverLetter}</p>
+          </div>
+        </div>
+
+        <div style="background:#f8f9fa; padding:15px; border-radius:10px; text-align:center;">
+          <p style="margin:0; color:#666; font-size:14px;">Molimo Vas da pregledate prijavu i kontaktirate kandidata.</p>
+        </div>
+      </div>
+    </div>
+  `;
+};
+
 
 // --- Konfiguracija Nodemailer Transportera ---
 const transporterOptions = {
   host: process.env.SMTP_HOST,
   port: parseInt(process.env.SMTP_PORT, 10),
   secure: process.env.SMTP_SECURE === 'true',
+  connectionTimeout: 10000, // 10 sekundi
+  greetingTimeout: 5000,     // 5 sekundi
+  socketTimeout: 10000,      // 10 sekundi
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS
-  }
+  },
+  pool: true,
+  maxConnections: 1,
+  maxMessages: 3
 };
 
 if (process.env.NODE_ENV === 'development') {
@@ -287,6 +451,25 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const transporter = nodemailer.createTransport(transporterOptions);
+
+// --- Retry funkcija za email slanje ---
+const sendEmailWithRetry = async (mailOptions, maxRetries = 2) => {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const result = await transporter.sendMail(mailOptions);
+      return result;
+    } catch (error) {
+      logger.warn(`Email attempt ${attempt}/${maxRetries} failed:`, error.message);
+      
+      if (attempt === maxRetries) {
+        throw error;
+      }
+      
+      // Čekaj 2 sekunde pre ponovnog pokušaja
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+  }
+};
 
 // --- Funkcije za Slanje Emailova ---
 
@@ -303,7 +486,7 @@ export const sendUserConfirmationEmail = async (reservation) => {
       user: process.env.SMTP_USER
     });
     
-    const result = await transporter.sendMail({
+    const result = await sendEmailWithRetry({
       from: `Koneti Café <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
       to: reservation.email,
       subject: 'Potvrda prijema rezervacije - Koneti Café',
@@ -328,7 +511,7 @@ export const sendAdminNotificationEmail = async (reservation) => {
   try {
     console.log('[DEBUG] Sending admin notification email to:', adminEmail);
     
-    const result = await transporter.sendMail({
+    const result = await sendEmailWithRetry({
       from: `Koneti Café Notifikacije <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
       to: adminEmail,
       subject: `Nova rezervacija: ${reservation.name}`,
@@ -350,7 +533,7 @@ export const sendApprovedEmail = async (reservation) => {
     return;
   }
   try {
-    await transporter.sendMail({
+    await sendEmailWithRetry({
       from: `Koneti Café <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
       to: reservation.email,
       subject: 'Vaša rezervacija je prihvaćena!',
@@ -369,7 +552,7 @@ export const sendRejectedEmail = async (reservation) => {
     return;
   }
   try {
-    await transporter.sendMail({
+    await sendEmailWithRetry({
       from: `Koneti Café <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
       to: reservation.email,
       subject: 'Vaša rezervacija je odbijena',
@@ -378,6 +561,68 @@ export const sendRejectedEmail = async (reservation) => {
     logger.info(`Rejection email sent to ${reservation.email}`);
   } catch (e) {
     logger.error('Failed to send rejection email:', e);
+    throw e;
+  }
+};
+
+export const sendCareerApplicationEmail = async (application) => {
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (!adminEmail) {
+    logger.warn('ADMIN_EMAIL not set, skipping career application email.');
+    return;
+  }
+  try {
+    await sendEmailWithRetry({
+      from: `Koneti Café Karijere <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
+      to: adminEmail,
+      subject: `Nova prijava za posao: ${application.firstName} ${application.lastName} - ${application.position}`,
+      html: getCareerApplicationHTML(application),
+    });
+    logger.info(`Career application email sent for ${application.firstName} ${application.lastName}`);
+  } catch (e) {
+    logger.error('Failed to send career application email:', e);
+    throw e;
+  }
+};
+
+export const sendCareerConfirmationEmail = async (application) => {
+  if (!application || !application.email) {
+    logger.warn('Skipping career confirmation email: missing application data or email.');
+    return;
+  }
+  try {
+    await sendEmailWithRetry({
+      from: `Koneti Café <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
+      to: application.email,
+      subject: 'Potvrda prijema prijave za posao - Koneti Café',
+      html: getCareerConfirmationHTML(application),
+    });
+    logger.info(`Career confirmation email sent to ${application.email}`);
+  } catch (e) {
+    logger.error('Failed to send career confirmation email:', e);
+    throw e;
+  }
+};
+
+export const sendCareerStatusEmail = async (application, status) => {
+  if (!application || !application.email) {
+    logger.warn('Skipping career status email: missing application data or email.');
+    return;
+  }
+  try {
+    const subject = status === 'contacted' 
+      ? 'Kontaktiraćemo Vas uskoro - Koneti Café'
+      : `Ažuriranje statusa prijave - Koneti Café`;
+      
+    await sendEmailWithRetry({
+      from: `Koneti Café <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
+      to: application.email,
+      subject: subject,
+      html: getCareerStatusHTML(application, status),
+    });
+    logger.info(`Career status email sent to ${application.email} for status: ${status}`);
+  } catch (e) {
+    logger.error('Failed to send career status email:', e);
     throw e;
   }
 };

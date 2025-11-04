@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload, faTrash, faUser, faEnvelope, faPhone, faFileAlt, faPaperPlane, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
+import { apiRequest } from '@/utils/api';
 import './CareerApplication.scss';
 
 interface JobPosition {
-  id: string;
+  _id: string;
   title: string;
-  department: string;
-  location: string;
-  type: string;
 }
 
 interface ApplicationData {
@@ -23,19 +21,12 @@ interface ApplicationData {
 }
 
 interface CareerApplicationProps {
-  onSubmit: (data: ApplicationData) => void;
+  onSubmit: (data: ApplicationData) => Promise<void>;
 }
 
 const CareerApplication: React.FC<CareerApplicationProps> = ({ onSubmit }) => {
   const { t } = useTranslation();
-  
-  const availablePositions: JobPosition[] = [
-    { id: '1', title: t('career.positions.waiter'), department: t('career.departments.service'), location: 'Beograd', type: 'Puno radno vreme' },
-    { id: '2', title: t('career.positions.barista'), department: t('career.departments.kitchen'), location: 'Beograd', type: 'Puno radno vreme' },
-    { id: '3', title: t('career.positions.cook'), department: t('career.departments.kitchen'), location: 'Beograd', type: 'Puno radno vreme' },
-    { id: '4', title: t('career.positions.shiftManager'), department: t('career.departments.management'), location: 'Beograd', type: 'Puno radno vreme' },
-    { id: '5', title: t('career.positions.cleaner'), department: t('career.departments.maintenance'), location: 'Beograd', type: 'Pola radnog vremena' }
-  ];
+  const [availablePositions, setAvailablePositions] = useState<JobPosition[]>([]);
 
   const [formData, setFormData] = useState<ApplicationData>({
     firstName: '',
@@ -50,11 +41,25 @@ const CareerApplication: React.FC<CareerApplicationProps> = ({ onSubmit }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   React.useEffect(() => {
     const timer = setTimeout(() => setIsLoaded(true), 100);
+    fetchPositions();
     return () => clearTimeout(timer);
   }, []);
+
+  const fetchPositions = async () => {
+    try {
+      const response = await apiRequest('/positions');
+      if (response.ok) {
+        const data = await response.json();
+        setAvailablePositions(data);
+      }
+    } catch (error) {
+      console.error('Error fetching positions:', error);
+    }
+  };
 
   const validateForm = (): boolean => {
     const newErrors: Partial<ApplicationData> = {};
@@ -109,6 +114,23 @@ const CareerApplication: React.FC<CareerApplicationProps> = ({ onSubmit }) => {
     try {
       const applicationData = { ...formData, cv: cvFile || undefined };
       await onSubmit(applicationData);
+      
+      // Reset form
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        position: '',
+        coverLetter: ''
+      });
+      setCvFile(null);
+      setErrors({});
+      
+      // Show success popup
+      setShowPopup(true);
+    } catch (error) {
+      console.error('Submit error:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -118,9 +140,16 @@ const CareerApplication: React.FC<CareerApplicationProps> = ({ onSubmit }) => {
     <div className="career-application-page">
       <div className="career-application-container">
         <div className={`page-header ${isLoaded ? 'loaded' : ''}`}>
-          <h1>{t('career.title')}</h1>
-          <h2>{t('career.subtitle')}</h2>
-          <p>{t('career.description')}</p>
+          <div className="header-content">
+            <div className="header-icon">☕</div>
+            <h1>{t('career.joinTeam')}</h1>
+            <div className="header-badges">
+              <span className="badge">{t('career.badges.career')}</span>
+              <span className="badge">{t('career.badges.development')}</span>
+              <span className="badge">{t('career.badges.team')}</span>
+            </div>
+            <p>{t('career.teamDescription')}</p>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className={`application-form ${isLoaded ? 'loaded' : ''}`}>
@@ -137,8 +166,8 @@ const CareerApplication: React.FC<CareerApplicationProps> = ({ onSubmit }) => {
             >
               <option value="">{t('career.form.selectPosition')}</option>
               {availablePositions.map(pos => (
-                <option key={pos.id} value={pos.title}>
-                  {pos.title} - {pos.department}
+                <option key={pos._id} value={pos.title}>
+                  {pos.title}
                 </option>
               ))}
             </select>
@@ -266,6 +295,18 @@ const CareerApplication: React.FC<CareerApplicationProps> = ({ onSubmit }) => {
           </div>
         </form>
       </div>
+      
+      {showPopup && (
+        <div className="popup-backdrop" onClick={() => setShowPopup(false)}>
+          <div className="popup" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setShowPopup(false)}>
+              ×
+            </button>
+            <h2>{t('career.success.title')}</h2>
+            <p>{t('career.success.description')}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -29,6 +29,7 @@ import { motion, Variants } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contexts/AuthContext";
 import { apiRequest } from "@/utils/api";
+import CareerManagement from "./CareerManagement";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./AdminPage.scss";
@@ -93,7 +94,7 @@ interface StatusCounters {
   approved: number;
 }
 
-type ModalType = "calendar" | null;
+type ModalType = "calendar" | "career" | null;
 
 const AdminPage: React.FC = () => {
   const { t } = useTranslation();
@@ -137,13 +138,22 @@ const AdminPage: React.FC = () => {
     try {
       // Cache-busting za production
       const timestamp = Date.now();
-      const [reservationsRes, drinksRes, categoriesRes] = await Promise.all([
-        apiRequest(`/reservations?_t=${timestamp}`),
-        apiRequest(`/drinks?_t=${timestamp}`),
-        apiRequest(`/categories?_t=${timestamp}`),
-      ]);
+      
+      // Dodaj timeout za API pozive
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Request timeout')), 10000)
+      );
+      
+      const [reservationsRes, drinksRes, categoriesRes] = await Promise.race([
+        Promise.all([
+          apiRequest(`/reservations?_t=${timestamp}`),
+          apiRequest(`/drinks?_t=${timestamp}`),
+          apiRequest(`/categories?_t=${timestamp}`),
+        ]),
+        timeoutPromise
+      ]) as Response[];
 
-      if (!reservationsRes.ok || !drinksRes.ok || !categoriesRes.ok) {
+      if (!reservationsRes?.ok || !drinksRes?.ok || !categoriesRes?.ok) {
         throw new Error("Failed to fetch data");
       }
 
@@ -164,9 +174,9 @@ const AdminPage: React.FC = () => {
           ...e,
           title: `${e.name} (${
             e.type === "koneti"
-              ? "Koneti Experience"
+              ? t("adminPage.event.konetiExperience")
               : e.type === "biznis"
-              ? "Biznis"
+              ? t("adminPage.event.businessMeeting")
               : e.type
           })`,
           start: startDate,
@@ -258,7 +268,7 @@ const AdminPage: React.FC = () => {
       if (response.ok) {
         console.log(`[DEBUG] Request successful, refreshing data`);
         await fetchData();
-        const actionText = action === "approved" ? "odobrena" : "odbijena";
+        const actionText = action === "approved" ? t("adminPage.status.approved") : t("adminPage.status.rejected");
         console.log(`[DEBUG] Rezervacija je uspešno ${actionText}!`);
       } else {
         console.log(`[DEBUG] Request failed, reverting state`);
@@ -392,15 +402,15 @@ const AdminPage: React.FC = () => {
             </motion.div>
           </motion.div>
 
-          {/* Novi red — Statistics kartica */}
+          {/* Drugi red — Statistics i Career */}
           <motion.div
-            className="action-cards stats-row"
+            className="action-cards"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
             <motion.div
-              className="action-card stats-card"
+              className="action-card"
               onClick={() => router.push("/statistics")}
               variants={cardVariants}
               whileHover="hover"
@@ -409,9 +419,41 @@ const AdminPage: React.FC = () => {
               <h3>{t("adminPage.actions.statistics")}</h3>
               <p>{t("adminPage.actions.statisticsDesc")}</p>
             </motion.div>
+
+            <motion.div
+              className="action-card career-card"
+              onClick={() => setShowModal("career")}
+              variants={cardVariants}
+              whileHover="hover"
+            >
+              <FontAwesomeIcon icon={faBriefcase} />
+              <h3>{t("adminPage.actions.jobApplications")}</h3>
+              <p>{t("adminPage.actions.jobApplicationsDesc")}</p>
+            </motion.div>
           </motion.div>
         </motion.div>
       </main>
+
+      {/* Career Management Modal */}
+      {showModal === "career" && (
+        <div
+          className="modal-overlay fullscreen blur-backdrop"
+          onClick={() => setShowModal(null)}
+        >
+          <div
+            className="modal-content fullscreen-modal career-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-header">
+              <h3>💼 {t("adminPage.actions.jobApplications")}</h3>
+              <button onClick={() => setShowModal(null)}>×</button>
+            </div>
+            <div className="modal-body">
+              <CareerManagement />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Calendar Modal */}
       {showModal === "calendar" && (
@@ -602,7 +644,7 @@ const AdminPage: React.FC = () => {
                       disabled={updatingReservation === selectedEvent._id}
                     >
                       <FontAwesomeIcon icon={faCheck} />{" "}
-                      {updatingReservation === selectedEvent._id ? "Ažuriranje..." : t("adminPage.event.confirm")}
+                      {updatingReservation === selectedEvent._id ? t("adminPage.actions.updating") : t("adminPage.event.confirm")}
                     </button>
                     <button
                       className="btn-reject"
@@ -612,7 +654,7 @@ const AdminPage: React.FC = () => {
                       disabled={updatingReservation === selectedEvent._id}
                     >
                       <FontAwesomeIcon icon={faTimes} />{" "}
-                      {updatingReservation === selectedEvent._id ? "Ažuriranje..." : t("adminPage.event.reject")}
+                      {updatingReservation === selectedEvent._id ? t("adminPage.actions.updating") : t("adminPage.event.reject")}
                     </button>
                   </>
                 )}

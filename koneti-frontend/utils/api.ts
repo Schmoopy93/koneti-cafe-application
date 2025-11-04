@@ -1,4 +1,16 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const getApiUrl = () => {
+  try {
+    const url = process.env.NEXT_PUBLIC_API_URL;
+    if (!url || url === 'undefined') {
+      console.warn('NEXT_PUBLIC_API_URL not set, using localhost');
+      return "http://localhost:5000/api";
+    }
+    return url;
+  } catch (error) {
+    console.error('Error getting API URL:', error);
+    return "http://localhost:5000/api";
+  }
+};
 
 interface ApiOptions extends RequestInit {
   useToken?: boolean;
@@ -13,7 +25,9 @@ const getCSRFToken = async (): Promise<string | null> => {
   if (csrfToken) return csrfToken;
   
   try {
-    const response = await fetch(`${API_URL}/admin/csrf-token`, {
+    const apiUrl = getApiUrl();
+    if (!apiUrl) return null;
+    const response = await fetch(`${apiUrl}/admin/csrf-token`, {
       credentials: 'include'
     });
     
@@ -35,50 +49,58 @@ export const clearCSRFToken = () => {
 };
 
 export const apiRequest = async (endpoint: string, options: ApiOptions = {}) => {
-  const { useToken = true, requireCSRF = false, ...fetchOptions } = options;
-  
-  // Osnovne opcije
-  const requestOptions: RequestInit = {
-    credentials: "include",
-    ...fetchOptions,
-  };
-
-  // Dodaj Content-Type samo ako nije FormData
-  if (!(fetchOptions.body instanceof FormData)) {
-    requestOptions.headers = {
-      "Content-Type": "application/json",
-      ...fetchOptions.headers,
-    };
-  } else {
-    requestOptions.headers = {
-      ...fetchOptions.headers,
-    };
-  }
-
-  // Dodaj token ako je potreban i dostupan
-  if (useToken && typeof window !== 'undefined') {
-    const token = localStorage.getItem('adminToken');
-    if (token) {
-      requestOptions.headers = {
-        ...requestOptions.headers,
-        'Authorization': `Bearer ${token}`,
-      };
-    }
-  }
-
-  // Dodaj CSRF token za POST/PUT/DELETE zahteve (samo u produkciji)
-  if (requireCSRF && process.env.NODE_ENV === 'production' && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(fetchOptions.method || 'GET')) {
-    const csrf = await getCSRFToken();
-    if (csrf) {
-      requestOptions.headers = {
-        ...requestOptions.headers,
-        'X-CSRF-Token': csrf,
-      };
-    }
-  }
-
   try {
-    const response = await fetch(`${API_URL}${endpoint}`, requestOptions);
+    const { useToken = true, requireCSRF = false, ...fetchOptions } = options;
+    
+    const apiUrl = getApiUrl();
+    if (!apiUrl || apiUrl === 'undefined' || apiUrl === 'null') {
+      console.error('API URL is not properly configured:', apiUrl);
+      throw new Error('API URL is not configured');
+    }
+    
+    // Osnovne opcije
+    const requestOptions: RequestInit = {
+      credentials: "include",
+      ...fetchOptions,
+    };
+
+    // Dodaj Content-Type samo ako nije FormData
+    if (!(fetchOptions.body instanceof FormData)) {
+      requestOptions.headers = {
+        "Content-Type": "application/json",
+        ...fetchOptions.headers,
+      };
+    } else {
+      requestOptions.headers = {
+        ...fetchOptions.headers,
+      };
+    }
+
+    // Dodaj token ako je potreban i dostupan
+    if (useToken && typeof window !== 'undefined') {
+      const token = localStorage.getItem('adminToken');
+      if (token) {
+        requestOptions.headers = {
+          ...requestOptions.headers,
+          'Authorization': `Bearer ${token}`,
+        };
+      }
+    }
+
+    // Dodaj CSRF token za POST/PUT/DELETE zahteve (samo u produkciji)
+    if (requireCSRF && process.env.NODE_ENV === 'production' && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(fetchOptions.method || 'GET')) {
+      const csrf = await getCSRFToken();
+      if (csrf) {
+        requestOptions.headers = {
+          ...requestOptions.headers,
+          'X-CSRF-Token': csrf,
+        };
+      }
+    }
+
+    const fullUrl = `${apiUrl}${endpoint}`;
+    console.log('Making request to:', fullUrl);
+    const response = await fetch(fullUrl, requestOptions);
     
     // Ukloni nevaži token ako je 401
     if (response.status === 401 && typeof window !== 'undefined') {
@@ -95,15 +117,20 @@ export const apiRequest = async (endpoint: string, options: ApiOptions = {}) => 
           ...requestOptions.headers,
           'X-CSRF-Token': newCSRF,
         };
-        return fetch(`${API_URL}${endpoint}`, requestOptions);
+        return fetch(`${apiUrl}${endpoint}`, requestOptions);
       }
     }
     
     return response;
   } catch (error) {
-    console.error('API zahtev neuspešan:', error);
+    // Tiho fail za CORS/network greške
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      console.warn('Backend server not available');
+    } else {
+      console.error('API request failed:', error);
+    }
     throw error;
   }
 };
 
-export { API_URL };
+export const API_URL = getApiUrl();

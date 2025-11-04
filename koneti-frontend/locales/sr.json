@@ -313,8 +313,42 @@
       "logout": "Odjavi se",
       "logoutDesc": "Izađi iz admin panela",
       "statistics": "Statistika rezervacija",
-      "statisticsDesc": "Prikazivanje statistike rezervacija"
-      
+      "statisticsDesc": "Prikazivanje statistike rezervacija",
+      "jobApplications": "Prijave za posao",
+      "jobApplicationsDesc": "Pregled i upravljanje prijavama za posao",
+      "updating": "Ažuriranje..."
+    },
+    "career": {
+      "title": "Prijave za posao",
+      "total": "Ukupno",
+      "pending": "Na čekanju",
+      "page": "Stranica",
+      "of": "od",
+      "addPosition": "Dodaj poziciju",
+      "positionPlaceholder": "Naziv pozicije (npr. Konobar/ica)",
+      "savePosition": "Sačuvaj poziciju",
+      "positionAdded": "Pozicija je uspešno dodana!",
+      "addPositionError": "Greška pri dodavanju pozicije",
+      "enterPositionName": "Unesite naziv pozicije",
+      "fetchError": "Greška pri učitavanju prijava",
+      "statusUpdated": "Status je uspešno ažuriran",
+      "statusUpdateError": "Greška pri ažuriranju statusa",
+      "loading": "Učitavanje prijava...",
+      "noApplications": "Nema prijava za posao",
+      "noApplicationsDesc": "Kada neko pošalje prijavu, pojaviće se ovde.",
+      "view": "Pregled",
+      "submitted": "Poslato",
+      "position": "Pozicija",
+      "email": "Email",
+      "phone": "Telefon",
+      "coverLetter": "Propratno pismo",
+      "updateStatus": "Ažuriraj status",
+      "status": {
+        "pending": "Na čekanju",
+        "reviewed": "Pregledano",
+        "contacted": "Kontaktirano",
+        "rejected": "Odbijeno"
+      }
     },
     "calendar": {
       "title": "Kalendar rezervacija",
@@ -363,6 +397,18 @@
     "title": "Postanite deo Koneti porodice",
     "subtitle": "Karijera u našem kafeu",
     "description": "Tražimo strastvene i posvećene ljude koji žele da budu deo našeg tima. Prijavite se i pokažite nam zašto ste savršen izbor za Koneti.",
+    "joinTeam": "Pridružite se Koneti timu",
+    "teamDescription": "Tražimo talentovane i motivišane ljude koji dele našu strast prema kvalitetu i gostoprimstvu",
+    "badges": {
+      "career": "💼 Karijera",
+      "development": "🌟 Razvoj",
+      "team": "🤝 Tim"
+    },
+    "success": {
+      "title": "Uspešno poslato!",
+      "description": "Vaša prijava za posao je primljena. Kontaktiraćemo Vas uskoro. Proverite svoj email za potvrdu.",
+      "toast": "Prijava je uspešno poslata! Kontaktiraćemo Vas uskoro."
+    },
     "form": {
       "position": "Pozicija *",
       "selectPosition": "Izaberite poziciju",
@@ -396,7 +442,9 @@
       "phone": "Telefon je obavezan",
       "phoneInvalid": "Telefon format nije valjan",
       "position": "Pozicija je obavezna",
-      "coverLetter": "Motivaciono pismo je obavezno"
+      "coverLetter": "Motivaciono pismo je obavezno",
+      "submitError": "Greška pri slanju prijave. Pokušajte ponovo.",
+      "submitErrorGeneral": "Greška pri slanju prijave"
     },
     "positions": {
       "waiter": "Konobar/Konobarica",

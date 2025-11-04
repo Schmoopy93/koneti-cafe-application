@@ -19,6 +19,8 @@ import reservationTypesRoutes from "./routes/reservationTypesRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import categoriesRoutes from "./routes/categoryRoutes.js";
 import drinkRoutes from "./routes/drinkRoutes.js";
+import careerRoutes from "./routes/careerRoutes.js";
+import positionRoutes from "./routes/positionRoutes.js";
 
 // === Init ===
 const app = express();
@@ -116,6 +118,8 @@ app.use("/api/reservation-types", reservationTypesRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/categories", categoriesRoutes);
 app.use("/api/drinks", drinkRoutes);
+app.use("/api/career", careerRoutes);
+app.use("/api/positions", positionRoutes);
 
 // === Health check ===
 app.get("/", (req, res) => {

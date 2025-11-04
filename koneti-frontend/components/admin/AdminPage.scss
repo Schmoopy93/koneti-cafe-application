@@ -194,6 +194,16 @@ $border: rgba(207, 166, 138, 0.2);
         color: #c0392b;
       }
     }
+
+    &.career-card {
+      svg {
+        color: #8b4513;
+      }
+
+      &:hover svg {
+        color: #d4a574;
+      }
+    }
   }
 }
 
@@ -364,6 +374,19 @@ $border: rgba(207, 166, 138, 0.2);
       flex-direction: column;
       overflow: hidden;
       padding: 1rem 2rem 2rem;
+    }
+
+    /* CAREER MODAL SPECIFIC */
+    &.career-modal {
+      .modal-body {
+        padding: 0.5rem 1rem 1rem;
+        overflow-y: auto;
+      }
+
+      .career-management {
+        height: 100%;
+        padding: 1rem;
+      }
     }
 
     /* KALENDAR WRAPPER */

@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setIsAuthenticated(false);
       }
     } catch (error) {
-      console.error("Greška pri proveri autentikacije:", error);
+      // Ne loguj grešku ako je backend nedostupan
       setIsAuthenticated(false);
       setUser(null);
     } finally {
@@ -61,7 +61,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    checkAuth();
+    // Dodaj delay da se environment varijable učitaju
+    const timer = setTimeout(() => {
+      checkAuth();
+    }, 100);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {

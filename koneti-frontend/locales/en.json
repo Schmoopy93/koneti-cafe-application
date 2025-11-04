@@ -318,7 +318,42 @@
       "logout": "Log out",
       "logoutDesc": "Exit admin panel",
       "statistics": "Reservation statistics",
-      "statisticsDesc": "View reservation statistics"
+      "statisticsDesc": "View reservation statistics",
+      "jobApplications": "Job Applications",
+      "jobApplicationsDesc": "View and manage job applications",
+      "updating": "Updating..."
+    },
+    "career": {
+      "title": "Job Applications",
+      "total": "Total",
+      "pending": "Pending",
+      "page": "Page",
+      "of": "of",
+      "addPosition": "Add Position",
+      "positionPlaceholder": "Position name (e.g. Waiter/Waitress)",
+      "savePosition": "Save Position",
+      "positionAdded": "Position successfully added!",
+      "addPositionError": "Error adding position",
+      "enterPositionName": "Enter position name",
+      "fetchError": "Error loading applications",
+      "statusUpdated": "Status successfully updated",
+      "statusUpdateError": "Error updating status",
+      "loading": "Loading applications...",
+      "noApplications": "No job applications",
+      "noApplicationsDesc": "When someone submits an application, it will appear here.",
+      "view": "View",
+      "submitted": "Submitted",
+      "position": "Position",
+      "email": "Email",
+      "phone": "Phone",
+      "coverLetter": "Cover Letter",
+      "updateStatus": "Update Status",
+      "status": {
+        "pending": "Pending",
+        "reviewed": "Reviewed",
+        "contacted": "Contacted",
+        "rejected": "Rejected"
+      }
     },
     "calendar": {
       "title": "Reservation Calendar",
@@ -366,6 +401,18 @@
     "title": "Join the Koneti Family",
     "subtitle": "Career at Our Café",
     "description": "We are looking for passionate and dedicated people who want to be part of our team. Apply and show us why you are the perfect choice for Koneti.",
+    "joinTeam": "Join the Koneti Team",
+    "teamDescription": "We are looking for talented and motivated people who share our passion for quality and hospitality",
+    "badges": {
+      "career": "💼 Career",
+      "development": "🌟 Development",
+      "team": "🤝 Team"
+    },
+    "success": {
+      "title": "Successfully sent!",
+      "description": "Your job application has been received. We will contact you soon. Check your email for confirmation.",
+      "toast": "Application successfully sent! We will contact you soon."
+    },
     "form": {
       "position": "Position *",
       "selectPosition": "Select position",
@@ -399,7 +446,9 @@
       "phone": "Phone is required",
       "phoneInvalid": "Phone format is not valid",
       "position": "Position is required",
-      "coverLetter": "Cover letter is required"
+      "coverLetter": "Cover letter is required",
+      "submitError": "Error submitting application. Please try again.",
+      "submitErrorGeneral": "Error submitting application"
     },
     "positions": {
       "waiter": "Waiter/Waitress",
