@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload, faTrash, faUser, faEnvelope, faPhone, faFileAlt, faPaperPlane, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { useTranslation } from 'react-i18next';
 import { apiRequest } from '@/utils/api';
+import Spinner from '../ui/Spinner';
 import './CareerApplication.scss';
 
 interface JobPosition {
@@ -289,8 +290,14 @@ const CareerApplication: React.FC<CareerApplicationProps> = ({ onSubmit }) => {
 
           <div className="form-actions">
             <button type="submit" className="btn-submit" disabled={isSubmitting}>
-              <FontAwesomeIcon icon={faPaperPlane} />
-              {isSubmitting ? t('career.form.submitting') : t('career.form.submit')}
+              {isSubmitting ? (
+                <Spinner size="sm" text={t('career.form.submitting')} />
+              ) : (
+                <>
+                  <FontAwesomeIcon icon={faPaperPlane} />
+                  {t('career.form.submit')}
+                </>
+              )}
             </button>
           </div>
         </form>

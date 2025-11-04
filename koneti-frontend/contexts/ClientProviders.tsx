@@ -6,6 +6,7 @@ import i18n from "../i18n";
 import { AuthProvider } from "./AuthContext";
 import Header from "../components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import Spinner from "../components/ui/Spinner";
 
 export default function ClientProviders({
   children,
@@ -20,10 +21,8 @@ export default function ClientProviders({
 
   if (!mounted) {
     return (
-      <div style={{ minHeight: '100vh' }}>
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-        </div>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Spinner size="lg" text="Loading application..." />
       </div>
     );
   }

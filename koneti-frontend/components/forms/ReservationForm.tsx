@@ -13,6 +13,7 @@ import {
   faCrown,
 } from "@fortawesome/free-solid-svg-icons";
 import { apiRequest } from "@/utils/api";
+import Spinner from "../ui/Spinner";
 import "./ReservationForm.scss";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
@@ -66,6 +67,7 @@ export default function ReservationForm() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupData, setPopupData] = useState<PopupData>({});
   const [shakeFields, setShakeFields] = useState<ShakeFields>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const types = [
     {
@@ -215,6 +217,7 @@ export default function ReservationForm() {
       return;
     }
 
+    setIsSubmitting(true);
     try {
       console.log('[DEBUG] Sending reservation request:', formData);
       const res = await apiRequest('/reservations', {
@@ -271,6 +274,8 @@ export default function ReservationForm() {
     } catch (error: any) {
       console.error('Greška pri slanju rezervacije:', error);
       toast.error(error.message || "Greška pri slanju rezervacije. Pokušajte ponovo.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -403,8 +408,12 @@ export default function ReservationForm() {
         )}
 
         {formData.subType && (
-          <button type="submit" className="btn-submit">
-            {t("home.reservation.submit")}
+          <button type="submit" className="btn-submit" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <Spinner size="sm" text={t("home.reservation.submitting")} />
+            ) : (
+              t("home.reservation.submit")
+            )}
           </button>
         )}
       </form>

@@ -8,6 +8,7 @@ import getCroppedImg from "../utils/getCroppedImg";
 import { Drink } from "@/app/types/drink";
 import { Category } from "@/app/types/category";
 import { apiRequest } from "@/utils/api";
+import Spinner from "../ui/Spinner";
 import "./AddDrink.scss";
 
 interface AddDrinkProps {
@@ -40,6 +41,7 @@ export default function AddDrink({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [shakeFields, setShakeFields] = useState<Record<string, boolean>>({});
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Cropper state
   const [showCropper, setShowCropper] = useState(false);
@@ -142,6 +144,7 @@ export default function AddDrink({
       return;
     }
 
+    setIsSubmitting(true);
     try {
       const payload = new FormData();
       payload.append("name", formData.name);
@@ -171,6 +174,8 @@ export default function AddDrink({
     } catch (err) {
       console.error(err);
       toast.error("Greška na serveru");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -302,8 +307,12 @@ export default function AddDrink({
           </div>
         )}
 
-        <button type="submit" className="submit-btn">
-          {editData ? "Sačuvaj izmene" : "Sačuvaj"}
+        <button type="submit" className="submit-btn" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <Spinner size="sm" text={editData ? "Čuvanje izmena..." : "Čuvanje..."} />
+          ) : (
+            editData ? "Sačuvaj izmene" : "Sačuvaj"
+          )}
         </button>
       </form>
     </div>

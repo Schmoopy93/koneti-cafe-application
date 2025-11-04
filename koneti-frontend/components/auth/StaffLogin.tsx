@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
+import Spinner from "../ui/Spinner";
 import "./StaffLogin.scss";
 
 interface FormData {
@@ -55,7 +56,7 @@ const StaffLogin: React.FC = () => {
     return (
       <div className="staff-login-section">
         <div className="staff-container">
-          <div className="loading">Učitavanje...</div>
+          <Spinner size="lg" text="Učitavanje..." />
         </div>
       </div>
     );
@@ -107,14 +108,7 @@ const StaffLogin: React.FC = () => {
               disabled={loading}
             >
               {loading ? (
-                <div className="loading-content">
-                  <img
-                    src="/koneti-logo.png"
-                    alt="Koneti Logo"
-                    className="logo-bounce"
-                  />
-                  <span>{t("staffLogin.loggingIn")}</span>
-                </div>
+                <Spinner size="sm" text={t("staffLogin.loggingIn")} />
               ) : (
                 t("staffLogin.loginButton")
               )}

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, ChangeEvent, FormEvent } from "reac
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
+import Spinner from "../ui/Spinner";
 import "./ContactForm.scss";
 
 interface IFormData {
@@ -163,10 +164,7 @@ const ContactForm: React.FC = () => {
               disabled={isSubmitting}
             >
               {isSubmitting ? (
-                <>
-                  <div className="spinner"></div>
-                  {t("home.contact.form.submit.sending")}
-                </>
+                <Spinner size="sm" text={t("home.contact.form.submit.sending")} />
               ) : (
                 <>
                   <FontAwesomeIcon icon={faPaperPlane} />

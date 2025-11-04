@@ -48,6 +48,7 @@
         "submit": "An error occurred while sending the reservation. Please try again."
       },
       "submit": "Send reservation",
+      "submitting": "Sending...",
       "success": {
         "title": "Successfully sent!",
         "message": "Your reservation has been received. We will respond soon."
@@ -310,6 +311,7 @@
       "totalCategories": "Categories",
       "totalReservations": "Reservations"
     },
+    "loading": "Loading...",
     "actions": {
       "manageMenu": "Manage Menu",
       "manageMenuDesc": "Manage menu items",

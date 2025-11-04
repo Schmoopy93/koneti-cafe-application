@@ -13,6 +13,7 @@ import {
 
 import toast, { Toaster } from "react-hot-toast";
 import { apiRequest } from "@/utils/api";
+import Spinner from "../ui/Spinner";
 import "./AddCategory.scss";
 
 // ✅ Tipovi
@@ -75,6 +76,7 @@ export default function AddCategory({ onClose, onSuccess }: AddCategoryProps) {
   const [formData, setFormData] = useState<FormData>({ name: "", icon: "" });
   const [errors, setErrors] = useState<Errors>({});
   const [shakeFields, setShakeFields] = useState<ShakeFields>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -112,6 +114,7 @@ export default function AddCategory({ onClose, onSuccess }: AddCategoryProps) {
       return;
     }
 
+    setIsSubmitting(true);
     try {
       const payload: CategoryPayload = {
         name: { sr: formData.name },
@@ -139,6 +142,8 @@ export default function AddCategory({ onClose, onSuccess }: AddCategoryProps) {
     } catch (err) {
       console.error(err);
       toast.error("Greška na serveru");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -186,8 +191,12 @@ export default function AddCategory({ onClose, onSuccess }: AddCategoryProps) {
           {errors.icon && <span className="error">{errors.icon}</span>}
         </div>
 
-        <button type="submit" className="gradient-btn">
-          {t("admin.addCategory.save")}
+        <button type="submit" className="gradient-btn" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <Spinner size="sm" text="Čuvanje..." />
+          ) : (
+            t("admin.addCategory.save")
+          )}
         </button>
       </form>
     </div>

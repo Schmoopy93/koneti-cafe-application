@@ -21,6 +21,7 @@ import {
   faChevronRight,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
+import Spinner from "../ui/Spinner";
 import { apiRequest } from "@/utils/api";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -181,12 +182,7 @@ const CareerManagement: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <div className="career-management loading">
-        <FontAwesomeIcon icon={faSpinner} spin size="2x" />
-        <p>{t("adminPage.career.loading")}</p>
-      </div>
-    );
+    return <Spinner size="lg" text={t("adminPage.career.loading")} />;
   }
 
   return (

@@ -18,6 +18,7 @@ import Image from "next/image";
 
 import { Drink } from "../../app/types/drink";
 import { Category } from "../../app/types/category";
+import Spinner from "../ui/Spinner";
 import "./MenuManagement.scss";
 
 interface MenuManagementProps {
@@ -207,7 +208,7 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
 
         <div className="admin-drinks-grid">
           {isLoading ? (
-            <div className="admin-drinks-loading">Loading...</div>
+            <Spinner size="md" text="Loading drinks..." />
           ) : (
             paginatedDrinks.map((drink) => (
               <div key={drink._id} className="admin-drink-card">

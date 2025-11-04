@@ -5,16 +5,13 @@ import dynamic from "next/dynamic";
 import type { Settings } from "react-slick";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import Spinner from "../ui/Spinner";
 import "./HeroSlider.scss";
 
 // Dinamički import Slider komponente da izbegnemo SSR probleme
 const Slider = dynamic(() => import("react-slick"), {
   ssr: false,
-  loading: () => (
-    <div className="hero-slider-loading">
-      <div className="loading-spinner"></div>
-    </div>
-  ),
+  loading: () => <Spinner size="lg" text="Loading slider..." />,
 });
 
 interface SlideData {
@@ -78,9 +75,7 @@ const HeroSlider: React.FC = () => {
   if (!mounted) {
     return (
       <div className="hero-slider">
-        <div className="hero-slider-loading">
-          <div className="loading-spinner"></div>
-        </div>
+        <Spinner size="lg" text="Loading slider..." />
       </div>
     );
   }

@@ -30,6 +30,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contexts/AuthContext";
 import { apiRequest } from "@/utils/api";
 import CareerManagement from "./CareerManagement";
+import Spinner from "../ui/Spinner";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./AdminPage.scss";
@@ -310,6 +311,10 @@ const AdminPage: React.FC = () => {
     }
     return event.title;
   };
+
+  if (loading) {
+    return <Spinner size="lg" text={t("adminPage.loading")} />;
+  }
 
   return (
     <div className="admin-dashboard">

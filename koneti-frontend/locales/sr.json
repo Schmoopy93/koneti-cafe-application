@@ -48,6 +48,7 @@
         "submit": "Došlo je do greške prilikom slanja rezervacije. Pokušajte ponovo."
       },
       "submit": "Pošalji rezervaciju",
+      "submitting": "Šalje se...",
       "success": {
         "title": "Uspešno poslato!",
         "message": "Vaša rezervacija je primljena. Odgovorićemo uskoro."
@@ -305,6 +306,7 @@
       "totalCategories": "Kategorije",
       "totalReservations": "Rezervacije"
     },
+    "loading": "Učitavanje...",
     "actions": {
       "manageMenu": "Upravljaj menijem",
       "manageMenuDesc": "Upravljanje stavkama u meniju",

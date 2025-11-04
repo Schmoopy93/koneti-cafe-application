@@ -4,8 +4,11 @@ import React, { useEffect, useState } from "react";
 import EventStats from "@/components/statistics/EventStats";
 import { ProtectedRoute } from "@/contexts/ProtectedRoute";
 import { apiRequest } from "@/utils/api";
+import Spinner from "@/components/ui/Spinner";
+import { useTranslation } from "react-i18next";
 
 export default function EventStatsPage() {
+  const { t } = useTranslation();
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,7 +34,7 @@ export default function EventStatsPage() {
     fetchEvents();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner size="lg" text={t("eventStats.loading")} />;
 
   return (
     <ProtectedRoute>
