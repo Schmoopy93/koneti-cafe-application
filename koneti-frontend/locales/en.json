@@ -42,16 +42,23 @@
         "phone": "Enter phone",
         "date": "Select date",
         "datePast": "Date cannot be in the past",
+        "dateMinimum": "Reservation must be at least 2 days in advance",
         "time": "Select time",
         "timePast": "Time cannot be in the past",
         "guests": "Enter number of guests",
-        "submit": "An error occurred while sending the reservation. Please try again."
+        "submit": "An error occurred while sending the reservation. Please try again.",
+        "fillRequired": "Please fill in all required fields!",
+        "unavailable": "The venue is not available for rental on that day",
+        "checkAvailabilityError": "Error checking availability. Please try again.",
+        "submitError": "Error sending reservation. Please try again."
       },
       "submit": "Send reservation",
       "submitting": "Sending...",
       "success": {
         "title": "Successfully sent!",
-        "message": "Your reservation has been received. We will respond soon."
+        "message": "Your reservation has been received. We will respond soon.",
+        "toast": "Reservation sent successfully! Check your email for confirmation.",
+        "description": "Your reservation has been received. We will respond soon. Check your email for confirmation."
       },
       "popups": {
         "business": {
@@ -243,7 +250,14 @@
         "description": "Description cannot exceed 250 characters.",
         "image": "Image is required.",
         "imageFormat": "Allowed formats: JPG, PNG.",
-        "imageSize": "Maximum image size: 2MB."
+        "imageSize": "Maximum image size: 2MB.",
+        "checkFormErrors": "Check form errors!",
+        "drinkUpdated": "Drink updated!",
+        "drinkAdded": "Drink added!",
+        "sendDataError": "Error sending data",
+        "serverError": "Server error",
+        "cropSaved": "Crop saved!",
+        "cropError": "Error cropping image"
       }
     },
     "addCategory": {
@@ -254,7 +268,11 @@
       "addButton": "Add Category",
       "errors": {
         "name": "Category name is required.",
-        "icon": "Icon is required."
+        "icon": "Icon is required.",
+        "checkFormErrors": "Check form errors!",
+        "categoryAdded": "Category successfully added!",
+        "addCategoryError": "Error adding category",
+        "serverError": "Server error"
       }
     },
     "menuManagement": {
@@ -303,7 +321,10 @@
     "passwordPlaceholder": "Enter password",
     "loginButton": "Log in",
     "loggingIn": "Logging in...",
-    "serverError": "Server did not return JSON"
+    "serverError": "Server did not return JSON",
+    "loginFailed": "Login failed. Check your email and password.",
+    "generalError": "An error occurred",
+    "loading": "Loading..."
   },
   "adminPage": {
     "stats": {

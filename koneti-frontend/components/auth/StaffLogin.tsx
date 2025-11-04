@@ -42,10 +42,10 @@ const StaffLogin: React.FC = () => {
     try {
       const success = await login(formData.email, formData.password);
       if (!success) {
-        setError("Neuspešna prijava. Proverite email i lozinku.");
+        setError(t("staffLogin.loginFailed"));
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Došlo je do greške";
+      const errorMessage = err instanceof Error ? err.message : t("staffLogin.generalError");
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -56,7 +56,7 @@ const StaffLogin: React.FC = () => {
     return (
       <div className="staff-login-section">
         <div className="staff-container">
-          <Spinner size="lg" text="Učitavanje..." />
+          <Spinner size="lg" text={t("staffLogin.loading")} />
         </div>
       </div>
     );

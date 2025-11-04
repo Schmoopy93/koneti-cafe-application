@@ -200,7 +200,19 @@ export default function ReservationForm() {
     if (!formData.name) errors.name = t("home.reservation.errors.name");
     if (!formData.email) errors.email = t("home.reservation.errors.email");
     if (!formData.phone) errors.phone = t("home.reservation.errors.phone");
-    if (!formData.date) errors.date = t("home.reservation.errors.date");
+    if (!formData.date) {
+      errors.date = t("home.reservation.errors.date");
+    } else {
+      const selectedDate = new Date(formData.date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const minDate = new Date(today);
+      minDate.setDate(today.getDate() + 2);
+      
+      if (selectedDate < minDate) {
+        errors.date = t("home.reservation.errors.dateMinimum");
+      }
+    }
     if (!formData.time) errors.time = t("home.reservation.errors.time");
     if (!formData.guests || formData.guests < 1)
       errors.guests = t("home.reservation.errors.guests");
@@ -213,7 +225,7 @@ export default function ReservationForm() {
     if (Object.keys(errors).length) {
       setFormErrors(errors);
       triggerShake(Object.keys(errors));
-      toast.error("Molimo popunite sva obavezna polja!");
+      toast.error(t("home.reservation.errors.fillRequired"));
       return;
     }
 
@@ -231,7 +243,7 @@ export default function ReservationForm() {
       if (!res.ok) {
         const errorData = await res.json();
         console.error('[DEBUG] Reservation error:', errorData);
-        throw new Error(errorData.message || "Greška pri slanju rezervacije");
+        throw new Error(errorData.message || t("home.reservation.errors.submitError"));
       }
 
       // Handle 204 No Content ili prazan response
@@ -261,19 +273,19 @@ export default function ReservationForm() {
       setShowEventForm(false);
       
       // Prikaži success toast
-      toast.success("Rezervacija je uspešno poslata! Proverite email za potvrdu.");
+      toast.success(t("home.reservation.success.toast"));
       
       // Prikaži popup
       setPopupData({
-        title: "Uspešno poslato!",
-        description: "Vaša rezervacija je primljena. Odgovorićemo uskoro. Proverite svoj email za potvrdu.",
+        title: t("home.reservation.success.title"),
+        description: t("home.reservation.success.description"),
       });
       setShowPopup(true);
       
       setTimeout(() => router.push("/"), 5000);
     } catch (error: any) {
       console.error('Greška pri slanju rezervacije:', error);
-      toast.error(error.message || "Greška pri slanju rezervacije. Pokušajte ponovo.");
+      toast.error(error.message || t("home.reservation.errors.submitError"));
     } finally {
       setIsSubmitting(false);
     }

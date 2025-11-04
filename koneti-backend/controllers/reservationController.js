@@ -13,7 +13,23 @@ import {
  */
 export const createReservation = async (req, res) => {
   try {
-    const { type, subType } = req.body;
+    const { type, subType, date } = req.body;
+    
+    // Validate date - minimum 2 days in advance
+    if (date) {
+      const selectedDate = new Date(date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const minDate = new Date(today);
+      minDate.setDate(today.getDate() + 2);
+      
+      if (selectedDate < minDate) {
+        return res.status(400).json({
+          success: false,
+          message: 'Rezervacija mora biti minimum 2 dana unapred'
+        });
+      }
+    }
     
     // Validate subType based on type
     if (type === 'biznis' && !['basic', 'vip'].includes(subType)) {
@@ -152,6 +168,43 @@ export const updateReservationStatus = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Greška prilikom ažuriranja statusa rezervacije.",
+    });
+  }
+};
+
+export const checkAvailability = async (req, res) => {
+  try {
+    const { date } = req.query;
+    
+    if (!date) {
+      return res.status(400).json({
+        success: false,
+        message: "Datum je obavezan"
+      });
+    }
+
+    const existingReservation = await Reservation.findOne({
+      date: date,
+      guests: { $gt: 15 },
+      status: "approved"
+    });
+
+    if (existingReservation) {
+      return res.status(409).json({
+        success: false,
+        message: "Objekat nije raspoloživ za iznajmljivanje tog dana"
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Prostor je dostupan"
+    });
+  } catch (error) {
+    logger.error("Error checking availability:", error);
+    res.status(500).json({
+      success: false,
+      message: "Greška prilikom provere dostupnosti"
     });
   }
 };

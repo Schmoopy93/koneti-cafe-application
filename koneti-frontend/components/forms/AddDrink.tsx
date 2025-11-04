@@ -108,21 +108,21 @@ export default function AddDrink({
       setFormData({ ...formData, image: croppedFile });
       setImagePreview(URL.createObjectURL(croppedFile));
       setShowCropper(false);
-      toast.success("Crop je sačuvan!");
+      toast.success(t("admin.addDrink.errors.cropSaved"));
     } catch (err) {
       console.error(err);
-      toast.error("Greška prilikom cropovanja slike");
+      toast.error(t("admin.addDrink.errors.cropError"));
     }
   };
 
   // 🔹 Validacija
   const validate = (): Record<string, string> => {
     const newErrors: Record<string, string> = {};
-    if (!formData.name.trim()) newErrors.name = "Naziv je obavezan";
+    if (!formData.name.trim()) newErrors.name = t("admin.addDrink.errors.name");
     if (!formData.price || Number(formData.price) <= 0)
-      newErrors.price = "Cena mora biti validan broj";
-    if (!formData.categoryId) newErrors.categoryId = "Kategorija je obavezna";
-    if (!editData && !formData.image) newErrors.image = "Slika je obavezna";
+      newErrors.price = t("admin.addDrink.errors.priceInvalid");
+    if (!formData.categoryId) newErrors.categoryId = t("admin.addDrink.errors.category");
+    if (!editData && !formData.image) newErrors.image = t("admin.addDrink.errors.image");
     return newErrors;
   };
 
@@ -140,7 +140,7 @@ export default function AddDrink({
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       triggerShake(Object.keys(validationErrors));
-      toast.error("Proverite greške u formi!");
+      toast.error(t("admin.addDrink.errors.checkFormErrors"));
       return;
     }
 
@@ -165,15 +165,15 @@ export default function AddDrink({
       });
       if (res.ok) {
         const data = await res.json();
-        toast.success(editData ? "Piće ažurirano!" : "Piće dodato!");
+        toast.success(editData ? t("admin.addDrink.errors.drinkUpdated") : t("admin.addDrink.errors.drinkAdded"));
         onSuccess?.(data);
         onClose();
       } else {
-        toast.error("Greška prilikom slanja podataka");
+        toast.error(t("admin.addDrink.errors.sendDataError"));
       }
     } catch (err) {
       console.error(err);
-      toast.error("Greška na serveru");
+      toast.error(t("admin.addDrink.errors.serverError"));
     } finally {
       setIsSubmitting(false);
     }

@@ -110,7 +110,7 @@ export default function AddCategory({ onClose, onSuccess }: AddCategoryProps) {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       triggerShake(Object.keys(validationErrors));
-      toast.error("Proverite greške u formi!");
+      toast.error(t("admin.addCategory.errors.checkFormErrors"));
       return;
     }
 
@@ -130,18 +130,18 @@ export default function AddCategory({ onClose, onSuccess }: AddCategoryProps) {
 
       if (res.ok) {
         const data = await res.json();
-        toast.success("Kategorija uspešno dodata!");
+        toast.success(t("admin.addCategory.errors.categoryAdded"));
         setFormData({ name: "", icon: "" });
         setErrors({});
         setShakeFields({});
         if (onSuccess) onSuccess(data);
       } else {
         const err = await res.json();
-        toast.error(err.message || "Greška pri dodavanju kategorije");
+        toast.error(err.message || t("admin.addCategory.errors.addCategoryError"));
       }
     } catch (err) {
       console.error(err);
-      toast.error("Greška na serveru");
+      toast.error(t("admin.addCategory.errors.serverError"));
     } finally {
       setIsSubmitting(false);
     }

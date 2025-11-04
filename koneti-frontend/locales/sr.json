@@ -42,16 +42,23 @@
         "phone": "Unesite telefon",
         "date": "Odaberite datum",
         "datePast": "Datum ne može biti u prošlosti",
+        "dateMinimum": "Rezervacija mora biti minimum 2 dana unapred",
         "time": "Odaberite vreme",
         "timePast": "Vreme ne može biti u prošlosti",
         "guests": "Unesite broj gostiju",
-        "submit": "Došlo je do greške prilikom slanja rezervacije. Pokušajte ponovo."
+        "submit": "Došlo je do greške prilikom slanja rezervacije. Pokušajte ponovo.",
+        "fillRequired": "Molimo popunite sva obavezna polja!",
+        "unavailable": "Objekat nije raspoloživ za iznajmljivanje tog dana",
+        "checkAvailabilityError": "Greška pri proveri dostupnosti. Pokušajte ponovo.",
+        "submitError": "Greška pri slanju rezervacije. Pokušajte ponovo."
       },
       "submit": "Pošalji rezervaciju",
       "submitting": "Šalje se...",
       "success": {
         "title": "Uspešno poslato!",
-        "message": "Vaša rezervacija je primljena. Odgovorićemo uskoro."
+        "message": "Vaša rezervacija je primljena. Odgovorićemo uskoro.",
+        "toast": "Rezervacija je uspešno poslata! Proverite email za potvrdu.",
+        "description": "Vaša rezervacija je primljena. Odgovorićemo uskoro. Proverite svoj email za potvrdu."
       },
       "popups": {
         "business": {
@@ -238,7 +245,14 @@
         "description": "Opis ne sme biti duži od 250 karaktera.",
         "image": "Morate dodati sliku.",
         "imageFormat": "Dozvoljeni formati: JPG, PNG.",
-        "imageSize": "Maksimalna veličina slike: 2MB."
+        "imageSize": "Maksimalna veličina slike: 2MB.",
+        "checkFormErrors": "Proverite greške u formi!",
+        "drinkUpdated": "Piće ažurirano!",
+        "drinkAdded": "Piće dodato!",
+        "sendDataError": "Greška prilikom slanja podataka",
+        "serverError": "Greška na serveru",
+        "cropSaved": "Crop je sačuvan!",
+        "cropError": "Greška prilikom cropovanja slike"
       }
     },
     "addCategory": {
@@ -249,7 +263,11 @@
       "addButton": "Dodaj kategoriju",
       "errors": {
         "name": "Naziv kategorije je obavezan.",
-        "icon": "Morate izabrati ikonicu."
+        "icon": "Morate izabrati ikonicu.",
+        "checkFormErrors": "Proverite greške u formi!",
+        "categoryAdded": "Kategorija uspešno dodata!",
+        "addCategoryError": "Greška pri dodavanju kategorije",
+        "serverError": "Greška na serveru"
       }
     },
     "menuManagement": {
@@ -298,7 +316,10 @@
     "passwordPlaceholder": "Unesite lozinku",
     "loginButton": "Prijavite se",
     "loggingIn": "Prijavljivanje...",
-    "serverError": "Server nije vratio JSON"
+    "serverError": "Server nije vratio JSON",
+    "loginFailed": "Neuspešna prijava. Proverite email i lozinku.",
+    "generalError": "Došlo je do greške",
+    "loading": "Učitavanje..."
   },
   "adminPage": {
     "stats": {
