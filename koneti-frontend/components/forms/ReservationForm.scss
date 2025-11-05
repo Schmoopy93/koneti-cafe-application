@@ -562,11 +562,28 @@
   h2 {
     font-size: 1.7rem;
     margin-bottom: 0.4rem;
-    color: #cd853f;
+    color: #cfa68a !important;
     font-weight: 700;
     text-align: center;
     padding-right: 3rem;
     position: relative;
+    
+    /* Force override any global styles */
+    &.popup-title {
+      color: #cfa68a !important;
+    }
+  }
+}
+
+/* Additional specificity for deployment issues */
+.popup-backdrop .popup h2.popup-title {
+  color: #cfa68a !important;
+  font-family: "Poppins", sans-serif !important;
+}
+
+/* Maximum specificity override */
+body .popup-backdrop .popup h2.popup-title {
+  color: #cfa68a !important;
 
     &::before {
       content: "";
@@ -691,7 +708,6 @@
       text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
     }
   }
-}
 
 /* Animations */
 @keyframes backdropFadeIn {

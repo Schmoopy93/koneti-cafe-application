@@ -465,7 +465,7 @@ export default function ReservationForm() {
             <button className="close-btn" onClick={closePopup}>
               ×
             </button>
-            <h2>{popupData.title}</h2>
+            <h2 className="popup-title">{popupData.title}</h2>
             {popupData.description && popupData.description.split('\n\n').map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))}
