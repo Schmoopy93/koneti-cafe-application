@@ -9,20 +9,43 @@
   },
   "home": {
     "reservation": {
-      "title1": "Book Your",
-      "title2": "Koneti Experience",
-      "intro": "Welcome to Koneti - an exclusive place in the heart of Novi Sad! Choose the reservation type that best suits your needs:",
+      "title1": "KONETI EXPERIENCE",
+      "title2": "more than celebration",
+      "intro1": "",
+      "intro1_highlight": "Welcome to Koneti Experience",
+      "intro1_rest": " – a place where every occasion becomes a memorable moment. In the heart of Novi Sad, at Bulevar Oslobođenja 97, Koneti combines taste, style and emotion.",
+      "intro2": "Whether you're planning a birthday, business event, or a quiet evening with loved ones, we offer an ambiance that radiates ",
+      "intro2_highlight": "warmth, elegance and attention to every detail.",
       "typeLabel": "Reservation type:",
       "packageLabel": "Choose package:",
-      "tooltip": "Check our offers and book your reservation today!",
+      "tooltip": "Click for more information",
+      "steps": {
+        "type": "Choose Event",
+        "package": "Select Package",
+        "details": "Your Details"
+      },
+      "descriptions": {
+        "biznis": "Professional workspace with premium catering and presentation facilities",
+        "koneti": "Exclusive venue for unforgettable celebrations and private gatherings"
+      },
+      "packageDescriptions": {
+        "basic": "Cozy atmosphere for intimate celebrations with friends and family",
+        "premium": "Sophisticated elegance with enhanced service and premium amenities",
+        "vip": "The ultimate luxury experience with exclusive perks and personalized service"
+      },
+      "packagePrices": {
+        "basic": "From 35€ per person",
+        "premium": "From 45€ per person",
+        "vip": "From 70€ per person"
+      },
       "types": {
         "business": "Business meetings / presentations",
         "experience": "Koneti Experience"
       },
       "packages": {
-        "basic": "Basic",
-        "premium": "Premium",
-        "vip": "VIP"
+        "basic": "KONETI BUSINESS BASIC",
+        "premium": "KONETI BUSINESS HIGH",
+        "vip": "KONETI CELEBRATION EXPERIENCE"
       },
       "form": {
         "name": "Full name",
@@ -62,60 +85,66 @@
       },
       "popups": {
         "business": {
-          "title": "Business meetings / presentations 💼",
-          "description": "Finger food + coffee + water + optional wine. Ideal for team meetings, presentations or business lunches.",
+          "title": "🏢 Business Meetings & Presentations",
+          "description": "In the heart of Novi Sad, at Bul. Oslođenja 97, Koneti offers the ideal place for business meetings, presentations and agreements that deserve a good atmosphere.\n\nIn a quiet, modern environment – with premium coffee, carefully selected bites and discreet service – every idea comes to life more easily.",
           "details": [
-            "🪑 35 seats / up to 50 cocktail setup",
-            "📶 Wi-Fi and technical equipment",
-            "☕ Pleasant atmosphere"
+            "🥉 Koneti Business Basic - 200€ for two hours",
+            "⭐ Koneti Business High - 400€ for two hours",
+            "🏢 Private environment with technical support",
+            "📶 Free Wi-Fi and presentation equipment",
+            "🅿️ Parking available nearby"
           ],
-          "price": "35€ per person or minimum 500€",
-          "extraInfo": "Reserve space for a professional and pleasant event."
+          "price": "200€ - 400€ for two hours",
+          "extraInfo": "Ideal solution for all your business needs in a professional environment."
         },
         "experience": {
-          "title": "Koneti Experience 🥂",
-          "description": "Exclusive experience in the heart of Novi Sad. Three levels of luxury tailored to your needs.",
+          "title": "🥂 Koneti Experience - Celebrations",
+          "description": "Exclusive celebration experience in the heart of Novi Sad. Three luxury levels tailored to make your event unforgettable.",
           "details": [
-            "🎭 Three different packages (Basic, Premium, VIP)",
-            "🍽️ Personalized menu and drinks",
-            "🎵 Ambient music and decoration",
-            "📸 Possibility of additional services",
-            "🏛️ Elegant space in the city center"
+            "🎭 Three premium packages available",
+            "🍽️ Customized menu and premium beverages",
+            "🎵 Professional ambient music and lighting",
+            "🎨 Elegant decoration and setup",
+            "📸 Photography and additional services",
+            "🏛️ Historic venue in city center"
           ],
-          "price": "From 35€ to 60€ per person",
-          "extraInfo": "Choose the package that best suits your occasion and budget."
+          "price": "From 35€ to 70€ per person",
+          "extraInfo": "Perfect for birthdays, anniversaries, private parties and special celebrations."
         },
         "basic": {
-          "title": "Koneti Experience – Basic 🥉",
-          "description": "Small gatherings / birthdays.",
+          "title": "🥉 KONETI BUSINESS BASIC",
+          "description": "Koneti Business Basic / Koneti Room rental / 200€ for two hours",
           "details": [
-            "🍷 Local drinks + meze",
-            "🪑 35 seats / up to 50 cocktail setup"
+            "☕ Coffee of choice, fresh juice, croissant",
+            "🏢 Private environment with technical support"
           ],
-          "price": "35€ per person or minimum 450€",
-          "extraInfo": "Perfect for intimate and relaxed gatherings."
+          "price": "200€ for two hours",
+          "extraInfo": "Ideal for smaller business meetings and presentations."
         },
         "premium": {
-          "title": "Koneti Experience – Premium ⭐",
-          "description": "Special celebrations / foreign guests.",
+          "title": "⭐ KONETI BUSINESS HIGH",
+          "description": "Koneti Business High / Koneti Room rental / 400€ for two hours",
           "details": [
-            "🥂 Premium drinks + finger food & canapés",
-            "🪑 35 seats / up to 50 cocktail setup"
+            "🍽️ Coffee and refreshments",
+            "🧀 Plates (Njeguška prosciutto, ham, kulen, 4 types of cheese, green and black olives)",
+            "🍷 Optional wine or prosecco",
+            "🏢 Private environment with technical support"
           ],
-          "price": "45€ per person or minimum 600€",
-          "extraInfo": "For elegant and modern organized celebrations."
+          "price": "400€ for two hours",
+          "extraInfo": "Premium business package with additional services."
         },
         "vip": {
-          "title": "Koneti Experience – VIP 👑",
-          "description": "Luxury dinners and private celebrations.",
+          "title": "👑 KONETI CELEBRATION EXPERIENCE",
+          "description": "The pinnacle of luxury dining and celebration. Exclusive service for the most important occasions.",
           "details": [
-            "🍾 Exclusive drinks + extended finger food + dessert",
-            "🎨 Special decoration and ambiance",
-            "📸 Photographer, DJ and cake of choice",
-            "🪑 35 seats / up to 50 cocktail setup"
+            "🎂 Cake of your choice (up to 10kg)",
+            "🎨 Decoration",
+            "📸 Photographer",
+            "🥂 Domestic and foreign drinks (Jameson, Campari, Chivas, Olmeca Tequila, Jack Daniels, Bombay Gin)",
+            "🧀 Plates (Njeguška prosciutto, ham, kulen, 4 types of cheese, green and black olives)"
           ],
-          "price": "60€ per person or minimum 800€",
-          "extraInfo": "For those who want the ultimate Koneti experience."
+          "price": "70€ per person / min. 800€ per package",
+          "extraInfo": "The pinnacle of luxury dining and celebration. Exclusive service for the most important occasions."
         }
       }
     },

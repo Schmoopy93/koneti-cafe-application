@@ -44,8 +44,6 @@ type ShakeFields = Partial<
   Record<keyof FormData | "type" | "subType", boolean>
 >;
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 export default function ReservationForm() {
   const router = useRouter();
   const { t } = useTranslation();
@@ -68,15 +66,16 @@ export default function ReservationForm() {
   const [popupData, setPopupData] = useState<PopupData>({});
   const [shakeFields, setShakeFields] = useState<ShakeFields>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
 
   const types = [
     {
-      id: "biznis",
+      id: "business",
       label: t("home.reservation.types.business"),
       icon: faLaptop,
     },
     {
-      id: "koneti",
+      id: "experience",
       label: t("home.reservation.types.experience"),
       icon: faChampagneGlasses,
     },
@@ -86,35 +85,35 @@ export default function ReservationForm() {
     string,
     { id: string; label: string; icon: any; colorClass: string }[]
   > = {
-    biznis: [
+    business: [
       {
-        id: "basic",
+        id: "business_basic",
         label: t("home.reservation.packages.basic"),
         icon: faMedal,
         colorClass: "silver",
       },
       {
-        id: "premium",
+        id: "business_high",
         label: t("home.reservation.packages.premium"),
         icon: faStar,
         colorClass: "gold",
       },
     ],
-    koneti: [
+    experience: [
       {
-        id: "basic",
+        id: "experience_start",
         label: t("home.reservation.packages.basic"),
         icon: faMedal,
         colorClass: "silver",
       },
       {
-        id: "premium",
+        id: "experience_classic",
         label: t("home.reservation.packages.premium"),
         icon: faStar,
         colorClass: "gold",
       },
       {
-        id: "vip",
+        id: "experience_celebration",
         label: t("home.reservation.packages.vip"),
         icon: faCrown,
         colorClass: "vip",
@@ -154,27 +153,26 @@ export default function ReservationForm() {
     });
     setFormErrors({});
     setShowEventForm(false);
+    setCurrentStep(2);
   };
 
   const handleSubTypeSelect = (subType: string) => {
     setFormData((prev) => ({ ...prev, subType }));
     setFormErrors({});
     setShowEventForm(true);
-    setTimeout(() => {
-      document
-        .querySelector(".event-form")
-        ?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 100);
+    setCurrentStep(3);
   };
 
   const openInfo = (type: string, e: MouseEvent) => {
     e.stopPropagation();
     const typeToKey: Record<string, string> = {
-      biznis: "business",
-      koneti: "experience",
-      basic: "basic",
-      premium: "premium",
-      vip: "vip",
+      business: "business",
+      experience: "experience",
+      business_basic: "basic",
+      business_high: "premium",
+      experience_start: "basic",
+      experience_classic: "premium",
+      experience_celebration: "vip",
     };
     const key = typeToKey[type] || type;
     const data: PopupData = {
@@ -231,33 +229,17 @@ export default function ReservationForm() {
 
     setIsSubmitting(true);
     try {
-      console.log('[DEBUG] Sending reservation request:', formData);
       const res = await apiRequest('/reservations', {
         method: "POST",
         body: JSON.stringify(formData),
         useToken: false
       });
       
-      console.log('[DEBUG] Reservation response status:', res.status);
-      
       if (!res.ok) {
         const errorData = await res.json();
-        console.error('[DEBUG] Reservation error:', errorData);
         throw new Error(errorData.message || t("home.reservation.errors.submitError"));
       }
 
-      // Handle 204 No Content ili prazan response
-      let responseData = null;
-      if (res.status !== 204) {
-        try {
-          responseData = await res.json();
-        } catch (e) {
-          console.warn('[DEBUG] No JSON response body, treating as success');
-        }
-      }
-      console.log('[DEBUG] Reservation success:', responseData);
-      
-      // Reset forme
       setFormData({
         type: "",
         subType: "",
@@ -271,11 +253,10 @@ export default function ReservationForm() {
       });
       setFormErrors({});
       setShowEventForm(false);
+      setCurrentStep(1);
       
-      // Prikaži success toast
       toast.success(t("home.reservation.success.toast"));
       
-      // Prikaži popup
       setPopupData({
         title: t("home.reservation.success.title"),
         description: t("home.reservation.success.description"),
@@ -284,7 +265,6 @@ export default function ReservationForm() {
       
       setTimeout(() => router.push("/"), 5000);
     } catch (error: any) {
-      console.error('Greška pri slanju rezervacije:', error);
       toast.error(error.message || t("home.reservation.errors.submitError"));
     } finally {
       setIsSubmitting(false);
@@ -294,130 +274,171 @@ export default function ReservationForm() {
   return (
     <div className="reservation-wrapper">
       <Toaster position="top-right" reverseOrder={false} />
-      <h2 className="section-title animated-title">
+      
+      {/* <h2 className="section-title">
         {t("home.reservation.title1")}{" "}
         <span className="highlight">{t("home.reservation.title2")}</span>
-        <span className="title-emoji">✨</span>
-      </h2>
+      </h2> */}
+        
+        <form className="reservation-form" onSubmit={handleSubmit}>
+          <div className="intro-text">
+            <p><span className="highlight">{t("home.reservation.intro1_highlight")}</span>{t("home.reservation.intro1_rest")}</p>
+            <p>{t("home.reservation.intro2")}<span className="highlight">{t("home.reservation.intro2_highlight")}</span></p>
+          </div>
 
-      <form className="reservation-form" onSubmit={handleSubmit}>
-        <div className="intro-text">
-          <p>{t("home.reservation.intro")}</p>
+        <div className="step-slider">
+          <div className="slider-indicators">
+            {[1, 2, 3].map((step) => (
+              <div 
+                key={step}
+                className={`indicator ${currentStep === step ? 'active' : ''} ${step < currentStep ? 'clickable' : ''}`}
+                onClick={() => step < currentStep && setCurrentStep(step)}
+              >
+                <span className="step-number">{step}</span>
+                <span className="step-label">
+                  {t(`home.reservation.steps.${step === 1 ? 'type' : step === 2 ? 'package' : 'details'}`)}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <label>{t("home.reservation.typeLabel")}</label>
-        <div className="type-grid">
-          {types.map(({ id, label, icon }) => (
-            <div
-              key={id}
-              className={`type-card ${formData.type === id ? "selected" : ""} ${
-                shakeFields.type ? "shake" : ""
-              }`}
-              onClick={() => handleTypeSelect(id)}
-            >
-              <FontAwesomeIcon icon={icon} className="type-icon" />
-              {label}
-              <FontAwesomeIcon
-                icon={faInfoCircle}
-                className="info-icon"
-                data-tooltip-id={`tooltip-${id}`}
-                data-tooltip-content={t("home.reservation.tooltip")}
-                onClick={(e) => openInfo(id, e)}
-              />
-            </div>
-          ))}
-        </div>
-        {formErrors.type && <span className="error">{formErrors.type}</span>}
-
-        {formData.type && (
-          <>
-            <label>{t("home.reservation.packageLabel")}</label>
-            <div
-              className={
-                subCategories[formData.type].length === 3
-                  ? "type-grid-three"
-                  : "type-grid-two"
-              }
-            >
-              {subCategories[formData.type].map(
-                ({ id, label, icon, colorClass }) => (
+        <div className="slider-container">
+          <div 
+            className="slider-content"
+            style={{transform: `translateX(-${(currentStep - 1) * 33.333}%)`}}
+          >
+            <div className="slide">
+              <label className="section-label">{t("home.reservation.typeLabel")}</label>
+              <div className="type-grid">
+                {types.map(({ id, label, icon }) => (
                   <div
                     key={id}
-                    className={`subtype-card ${
-                      formData.subType === id ? "selected" : ""
-                    } ${shakeFields.subType ? "shake" : ""}`}
-                    onClick={() => handleSubTypeSelect(id)}
+                    className={`type-card ${formData.type === id ? "selected" : ""} ${
+                      shakeFields.type ? "shake" : ""
+                    }`}
+                    onClick={() => handleTypeSelect(id)}
                   >
-                    <FontAwesomeIcon
-                      icon={icon}
-                      className={`type-icon ${colorClass}`}
-                    />
-                    {label}
-                    <FontAwesomeIcon
-                      icon={faInfoCircle}
-                      className="info-icon"
-                      data-tooltip-id={`tooltip-${id}`}
-                      data-tooltip-content={t("home.reservation.tooltip")}
-                      onClick={(e) => openInfo(id, e)}
-                    />
+                    <div className="card-header">
+                      <FontAwesomeIcon icon={icon} className="type-icon" />
+                      <FontAwesomeIcon
+                        icon={faInfoCircle}
+                        className="info-icon"
+                        data-tooltip-id={`tooltip-${id}`}
+                        data-tooltip-content={t("home.reservation.tooltip")}
+                        onClick={(e) => openInfo(id, e)}
+                      />
+                    </div>
+                    <div className="card-content">
+                      <h3 className="card-title">{label}</h3>
+                      <p className="card-description">{t(`home.reservation.descriptions.${id === 'business' ? 'biznis' : 'koneti'}`)}</p>
+                    </div>
                   </div>
-                )
-              )}
+                ))}
+              </div>
+              {formErrors.type && <span className="error">{formErrors.type}</span>}
             </div>
-            {formErrors.subType && (
-              <span className="error">{formErrors.subType}</span>
-            )}
-          </>
-        )}
 
-        {showEventForm && (
-          <div className="event-form">
-            {["name", "email", "phone", "date", "time", "guests"].map(
-              (field) => (
-                <div key={field}>
-                  <input
-                    name={field}
-                    type={
-                      field === "email"
-                        ? "email"
-                        : field === "phone"
-                        ? "tel"
-                        : field === "date"
-                        ? "date"
-                        : field === "time"
-                        ? "time"
-                        : field === "guests"
-                        ? "number"
-                        : "text"
-                    }
-                    min={field === "guests" ? 1 : undefined}
-                    value={(formData as any)[field]}
-                    onChange={handleChange}
-                    placeholder={t(`home.reservation.form.${field}`)}
-                    className={
-                      shakeFields[field as keyof ShakeFields] ? "shake" : ""
-                    }
-                  />
-                  {formErrors[field as keyof FormErrors] && (
-                    <span className="error">
-                      {formErrors[field as keyof FormErrors]}
-                    </span>
+            <div className="slide">
+              <label className="section-label">{t("home.reservation.packageLabel")}</label>
+              {formData.type && (
+                <div
+                  className={
+                    subCategories[formData.type].length === 3
+                      ? "type-grid-three"
+                      : "type-grid-two"
+                  }
+                >
+                  {subCategories[formData.type].map(
+                    ({ id, label, icon, colorClass }) => (
+                      <div
+                        key={id}
+                        className={`subtype-card ${
+                          formData.subType === id ? "selected" : ""
+                        } ${shakeFields.subType ? "shake" : ""} ${colorClass}`}
+                        onClick={() => handleSubTypeSelect(id)}
+                      >
+                        <div className="card-header">
+                          <FontAwesomeIcon
+                            icon={icon}
+                            className={`type-icon ${colorClass}`}
+                          />
+                          <FontAwesomeIcon
+                            icon={faInfoCircle}
+                            className="info-icon"
+                            data-tooltip-id={`tooltip-${id}`}
+                            data-tooltip-content={t("home.reservation.tooltip")}
+                            onClick={(e) => openInfo(id, e)}
+                          />
+                        </div>
+                        <div className="card-content">
+                          <h3 className="card-title">{label}</h3>
+                          <p className="card-description">{t(`home.reservation.packageDescriptions.${id.includes('business') ? 'basic' : id.includes('start') ? 'basic' : id.includes('classic') ? 'premium' : 'vip'}`)}</p>
+                          <div className="card-price">{t(`home.reservation.packagePrices.${id.includes('business') ? 'basic' : id.includes('start') ? 'basic' : id.includes('classic') ? 'premium' : 'vip'}`)}</div>
+                        </div>
+                      </div>
+                    )
                   )}
                 </div>
-              )
-            )}
-            <textarea
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              placeholder={t("home.reservation.form.message")}
-              className={shakeFields.message ? "shake" : ""}
-            />
-            {formErrors.message && (
-              <span className="error">{formErrors.message}</span>
-            )}
+              )}
+              {formErrors.subType && (
+                <span className="error">{formErrors.subType}</span>
+              )}
+            </div>
+
+            <div className="slide">
+              <label className="section-label">{t("home.reservation.steps.details")}</label>
+              {showEventForm && (
+                <div className="event-form">
+                  {["name", "email", "phone", "date", "time", "guests"].map(
+                    (field) => (
+                      <div key={field}>
+                        <input
+                          name={field}
+                          type={
+                            field === "email"
+                              ? "email"
+                              : field === "phone"
+                              ? "tel"
+                              : field === "date"
+                              ? "date"
+                              : field === "time"
+                              ? "time"
+                              : field === "guests"
+                              ? "number"
+                              : "text"
+                          }
+                          min={field === "guests" ? 1 : undefined}
+                          value={(formData as any)[field]}
+                          onChange={handleChange}
+                          placeholder={t(`home.reservation.form.${field}`)}
+                          className={
+                            shakeFields[field as keyof ShakeFields] ? "shake" : ""
+                          }
+                        />
+                        {formErrors[field as keyof FormErrors] && (
+                          <span className="error">
+                            {formErrors[field as keyof FormErrors]}
+                          </span>
+                        )}
+                      </div>
+                    )
+                  )}
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder={t("home.reservation.form.message")}
+                    className={shakeFields.message ? "shake" : ""}
+                  />
+                  {formErrors.message && (
+                    <span className="error">{formErrors.message}</span>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        )}
+        </div>
 
         {formData.subType && (
           <button type="submit" className="btn-submit" disabled={isSubmitting}>
@@ -428,13 +449,15 @@ export default function ReservationForm() {
             )}
           </button>
         )}
-      </form>
+        </form>
 
-      <Tooltip id="tooltip-biznis" />
-      <Tooltip id="tooltip-koneti" />
-      <Tooltip id="tooltip-basic" />
-      <Tooltip id="tooltip-premium" />
-      <Tooltip id="tooltip-vip" />
+      <Tooltip id="tooltip-business" />
+      <Tooltip id="tooltip-experience" />
+      <Tooltip id="tooltip-business_basic" />
+      <Tooltip id="tooltip-business_high" />
+      <Tooltip id="tooltip-experience_start" />
+      <Tooltip id="tooltip-experience_classic" />
+      <Tooltip id="tooltip-experience_celebration" />
 
       {showPopup && (
         <div className="popup-backdrop" onClick={closePopup}>
@@ -443,7 +466,9 @@ export default function ReservationForm() {
               ×
             </button>
             <h2>{popupData.title}</h2>
-            <p>{popupData.description}</p>
+            {popupData.description && popupData.description.split('\n\n').map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
             {popupData.details && (
               <ul>
                 {popupData.details.map((d, i) => (

@@ -5,7 +5,7 @@ export const handleValidationErrors = (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({
       success: false,
-      message: 'Validation failed',
+      message: 'Neispravni podaci',
       errors: errors.array()
     });
   }
@@ -31,14 +31,14 @@ export const validateReservation = [
   body('date').isISO8601().toDate(),
   body('time').matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/),
   body('guests').isInt({ min: 1, max: 20 }),
-  body('type').isIn(['biznis', 'koneti']),
-  body('subType').isIn(['basic', 'premium', 'vip']),
+  body('type').isIn(['business', 'experience']),
+  body('subType').isIn(['business_basic', 'business_high', 'experience_start', 'experience_classic', 'experience_celebration']),
   body('subType').custom((value, { req }) => {
-    if (req.body.type === 'biznis' && !['basic', 'vip'].includes(value)) {
-      throw new Error('Biznis događaji mogu biti samo basic ili vip');
+    if (req.body.type === 'business' && !['business_basic', 'business_high'].includes(value)) {
+      throw new Error('Business događaji mogu biti samo business_basic ili business_high');
     }
-    if (req.body.type === 'koneti' && !['basic', 'premium', 'vip'].includes(value)) {
-      throw new Error('Koneti događaji mogu biti basic, premium ili vip');
+    if (req.body.type === 'experience' && !['experience_start', 'experience_classic', 'experience_celebration'].includes(value)) {
+      throw new Error('Experience događaji mogu biti experience_start, experience_classic ili experience_celebration');
     }
     return true;
   }),

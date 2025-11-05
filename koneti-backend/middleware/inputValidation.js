@@ -57,11 +57,11 @@ export const validateAdminCreate = [
 // Rezervacija validacije
 export const validateReservation = [
   body('type')
-    .isIn(['biznis', 'koneti'])
-    .withMessage('Tip događaja mora biti biznis ili koneti'),
+    .isIn(['business', 'experience'])
+    .withMessage('Tip događaja mora biti business ili experience'),
   body('subType')
-    .isIn(['basic', 'premium', 'vip'])
-    .withMessage('Podtip mora biti basic, premium ili vip'),
+    .isIn(['business_basic', 'business_high', 'experience_start', 'experience_classic', 'experience_celebration'])
+    .withMessage('Podtip mora biti business_basic, business_high, experience_start, experience_classic ili experience_celebration'),
   body('name')
     .isLength({ min: 2, max: 50 })
     .matches(/^[a-zA-ZšđčćžŠĐČĆŽ\s]+$/)

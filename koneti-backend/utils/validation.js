@@ -10,7 +10,8 @@ export const validateRequest = (req, res, next) => {
 };
 
 export const reservationValidation = [
-  body('type').isIn(['biznis', 'koneti']).withMessage('Invalid type'),
+  body('type').isIn(['business', 'experience']).withMessage('Invalid type'),
+  body('subType').isIn(['business_basic', 'business_high', 'experience_start', 'experience_classic', 'experience_celebration']).withMessage('Invalid subType'),
   body('name').trim().isLength({ min: 2 }).withMessage('Name must be at least 2 characters'),
   body('email').isEmail().withMessage('Valid email required'),
   body('phone').trim().isLength({ min: 8 }).withMessage('Valid phone required'),
