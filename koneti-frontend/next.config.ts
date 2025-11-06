@@ -56,11 +56,6 @@ const nextConfig: NextConfig = {
     formats: ['image/webp', 'image/avif'],
   },
 
-  // Turbopack konfiguracija (Next.js 16+)
-  turbopack: {
-    root: 'C:/Users/mrajic/Desktop/koneti-cafe-application/koneti-frontend'
-  },
-
   // Experimental features
   experimental: {
     optimizePackageImports: ['lucide-react', '@fortawesome/react-fontawesome']
