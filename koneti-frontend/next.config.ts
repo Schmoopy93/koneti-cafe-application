@@ -39,12 +39,27 @@ const nextConfig: NextConfig = {
   
   // Image optimizacija
   images: {
-    domains: ['res.cloudinary.com', 'localhost'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '',
+        pathname: '/**',
+      }
+    ],
     formats: ['image/webp', 'image/avif'],
   },
 
   // Turbopack konfiguracija (Next.js 16+)
-  turbopack: {},
+  turbopack: {
+    root: 'C:/Users/mrajic/Desktop/koneti-cafe-application/koneti-frontend'
+  },
 
   // Experimental features
   experimental: {
