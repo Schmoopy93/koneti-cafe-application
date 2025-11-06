@@ -1,15 +1,34 @@
 import { body, param, validationResult } from 'express-validator';
+import { logger } from '../utils/logger.js';
 
 export const handleValidationErrors = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      // Log validation errors without exposing sensitive data
+      logger.warn('Validation failed', { 
+        path: req.path, 
+        method: req.method,
+        errorCount: errors.array().length 
+      });
+      
+      return res.status(400).json({
+        success: false,
+        message: 'Neispravni podaci',
+        errors: errors.array().map(err => ({
+          field: err.param,
+          message: err.msg
+        }))
+      });
+    }
+    next();
+  } catch (error) {
+    logger.error('Error in validation middleware:', error);
+    return res.status(500).json({
       success: false,
-      message: 'Neispravni podaci',
-      errors: errors.array()
+      message: 'Greška pri validaciji podataka'
     });
   }
-  next();
 };
 
 export const validateAdmin = [
@@ -34,13 +53,20 @@ export const validateReservation = [
   body('type').isIn(['business', 'experience']),
   body('subType').isIn(['business_basic', 'business_high', 'experience_start', 'experience_classic', 'experience_celebration']),
   body('subType').custom((value, { req }) => {
-    if (req.body.type === 'business' && !['business_basic', 'business_high'].includes(value)) {
-      throw new Error('Business događaji mogu biti samo business_basic ili business_high');
+    try {
+      const allowedBusinessTypes = ['business_basic', 'business_high'];
+      const allowedExperienceTypes = ['experience_start', 'experience_classic', 'experience_celebration'];
+      
+      if (req.body.type === 'business' && !allowedBusinessTypes.includes(value)) {
+        throw new Error('Business događaji mogu biti samo business_basic ili business_high');
+      }
+      if (req.body.type === 'experience' && !allowedExperienceTypes.includes(value)) {
+        throw new Error('Experience događaji mogu biti experience_start, experience_classic ili experience_celebration');
+      }
+      return true;
+    } catch (error) {
+      throw error;
     }
-    if (req.body.type === 'experience' && !['experience_start', 'experience_classic', 'experience_celebration'].includes(value)) {
-      throw new Error('Experience događaji mogu biti experience_start, experience_classic ili experience_celebration');
-    }
-    return true;
   }),
   handleValidationErrors
 ];

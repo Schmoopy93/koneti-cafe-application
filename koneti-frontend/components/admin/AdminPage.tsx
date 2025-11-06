@@ -204,7 +204,11 @@ const AdminPage: React.FC = () => {
     reservationId: string,
     action: string
   ): Promise<void> => {
-    console.log(`[DEBUG] Starting reservation action: ${action} for ID: ${reservationId}`);
+    // Sanitize inputs for logging
+    const sanitizedAction = ['approved', 'rejected', 'pending'].includes(action) ? action : 'unknown';
+    const sanitizedId = reservationId?.replace(/[^a-zA-Z0-9]/g, '') || 'invalid';
+    
+    console.log('[DEBUG] Starting reservation action:', sanitizedAction, 'for ID:', sanitizedId);
     setUpdatingReservation(reservationId);
     
     // Optimistic update - ažuriraj UI odmah
@@ -214,41 +218,41 @@ const AdminPage: React.FC = () => {
         : reservation
     );
     setReservations(updatedReservations);
-    console.log(`[DEBUG] UI updated optimistically`);
+    console.log('[DEBUG] UI updated optimistically');
     
     // Ažuriraj selectedEvent ako je otvoren
     if (selectedEvent && selectedEvent._id === reservationId) {
       setSelectedEvent({ ...selectedEvent, status: action });
-      console.log(`[DEBUG] Selected event updated`);
+      console.log('[DEBUG] Selected event updated');
     }
     
     try {
-      console.log(`[DEBUG] Sending PATCH request to /reservations/${reservationId}`);
-      console.log(`[DEBUG] Token available:`, localStorage.getItem('adminToken') ? 'Yes' : 'No');
+      console.log('[DEBUG] Sending PATCH request to /reservations/', sanitizedId);
+      console.log('[DEBUG] Token available:', localStorage.getItem('adminToken') ? 'Yes' : 'No');
       const response = await apiRequest(`/reservations/${reservationId}`, {
         method: "PATCH",
         body: JSON.stringify({ status: action }),
         useToken: true
       });
 
-      console.log(`[DEBUG] Response status: ${response.status}`);
+      console.log('[DEBUG] Response status:', response.status);
       
       if (response.ok) {
-        console.log(`[DEBUG] Request successful, refreshing data`);
+        console.log('[DEBUG] Request successful, refreshing data');
         await fetchData();
         const actionText = action === "approved" ? t("adminPage.status.approved") : t("adminPage.status.rejected");
-        console.log(`[DEBUG] Rezervacija je uspešno ${actionText}!`);
+        console.log('[DEBUG] Rezervacija je uspešno ažurirana');
       } else {
-        console.log(`[DEBUG] Request failed, reverting state`);
+        console.log('[DEBUG] Request failed, reverting state');
         const errorData = await response.json();
-        console.error('[DEBUG] Greška:', errorData.message);
+        console.error('[DEBUG] Greška pri ažuriranju rezervacije');
         await fetchData();
       }
     } catch (error) {
-      console.error("[DEBUG] Network error:", error);
+      console.error('[DEBUG] Network error occurred');
       await fetchData();
     } finally {
-      console.log(`[DEBUG] Clearing updating state`);
+      console.log('[DEBUG] Clearing updating state');
       setUpdatingReservation(null);
     }
   };

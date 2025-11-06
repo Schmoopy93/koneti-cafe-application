@@ -1,5 +1,6 @@
 import Reservation from "../models/Reservation.js";
 import { logger } from "../utils/logger.js";
+import mongoose from "mongoose";
 import {
   sendUserConfirmationEmail,
   sendAdminNotificationEmail,
@@ -126,6 +127,11 @@ export const updateReservationStatus = async (req, res) => {
         .json({ success: false, message: "Nevažeći status." });
     }
 
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ success: false, message: "Nevažeći ID rezervacije." });
+    }
+
     const reservation = await Reservation.findByIdAndUpdate(
       id,
       { status },
@@ -176,6 +182,11 @@ export const deleteReservation = async (req, res) => {
   try {
     const { id } = req.params;
     
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ success: false, message: "Nevažeći ID rezervacije." });
+    }
+    
     const reservation = await Reservation.findByIdAndDelete(id);
     
     if (!reservation) {
@@ -207,8 +218,17 @@ export const checkAvailability = async (req, res) => {
       });
     }
 
+    // Sanitize date input
+    const sanitizedDate = new Date(date);
+    if (isNaN(sanitizedDate.getTime())) {
+      return res.status(400).json({
+        success: false,
+        message: "Nevažeći format datuma"
+      });
+    }
+
     const existingReservation = await Reservation.findOne({
-      date: date,
+      date: sanitizedDate.toISOString().split('T')[0],
       guests: { $gt: 15 },
       status: "approved"
     });

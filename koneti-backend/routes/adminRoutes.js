@@ -18,7 +18,7 @@ router.get("/me", protectAdmin, (req, res) => {
 });
 
 // Logout - clear the authentication cookie
-router.post("/logout", (req, res) => {
+router.post("/logout", csrfProtection, (req, res) => {
   res.clearCookie('adminToken', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -29,7 +29,7 @@ router.post("/logout", (req, res) => {
 });
 
 // Create a new admin user (samo jedan dozvoljeno)
-router.post("/create", adminLimiter, validateAdminCreate, createAdmin);
+router.post("/create", adminLimiter, csrfProtection, validateAdminCreate, createAdmin);
 
 // Admin login - sets authentication cookie
 router.post("/login", authLimiter, validateAdminLogin, loginAdmin);

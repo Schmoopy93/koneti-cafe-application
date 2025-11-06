@@ -42,7 +42,9 @@ export const csrfProtection = (req, res, next) => {
 
   const storedToken = csrfTokens.get(sessionId);
   if (!storedToken || storedToken !== token) {
-    logger.warn(`Nevalidan CSRF token za session: ${sessionId}`);
+    // Sanitize sessionId for logging
+    const sanitizedSessionId = sessionId?.substring(0, 8) + '...' || 'unknown';
+    logger.warn('Nevalidan CSRF token za session:', sanitizedSessionId);
     return res.status(403).json({
       success: false,
       message: 'Nevalidan CSRF token'
