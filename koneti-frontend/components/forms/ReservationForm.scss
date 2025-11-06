@@ -229,29 +229,39 @@
   }
 
   .type-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
     gap: 0.8rem;
     margin-bottom: 0.8rem;
+    width: 100%;
+    contain: layout style;
   }
 
   .type-grid-two {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
     gap: 0.8rem;
     margin-bottom: 0.8rem;
+    width: 100%;
+    contain: layout style;
   }
 
   .type-grid-three {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
     gap: 1rem;
     margin-bottom: 0.8rem;
     max-width: 100%;
+    width: 100%;
+    contain: layout style;
+    will-change: auto;
     
     .subtype-card {
-      min-height: 180px;
+      min-height: 180px !important;
       padding: 1.2rem;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      contain: layout style;
       
       .card-content {
         .card-title {
@@ -281,11 +291,14 @@
     cursor: pointer;
     transition: all 0.3s ease;
     color: #5a3e36;
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
     min-height: 140px;
     position: relative;
     overflow: hidden;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    contain: layout style;
 
     &::before {
       content: '';
