@@ -66,7 +66,7 @@
   }
 
   .step-slider {
-    margin: 2rem 0;
+    margin: 0.3rem 0;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(253, 250, 246, 0.8));
     border-radius: 1.2rem;
     border: 2px solid rgba(207, 166, 138, 0.2);
@@ -416,6 +416,15 @@
         }
       }
     }
+     &.selected .info-icon {
+    background: rgba(207, 166, 138, 0.2);
+    border-color: rgba(207, 166, 138, 0.6);
+
+    &:hover {
+      background: #cfa68a;
+      color: #fff;
+    }
+  }
   }
 
   .event-form {

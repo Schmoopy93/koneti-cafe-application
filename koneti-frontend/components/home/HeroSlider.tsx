@@ -116,7 +116,7 @@ const HeroSlider: React.FC = () => {
             )}
             <div className="slide-content">
               <div className="slide-text">
-                <span className="slide-number">0{index + 1}</span>
+                {/* <span className="slide-number">0{index + 1}</span> */}
                 <h1 className="slide-title">{slide.title}</h1>
                 <h2 className="slide-subtitle">{slide.subtitle}</h2>
                 <p className="slide-description">{slide.description}</p>
