@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Menu",
 };
 
-
+export const dynamic = "force-dynamic";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 export default async function MenuPage() {
