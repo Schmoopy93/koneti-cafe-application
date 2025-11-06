@@ -20,7 +20,7 @@ export default function GoogleMap() {
           width="100%"
           height="250"
           allowFullScreen
-          loading="lazy"
+          loading="eager"
           referrerPolicy="no-referrer-when-downgrade"
           title="Koneti Café lokacija"
         ></iframe>

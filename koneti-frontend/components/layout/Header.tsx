@@ -85,10 +85,16 @@ const Header: React.FC = () => {
         </Link>
 
         <nav className={`nav-links ${isOpen ? "open" : ""}`}>
+          {isOpen && (
+            <button className="mobile-close-btn" onClick={() => setIsOpen(false)}>
+              <X size={24} />
+            </button>
+          )}
           <Link
             href="/"
             onClick={() => setIsOpen(false)}
             title={t("header.home")}
+            style={{ '--delay': 1 } as React.CSSProperties}
           >
             <FontAwesomeIcon icon={faHouse} /> {t("header.home")}
           </Link>
@@ -96,6 +102,7 @@ const Header: React.FC = () => {
             href="/menu"
             onClick={() => setIsOpen(false)}
             title={t("header.menu")}
+            style={{ '--delay': 2 } as React.CSSProperties}
           >
             <FontAwesomeIcon icon={faMartiniGlass} /> {t("header.menu")}
           </Link>
@@ -105,6 +112,7 @@ const Header: React.FC = () => {
               href="/reservation"
               onClick={() => setIsOpen(false)}
               title={t("header.reservation")}
+              style={{ '--delay': 3 } as React.CSSProperties}
             >
               <FontAwesomeIcon icon={faCalendarCheck} />{" "}
               {t("header.reservation")}
@@ -117,6 +125,7 @@ const Header: React.FC = () => {
               href="/career"
               onClick={() => setIsOpen(false)}
               title={t("header.career")}
+              style={{ '--delay': 4 } as React.CSSProperties}
             >
               <FontAwesomeIcon icon={faBusinessTime} />{" "}
               {t("header.career")}
@@ -128,6 +137,7 @@ const Header: React.FC = () => {
               href="/admin"
               onClick={() => setIsOpen(false)}
               title={t("header.admin")}
+              style={{ '--delay': 3 } as React.CSSProperties}
             >
               <FontAwesomeIcon icon={faUserShield} />  {t("header.admin")}
             </Link>

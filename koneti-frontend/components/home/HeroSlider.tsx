@@ -15,10 +15,12 @@ const Slider = dynamic(() => import("react-slick"), {
 });
 
 interface SlideData {
-  image: string;
+  image?: string;
+  video?: string;
   title: string;
   subtitle: string;
   description: string;
+  type: 'image' | 'video';
 }
 
 const HeroSlider: React.FC = () => {
@@ -44,23 +46,26 @@ const HeroSlider: React.FC = () => {
 
   const slides: SlideData[] = [
     {
-      image: "cafe1.jpg",
+      video: "/koneti-promo.mp4",
+      type: 'video',
       title: t('home.hero.slide1.title'),
       subtitle: t('home.hero.slide1.subtitle'),
       description: t('home.hero.slide1.description')
     },
-    {
-      image: "cafe2.jpg",
-      title: t('home.hero.slide2.title'),
-      subtitle: t('home.hero.slide2.subtitle'),
-      description: t('home.hero.slide2.description')
-    },
-    {
-      image: "cafe3.jpg",
-      title: t('home.hero.slide3.title'),
-      subtitle: t('home.hero.slide3.subtitle'),
-      description: t('home.hero.slide3.description')
-    },
+    // {
+    //   image: "cafe2.jpg",
+    //   type: 'image',
+    //   title: t('home.hero.slide2.title'),
+    //   subtitle: t('home.hero.slide2.subtitle'),
+    //   description: t('home.hero.slide2.description')
+    // },
+    // {
+    //   image: "cafe3.jpg",
+    //   type: 'image',
+    //   title: t('home.hero.slide3.title'),
+    //   subtitle: t('home.hero.slide3.subtitle'),
+    //   description: t('home.hero.slide3.description')
+    // },
   ];
 
   const handleScrollDown = (): void => {
@@ -85,14 +90,30 @@ const HeroSlider: React.FC = () => {
       <Slider {...settings}>
         {slides.map((slide: SlideData, index: number) => (
           <div key={index} className="slide">
-            <div
-              className="slide-image"
-              style={{
-                backgroundImage: `url(${slide.image})`,
-              }}
-            >
-              <div className="slide-overlay"></div>
-            </div>
+            {slide.type === 'video' ? (
+              <div className="slide-video">
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="video-background"
+                  style={{ filter: 'brightness(0.8)' }}
+                >
+                  <source src={slide.video} type="video/mp4" />
+                </video>
+                <div className="slide-overlay"></div>
+              </div>
+            ) : (
+              <div
+                className="slide-image"
+                style={{
+                  backgroundImage: `url(${slide.image})`,
+                }}
+              >
+                <div className="slide-overlay"></div>
+              </div>
+            )}
             <div className="slide-content">
               <div className="slide-text">
                 <span className="slide-number">0{index + 1}</span>

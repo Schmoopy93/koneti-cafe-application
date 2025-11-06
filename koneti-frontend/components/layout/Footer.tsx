@@ -92,7 +92,7 @@ const Footer: React.FC = () => {
                 <span className="day">{t("home.footer.saturday")}</span>
                 <span className="time">08:00 - 00:00</span>
               </div>
-              <div className="hours-item weekend">
+              <div className="hours-item weekend separate">
                 <span className="day">{t("home.footer.sunday")}</span>
                 <span className="time">08:00 - 23:00</span>
               </div>

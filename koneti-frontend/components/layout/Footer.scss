@@ -156,6 +156,10 @@
           padding: 0.8rem 1rem;
           border-radius: 8px;
           border-bottom: none;
+
+          &.separate {
+            margin-top: 0.5rem;
+          }
         }
 
         .day {
