@@ -9,33 +9,6 @@
   align-items: center;
   min-height: 60vh;
   animation: slideUp 0.8s ease-out;
-
-  .section-title {
-    font-family: "Poppins", sans-serif;
-    font-weight: 700;
-    font-size: 2.4rem;
-    color: #5a3e36;
-    margin-bottom: 3rem;
-    text-align: center;
-    position: relative;
-    padding-bottom: 1rem;
-
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 120px;
-      height: 3px;
-      background: linear-gradient(90deg, #cfa68a, #d4a574, #cfa68a);
-      border-radius: 2px;
-    }
-
-    .highlight {
-      color: #cfa68a;
-    }
-  }
 }
 
 .reservation-form {
@@ -81,6 +54,14 @@
       &:last-child {
         margin-bottom: 0;
       }
+
+      .highlight {
+        background: linear-gradient(135deg, #cfa68a, #d4a574);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 700;
+      }
     }
   }
 
@@ -109,6 +90,16 @@
 
         &.active {
           opacity: 1;
+
+          .step-number {
+            background: linear-gradient(135deg, #cfa68a, #d4a574);
+            color: #fff;
+            box-shadow: 0 3px 10px rgba(207, 166, 138, 0.3);
+          }
+
+          .step-label {
+            color: #5a3e36;
+          }
         }
 
         &.clickable {
@@ -145,18 +136,6 @@
           font-weight: 600;
           color: #8b6355;
           text-align: center;
-        }
-
-        &.active {
-          .step-number {
-            background: linear-gradient(135deg, #cfa68a, #d4a574);
-            color: #fff;
-            box-shadow: 0 3px 10px rgba(207, 166, 138, 0.3);
-          }
-
-          .step-label {
-            color: #5a3e36;
-          }
         }
       }
     }
@@ -567,23 +546,6 @@
     text-align: center;
     padding-right: 3rem;
     position: relative;
-    
-    /* Force override any global styles */
-    &.popup-title {
-      color: #cfa68a !important;
-    }
-  }
-}
-
-/* Additional specificity for deployment issues */
-.popup-backdrop .popup h2.popup-title {
-  color: #cfa68a !important;
-  font-family: "Poppins", sans-serif !important;
-}
-
-/* Maximum specificity override */
-body .popup-backdrop .popup h2.popup-title {
-  color: #cfa68a !important;
 
     &::before {
       content: "";
@@ -661,14 +623,14 @@ body .popup-backdrop .popup h2.popup-title {
 
   .price {
     background: linear-gradient(135deg, #d4a574 0%, #cfa68a 30%, #e6c79a 70%, #f2ddb8 100%);
-    color: #fff;
+    color: #fff !important;
     padding: 1.2rem 2rem;
     border-radius: 1.5rem;
     text-align: center;
     font-size: clamp(1.2rem, 4vw, 1.8rem);
     font-weight: 900;
     margin: 2rem 0;
-    box-shadow: 
+    box-shadow:
       0 15px 50px rgba(207, 166, 138, 0.5),
       0 8px 30px rgba(212, 165, 116, 0.4),
       inset 0 3px 0 rgba(255, 255, 255, 0.4);
@@ -695,19 +657,18 @@ body .popup-backdrop .popup h2.popup-title {
       animation: shimmer 4s infinite;
     }
 
-
-
     &:hover {
       transform: perspective(1200px) rotateX(-5deg) translateY(-5px);
-      box-shadow: 
+      box-shadow:
         0 20px 60px rgba(207, 166, 138, 0.6),
         0 10px 35px rgba(212, 165, 116, 0.5),
         inset 0 3px 0 rgba(255, 255, 255, 0.6);
       background: linear-gradient(135deg, #e6c79a 0%, #f2ddb8 30%, #faf0e6 100%);
-      color: #5a3e36;
+      color: #5a3e36 !important;
       text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
     }
   }
+}
 
 /* Animations */
 @keyframes backdropFadeIn {
@@ -747,12 +708,6 @@ body .popup-backdrop .popup h2.popup-title {
   100% { left: 100%; }
 }
 
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-4px); }
-  60% { transform: translateY(-2px); }
-}
-
 @keyframes slideUp {
   0% {
     opacity: 0;
@@ -786,100 +741,10 @@ body .popup-backdrop .popup h2.popup-title {
   }
 }
 
-/* Tooltip Styles */
-.react-tooltip {
-  background: linear-gradient(135deg, #cfa68a, #d4a574) !important;
-  color: #fff !important;
-  border-radius: 1rem !important;
-  padding: 0.6rem 1rem !important;
-  font-family: "Poppins", sans-serif !important;
-  font-size: 0.8rem !important;
-  font-weight: 600 !important;
-  box-shadow: 0 6px 20px rgba(207, 166, 138, 0.4) !important;
-  border: 2px solid rgba(255, 255, 255, 0.2) !important;
-  max-width: 200px !important;
-  text-align: center !important;
-  line-height: 1.3 !important;
-  z-index: 9999 !important;
-  backdrop-filter: blur(10px) !important;
-  animation: tooltipFadeIn 0.2s ease-out !important;
-}
-
-.react-tooltip::after {
-  border-top-color: #cfa68a !important;
-}
-
-@keyframes tooltipFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* iOS Safari fixes for date/time inputs */
-input[type="date"], input[type="time"] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-color: #fdfaf6 !important;
-  font-size: 0.9rem !important;
-  font-family: "Poppins", sans-serif !important;
-  padding: 0.8rem 1rem !important;
-  border: 2px solid #e9d9c6 !important;
-  border-radius: 0.8rem !important;
-  color: #5a3e36 !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-  min-height: 44px !important;
-  line-height: normal !important;
-  text-align: left !important;
-  
-  &::-webkit-datetime-edit {
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-  
-  &::-webkit-calendar-picker-indicator {
-    opacity: 0.7;
-    cursor: pointer;
-    filter: invert(0.3);
-    margin-left: auto;
-  }
-  
-  &:focus {
-    border-color: #cfa68a !important;
-    box-shadow: 0 0 0 3px rgba(207, 166, 138, 0.15) !important;
-    outline: none !important;
-    background-color: #fff !important;
-    transform: translateY(-1px) !important;
-  }
-}
-
-@supports (-webkit-touch-callout: none) {
-  input[type="date"], input[type="time"] {
-    min-height: 48px !important;
-    font-size: 16px !important;
-    padding: 0.7rem 1rem !important;
-  }
-}
-
+/* Mobile responsive */
 @media screen and (max-width: 768px) {
-  /* Hide tooltips on mobile */
-  .react-tooltip {
-    display: none !important;
-  }
-
   .reservation-wrapper {
     padding: 2rem 0.8rem;
-
-    .section-title {
-      font-size: 1.8rem;
-      margin-bottom: 2rem;
-    }
   }
 
   .reservation-form {
@@ -935,61 +800,6 @@ input[type="date"], input[type="time"] {
       padding: 0.8rem 1rem;
       margin: 1.2rem 0;
       min-height: 30px;
-      
-      &::after {
-        font-size: clamp(0.9rem, 2.2vw, 1.2rem);
-        top: 0.4rem;
-        right: 1rem;
-      }
     }
   }
-}
-.title-card {
-  .main-title {
-    font-family: "Poppins", sans-serif;
-    font-weight: 700;
-    font-size: 2.2rem;
-    color: #5a3e36;
-    margin: 0;
-    text-align: center;
-    line-height: 1.3;
-    text-shadow: 0 2px 4px rgba(90, 62, 54, 0.1);
-    letter-spacing: -0.5px;
-
-    .highlight {
-      background: linear-gradient(135deg, #cfa68a, #d4a574);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-weight: 700;
-    }
-  }
-}
-.reservation-form .intro-text {
-  margin-bottom: 1.5rem;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(207, 166, 138, 0.08), rgba(212, 165, 116, 0.05));
-  border-radius: 1rem;
-  border: 2px solid rgba(207, 166, 138, 0.3);
-}
-
-.reservation-form .intro-text p {
-  margin: 0 0 1rem 0;
-  color: #5a3e36;
-  font-size: 0.9rem;
-  line-height: 1.6;
-  text-align: center;
-  font-weight: 600;
-}
-
-.reservation-form .intro-text p:last-child {
-  margin-bottom: 0;
-}
-
-.reservation-form .intro-text p .highlight {
-  background: linear-gradient(135deg, #cfa68a, #d4a574);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 700;
 }

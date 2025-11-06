@@ -34,9 +34,12 @@
         "vip": "Vrhunsko luksuzno iskustvo sa ekskluzivnim pogodnostima i personalizovanom uslugom"
       },
       "packagePrices": {
-        "basic": "Od 35€ po osobi",
-        "premium": "Od 45€ po osobi",
-        "vip": "Od 70€ po osobi"
+        "basic": "200€ na 2 sata",
+        "premium": "400€ na 2 sata",
+        "vip": "Od 70€ po osobi",
+        "experience_basic": "Od 35€ po osobi",
+        "experience_premium": "Od 45€ po osobi",
+        "experience_vip": "Od 70€ po osobi"
       },
       "types": {
         "business": "Poslovni sastanci/ prezentacije",
@@ -45,7 +48,10 @@
       "packages": {
         "basic": "KONETI BUSINESS BASIC",
         "premium": "KONETI BUSINESS HIGH",
-        "vip": "KONETI CELEBRATION EXPERIENCE"
+        "vip": "KONETI CELEBRATION EXPERIENCE",
+        "experience_basic": "KONETI START",
+        "experience_premium": "KONETI CLASSIC",
+        "experience_vip": "KONETI CELEBRATION EXPERIENCE"
       },
       "form": {
         "name": "Ime i prezime",
@@ -86,7 +92,7 @@
       "popups": {
         "business": {
           "title": "🏢 Poslovni sastanci i prezentacije",
-          "description": "U srcu Novog Sada, na Bul. Oslođenja 97, Koneti nudi idealno mesto za poslovne susrete, prezentacije i dogovore koji zaslužuju dobru atmosferu.\n\nU mirnom, modernom ambijentu – uz vrhunsku kafu, pažljivo birane zalogaje i diskretnu uslugu – svaka ideja lakše zaživi.",
+          "description": "U samom srcu Novog Sada, na Bulevaru Oslobođenja 97, Koneti je savršeno mesto za poslovne sastanke, prezentacije i dogovore koji zahtevaju prijatnu i profesionalnu atmosferu.\n\nU modernom, mirnom ambijentu – uz vrhunsku kafu, pažljivo odabrane zalogaje i diskretnu uslugu – svaka ideja dobija pravi prostor da oživi.",
           "details": [
             "🥉 Koneti Business Basic - 200€ na dva sata",
             "⭐ Koneti Business High - 400€ na dva sata",
@@ -132,6 +138,40 @@
           ],
           "price": "400€ na dva sata",
           "extraInfo": "Premium poslovni paket sa dodatnim uslugama."
+        },
+        "experience_basic": {
+          "title": "🥉 KONETI START",
+          "description": "KONETI START / 35 evra po osobi / min. 450 evra po paketu",
+          "details": [
+            "🍷 Domaće pića (vina, piva, rakije, pelinkovac, vermuth)",
+            "🧀 Plate (njeguška pršut, pečenica, kulen, 4 vrste sira, zelene i crne masline)"
+          ],
+          "price": "35€ po osobi / min. 450€ po paketu",
+          "extraInfo": "Savršen početak za intimne proslave sa prijateljima i porodicom."
+        },
+        "experience_premium": {
+          "title": "⭐ KONETI CLASSIC",
+          "description": "KONETI CLASSIC / 45 evra po osobi / min. 550 evra po paketu",
+          "details": [
+            "🍷 Domaća pića (vina, piva, rakije, pelinkovac, vermuth)",
+            "🥃 Strana pića (Jameson, Campari, Chivas, Olmeca Tekila, Jack Daniels, Bombay Gin)",
+            "🧀 Plate (njeguška pršut, pečenica, kulen, 4 vrste sira, zelene i crne masline)"
+          ],
+          "price": "45€ po osobi / min. 550€ po paketu",
+          "extraInfo": "Klasična elegancija sa proširenim izborom pića."
+        },
+        "experience_vip": {
+          "title": "👑 KONETI CELEBRATION EXPERIENCE",
+          "description": "Vrhunac luksuznog ugostiteljstva i proslave. Ekskluzivna usluga za najvažnije prilike.",
+          "details": [
+            "🎂 Torta po izboru (do 10kg)",
+            "🎨 Dekoracija",
+            "📸 Fotograf",
+            "🥂 Domaća i strana pića (Jameson, Campari, Chivas, Olmeca Tekila, Jack Daniels, Bombay Gin)",
+            "🧀 Plate (njeguška pršut, pečenica, kulen, 4 vrste sira, zelene i crne masline)"
+          ],
+          "price": "70€ po osobi / min. 800€ po paketu",
+          "extraInfo": "Vrhunac luksuznog ugostiteljstva i proslave. Ekskluzivna usluga za najvažnije prilike."
         },
         "vip": {
           "title": "👑 KONETI CELEBRATION EXPERIENCE",

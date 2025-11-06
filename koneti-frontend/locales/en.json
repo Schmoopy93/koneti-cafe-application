@@ -34,9 +34,12 @@
         "vip": "The ultimate luxury experience with exclusive perks and personalized service"
       },
       "packagePrices": {
-        "basic": "From 35€ per person",
-        "premium": "From 45€ per person",
-        "vip": "From 70€ per person"
+        "basic": "200€ for 2 hours",
+        "premium": "400€ for 2 hours",
+        "vip": "From 70€ per person",
+        "experience_basic": "From 35€ per person",
+        "experience_premium": "From 45€ per person",
+        "experience_vip": "From 70€ per person"
       },
       "types": {
         "business": "Business meetings / presentations",
@@ -45,7 +48,10 @@
       "packages": {
         "basic": "KONETI BUSINESS BASIC",
         "premium": "KONETI BUSINESS HIGH",
-        "vip": "KONETI CELEBRATION EXPERIENCE"
+        "vip": "KONETI CELEBRATION EXPERIENCE",
+        "experience_basic": "KONETI START",
+        "experience_premium": "KONETI CLASSIC",
+        "experience_vip": "KONETI CELEBRATION EXPERIENCE"
       },
       "form": {
         "name": "Full name",
@@ -86,7 +92,7 @@
       "popups": {
         "business": {
           "title": "🏢 Business Meetings & Presentations",
-          "description": "In the heart of Novi Sad, at Bul. Oslođenja 97, Koneti offers the ideal place for business meetings, presentations and agreements that deserve a good atmosphere.\n\nIn a quiet, modern environment – with premium coffee, carefully selected bites and discreet service – every idea comes to life more easily.",
+          "description": "In the heart of Novi Sad, at Bulevar Oslobođenja 97, Koneti offers the perfect setting for business meetings, presentations, and agreements that deserve a refined atmosphere.\n\nIn a calm, modern environment – with premium coffee, carefully selected bites, and discreet service – every idea finds the right space to come to life.",
           "details": [
             "🥉 Koneti Business Basic - 200€ for two hours",
             "⭐ Koneti Business High - 400€ for two hours",
@@ -132,6 +138,40 @@
           ],
           "price": "400€ for two hours",
           "extraInfo": "Premium business package with additional services."
+        },
+        "experience_basic": {
+          "title": "🥉 KONETI START",
+          "description": "KONETI START / 35 euros per person / min. 450 euros per package",
+          "details": [
+            "🍷 Domestic drinks (wines, beers, rakija, pelinkovac, vermouth)",
+            "🧀 Plates (Njeguška prosciutto, ham, kulen, 4 types of cheese, green and black olives)"
+          ],
+          "price": "35€ per person / min. 450€ per package",
+          "extraInfo": "Perfect start for intimate celebrations with friends and family."
+        },
+        "experience_premium": {
+          "title": "⭐ KONETI CLASSIC",
+          "description": "KONETI CLASSIC / 45 euros per person / min. 550 euros per package",
+          "details": [
+            "🍷 Domestic drinks (wines, beers, rakija, pelinkovac, vermouth)",
+            "🥃 Foreign drinks (Jameson, Campari, Chivas, Olmeca Tequila, Jack Daniels, Bombay Gin)",
+            "🧀 Plates (Njeguška prosciutto, ham, kulen, 4 types of cheese, green and black olives)"
+          ],
+          "price": "45€ per person / min. 550€ per package",
+          "extraInfo": "Classic elegance with expanded drink selection."
+        },
+        "experience_vip": {
+          "title": "👑 KONETI CELEBRATION EXPERIENCE",
+          "description": "The pinnacle of luxury dining and celebration. Exclusive service for the most important occasions.",
+          "details": [
+            "🎂 Cake of your choice (up to 10kg)",
+            "🎨 Decoration",
+            "📸 Photographer",
+            "🥂 Domestic and foreign drinks (Jameson, Campari, Chivas, Olmeca Tequila, Jack Daniels, Bombay Gin)",
+            "🧀 Plates (Njeguška prosciutto, ham, kulen, 4 types of cheese, green and black olives)"
+          ],
+          "price": "70€ per person / min. 800€ per package",
+          "extraInfo": "The pinnacle of luxury dining and celebration. Exclusive service for the most important occasions."
         },
         "vip": {
           "title": "👑 KONETI CELEBRATION EXPERIENCE",

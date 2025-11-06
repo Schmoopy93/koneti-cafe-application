@@ -102,19 +102,19 @@ export default function ReservationForm() {
     experience: [
       {
         id: "experience_start",
-        label: t("home.reservation.packages.basic"),
+        label: t("home.reservation.packages.experience_basic"),
         icon: faMedal,
         colorClass: "silver",
       },
       {
         id: "experience_classic",
-        label: t("home.reservation.packages.premium"),
+        label: t("home.reservation.packages.experience_premium"),
         icon: faStar,
         colorClass: "gold",
       },
       {
         id: "experience_celebration",
-        label: t("home.reservation.packages.vip"),
+        label: t("home.reservation.packages.experience_vip"),
         icon: faCrown,
         colorClass: "vip",
       },
@@ -170,9 +170,9 @@ export default function ReservationForm() {
       experience: "experience",
       business_basic: "basic",
       business_high: "premium",
-      experience_start: "basic",
-      experience_classic: "premium",
-      experience_celebration: "vip",
+      experience_start: "experience_basic",
+      experience_classic: "experience_premium",
+      experience_celebration: "experience_vip",
     };
     const key = typeToKey[type] || type;
     const data: PopupData = {
@@ -373,8 +373,8 @@ export default function ReservationForm() {
                         </div>
                         <div className="card-content">
                           <h3 className="card-title">{label}</h3>
-                          <p className="card-description">{t(`home.reservation.packageDescriptions.${id.includes('business') ? 'basic' : id.includes('start') ? 'basic' : id.includes('classic') ? 'premium' : 'vip'}`)}</p>
-                          <div className="card-price">{t(`home.reservation.packagePrices.${id.includes('business') ? 'basic' : id.includes('start') ? 'basic' : id.includes('classic') ? 'premium' : 'vip'}`)}</div>
+                          <p className="card-description">{t(`home.reservation.packageDescriptions.${id.includes('business') ? (id.includes('basic') ? 'basic' : 'premium') : id.includes('start') ? 'basic' : id.includes('classic') ? 'premium' : 'vip'}`)}</p>
+                          <div className="card-price">{t(`home.reservation.packagePrices.${id.includes('business') ? (id.includes('basic') ? 'basic' : 'premium') : id.includes('start') ? 'experience_basic' : id.includes('classic') ? 'experience_premium' : 'experience_vip'}`)}</div>
                         </div>
                       </div>
                     )
