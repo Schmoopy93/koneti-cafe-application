@@ -111,8 +111,7 @@
             "🍽️ Customized menu and premium beverages",
             "🎵 Professional ambient music and lighting",
             "🎨 Elegant decoration and setup",
-            "📸 Photography and additional services",
-            "🏛️ Historic venue in city center"
+            "📸 Photography and additional services"
           ],
           "price": "From 35€ to 70€ per person",
           "extraInfo": "Perfect for birthdays, anniversaries, private parties and special celebrations."
@@ -368,6 +367,7 @@
     }
   },
   "menu": {
+    "title": "Our Menu",
     "searchPlaceholder": "Search for drinks...",
     "sortLabel": "Sort by:",
     "sortOptions": {
@@ -379,7 +379,13 @@
       "prev": "Prev",
       "next": "Next"
     },
-    "currency": "RSD"
+    "currency": "RSD",
+    "viewPDF": "View Menu",
+    "downloadPDF": "Download Menu",
+    "noResults": "No drinks found",
+    "tryDifferent": "Try a different search term",
+    "allCategories": "All Categories",
+    "itemsFound": "items found"
   },
   "staffLogin": {
     "title": "Koneti Café",
@@ -399,7 +405,14 @@
     "stats": {
       "totalDrinks": "Total Drinks",
       "totalCategories": "Categories",
-      "totalReservations": "Reservations"
+      "totalReservations": "Reservations",
+      "approved": "Approved",
+      "pending": "Pending",
+      "trend": {
+        "up": "+12%",
+        "down": "Decrease",
+        "stable": "Active"
+      }
     },
     "loading": "Loading...",
     "actions": {
@@ -449,7 +462,11 @@
     },
     "calendar": {
       "title": "Reservation Calendar",
-      "totalEvents": "Total events:"
+      "totalEvents": "Total events:",
+      "today": "Today",
+      "month": "Month",
+      "week": "Week",
+      "list": "List"
     },
     "event": {
       "businessMeeting": "Business Meeting",
@@ -477,9 +494,12 @@
     "accept": "Accept"
   },
   "eventStats": {
-    "title": "📊 Reservation Statistics",
+    "title": "Reservation Statistics",
     "monthlyTitle": "Reservations per Month",
     "statusTitle": "Reservation Status",
+    "typeTitle": "Reservation Types",
+
+    "weekdayTitle": "Reservations by Day of Week",
     "loading": "⏳ Loading statistics...",
     "fetchError": "Error loading data.",
     "statuses": {
@@ -487,6 +507,19 @@
       "pending": "Pending",
       "rejected": "Rejected",
       "cancelled": "Cancelled"
+    },
+    "types": {
+      "business": "Business Meetings",
+      "experience": "Koneti Experience"
+    },
+    "weekdays": {
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
     }
   },
   "career": {
@@ -495,11 +528,6 @@
     "description": "We are looking for passionate and dedicated people who want to be part of our team. Apply and show us why you are the perfect choice for Koneti.",
     "joinTeam": "Join the Koneti Team",
     "teamDescription": "We are looking for talented and motivated people who share our passion for quality and hospitality",
-    "badges": {
-      "career": "💼 Career",
-      "development": "🌟 Development",
-      "team": "🤝 Team"
-    },
     "success": {
       "title": "Successfully sent!",
       "description": "Your job application has been received. We will contact you soon. Check your email for confirmation.",
@@ -541,19 +569,6 @@
       "coverLetter": "Cover letter is required",
       "submitError": "Error submitting application. Please try again.",
       "submitErrorGeneral": "Error submitting application"
-    },
-    "positions": {
-      "waiter": "Waiter/Waitress",
-      "barista": "Barista",
-      "cook": "Cook",
-      "shiftManager": "Shift Manager",
-      "cleaner": "Cleaner"
-    },
-    "departments": {
-      "service": "Service",
-      "kitchen": "Kitchen",
-      "management": "Management",
-      "maintenance": "Maintenance"
     }
   }
 }

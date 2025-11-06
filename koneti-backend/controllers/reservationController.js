@@ -15,8 +15,8 @@ export const createReservation = async (req, res) => {
   try {
     const { type, subType, date } = req.body;
     
-    // Validate date - minimum 2 days in advance
-    if (date) {
+    // Validate date - minimum 2 days in advance only for Koneti Experience events
+    if (date && type === 'experience') {
       const selectedDate = new Date(date);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -26,7 +26,7 @@ export const createReservation = async (req, res) => {
       if (selectedDate < minDate) {
         return res.status(400).json({
           success: false,
-          message: 'Rezervacija mora biti minimum 2 dana unapred'
+          message: 'Koneti Experience rezervacija mora biti minimum 2 dana unapred'
         });
       }
     }

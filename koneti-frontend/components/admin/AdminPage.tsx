@@ -18,12 +18,6 @@ import {
   faBriefcase,
   faGlassCheers,
 } from "@fortawesome/free-solid-svg-icons";
-import { Calendar, dateFnsLocalizer, View } from "react-big-calendar";
-import { format } from "date-fns";
-import { parse } from "date-fns";
-import { startOfWeek } from "date-fns";
-import { getDay } from "date-fns";
-import { enUS } from "date-fns/locale";
 import { motion, Variants } from "framer-motion";
 
 import { useTranslation } from "react-i18next";
@@ -31,21 +25,9 @@ import { useAuth } from "../../contexts/AuthContext";
 import { apiRequest } from "@/utils/api";
 import CareerManagement from "./CareerManagement";
 import Spinner from "../ui/Spinner";
+import FullCalendarComponent from "../calendar/FullCalendarComponent";
 
-import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./AdminPage.scss";
-
-const locales = {
-  "en-US": enUS,
-};
-
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  locales,
-});
 
 // TypeScript Interfaces
 interface Drink {
@@ -71,17 +53,11 @@ interface Reservation {
   date: string;
   time: string;
   guests: number;
-  type: "koneti" | "biznis";
-  subType?: "basic" | "premium" | "vip";
-  status: "pending" | "approved" | "rejected";
+  type: string;
+  subType?: string;
+  status: string;
   message?: string;
   selectedMenu?: string;
-}
-
-interface CalendarEvent extends Reservation {
-  title: string;
-  start: Date;
-  end: Date;
 }
 
 interface Stats {
@@ -105,13 +81,11 @@ const AdminPage: React.FC = () => {
   // State declarations with proper types
   const [drinks, setDrinks] = useState<Drink[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [reservations, setReservations] = useState<Reservation[]>([]);
   const [showModal, setShowModal] = useState<ModalType>(null);
-  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
+  const [selectedEvent, setSelectedEvent] = useState<Reservation | null>(
     null
   );
-  const [calendarView, setCalendarView] = useState<View>("month");
-  const [calendarDate, setCalendarDate] = useState<Date>(new Date());
   const [stats, setStats] = useState<Stats>({
     totalDrinks: 0,
     totalCategories: 0,
@@ -127,6 +101,8 @@ const AdminPage: React.FC = () => {
 
   useEffect(() => {
     setMounted(true);
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
@@ -134,6 +110,19 @@ const AdminPage: React.FC = () => {
       fetchData();
     }
   }, [mounted]);
+  
+  // Prevent scroll restoration on back button
+  useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    
+    return () => {
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'auto';
+      }
+    };
+  }, []);
 
   const fetchData = async (): Promise<void> => {
     try {
@@ -158,49 +147,26 @@ const AdminPage: React.FC = () => {
         throw new Error("Failed to fetch data");
       }
 
-      const reservations: Reservation[] = await reservationsRes.json();
+      const reservationsData: Reservation[] = await reservationsRes.json();
       const drinksData: Drink[] = await drinksRes.json();
       const categoriesData: Category[] = await categoriesRes.json();
 
-      const formattedEvents: CalendarEvent[] = reservations.map((e) => {
-        const datePart = new Date(e.date);
-        const startDate = new Date(datePart);
-
-        if (e.time) {
-          const [hours, minutes] = e.time.split(":");
-          startDate.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
-        }
-
-        return {
-          ...e,
-          title: `${e.name} (${
-            e.type === "koneti"
-              ? t("adminPage.event.konetiExperience")
-              : e.type === "biznis"
-              ? t("adminPage.event.businessMeeting")
-              : e.type
-          })`,
-          start: startDate,
-          end: new Date(startDate.getTime() + 2 * 60 * 60 * 1000),
-        };
-      });
-
       // Status counters
-      const pendingCount = reservations.filter(
+      const pendingCount = reservationsData.filter(
         (r) => r.status === "pending"
       ).length;
-      const approvedCount = reservations.filter(
+      const approvedCount = reservationsData.filter(
         (r) => r.status === "approved"
       ).length;
 
       setStatusCounters({ pending: pendingCount, approved: approvedCount });
-      setEvents(formattedEvents);
+      setReservations(reservationsData);
       setDrinks(drinksData);
       setCategories(categoriesData);
       setStats({
         totalDrinks: drinksData.length,
         totalCategories: categoriesData.length,
-        totalReservations: reservations.length,
+        totalReservations: reservationsData.length,
       });
       setLoading(false);
     } catch (error) {
@@ -235,18 +201,18 @@ const AdminPage: React.FC = () => {
 
   const handleReservationAction = async (
     reservationId: string,
-    action: "approved" | "rejected"
+    action: string
   ): Promise<void> => {
     console.log(`[DEBUG] Starting reservation action: ${action} for ID: ${reservationId}`);
     setUpdatingReservation(reservationId);
     
     // Optimistic update - ažuriraj UI odmah
-    const updatedEvents = events.map(event => 
-      event._id === reservationId 
-        ? { ...event, status: action }
-        : event
+    const updatedReservations = reservations.map(reservation => 
+      reservation._id === reservationId 
+        ? { ...reservation, status: action }
+        : reservation
     );
-    setEvents(updatedEvents);
+    setReservations(updatedReservations);
     console.log(`[DEBUG] UI updated optimistically`);
     
     // Ažuriraj selectedEvent ako je otvoren
@@ -286,30 +252,12 @@ const AdminPage: React.FC = () => {
     }
   };
 
-  const getEventBackgroundColor = (status: string): string => {
-    if (status === "approved") return "#28a745";
-    if (status === "rejected") return "#dc3545";
-    return "#5a3e36"; // default pending
-  };
-
   const getStatusBadgeColor = (
     status: string
   ): { bg: string; text: string } => {
     if (status === "approved") return { bg: "#c3f7c7", text: "#155724" };
     if (status === "rejected") return { bg: "#f8d7da", text: "#721c24" };
     return { bg: "#f3e5ab", text: "#5a3e36" };
-  };
-
-  const formatEventTitle = (event: CalendarEvent): string => {
-    if (event.type === "koneti") {
-      const subTypeFormatted = event.subType
-        ? ` - ${event.subType.charAt(0).toUpperCase() + event.subType.slice(1)}`
-        : "";
-      return t("adminPage.event.konetiExperience") + subTypeFormatted;
-    } else if (event.type === "biznis") {
-      return t("adminPage.event.businessMeeting");
-    }
-    return event.title;
   };
 
   if (loading) {
@@ -325,47 +273,61 @@ const AdminPage: React.FC = () => {
           animate="visible"
           variants={containerVariants}
         >
-          {/* Stats grid */}
+          {/* Enhanced Stats grid */}
           <motion.div className="stats-grid" variants={containerVariants}>
             <motion.div
-              className="stat-card"
+              className="stat-card drinks-card"
               variants={cardVariants}
               whileHover="hover"
             >
-              <div className="stat-icon">
+              <div className="stat-icon drinks-icon">
                 <FontAwesomeIcon icon={faGlassMartiniAlt} />
               </div>
               <div className="stat-info">
                 <h3>{stats.totalDrinks}</h3>
                 <p>{t("adminPage.stats.totalDrinks")}</p>
+                <div className="stat-trend">
+                  <span className="trend-number">📈</span>
+                  <span className="trend-label">{t("adminPage.stats.trend.up")}</span>
+                </div>
               </div>
             </motion.div>
 
             <motion.div
-              className="stat-card"
+              className="stat-card categories-card"
               variants={cardVariants}
               whileHover="hover"
             >
-              <div className="stat-icon">
+              <div className="stat-icon categories-icon">
                 <FontAwesomeIcon icon={faList} />
               </div>
               <div className="stat-info">
                 <h3>{stats.totalCategories}</h3>
                 <p>{t("adminPage.stats.totalCategories")}</p>
+                <div className="stat-trend">
+                  <span className="trend-number">📊</span>
+                  <span className="trend-label">{t("adminPage.stats.trend.stable")}</span>
+                </div>
               </div>
             </motion.div>
 
             <motion.div
-              className="stat-card"
+              className="stat-card reservations-card"
               variants={cardVariants}
               whileHover="hover"
             >
-              <div className="stat-icon">
+              <div className="stat-icon reservations-icon">
                 <FontAwesomeIcon icon={faCalendarAlt} />
               </div>
               <div className="stat-info">
                 <h3>{stats.totalReservations}</h3>
                 <p>{t("adminPage.stats.totalReservations")}</p>
+                <div className="stat-breakdown">
+                  <span className="approved-count">
+                    <span className="count-number">{statusCounters.approved}</span>
+                    <span className="count-label">{t("adminPage.stats.approved")}</span>
+                  </span>
+                </div>
               </div>
             </motion.div>
           </motion.div>
@@ -415,14 +377,21 @@ const AdminPage: React.FC = () => {
             animate="visible"
           >
             <motion.div
-              className="action-card"
+              className="action-card statistics-card"
               onClick={() => router.push("/statistics")}
               variants={cardVariants}
               whileHover="hover"
             >
-              <FontAwesomeIcon icon={faChartLine} />
+              <div className="card-icon-wrapper">
+                <FontAwesomeIcon icon={faChartLine} />
+                <div className="icon-glow"></div>
+              </div>
               <h3>{t("adminPage.actions.statistics")}</h3>
               <p>{t("adminPage.actions.statisticsDesc")}</p>
+              {/* <div className="card-stats-preview">
+                <span>📊 {t("adminPage.stats.detailedReports")}</span>
+                <span>📈 {t("adminPage.stats.analytics")}</span>
+              </div> */}
             </motion.div>
 
             <motion.div
@@ -451,7 +420,9 @@ const AdminPage: React.FC = () => {
           >
             <div className="modal-header">
               <h3>💼 {t("adminPage.actions.jobApplications")}</h3>
-              <button onClick={() => setShowModal(null)}>×</button>
+              <button className="modal-close-btn" onClick={() => setShowModal(null)}>
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
             </div>
             <div className="modal-body">
               <CareerManagement />
@@ -472,79 +443,20 @@ const AdminPage: React.FC = () => {
           >
             <div className="modal-header">
               <h3>{t("adminPage.calendar.title")}</h3>
-              <button onClick={() => setShowModal(null)}>×</button>
+              <button className="modal-close-btn" onClick={() => setShowModal(null)}>
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
             </div>
             <div className="modal-body">
               <div className="calendar-wrapper">
                 <div style={{ marginBottom: "1rem", color: "#666" }}>
-                  {t("adminPage.calendar.totalEvents")} {events.length}
+                  {t("adminPage.calendar.totalEvents")} {reservations.length}
                 </div>
-                <div style={{ height: "600px" }}>
-                  <Calendar
-                    localizer={localizer}
-                    events={events}
-                    startAccessor="start"
-                    endAccessor="end"
-                    onSelectEvent={(event) => setSelectedEvent(event)}
-                    views={["month", "week", "day", "agenda"]}
-                    view={calendarView}
-                    onView={(view) => setCalendarView(view)}
-                    date={calendarDate}
-                    onNavigate={(date) => setCalendarDate(date)}
-                    eventPropGetter={(event) => {
-                      const bgColor = getEventBackgroundColor(event.status);
-
-                      return {
-                        style: {
-                          backgroundColor: bgColor,
-                          color: "white",
-                          borderRadius: "4px",
-                          border: "none",
-                          padding: "2px 5px",
-                          fontSize: "0.85rem",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                        },
-                      };
-                    }}
-                    components={{
-                      event: ({ event }: { event: CalendarEvent }) => {
-                        const displayTitle = formatEventTitle(event);
-                        const statusColors = getStatusBadgeColor(event.status);
-
-                        return (
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                            }}
-                          >
-                            <span>{displayTitle}</span>
-                            <span
-                              style={{
-                                marginLeft: "6px",
-                                padding: "2px 6px",
-                                borderRadius: "12px",
-                                fontSize: "0.7rem",
-                                backgroundColor: statusColors.bg,
-                                color: statusColors.text,
-                                fontWeight: "600",
-                              }}
-                            >
-                              {event.status === "approved"
-                                ? t("adminPage.status.approved")
-                                : event.status === "rejected"
-                                ? t("adminPage.status.rejected")
-                                : t("adminPage.status.pending")}
-                            </span>
-                          </div>
-                        );
-                      },
-                    }}
-                  />
-                </div>
+                <FullCalendarComponent
+                  reservations={reservations}
+                  onEventClick={(reservation) => setSelectedEvent(reservation)}
+                  onStatusUpdate={handleReservationAction}
+                />
               </div>
             </div>
           </div>
@@ -568,7 +480,7 @@ const AdminPage: React.FC = () => {
             <div className="event-header">
               <FontAwesomeIcon
                 icon={
-                  selectedEvent.type === "biznis" ? faBriefcase : faGlassCheers
+                  selectedEvent.type === "business" ? faBriefcase : faGlassCheers
                 }
                 className="event-icon"
               />
@@ -594,9 +506,9 @@ const AdminPage: React.FC = () => {
                 </p>
                 <p>
                   <strong>{t("adminPage.event.type")}</strong>{" "}
-                  {selectedEvent.type === "biznis"
+                  {selectedEvent.type === "business"
                     ? t("adminPage.event.businessMeeting")
-                    : selectedEvent.type === "koneti"
+                    : selectedEvent.type === "experience"
                     ? `${t("adminPage.event.konetiExperience")} - ${
                         selectedEvent.subType
                           ? selectedEvent.subType.charAt(0).toUpperCase() +

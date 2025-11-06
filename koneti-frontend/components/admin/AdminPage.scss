@@ -106,6 +106,10 @@ $border: rgba(207, 166, 138, 0.2);
   padding: 2rem;
   position: relative;
   z-index: 2;
+  
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 }
 
 /* =========================================
@@ -127,62 +131,266 @@ $border: rgba(207, 166, 138, 0.2);
 
   .stat-card {
     @include glass-card;
-    padding: 2rem;
+    padding: 2.5rem;
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 2rem;
     @include hover-lift;
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, $primary-color, $secondary-color, #e6c79a);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    &:hover::before {
+      opacity: 1;
+    }
 
     .stat-icon {
-      width: 60px;
-      height: 60px;
+      width: 80px;
+      height: 80px;
       background: linear-gradient(135deg, $primary-color, $secondary-color);
-      border-radius: 15px;
+      border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 1.5rem;
+      font-size: 2rem;
+      box-shadow: 0 8px 25px rgba(207, 166, 138, 0.3);
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(135deg, $primary-color, $secondary-color, #e6c79a);
+        border-radius: 22px;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+    }
+    
+    &:hover .stat-icon::after {
+      opacity: 1;
+    }
+    
+    &.drinks-card .stat-icon {
+      background: linear-gradient(135deg, #e67e22, #f39c12);
+    }
+    
+    &.categories-card .stat-icon {
+      background: linear-gradient(135deg, #9b59b6, #8e44ad);
+    }
+    
+    &.reservations-card .stat-icon {
+      background: linear-gradient(135deg, #3498db, #2980b9);
     }
 
     .stat-info {
+      flex: 1;
+      position: relative;
+      
       h3 {
-        font-size: 2rem;
-        font-weight: 700;
+        font-size: 2.5rem;
+        font-weight: 800;
         color: $text-dark;
         margin-bottom: 0.5rem;
+        text-shadow: 0 2px 4px rgba(207, 166, 138, 0.2);
+        position: relative;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -5px;
+          left: 0;
+          width: 40px;
+          height: 2px;
+          background: linear-gradient(90deg, $primary-color, $secondary-color);
+          border-radius: 2px;
+        }
       }
 
       p {
         color: $text-muted;
-        font-weight: 500;
+        font-weight: 600;
+        font-size: 1rem;
+        margin-bottom: 0.8rem;
+      }
+      
+      .stat-trend {
+        position: absolute;
+        top: -1rem;
+        right: -1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0.4rem;
+        border-radius: 8px;
+        min-width: 50px;
+        
+        .trend-number {
+          font-size: 1rem;
+          font-weight: 700;
+          line-height: 1;
+        }
+        
+        .trend-label {
+          font-size: 0.65rem;
+          font-weight: 500;
+          margin-top: 0.2rem;
+          text-align: center;
+        }
+        
+        background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(46, 204, 113, 0.05));
+        color: #27ae60;
+        border: 1px solid rgba(39, 174, 96, 0.2);
+      }
+      
+      .stat-breakdown {
+        position: absolute;
+        top: -1rem;
+        right: -1rem;
+        display: flex;
+        gap: 0.5rem;
+        
+        .pending-count, .approved-count {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 0.4rem;
+          border-radius: 8px;
+          min-width: 50px;
+        }
+        
+        .count-number {
+          font-size: 1rem;
+          font-weight: 700;
+          line-height: 1;
+        }
+        
+        .count-label {
+          font-size: 0.65rem;
+          font-weight: 500;
+          margin-top: 0.2rem;
+          text-align: center;
+        }
+        
+        .pending-count {
+          background: linear-gradient(135deg, rgba(243, 156, 18, 0.1), rgba(230, 126, 34, 0.05));
+          color: #f39c12;
+          border: 1px solid rgba(243, 156, 18, 0.2);
+        }
+        
+        .approved-count {
+          background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(46, 204, 113, 0.05));
+          color: #27ae60;
+          border: 1px solid rgba(39, 174, 96, 0.2);
+        }
       }
     }
   }
 
   .action-card {
     @include glass-card;
-    padding: 2rem;
+    padding: 2.5rem;
     text-align: center;
     cursor: pointer;
     @include hover-lift;
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, $primary-color, $secondary-color);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    &:hover::before {
+      opacity: 1;
+    }
 
     svg {
-      font-size: 2.5rem;
+      font-size: 3rem;
       color: $primary-color;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 4px 8px rgba(207, 166, 138, 0.2));
+    }
+    
+    .card-icon-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      
+      svg {
+        margin: 0;
+      }
+      
+      .icon-glow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        background: radial-gradient(circle, rgba(207, 166, 138, 0.3), transparent);
+        border-radius: 50%;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+      }
+    }
+    
+    &:hover .card-icon-wrapper .icon-glow {
+      opacity: 1;
     }
 
     h3 {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       color: $text-dark;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      text-shadow: 0 1px 2px rgba(207, 166, 138, 0.1);
     }
 
     p {
       color: $text-muted;
-      margin: 0;
+      margin: 0 0 1rem 0;
+      line-height: 1.5;
+    }
+    
+    .card-stats-preview {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      
+      span {
+        font-size: 0.8rem;
+        color: rgba(61, 47, 40, 0.7);
+        background: linear-gradient(135deg, rgba(207, 166, 138, 0.08), rgba(212, 165, 116, 0.05));
+        padding: 0.3rem 0.8rem;
+        border-radius: 12px;
+        border: 1px solid rgba(207, 166, 138, 0.15);
+      }
     }
 
     &.logout-card {
@@ -192,6 +400,7 @@ $border: rgba(207, 166, 138, 0.2);
 
       &:hover svg {
         color: #c0392b;
+        transform: scale(1.1);
       }
     }
 
@@ -202,6 +411,18 @@ $border: rgba(207, 166, 138, 0.2);
 
       &:hover svg {
         color: #d4a574;
+        transform: scale(1.1);
+      }
+    }
+    
+    &.statistics-card {
+      svg {
+        color: #3498db;
+      }
+      
+      &:hover svg {
+        color: #2980b9;
+        transform: scale(1.1);
       }
     }
   }
@@ -353,16 +574,27 @@ $border: rgba(207, 166, 138, 0.2);
         color: $text-dark;
       }
 
-      button {
-        background: transparent;
-        border: none;
-        font-size: 1.8rem;
-        color: $text-dark;
+      .modal-close-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid rgba(207, 166, 138, 0.3);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 244, 240, 0.8));
+        color: #cfa68a;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         cursor: pointer;
-        transition: color 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(207, 166, 138, 0.2);
 
         &:hover {
-          color: $primary-color;
+          background: linear-gradient(135deg, #cfa68a, #d4a574);
+          color: white;
+          transform: scale(1.1) rotate(90deg);
+          box-shadow: 0 6px 20px rgba(207, 166, 138, 0.4);
         }
       }
     }
@@ -494,15 +726,7 @@ $border: rgba(207, 166, 138, 0.2);
           background: rgba(207, 166, 138, 0.12);
         }
 
-        .rbc-event {
-          border: none;
-          border-radius: 6px;
-          padding: 3px 6px;
-          font-size: 0.85rem;
-          font-weight: 600;
-          color: white;
-          box-shadow: 0 2px 6px rgba(61, 47, 40, 0.1);
-        }
+
       }
     }
 
@@ -772,110 +996,254 @@ $border: rgba(207, 166, 138, 0.2);
 
 
 @media (max-width: 768px) {
-  .modal-overlay.fullscreen .modal-content.fullscreen-modal {
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-    margin: 0;
+  .modal-overlay.fullscreen {
     padding: 0;
-    overflow: hidden;
-
-    .modal-header {
-      padding: 0.8rem 1rem;
-      flex-shrink: 0;
-
-      h3 {
-        font-size: 1.1rem;
-      }
-    }
-
-    .modal-body {
-      flex: 1;
-      padding: 0.5rem;
+    
+    .modal-content.fullscreen-modal {
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      margin: 0;
+      padding: 0;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
+      background: linear-gradient(135deg, #ffffff 0%, #fdfcf9 50%, #f9f6f2 100%);
 
-    .calendar-wrapper {
-      flex: 1;
-      padding: 0.5rem;
-      overflow-y: auto;
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-      
-      /* Custom scrollbar */
-      scrollbar-width: thin;
-      scrollbar-color: #cfa68a #fdfaf6;
-      
-      &::-webkit-scrollbar {
-        width: 6px;
-      }
-      
-      &::-webkit-scrollbar-thumb {
-        background: #cfa68a;
-        border-radius: 8px;
-      }
-      
-      &::-webkit-scrollbar-track {
-        background: #fdfaf6;
+      .modal-header {
+        padding: 1rem 1.5rem;
+        flex-shrink: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(207, 166, 138, 0.2);
+        box-shadow: 0 2px 10px rgba(207, 166, 138, 0.1);
+
+        h3 {
+          font-size: 1.2rem;
+          font-weight: 700;
+          color: #3d2f28;
+        }
+        
+        .modal-close-btn {
+          width: 36px;
+          height: 36px;
+          font-size: 1rem;
+        }
       }
 
-      .rbc-calendar {
+      .modal-body {
         flex: 1;
-        min-height: 0;
+        padding: 1rem;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.8), rgba(248, 245, 241, 0.6));
+      }
 
-        .rbc-toolbar {
-          flex-direction: column;
-          align-items: center;
-          gap: 0.5rem;
-          text-align: center;
-          flex-shrink: 0;
-          padding: 0.5rem;
+      .calendar-wrapper {
+        flex: 1;
+        padding: 0.8rem;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 1rem;
+        box-shadow: 0 4px 20px rgba(207, 166, 138, 0.15);
+        border: 1px solid rgba(207, 166, 138, 0.1);
+        
+        /* Custom scrollbar */
+        scrollbar-width: thin;
+        scrollbar-color: #cfa68a #fdfaf6;
+        
+        &::-webkit-scrollbar {
+          width: 4px;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+          background: #cfa68a;
+          border-radius: 8px;
+        }
+        
+        &::-webkit-scrollbar-track {
+          background: #fdfaf6;
+        }
 
-          .rbc-toolbar-label {
-            font-size: 1rem;
-            margin-bottom: 0.3rem;
-          }
-
-          .rbc-btn-group {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.3rem;
-            width: 100%;
-            max-width: 300px;
-
-            button {
-              padding: 0.4rem 0.6rem;
-              font-size: 0.8rem;
-              white-space: nowrap;
-              min-width: 0;
+        .rbc-calendar {
+          flex: 1;
+          min-height: 0;
+          overflow: hidden;
+          border-radius: 0.8rem;
+          background: rgba(255, 255, 255, 0.95);
+          
+          .fc-today-button {
+            background: linear-gradient(135deg, #cfa68a, #d4a574) !important;
+            border: 1px solid #cfa68a !important;
+            color: white !important;
+            padding: 0.4rem 0.6rem !important;
+            font-size: 0.75rem !important;
+            border-radius: 6px !important;
+            font-weight: 600 !important;
+            
+            &:hover {
+              background: linear-gradient(135deg, #d4a574, #e6c79a) !important;
+              transform: translateY(-1px);
+              box-shadow: 0 3px 10px rgba(207, 166, 138, 0.4) !important;
+            }
+            
+            &:disabled {
+              background: rgba(207, 166, 138, 0.5) !important;
+              color: rgba(255, 255, 255, 0.7) !important;
+              cursor: not-allowed;
             }
           }
-        }
 
-        .rbc-month-view {
-          .rbc-date-cell {
-            min-height: 45px;
-            padding: 8px 6px;
-            font-size: 0.9rem;
+          .rbc-toolbar {
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            text-align: center;
+            flex-shrink: 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 0.8rem 0.8rem 0 0;
+            border-bottom: 1px solid rgba(207, 166, 138, 0.15);
+            
+            .fc-toolbar-chunk {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 0.5rem;
+            }
+
+            .rbc-toolbar-label {
+              font-size: 1.1rem;
+              font-weight: 700;
+              color: #3d2f28;
+              margin-bottom: 0.5rem;
+            }
+
+            .rbc-btn-group {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 0.5rem;
+              width: 100%;
+              max-width: 280px;
+
+              button {
+                padding: 0.5rem 0.7rem;
+                font-size: 0.8rem;
+                font-weight: 600;
+                white-space: nowrap;
+                min-width: 0;
+                border-radius: 8px;
+                background: linear-gradient(135deg, #cfa68a, #d4a574);
+                border: 1px solid #cfa68a;
+                color: white;
+                transition: all 0.25s ease;
+                
+                &:hover {
+                  background: linear-gradient(135deg, #d4a574, #e6c79a);
+                  transform: translateY(-1px);
+                  box-shadow: 0 4px 12px rgba(207, 166, 138, 0.4);
+                }
+                
+                &.rbc-active {
+                  background: linear-gradient(135deg, #b8956f, #cfa68a);
+                  box-shadow: 0 2px 8px rgba(207, 166, 138, 0.5);
+                }
+              }
+            }
           }
 
-          .rbc-row {
-            min-height: 50px;
+          .rbc-header {
+            padding: 0.8rem 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: rgba(207, 166, 138, 0.08);
+            color: #3d2f28;
           }
-        }
-
-        .rbc-header {
-          padding: 0.8rem 0.5rem;
-          font-size: 0.85rem;
-        }
-
-        .rbc-event {
-          font-size: 0.75rem;
-          padding: 2px 4px;
+          
+          .rbc-agenda-view {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 0 0 0.8rem 0.8rem;
+            overflow: hidden;
+            
+            .rbc-agenda-table {
+              width: 100%;
+              table-layout: fixed;
+              border-collapse: separate;
+              border-spacing: 0;
+              
+              .rbc-header {
+                background: linear-gradient(135deg, #cfa68a, #d4a574);
+                color: white;
+                font-weight: 700;
+                padding: 12px 16px;
+                font-size: 0.9rem;
+                text-align: left;
+                border: none;
+                
+                &:first-child {
+                  width: 35%;
+                }
+                &:last-child {
+                  width: 65%;
+                }
+              }
+              
+              .rbc-agenda-time-cell {
+                width: 35%;
+                padding: 12px 16px;
+                font-size: 0.8rem;
+                font-weight: 600;
+                vertical-align: top;
+                background: rgba(207, 166, 138, 0.05);
+                border-bottom: 1px solid rgba(207, 166, 138, 0.1);
+                color: #5a3e36;
+              }
+              
+              .rbc-agenda-event-cell {
+                width: 65%;
+                padding: 12px 16px;
+                font-size: 0.85rem;
+                vertical-align: top;
+                background: rgba(255, 255, 255, 0.9);
+                border-bottom: 1px solid rgba(207, 166, 138, 0.1);
+                color: #3d2f28;
+                
+                .rbc-event-content {
+                  font-weight: 600;
+                  padding: 6px 10px;
+                  border-radius: 6px;
+                  display: inline-block;
+                  font-size: 0.8rem;
+                  
+                  &.pending {
+                    background: linear-gradient(135deg, #f39c12, #e67e22);
+                    color: white;
+                  }
+                  
+                  &.approved {
+                    background: linear-gradient(135deg, #27ae60, #2ecc71);
+                    color: white;
+                  }
+                  
+                  &.rejected {
+                    background: linear-gradient(135deg, #e74c3c, #c0392b);
+                    color: white;
+                  }
+                }
+              }
+              
+              .rbc-agenda-date-cell {
+                padding: 16px;
+                font-size: 1rem;
+                font-weight: 700;
+                background: linear-gradient(135deg, rgba(207, 166, 138, 0.12), rgba(212, 165, 116, 0.08));
+                color: #3d2f28;
+                border-bottom: 2px solid rgba(207, 166, 138, 0.2);
+              }
+            }
+          }
         }
       }
     }

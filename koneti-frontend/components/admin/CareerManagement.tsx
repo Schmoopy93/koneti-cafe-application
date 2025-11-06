@@ -55,7 +55,7 @@ const CareerManagement: React.FC = () => {
   const [showAddPosition, setShowAddPosition] = useState(false);
   const [newPosition, setNewPosition] = useState({ title: '' });
   const [positions, setPositions] = useState<Position[]>([]);
-  const itemsPerPage = 9;
+  const itemsPerPage = 4;
 
   useEffect(() => {
     fetchApplications();
@@ -188,7 +188,7 @@ const CareerManagement: React.FC = () => {
   return (
     <div className="career-management">
       <div className="career-header">
-        <h2>{t("adminPage.career.title")}</h2>
+
         <div className="header-actions">
           <button 
             className="btn-add-position"
@@ -225,8 +225,7 @@ const CareerManagement: React.FC = () => {
               onKeyPress={(e) => e.key === 'Enter' && handleAddPosition()}
             />
             <button className="btn-submit-position" onClick={handleAddPosition}>
-              <span className="btn-icon">✨</span>
-              <span className="btn-text">{t("adminPage.career.savePosition")}</span>
+              ✓
             </button>
             <button className="btn-cancel" onClick={() => setShowAddPosition(false)}>
               ×
@@ -235,121 +234,123 @@ const CareerManagement: React.FC = () => {
         </div>
       )}
 
-      <div className="applications-grid">
-        {currentApplications.map((app) => (
-          <div key={app._id} className="application-card">
-            <div className="card-header">
-              <div className="applicant-info">
-                <h3>{app.firstName} {app.lastName}</h3>
-                <span className="position">{app.position}</span>
-              </div>
-              <span 
-                className="status-badge" 
-                style={{ backgroundColor: getStatusColor(app.status) }}
-              >
-                {getStatusText(app.status)}
-              </span>
-            </div>
-
-            <div className="card-body">
-              <div className="contact-info">
-                <div className="info-item">
-                  <FontAwesomeIcon icon={faEnvelope} />
-                  <span>{app.email}</span>
+      <div className="main-content-container">
+        <div className="applications-grid">
+          {currentApplications.map((app) => (
+            <div key={app._id} className="application-card">
+              <div className="card-header">
+                <div className="applicant-info">
+                  <h3>{app.firstName} {app.lastName}</h3>
+                  <span className="position">{app.position}</span>
                 </div>
-                <div className="info-item">
-                  <FontAwesomeIcon icon={faPhone} />
-                  <span>{app.phone}</span>
-                </div>
-              </div>
-
-              <div className="application-date">
-                {t("adminPage.career.submitted")}: {new Date(app.createdAt).toLocaleDateString("sr-RS")}
-              </div>
-            </div>
-
-            <div className="card-actions">
-              <button
-                className="btn-view"
-                onClick={() => setSelectedApplication(app)}
-              >
-                <FontAwesomeIcon icon={faEye} />
-                {t("adminPage.career.view")}
-              </button>
-
-              {app.cvUrl && (
-                <a
-                  href={app.cvUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-download"
+                <span 
+                  className="status-badge" 
+                  style={{ backgroundColor: getStatusColor(app.status) }}
                 >
-                  <FontAwesomeIcon icon={faDownload} />
-                  CV
-                </a>
-              )}
+                  {getStatusText(app.status)}
+                </span>
+              </div>
 
-              {app.status === "pending" && (
-                <div className="status-actions">
-                  <button
-                    className="btn-approve"
-                    onClick={() => updateApplicationStatus(app._id, "reviewed")}
-                    disabled={updatingStatus === app._id}
-                  >
-                    <FontAwesomeIcon icon={faCheck} />
-                  </button>
-                  <button
-                    className="btn-reject"
-                    onClick={() => updateApplicationStatus(app._id, "rejected")}
-                    disabled={updatingStatus === app._id}
-                  >
-                    <FontAwesomeIcon icon={faTimes} />
-                  </button>
+              <div className="card-body">
+                <div className="contact-info">
+                  <div className="info-item">
+                    <FontAwesomeIcon icon={faEnvelope} />
+                    <span>{app.email}</span>
+                  </div>
+                  <div className="info-item">
+                    <FontAwesomeIcon icon={faPhone} />
+                    <span>{app.phone}</span>
+                  </div>
                 </div>
-              )}
+
+                <div className="application-date">
+                  {t("adminPage.career.submitted")}: {new Date(app.createdAt).toLocaleDateString("sr-RS")}
+                </div>
+              </div>
+
+              <div className="card-actions">
+                <button
+                  className="btn-view"
+                  onClick={() => setSelectedApplication(app)}
+                >
+                  <FontAwesomeIcon icon={faEye} />
+                  {t("adminPage.career.view")}
+                </button>
+
+                {app.cvUrl && (
+                  <a
+                    href={app.cvUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-download"
+                  >
+                    <FontAwesomeIcon icon={faDownload} />
+                    CV
+                  </a>
+                )}
+
+                {app.status === "pending" && (
+                  <div className="status-actions">
+                    <button
+                      className="btn-approve"
+                      onClick={() => updateApplicationStatus(app._id, "reviewed")}
+                      disabled={updatingStatus === app._id}
+                    >
+                      <FontAwesomeIcon icon={faCheck} />
+                    </button>
+                    <button
+                      className="btn-reject"
+                      onClick={() => updateApplicationStatus(app._id, "rejected")}
+                      disabled={updatingStatus === app._id}
+                    >
+                      <FontAwesomeIcon icon={faTimes} />
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      {applications.length === 0 && (
-        <div className="empty-state">
-          <FontAwesomeIcon icon={faBriefcase} size="3x" />
-          <h3>{t("adminPage.career.noApplications")}</h3>
-          <p>{t("adminPage.career.noApplicationsDesc")}</p>
-        </div>
-      )}
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="pagination">
-          <button 
-            className="pagination-btn" 
-            onClick={goToPrevious} 
-            disabled={currentPage === 1}
-          >
-            <FontAwesomeIcon icon={faChevronLeft} />
-          </button>
-          
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <button
-              key={page}
-              className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
-              onClick={() => goToPage(page)}
-            >
-              {page}
-            </button>
           ))}
-          
-          <button 
-            className="pagination-btn" 
-            onClick={goToNext} 
-            disabled={currentPage === totalPages}
-          >
-            <FontAwesomeIcon icon={faChevronRight} />
-          </button>
         </div>
-      )}
+
+        {applications.length === 0 && (
+          <div className="empty-state">
+            <FontAwesomeIcon icon={faBriefcase} size="3x" />
+            <h3>{t("adminPage.career.noApplications")}</h3>
+            <p>{t("adminPage.career.noApplicationsDesc")}</p>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="pagination">
+            <button 
+              className="pagination-btn" 
+              onClick={goToPrevious} 
+              disabled={currentPage === 1}
+            >
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+            
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+                onClick={() => goToPage(page)}
+              >
+                {page}
+              </button>
+            ))}
+            
+            <button 
+              className="pagination-btn" 
+              onClick={goToNext} 
+              disabled={currentPage === totalPages}
+            >
+              <FontAwesomeIcon icon={faChevronRight} />
+            </button>
+          </div>
+        )}
+      </div>
 
       {/* Application Details Modal */}
       {selectedApplication && (

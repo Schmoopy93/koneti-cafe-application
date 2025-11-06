@@ -111,8 +111,7 @@
             "🍽️ Prilagođeni meni i premium napici",
             "🎵 Profesionalna ambijentalna muzika i osvetljenje",
             "🎨 Elegantna dekoracija i postavka",
-            "📸 Fotografisanje i dodatne usluge",
-            "🏛️ Istorijski objekat u centru grada"
+            "📸 Fotografisanje i dodatne usluge"
           ],
           "price": "Od 35€ do 70€ po osobi",
           "extraInfo": "Savršeno za rođendane, godišnjice, privatne zabave i posebne proslave."
@@ -363,6 +362,7 @@
     }
   },
   "menu": {
+    "title": "Naš meni",
     "searchPlaceholder": "Pretražite piće...",
     "sortLabel": "Sortiraj po:",
     "sortOptions": {
@@ -374,7 +374,13 @@
       "prev": "Prethodni",
       "next": "Sledeći"
     },
-    "currency": "RSD"
+    "currency": "RSD",
+    "viewPDF": "Pogledaj meni",
+    "downloadPDF": "Preuzmi meni",
+    "noResults": "Nema rezultata",
+    "tryDifferent": "Pokušajte sa drugim pojmom",
+    "allCategories": "Sve kategorije",
+    "itemsFound": "stavki pronađeno"
   },
   "staffLogin": {
     "title": "Koneti Café",
@@ -394,7 +400,14 @@
     "stats": {
       "totalDrinks": "Ukupno pića",
       "totalCategories": "Kategorije",
-      "totalReservations": "Rezervacije"
+      "totalReservations": "Rezervacije",
+      "approved": "Odobreno",
+      "pending": "Na čekanju",
+      "trend": {
+        "up": "+12%",
+        "down": "Pad",
+        "stable": "Aktivno"
+      }
     },
     "loading": "Učitavanje...",
     "actions": {
@@ -444,7 +457,11 @@
     },
     "calendar": {
       "title": "Kalendar rezervacija",
-      "totalEvents": "Ukupno događaja:"
+      "totalEvents": "Ukupno događaja:",
+      "today": "Danas",
+      "month": "Mesec",
+      "week": "Nedelja",
+      "list": "Lista"
     },
     "event": {
       "businessMeeting": "Biznis sastanak",
@@ -473,9 +490,12 @@
     "accept": "Prihvatam"
   },
   "eventStats": {
-    "title": "📊 Statistika rezervacija",
+    "title": "Statistika rezervacija",
     "monthlyTitle": "Broj rezervacija po mesecu",
     "statusTitle": "Status rezervacija",
+    "typeTitle": "Tipovi rezervacija",
+
+    "weekdayTitle": "Rezervacije po danima u nedelji",
     "loading": "⏳ Učitavanje statistike...",
     "fetchError": "Greška pri učitavanju podataka.",
     "statuses": {
@@ -483,6 +503,19 @@
       "pending": "Na čekanju",
       "rejected": "Odbijeno",
       "cancelled": "Otkazano"
+    },
+    "types": {
+      "business": "Poslovni sastanci",
+      "experience": "Koneti Experience"
+    },
+    "weekdays": {
+      "monday": "Ponedeljak",
+      "tuesday": "Utorak",
+      "wednesday": "Sreda",
+      "thursday": "Četvrtak",
+      "friday": "Petak",
+      "saturday": "Subota",
+      "sunday": "Nedelja"
     }
   },
   "career": {
@@ -491,11 +524,6 @@
     "description": "Tražimo strastvene i posvećene ljude koji žele da budu deo našeg tima. Prijavite se i pokažite nam zašto ste savršen izbor za Koneti.",
     "joinTeam": "Pridružite se Koneti timu",
     "teamDescription": "Tražimo talentovane i motivišane ljude koji dele našu strast prema kvalitetu i gostoprimstvu",
-    "badges": {
-      "career": "💼 Karijera",
-      "development": "🌟 Razvoj",
-      "team": "🤝 Tim"
-    },
     "success": {
       "title": "Uspešno poslato!",
       "description": "Vaša prijava za posao je primljena. Kontaktiraćemo Vas uskoro. Proverite svoj email za potvrdu.",
@@ -537,19 +565,6 @@
       "coverLetter": "Motivaciono pismo je obavezno",
       "submitError": "Greška pri slanju prijave. Pokušajte ponovo.",
       "submitErrorGeneral": "Greška pri slanju prijave"
-    },
-    "positions": {
-      "waiter": "Konobar/Konobarica",
-      "barista": "Barista",
-      "cook": "Kuvar/Kuvarica",
-      "shiftManager": "Menadžer smene",
-      "cleaner": "Čistačica"
-    },
-    "departments": {
-      "service": "Usluga",
-      "kitchen": "Kuhinja",
-      "management": "Menadžment",
-      "maintenance": "Održavanje"
     }
   }
 }

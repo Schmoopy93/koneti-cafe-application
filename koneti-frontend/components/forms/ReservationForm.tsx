@@ -29,6 +29,7 @@ interface FormData {
   time: string;
   guests: number;
   message: string;
+  duration: number;
 }
 
 interface PopupData {
@@ -58,6 +59,7 @@ export default function ReservationForm() {
     time: "",
     guests: 1,
     message: "",
+    duration: 2,
   });
 
   const [formErrors, setFormErrors] = useState<FormErrors>({});
@@ -150,6 +152,7 @@ export default function ReservationForm() {
       time: "",
       guests: 1,
       message: "",
+      duration: type === "business" ? 2 : 3,
     });
     setFormErrors({});
     setShowEventForm(false);
@@ -204,11 +207,15 @@ export default function ReservationForm() {
       const selectedDate = new Date(formData.date);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      const minDate = new Date(today);
-      minDate.setDate(today.getDate() + 2);
       
-      if (selectedDate < minDate) {
-        errors.date = t("home.reservation.errors.dateMinimum");
+      // Only Koneti Experience events require 2-day advance booking
+      if (formData.type === "experience") {
+        const minDate = new Date(today);
+        minDate.setDate(today.getDate() + 2);
+        
+        if (selectedDate < minDate) {
+          errors.date = t("home.reservation.errors.dateMinimum");
+        }
       }
     }
     if (!formData.time) errors.time = t("home.reservation.errors.time");
@@ -250,6 +257,7 @@ export default function ReservationForm() {
         time: "",
         guests: 1,
         message: "",
+        duration: 2,
       });
       setFormErrors({});
       setShowEventForm(false);

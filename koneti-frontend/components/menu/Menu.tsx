@@ -23,6 +23,10 @@ import {
   faChevronRight,
   faSearch,
   faSort,
+  faFilePdf,
+  faDownload,
+  faEye,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import "./Menu.scss";
@@ -81,6 +85,8 @@ const MenuClient: React.FC<MenuClientProps> = ({
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("name");
   const [mounted, setMounted] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<{src: string, name: string} | null>(null);
   const itemsPerPage = 8;
 
   // Responsive check
@@ -154,6 +160,7 @@ const MenuClient: React.FC<MenuClientProps> = ({
                   activeCategory === cat._id ? "active" : ""
                 }`}
                 onClick={() => setSelectedCategory(cat._id)}
+                title={getCategoryName(cat)}
               >
                 {cat.icon && (
                   <FontAwesomeIcon
@@ -162,6 +169,9 @@ const MenuClient: React.FC<MenuClientProps> = ({
                   />
                 )}
                 <span>{getCategoryName(cat)}</span>
+                <span className="category-count">
+                  {drinks.filter(d => d.category?._id === cat._id).length}
+                </span>
               </button>
             ))}
           </div>
@@ -202,67 +212,139 @@ const MenuClient: React.FC<MenuClientProps> = ({
               ? getCategoryName(activeCategoryObj)
               : t("menu.title")}
           </span>
+          {filteredDrinks.length > 0 && (
+            <span className="results-count">
+              ({filteredDrinks.length} {t("menu.itemsFound")})
+            </span>
+          )}
         </h2>
 
-        <div className="search-container">
-          <FontAwesomeIcon icon={faSearch} className="search-icon" />
-          <input
-            type="text"
-            className="search-input"
-            placeholder={t("menu.searchPlaceholder")}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div className="menu-controls">
+          <div className="search-filter-row">
+            <div className="search-container">
+              <FontAwesomeIcon icon={faSearch} className="search-icon" />
+              <input
+                type="text"
+                className="search-input"
+                placeholder={t("menu.searchPlaceholder")}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              {searchTerm && (
+                <button 
+                  className="clear-search"
+                  onClick={() => setSearchTerm('')}
+                >
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              )}
+            </div>
+
+            <div className="filter-container">
+              <FontAwesomeIcon icon={faSort} className="filter-icon" />
+              <select
+                className="filter-dropdown"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value="name">{t("menu.sortOptions.name")}</option>
+                <option value="price-low">{t("menu.sortOptions.priceLow")}</option>
+                <option value="price-high">
+                  {t("menu.sortOptions.priceHigh")}
+                </option>
+              </select>
+            </div>
+          </div>
+          
+          <div className="pdf-menu-container">
+            <button 
+              className="pdf-menu-btn view-pdf"
+              onClick={() => window.open('/Cenovnik.pdf', '_blank')}
+            >
+              <FontAwesomeIcon icon={faEye} />
+              <span>{t("menu.viewPDF")}</span>
+            </button>
+            <button 
+              className="pdf-menu-btn download-pdf"
+              onClick={() => {
+                const link = document.createElement('a');
+                link.href = '/Cenovnik.pdf';
+                link.download = 'Koneti-Cenovnik.pdf';
+                link.click();
+              }}
+            >
+              <FontAwesomeIcon icon={faDownload} />
+              <span>{t("menu.downloadPDF")}</span>
+            </button>
+          </div>
         </div>
 
-        <div className="filter-container">
-          <FontAwesomeIcon icon={faSort} className="filter-icon" />
-          <label className="filter-label">{t("menu.sortLabel")}</label>
-          <select
-            className="filter-dropdown"
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-          >
-            <option value="name">{t("menu.sortOptions.name")}</option>
-            <option value="price-low">{t("menu.sortOptions.priceLow")}</option>
-            <option value="price-high">
-              {t("menu.sortOptions.priceHigh")}
-            </option>
-          </select>
-        </div>
-
-        <div className="drinks-grid">
-          {currentDrinks.map((drink, index) => (
+        {filteredDrinks.length === 0 ? (
+          <div className="no-results">
+            <div className="no-results-icon">🔍</div>
+            <h3>{t("menu.noResults")}</h3>
+            <p>{t("menu.tryDifferent")}</p>
+          </div>
+        ) : (
+          <div className="drinks-grid">
+            {currentDrinks.map((drink, index) => (
             <motion.div
               key={drink._id}
               className="drink-card"
-              initial={mounted ? { opacity: 0, y: 40 } : false}
-              animate={mounted ? { opacity: 1, y: 0 } : {}}
+              initial={mounted ? { opacity: 0, y: 40, scale: 0.9 } : false}
+              animate={mounted ? { opacity: 1, y: 0, scale: 1 } : {}}
               transition={{
-                duration: 1.1,
-                delay: index * 0.08,
-                ease: [0.22, 1, 0.36, 1],
+                duration: 0.8,
+                delay: index * 0.1,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
+              whileHover={{
+                y: -8,
+                scale: 1.03,
+                transition: { duration: 0.3 }
               }}
             >
-              <div className="image-container">
-                {drink.image && (
-                  <img
-                    src={drink.image}
-                    alt={drink.name}
-                    className="drink-img"
-                    loading="lazy"
-                  />
-                )}
-              </div>
-              <div className="card-content">
-                <h3>{drink.name}</h3>
-                <div className="price">
-                  {drink.price} {t("menu.currency")}
+              <div className="card-inner">
+                <div className="image-container">
+                  {drink.image ? (
+                    <img
+                      src={drink.image}
+                      alt={drink.name}
+                      className="drink-img"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="placeholder-image">
+                      <FontAwesomeIcon icon={faCoffee} />
+                    </div>
+                  )}
+                  <div className="card-overlay">
+                    <button 
+                      className="view-details"
+                      onClick={() => {
+                        if (drink.image) {
+                          setSelectedImage({src: drink.image, name: drink.name});
+                          setShowImageModal(true);
+                        }
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faEye} />
+                    </button>
+                  </div>
+                </div>
+                <div className="card-content">
+                  <h3>{drink.name}</h3>
+                  <div className="price-container">
+                    <span className="price">
+                      {drink.price} {t("menu.currency")}
+                    </span>
+                  </div>
                 </div>
               </div>
             </motion.div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {filteredDrinks.length > itemsPerPage && (
           <div className="pagination-controls">
@@ -280,6 +362,18 @@ const MenuClient: React.FC<MenuClientProps> = ({
           </div>
         )}
       </motion.main>
+      
+      {showImageModal && selectedImage && (
+        <div className="image-modal-backdrop" onClick={() => setShowImageModal(false)}>
+          <div className="image-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowImageModal(false)}>
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+            <img src={selectedImage.src} alt={selectedImage.name} />
+            <h3>{selectedImage.name}</h3>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

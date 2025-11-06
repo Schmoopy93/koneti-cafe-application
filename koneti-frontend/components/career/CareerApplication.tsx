@@ -142,13 +142,11 @@ const CareerApplication: React.FC<CareerApplicationProps> = ({ onSubmit }) => {
       <div className="career-application-container">
         <div className={`page-header ${isLoaded ? 'loaded' : ''}`}>
           <div className="header-content">
-            <h1>{t('career.joinTeam')}</h1>
-            <div className="header-badges">
-              <span className="badge">{t('career.badges.career')}</span>
-              <span className="badge">{t('career.badges.development')}</span>
-              <span className="badge">{t('career.badges.team')}</span>
-            </div>
-            <p>{t('career.teamDescription')}</p>
+            <h1>
+              <FontAwesomeIcon icon={faBriefcase} className="title-icon" />
+              {t('career.joinTeam')}
+            </h1>
+            <p className="team-description">{t('career.teamDescription')}</p>
           </div>
         </div>
 
