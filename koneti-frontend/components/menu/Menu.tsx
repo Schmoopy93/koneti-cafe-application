@@ -89,15 +89,13 @@ const MenuClient: React.FC<MenuClientProps> = ({
   const [selectedImage, setSelectedImage] = useState<{src: string, name: string} | null>(null);
   const itemsPerPage = 8;
 
-  // Responsive check
   useEffect(() => {
+    setMounted(true);
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  useEffect(() => setMounted(true), []);
 
   const activeCategory = selectedCategory || categories[0]?._id || "";
   const activeCategoryObj = categories.find(

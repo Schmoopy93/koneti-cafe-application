@@ -131,3 +131,34 @@ export const updateCareerApplicationStatus = async (req, res) => {
     });
   }
 };
+
+export const deleteCareerApplication = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const application = await Career.findById(id);
+    
+    if (!application) {
+      return res.status(404).json({
+        success: false,
+        message: "Prijava nije pronađena."
+      });
+    }
+    
+    // Obriši CV iz cloudinary-ja ako postoji
+    if (application.cloudinary_id) {
+      await cloudinary.uploader.destroy(application.cloudinary_id);
+    }
+    
+    await Career.findByIdAndDelete(id);
+    
+    logger.info(`Career application ${id} deleted`);
+    res.json({ success: true, message: "Prijava je obrisana." });
+  } catch (error) {
+    logger.error("Error deleting career application:", error);
+    res.status(500).json({
+      success: false,
+      message: "Greška prilikom brisanja prijave."
+    });
+  }
+};

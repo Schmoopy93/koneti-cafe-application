@@ -130,14 +130,14 @@ export default function AddCategory({ onClose, onSuccess }: AddCategoryProps) {
 
       if (res.ok) {
         const data = await res.json();
-        toast.success(t("admin.addCategory.errors.categoryAdded"));
+        toast.success("Kategorija je uspešno dodana!");
         setFormData({ name: "", icon: "" });
         setErrors({});
         setShakeFields({});
         if (onSuccess) onSuccess(data);
       } else {
         const err = await res.json();
-        toast.error(err.message || t("admin.addCategory.errors.addCategoryError"));
+        toast.error(err.message || "Greška pri dodavanju kategorije!");
       }
     } catch (err) {
       console.error(err);

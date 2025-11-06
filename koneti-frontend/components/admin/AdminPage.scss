@@ -264,15 +264,16 @@ $border: rgba(207, 166, 138, 0.2);
         top: -1rem;
         right: -1rem;
         display: flex;
-        gap: 0.5rem;
+        flex-direction: column;
+        gap: 0.3rem;
         
         .pending-count, .approved-count {
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 0.4rem;
-          border-radius: 8px;
-          min-width: 50px;
+          padding: 0.3rem 0.5rem;
+          border-radius: 6px;
+          min-width: 45px;
         }
         
         .count-number {
@@ -422,6 +423,28 @@ $border: rgba(207, 166, 138, 0.2);
       
       &:hover svg {
         color: #2980b9;
+        transform: scale(1.1);
+      }
+    }
+    
+    &.menu-card {
+      > svg {
+        color: #cfa68a !important;
+      }
+      
+      &:hover > svg {
+        color: #d4a574 !important;
+        transform: scale(1.1);
+      }
+    }
+    
+    &.calendar-card {
+      > svg {
+        color: #d4a574 !important;
+      }
+      
+      &:hover > svg {
+        color: #cfa68a !important;
         transform: scale(1.1);
       }
     }
@@ -925,6 +948,16 @@ $border: rgba(207, 166, 138, 0.2);
           transform: scale(1.05);
         }
       }
+
+      .btn-delete {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+
+        &:hover {
+          background: linear-gradient(135deg, #c0392b, #a93226);
+          transform: scale(1.05);
+        }
+      }
     }
   }
 }
@@ -963,6 +996,78 @@ $border: rgba(207, 166, 138, 0.2);
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   🗑️ DELETE CONFIRMATION POPUP
+========================================= */
+.delete-confirm-popup {
+  @include modal-gradient;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(90, 62, 54, 0.4);
+  border: 2px solid #e9d9c6;
+  animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: center;
+  
+  h3 {
+    color: #e74c3c;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  
+  p {
+    color: #5a3e36;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+  
+  .confirm-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    
+    .btn-cancel {
+      background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: linear-gradient(135deg, #7f8c8d, #6c7b7d);
+        transform: translateY(-2px);
+      }
+    }
+    
+    .btn-confirm {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: linear-gradient(135deg, #c0392b, #a93226);
+        transform: translateY(-2px);
+      }
+      
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+    }
   }
 }
 
@@ -1248,4 +1353,21 @@ $border: rgba(207, 166, 138, 0.2);
       }
     }
   }
+}
+
+/* Force icon colors */
+.action-card.menu-card .card-icon-wrapper svg {
+  color: #cfa68a !important;
+}
+
+.action-card.calendar-card .card-icon-wrapper svg {
+  color: #d4a574 !important;
+}
+
+.action-card.menu-card:hover .card-icon-wrapper svg {
+  color: #d4a574 !important;
+}
+
+.action-card.calendar-card:hover .card-icon-wrapper svg {
+  color: #cfa68a !important;
 }

@@ -50,12 +50,20 @@ export default function AddDrink({
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // 🔹 Učitaj kategorije i ako je edit - popuni formu
   useEffect(() => {
-    apiRequest("/categories")
-      .then((res) => res.json())
-      .then((data) => setCategories(data))
-      .catch(console.error);
+    const fetchCategories = async () => {
+      try {
+        const res = await apiRequest("/categories");
+        if (res.ok) {
+          const data = await res.json();
+          setCategories(data);
+        }
+      } catch (error) {
+        console.error("Greška pri učitavanju kategorija:", error);
+      }
+    };
+    
+    fetchCategories();
 
     if (editData) {
       setFormData({
@@ -165,11 +173,11 @@ export default function AddDrink({
       });
       if (res.ok) {
         const data = await res.json();
-        toast.success(editData ? t("admin.addDrink.errors.drinkUpdated") : t("admin.addDrink.errors.drinkAdded"));
+        toast.success(editData ? "Piće je uspešno ažurirano!" : "Piće je uspešno dodato!");
         onSuccess?.(data);
         onClose();
       } else {
-        toast.error(t("admin.addDrink.errors.sendDataError"));
+        toast.error("Greška pri čuvanju pića!");
       }
     } catch (err) {
       console.error(err);

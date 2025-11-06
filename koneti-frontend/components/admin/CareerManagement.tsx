@@ -20,6 +20,7 @@ import {
   faChevronLeft,
   faChevronRight,
   faPlus,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import Spinner from "../ui/Spinner";
 import { apiRequest } from "@/utils/api";
@@ -42,7 +43,10 @@ interface CareerApplication {
 
 interface Position {
   _id: string;
-  title: string;
+  title: {
+    sr: string;
+    en?: string;
+  };
 }
 
 const CareerManagement: React.FC = () => {
@@ -51,10 +55,12 @@ const CareerManagement: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [selectedApplication, setSelectedApplication] = useState<CareerApplication | null>(null);
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<CareerApplication | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [showAddPosition, setShowAddPosition] = useState(false);
   const [newPosition, setNewPosition] = useState({ title: '' });
   const [positions, setPositions] = useState<Position[]>([]);
+  const [positionError, setPositionError] = useState('');
   const itemsPerPage = 4;
 
   useEffect(() => {
@@ -64,14 +70,16 @@ const CareerManagement: React.FC = () => {
 
   const fetchApplications = async () => {
     try {
+      setLoading(true);
       const response = await apiRequest("/career", { useToken: true });
       if (response.ok) {
         const data = await response.json();
         setApplications(data);
+      } else {
+        console.error('Greška pri učitavanju prijava:', response.status);
       }
     } catch (error) {
-      console.error("Error fetching applications:", error);
-      toast.error(t("adminPage.career.fetchError"));
+      console.error("Greška pri učitavanju prijava:", error);
     } finally {
       setLoading(false);
     }
@@ -85,26 +93,27 @@ const CareerManagement: React.FC = () => {
         setPositions(data);
       }
     } catch (error) {
-      console.error("Error fetching positions:", error);
+      console.error("Greška pri učitavanju pozicija:", error);
     }
   };
 
   const handleAddPosition = async () => {
-    if (!newPosition.title) {
-      toast.error(t("adminPage.career.enterPositionName"));
+    if (!newPosition.title.trim()) {
+      setPositionError(t("adminPage.career.enterPositionName"));
       return;
     }
 
     try {
       const response = await apiRequest("/positions", {
         method: "POST",
-        body: JSON.stringify(newPosition),
+        body: JSON.stringify({ title: newPosition.title }),
         useToken: true,
       });
 
       if (response.ok) {
         toast.success(t("adminPage.career.positionAdded"));
         setNewPosition({ title: '' });
+        setPositionError('');
         setShowAddPosition(false);
         fetchPositions();
       } else {
@@ -138,6 +147,30 @@ const CareerManagement: React.FC = () => {
     } catch (error) {
       console.error("Error updating status:", error);
       toast.error(t("adminPage.career.statusUpdateError"));
+    } finally {
+      setUpdatingStatus(null);
+    }
+  };
+
+  const deleteApplication = async (id: string) => {
+    setUpdatingStatus(id);
+    try {
+      const response = await apiRequest(`/career/${id}`, {
+        method: "DELETE",
+        useToken: true,
+      });
+
+      if (response.ok) {
+        await fetchApplications();
+        toast.success(t("adminPage.career.applicationDeleted"));
+        setSelectedApplication(null);
+        setShowDeleteConfirm(null);
+      } else {
+        toast.error(t("adminPage.career.deleteError"));
+      }
+    } catch (error) {
+      console.error("Error deleting application:", error);
+      toast.error(t("adminPage.career.deleteError"));
     } finally {
       setUpdatingStatus(null);
     }
@@ -221,16 +254,25 @@ const CareerManagement: React.FC = () => {
               type="text"
               placeholder={t("adminPage.career.positionPlaceholder")}
               value={newPosition.title}
-              onChange={(e) => setNewPosition({title: e.target.value})}
+              onChange={(e) => {
+                setNewPosition({title: e.target.value});
+                if (positionError) setPositionError('');
+              }}
               onKeyPress={(e) => e.key === 'Enter' && handleAddPosition()}
+              className={positionError ? 'error' : ''}
             />
             <button className="btn-submit-position" onClick={handleAddPosition}>
               ✓
             </button>
-            <button className="btn-cancel" onClick={() => setShowAddPosition(false)}>
+            <button className="btn-cancel" onClick={() => {
+              setShowAddPosition(false);
+              setPositionError('');
+              setNewPosition({ title: '' });
+            }}>
               ×
             </button>
           </div>
+          {positionError && <span className="error-text">{positionError}</span>}
         </div>
       )}
 
@@ -307,6 +349,14 @@ const CareerManagement: React.FC = () => {
                     </button>
                   </div>
                 )}
+
+                <button
+                  className="btn-delete"
+                  onClick={() => setShowDeleteConfirm(app)}
+                  disabled={updatingStatus === app._id}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
               </div>
             </div>
           ))}
@@ -402,7 +452,40 @@ const CareerManagement: React.FC = () => {
                     </button>
                   ))}
                 </div>
+                <button
+                  className="btn-delete-modal"
+                  onClick={() => setShowDeleteConfirm(selectedApplication)}
+                  disabled={updatingStatus === selectedApplication._id}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                  {t("adminPage.career.deleteApplication")}
+                </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="modal-overlay" onClick={() => setShowDeleteConfirm(null)}>
+          <div className="delete-confirm-popup" onClick={(e) => e.stopPropagation()}>
+            <h3>{t("adminPage.career.deleteConfirm.title")}</h3>
+            <p>{t("adminPage.career.deleteConfirm.message")}</p>
+            <div className="confirm-actions">
+              <button
+                className="btn-cancel"
+                onClick={() => setShowDeleteConfirm(null)}
+              >
+                {t("adminPage.career.deleteConfirm.cancel")}
+              </button>
+              <button
+                className="btn-confirm"
+                onClick={() => deleteApplication(showDeleteConfirm._id)}
+                disabled={updatingStatus === showDeleteConfirm._id}
+              >
+                {updatingStatus === showDeleteConfirm._id ? t("adminPage.actions.updating") : t("adminPage.career.deleteConfirm.delete")}
+              </button>
             </div>
           </div>
         </div>

@@ -8,7 +8,10 @@ import './CareerApplication.scss';
 
 interface JobPosition {
   _id: string;
-  title: string;
+  title: {
+    sr: string;
+    en?: string;
+  };
 }
 
 interface ApplicationData {
@@ -26,7 +29,7 @@ interface CareerApplicationProps {
 }
 
 const CareerApplication: React.FC<CareerApplicationProps> = ({ onSubmit }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [availablePositions, setAvailablePositions] = useState<JobPosition[]>([]);
 
   const [formData, setFormData] = useState<ApplicationData>({
@@ -164,8 +167,8 @@ const CareerApplication: React.FC<CareerApplicationProps> = ({ onSubmit }) => {
             >
               <option value="">{t('career.form.selectPosition')}</option>
               {availablePositions.map(pos => (
-                <option key={pos._id} value={pos.title}>
-                  {pos.title}
+                <option key={pos._id} value={pos.title.sr}>
+                  {i18n.language === 'en' && pos.title.en ? pos.title.en : pos.title.sr}
                 </option>
               ))}
             </select>

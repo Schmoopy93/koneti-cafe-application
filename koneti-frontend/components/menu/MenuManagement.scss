@@ -278,6 +278,43 @@ $radius-md: 12px;
     justify-items: center;
     width: 100%;
     min-height: 300px;
+    
+    .no-results {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      background: linear-gradient(145deg, #ffffff 0%, #fdfaf6 30%, #f8f5f1 70%, #f0ebe4 100%);
+      border-radius: 20px;
+      border: 2px solid rgba(207, 166, 138, 0.2);
+      box-shadow: 0 8px 30px rgba(207, 166, 138, 0.15);
+      padding: 2rem;
+      text-align: center;
+
+      .no-results-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 4px 8px rgba(207, 166, 138, 0.3));
+      }
+
+      h3 {
+        color: #3d2f28;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0 0 0.8rem 0;
+        font-family: "Poppins", sans-serif;
+      }
+
+      p {
+        color: rgba(61, 47, 40, 0.7);
+        font-size: 1rem;
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        line-height: 1.5;
+      }
+    }
   }
 
   /* Card styling */

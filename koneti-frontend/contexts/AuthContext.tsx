@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import { useRouter } from "next/navigation";
 import { apiRequest } from "@/utils/api";
+import { setCookie, getCookie, deleteCookie } from "@/utils/cookies";
 
 interface Admin {
   _id: string;
@@ -79,8 +80,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (res.ok) {
         const data = await res.json();
         
-        // Sačuvaj token za mobilne uređaje
+        // Sačuvaj token u secure cookie
         if (data.token) {
+          setCookie('adminToken', data.token, {
+            expires: 7, // 7 days
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/'
+          });
+          // Fallback za localStorage (mobilni uređaji)
           localStorage.setItem('adminToken', data.token);
         }
         
@@ -105,7 +113,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         method: "POST",
       });
       
-      // Ukloni token iz localStorage
+      // Ukloni token iz cookies i localStorage
+      deleteCookie('adminToken');
       localStorage.removeItem('adminToken');
       
       setUser(null);
@@ -114,6 +123,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (err) {
       console.error("Greška prilikom logout-a:", err);
       // Ukloni token čak i ako logout zahtev ne uspe
+      deleteCookie('adminToken');
       localStorage.removeItem('adminToken');
     }
   };

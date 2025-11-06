@@ -48,7 +48,7 @@ export default function Offer() {
       features: getFeatures('home.offer.services.business.features'),
       icon: "💼",
       img: "/business-meeting.jpg",
-      link: "/reservation",
+      link: "/reservation?type=business",
       linkText: t('home.offer.services.business.linkText'),
       color: "#2C3E50"
     },
@@ -59,7 +59,7 @@ export default function Offer() {
       features: getFeatures('home.offer.services.party.features'),
       icon: "🎉",
       img: "/party.jpg",
-      link: "/reservation",
+      link: "/reservation?type=experience",
       linkText: t('home.offer.services.party.linkText'),
       color: "#E74C3C"
     },

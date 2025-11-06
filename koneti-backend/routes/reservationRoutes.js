@@ -1,5 +1,5 @@
 import express from "express";
-import { createReservation, getReservations, updateReservationStatus, checkAvailability } from "../controllers/reservationController.js";
+import { createReservation, getReservations, updateReservationStatus, deleteReservation, checkAvailability } from "../controllers/reservationController.js";
 import { validateReservation, validateObjectId } from '../middleware/inputValidation.js';
 
 import { reservationLimiter, generalLimiter } from "../middleware/security.js";
@@ -19,5 +19,8 @@ router.get("/", protectAdmin, generalLimiter, getReservations);
 
 // Update reservation status by ID (admin only)
 router.patch("/:id", protectAdmin, generalLimiter, validateObjectId, updateReservationStatus);
+
+// Delete reservation by ID (admin only)
+router.delete("/:id", protectAdmin, generalLimiter, validateObjectId, deleteReservation);
 
 export default router;

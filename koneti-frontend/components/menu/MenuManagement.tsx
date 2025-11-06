@@ -209,6 +209,12 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
         <div className="admin-drinks-grid">
           {isLoading ? (
             <Spinner size="md" text="Loading drinks..." />
+          ) : paginatedDrinks.length === 0 ? (
+            <div className="no-results">
+              <div className="no-results-icon">🍸</div>
+              <h3>{t("menu.noArticles")}</h3>
+              <p>{t("menu.noArticlesDesc")}</p>
+            </div>
           ) : (
             paginatedDrinks.map((drink) => (
               <div key={drink._id} className="admin-drink-card">

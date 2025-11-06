@@ -36,6 +36,21 @@ export default function EventStatsPage() {
 
   if (loading) return <Spinner size="lg" text={t("eventStats.loading")} />;
 
+  if (!events || events.length === 0) {
+    return (
+      <ProtectedRoute>
+        <div className="event-stats">
+          <h2>{t("eventStats.title")}</h2>
+          <div className="no-results">
+            <div className="no-results-icon">📊</div>
+            <h3>Nema podataka za prikaz</h3>
+            <p>Trenutno nema rezervacija za analizu statistika.</p>
+          </div>
+        </div>
+      </ProtectedRoute>
+    );
+  }
+
   return (
     <ProtectedRoute>
       <EventStats events={events} />

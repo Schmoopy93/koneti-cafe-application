@@ -172,6 +172,30 @@ export const updateReservationStatus = async (req, res) => {
   }
 };
 
+export const deleteReservation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const reservation = await Reservation.findByIdAndDelete(id);
+    
+    if (!reservation) {
+      return res.status(404).json({
+        success: false,
+        message: "Rezervacija nije pronađena."
+      });
+    }
+    
+    logger.info(`Reservation ${id} deleted`);
+    res.json({ success: true, message: "Rezervacija je obrisana." });
+  } catch (error) {
+    logger.error("Error deleting reservation:", error);
+    res.status(500).json({
+      success: false,
+      message: "Greška prilikom brisanja rezervacije."
+    });
+  }
+};
+
 export const checkAvailability = async (req, res) => {
   try {
     const { date } = req.query;

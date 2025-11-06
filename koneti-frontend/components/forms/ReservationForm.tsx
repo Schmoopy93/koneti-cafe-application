@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent, MouseEvent } from "react";
-import { useRouter } from "next/navigation";
+import { useState, ChangeEvent, FormEvent, MouseEvent, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -47,6 +47,7 @@ type ShakeFields = Partial<
 
 export default function ReservationForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { t } = useTranslation();
 
   const [formData, setFormData] = useState<FormData>({
@@ -69,6 +70,13 @@ export default function ReservationForm() {
   const [shakeFields, setShakeFields] = useState<ShakeFields>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+
+  useEffect(() => {
+    const typeParam = searchParams.get('type');
+    if (typeParam && (typeParam === 'business' || typeParam === 'experience')) {
+      handleTypeSelect(typeParam);
+    }
+  }, [searchParams]);
 
   const types = [
     {
@@ -208,10 +216,18 @@ export default function ReservationForm() {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       
-      // Only Koneti Experience events require 2-day advance booking
-      if (formData.type === "experience") {
+      let daysRequired = 0;
+      if (formData.subType === "business_high" || 
+          formData.subType === "experience_start" || 
+          formData.subType === "experience_classic") {
+        daysRequired = 2;
+      } else if (formData.subType === "experience_celebration") {
+        daysRequired = 7;
+      }
+      
+      if (daysRequired > 0) {
         const minDate = new Date(today);
-        minDate.setDate(today.getDate() + 2);
+        minDate.setDate(today.getDate() + daysRequired);
         
         if (selectedDate < minDate) {
           errors.date = t("home.reservation.errors.dateMinimum");
@@ -238,13 +254,12 @@ export default function ReservationForm() {
     try {
       const res = await apiRequest('/reservations', {
         method: "POST",
-        body: JSON.stringify(formData),
-        useToken: false
+        body: JSON.stringify(formData)
       });
       
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.message || t("home.reservation.errors.submitError"));
+        throw new Error(errorData.message || "Greška pri slanju rezervacije!");
       }
 
       setFormData({

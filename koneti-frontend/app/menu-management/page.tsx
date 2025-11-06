@@ -33,15 +33,6 @@ export default async function Page() {
       <ProtectedRoute>
         <MenuManagementPage drinks={drinks} categories={categories} />
       </ProtectedRoute>
-
-      {(!drinks.length || !categories.length) && (
-        <div className="data-fallback">
-          ⚠️{" "}
-          {drinks.length === 0 && categories.length === 0
-            ? "Nema dostupnih podataka. API možda nije aktivan."
-            : "Neki podaci nisu mogli da se učitaju."}
-        </div>
-      )}
     </main>
   );
 }

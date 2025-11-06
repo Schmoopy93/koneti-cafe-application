@@ -12,6 +12,8 @@ const getApiUrl = () => {
   }
 };
 
+
+
 interface ApiOptions extends RequestInit {
   useToken?: boolean;
   requireCSRF?: boolean;
@@ -49,14 +51,20 @@ export const clearCSRFToken = () => {
 };
 
 export const apiRequest = async (endpoint: string, options: ApiOptions = {}) => {
-  try {
-    const { useToken = true, requireCSRF = false, ...fetchOptions } = options;
-    
-    const apiUrl = getApiUrl();
-    if (!apiUrl || apiUrl === 'undefined' || apiUrl === 'null') {
-      console.error('API URL is not properly configured:', apiUrl);
-      throw new Error('API URL is not configured');
-    }
+  const maxRetries = 3;
+  let retryCount = 0;
+  
+  const makeRequest = async (): Promise<Response> => {
+    try {
+      const { useToken = true, requireCSRF = false, ...fetchOptions } = options;
+      
+      const apiUrl = getApiUrl();
+      if (!apiUrl || apiUrl === 'undefined' || apiUrl === 'null') {
+        console.error('API URL is not properly configured:', apiUrl);
+        throw new Error('API URL is not configured');
+      }
+      
+
     
     // Osnovne opcije
     const requestOptions: RequestInit = {
@@ -78,7 +86,13 @@ export const apiRequest = async (endpoint: string, options: ApiOptions = {}) => 
 
     // Dodaj token ako je potreban i dostupan
     if (useToken && typeof window !== 'undefined') {
-      const token = localStorage.getItem('adminToken');
+      // Prvo pokušaj da učitaš iz cookies, zatim iz localStorage
+      const { getCookie } = await import('./cookies');
+      let token = getCookie('adminToken');
+      if (!token) {
+        token = localStorage.getItem('adminToken');
+      }
+      
       if (token) {
         requestOptions.headers = {
           ...requestOptions.headers,
@@ -98,12 +112,24 @@ export const apiRequest = async (endpoint: string, options: ApiOptions = {}) => 
       }
     }
 
-    const fullUrl = `${apiUrl}${endpoint}`;
-    console.log('Making request to:', fullUrl);
-    const response = await fetch(fullUrl, requestOptions);
+      const fullUrl = `${apiUrl}${endpoint}`;
+      console.log('Making request to:', fullUrl);
+      
+      // Add timeout to prevent hanging requests
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
+      const response = await fetch(fullUrl, {
+        ...requestOptions,
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
     
     // Ukloni nevaži token ako je 401
     if (response.status === 401 && typeof window !== 'undefined') {
+      const { deleteCookie } = await import('./cookies');
+      deleteCookie('adminToken');
       localStorage.removeItem('adminToken');
       clearCSRFToken();
     }
@@ -121,16 +147,35 @@ export const apiRequest = async (endpoint: string, options: ApiOptions = {}) => 
       }
     }
     
-    return response;
-  } catch (error) {
-    // Tiho fail za CORS/network greške
-    if (error instanceof TypeError && error.message.includes('fetch')) {
-      console.warn('Backend server not available');
-    } else {
-      console.error('API request failed:', error);
+      return response;
+    } catch (error) {
+      // Handle different types of errors
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          console.warn(`Request timeout for ${endpoint}`);
+        } else if (error.message.includes('fetch') || error.message.includes('Failed to fetch')) {
+          console.warn(`Network error for ${endpoint}:`, error.message);
+        } else {
+          console.error(`API request failed for ${endpoint}:`, error.message);
+        }
+      }
+      
+      // Retry logic for network errors (but not for health checks)
+      if (retryCount < maxRetries && 
+          !endpoint.includes('/health') &&
+          (error instanceof TypeError || 
+           (error instanceof Error && (error.name === 'AbortError' || error.message.includes('fetch'))))) {
+        retryCount++;
+        console.log(`Retrying request ${retryCount}/${maxRetries} for ${endpoint}`);
+        await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+        return makeRequest();
+      }
+      
+      throw error;
     }
-    throw error;
-  }
+  };
+  
+  return makeRequest();
 };
 
 export const API_URL = getApiUrl();

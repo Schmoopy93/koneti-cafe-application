@@ -42,6 +42,28 @@ const COLORS = {
 
 const EventStats: React.FC<EventStatsProps> = ({ events }) => {
   const { t, i18n } = useTranslation();
+  const [selectedYear, setSelectedYear] = React.useState<string>('all');
+
+  const availableYears = useMemo(() => {
+    const years = new Set<number>();
+    events.forEach((ev) => {
+      if (!ev?.date) return;
+      const date = new Date(ev.date);
+      if (!isNaN(date.getTime())) {
+        years.add(date.getFullYear());
+      }
+    });
+    return Array.from(years).sort((a, b) => b - a);
+  }, [events]);
+
+  const filteredEvents = useMemo(() => {
+    if (selectedYear === 'all') return events;
+    return events.filter((ev) => {
+      if (!ev?.date) return false;
+      const date = new Date(ev.date);
+      return !isNaN(date.getTime()) && date.getFullYear() === parseInt(selectedYear);
+    });
+  }, [events, selectedYear]);
 
   const monthlyData = useMemo(() => {
     const months = Array.from({ length: 12 }, (_, i) => ({
@@ -49,7 +71,7 @@ const EventStats: React.FC<EventStatsProps> = ({ events }) => {
       count: 0,
     }));
 
-    events.forEach((ev) => {
+    filteredEvents.forEach((ev) => {
       if (!ev?.date) return;
       const date = new Date(ev.date);
       if (!isNaN(date.getTime())) {
@@ -59,12 +81,12 @@ const EventStats: React.FC<EventStatsProps> = ({ events }) => {
     });
 
     return months;
-  }, [events, i18n.language]);
+  }, [filteredEvents, i18n.language]);
 
   const statusData = useMemo(() => {
     const stats = { approved: 0, pending: 0, rejected: 0 };
 
-    events.forEach((ev) => {
+    filteredEvents.forEach((ev) => {
       if (ev?.status) {
         const key = ev.status as keyof typeof stats;
         if (key in stats) {
@@ -79,11 +101,11 @@ const EventStats: React.FC<EventStatsProps> = ({ events }) => {
       name: t(`eventStats.statuses.${key}`),
       value: stats[key as keyof typeof stats],
     }));
-  }, [events, t]);
+  }, [filteredEvents, t]);
 
   const typeData = useMemo(() => {
     const stats = { business: 0, experience: 0 };
-    events.forEach((ev) => {
+    filteredEvents.forEach((ev) => {
       if (ev?.type) {
         const key = ev.type === 'biznis' ? 'business' : ev.type;
         if (key in stats) {
@@ -96,13 +118,13 @@ const EventStats: React.FC<EventStatsProps> = ({ events }) => {
       name: t(`eventStats.types.${key}`),
       value: stats[key as keyof typeof stats],
     }));
-  }, [events, t]);
+  }, [filteredEvents, t]);
 
   const weekdayData = useMemo(() => {
     const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
     const stats = days.reduce((acc, day) => ({ ...acc, [day]: 0 }), {} as Record<string, number>);
     
-    events.forEach((ev) => {
+    filteredEvents.forEach((ev) => {
       if (ev?.date) {
         const date = new Date(ev.date);
         if (!isNaN(date.getTime())) {
@@ -117,15 +139,32 @@ const EventStats: React.FC<EventStatsProps> = ({ events }) => {
       name: t(`eventStats.weekdays.${day}`),
       value: stats[day]
     }));
-  }, [events, t]);
+  }, [filteredEvents, t]);
 
-  const totalEvents = events?.length || 0;
+  const totalEvents = filteredEvents?.length || 0;
   const hasStatusData = statusData.some((d) => d.value > 0);
   const hasTypeData = typeData.some((d) => d.value > 0);
 
   return (
     <div className="event-stats">
-      <h2>{t("eventStats.title")}</h2>
+      <div className="stats-header">
+        <h2>{t("eventStats.title")}</h2>
+        <div className="year-filter">
+          <label htmlFor="year-select">{t("eventStats.selectYear")}:</label>
+          <select 
+            id="year-select"
+            value={selectedYear} 
+            onChange={(e) => setSelectedYear(e.target.value)}
+            className="year-select"
+          >
+            <option value="all">{t("eventStats.allYears")}</option>
+            {availableYears.map(year => (
+              <option key={year} value={year.toString()}>{year}</option>
+            ))}
+          </select>
+          <span className="total-events">({totalEvents} {t("eventStats.totalEvents")})</span>
+        </div>
+      </div>
 
       <div className="charts-container">
         <div className="chart-wrapper status-chart">

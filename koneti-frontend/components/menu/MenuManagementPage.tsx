@@ -25,13 +25,12 @@ const MenuManagementPage: React.FC<MenuManagementPageProps> = ({
   const [showAddDrink, setShowAddDrink] = useState(false);
   const [editingDrink, setEditingDrink] = useState<Drink | null>(null);
 
-  // 🔹 Fetch funkcije
   const fetchCategories = async () => {
     try {
       const res = await apiRequest("/categories");
       if (res.ok) setCategories(await res.json());
     } catch (err) {
-      console.error("Error fetching categories:", err);
+      console.error("Greška pri učitavanju kategorija:", err);
     }
   };
 
@@ -41,7 +40,7 @@ const MenuManagementPage: React.FC<MenuManagementPageProps> = ({
       const res = await apiRequest("/drinks");
       if (res.ok) setDrinks(await res.json());
     } catch (err) {
-      console.error("Error fetching drinks:", err);
+      console.error("Greška pri učitavanju pića:", err);
     } finally {
       setIsLoading(false);
     }
@@ -77,7 +76,7 @@ const MenuManagementPage: React.FC<MenuManagementPageProps> = ({
         setDrinks((prev) => prev.filter((d) => d._id !== drinkId));
       }
     } catch (err) {
-      console.error("Error deleting drink:", err);
+      console.error("Greška pri brisanju pića:", err);
     }
   };
 

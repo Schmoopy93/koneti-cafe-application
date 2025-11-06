@@ -382,10 +382,12 @@
     "currency": "RSD",
     "viewPDF": "View Menu",
     "downloadPDF": "Download Menu",
-    "noResults": "No drinks found",
-    "tryDifferent": "Try a different search term",
+    "noResults": "No articles to display",
+    "tryDifferent": "Currently no articles in this category or try a different search.",
     "allCategories": "All Categories",
-    "itemsFound": "items found"
+    "itemsFound": "items found",
+    "noArticles": "No articles to display",
+    "noArticlesDesc": "Currently no articles in this category or try a different search."
   },
   "staffLogin": {
     "title": "Koneti Café",
@@ -458,6 +460,15 @@
         "reviewed": "Reviewed",
         "contacted": "Contacted",
         "rejected": "Rejected"
+      },
+      "deleteApplication": "Delete Application",
+      "applicationDeleted": "Application deleted successfully",
+      "deleteError": "Error deleting application",
+      "deleteConfirm": {
+        "title": "Delete Confirmation",
+        "message": "Are you sure you want to delete this application?",
+        "cancel": "Cancel",
+        "delete": "Delete"
       }
     },
     "calendar": {
@@ -481,20 +492,62 @@
       "message": "Message:",
       "confirm": "Confirm",
       "reject": "Reject",
-      "status": "Status:"
+      "delete": "Delete",
+      "status": "Status:",
+      "deleteConfirm": {
+        "title": "Delete Confirmation",
+        "message": "Are you sure you want to delete this reservation?",
+        "cancel": "Cancel",
+        "delete": "Delete"
+      },
+      "packages": {
+        "business_basic": "Business Basic",
+        "business_high": "Business High",
+        "experience_start": "Experience Start",
+        "experience_classic": "Experience Classic",
+        "experience_celebration": "Experience Celebration"
+      }
     },
     "status": {
       "pending": "Pending",
       "approved": "Approved",
       "rejected": "Rejected"
+    },
+    "packages": {
+      "business_basic": "Business Basic",
+      "business_high": "Business High",
+      "experience_start": "Experience Start",
+      "experience_classic": "Experience Classic",
+      "experience_celebration": "Experience Celebration"
     }
   },
   "cookieConsent": {
-    "message": "This website uses cookies to provide you with the best experience. By continuing to use the site, you agree to the use of cookies.",
-    "accept": "Accept"
+    "title": "Cookies",
+    "message": "We use cookies to improve your experience on our website. You can choose which cookies you want to accept.",
+    "accept": "Accept",
+    "acceptAll": "Accept All",
+    "acceptSelected": "Accept Selected",
+    "showDetails": "Show Details",
+    "hideDetails": "Hide Details",
+    "categories": {
+      "necessary": "Necessary Cookies",
+      "analytics": "Analytics Cookies",
+      "marketing": "Marketing Cookies",
+      "preferences": "Preference Cookies"
+    },
+    "descriptions": {
+      "necessary": "Required for basic site functions. Cannot be disabled.",
+      "analytics": "Help us understand how you use the site.",
+      "marketing": "Used to show relevant advertisements.",
+      "preferences": "Store your settings like language preference."
+    }
   },
   "eventStats": {
     "title": "Reservation Statistics",
+    "yearlyTitle": "Reservations by Year",
+    "selectYear": "Select Year",
+    "allYears": "All Years",
+    "totalEvents": "events",
     "monthlyTitle": "Reservations per Month",
     "statusTitle": "Reservation Status",
     "typeTitle": "Reservation Types",

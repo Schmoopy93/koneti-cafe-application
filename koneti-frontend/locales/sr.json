@@ -377,10 +377,12 @@
     "currency": "RSD",
     "viewPDF": "Pogledaj meni",
     "downloadPDF": "Preuzmi meni",
-    "noResults": "Nema rezultata",
-    "tryDifferent": "Pokušajte sa drugim pojmom",
+    "noResults": "Nema artikala za prikaz",
+    "tryDifferent": "Trenutno nema artikala u ovoj kategoriji ili pokušajte sa drugačijom pretragom.",
     "allCategories": "Sve kategorije",
-    "itemsFound": "stavki pronađeno"
+    "itemsFound": "stavki pronađeno",
+    "noArticles": "Nema artikala za prikaz",
+    "noArticlesDesc": "Trenutno nema artikala u ovoj kategoriji ili pokušajte sa drugačijom pretragom."
   },
   "staffLogin": {
     "title": "Koneti Café",
@@ -453,6 +455,15 @@
         "reviewed": "Pregledano",
         "contacted": "Kontaktirano",
         "rejected": "Odbijeno"
+      },
+      "deleteApplication": "Obriši prijavu",
+      "applicationDeleted": "Prijava je uspešno obrisana",
+      "deleteError": "Greška pri brisanju prijave",
+      "deleteConfirm": {
+        "title": "Potvrda brisanja",
+        "message": "Da li ste sigurni da želite da obrišete ovu prijavu?",
+        "cancel": "Otkaži",
+        "delete": "Obriši"
       }
     },
     "calendar": {
@@ -476,21 +487,62 @@
       "message": "Poruka:",
       "confirm": "Potvrdi",
       "reject": "Odbij",
-      "status": "Status:"
-      
+      "delete": "Obriši",
+      "status": "Status:",
+      "deleteConfirm": {
+        "title": "Potvrda brisanja",
+        "message": "Da li ste sigurni da želite da obrišete ovu rezervaciju?",
+        "cancel": "Otkaži",
+        "delete": "Obriši"
+      },
+      "packages": {
+        "business_basic": "Business Basic",
+        "business_high": "Business High",
+        "experience_start": "Experience Start",
+        "experience_classic": "Experience Classic",
+        "experience_celebration": "Experience Celebration"
+      }
     },
     "status": {
       "pending": "Na čekanju",
       "approved": "Prihvaćen",
       "rejected": "Odbijen"
+    },
+    "packages": {
+      "business_basic": "Business Basic",
+      "business_high": "Business High",
+      "experience_start": "Experience Start",
+      "experience_classic": "Experience Classic",
+      "experience_celebration": "Experience Celebration"
     }
   },
   "cookieConsent": {
-    "message": "Ovaj sajt koristi kolačiće (cookies) da bi vam pružio najbolje iskustvo. Nastavkom korišćenja sajta pristajete na upotrebu kolačića.",
-    "accept": "Prihvatam"
+    "title": "Kolačići (Cookies)",
+    "message": "Koristimo kolačiće da poboljšamo vaše iskustvo na našem sajtu. Možete da birate koje kolačiće želite da prihvatite.",
+    "accept": "Prihvatam",
+    "acceptAll": "Prihvati sve",
+    "acceptSelected": "Prihvati odabrane",
+    "showDetails": "Prikaži detalje",
+    "hideDetails": "Sakrij detalje",
+    "categories": {
+      "necessary": "Neophodni kolačići",
+      "analytics": "Analitički kolačići",
+      "marketing": "Marketing kolačići",
+      "preferences": "Kolačići za podešavanja"
+    },
+    "descriptions": {
+      "necessary": "Potrebni za osnovne funkcije sajta. Ne mogu se onemogućiti.",
+      "analytics": "Pomažu nam da razumemo kako koristite sajt.",
+      "marketing": "Koriste se za prikazivanje relevantnih reklama.",
+      "preferences": "Čuvaju vaša podešavanja kao što je jezik."
+    }
   },
   "eventStats": {
     "title": "Statistika rezervacija",
+    "yearlyTitle": "Rezervacije po godinama",
+    "selectYear": "Izaberite godinu",
+    "allYears": "Sve godine",
+    "totalEvents": "događaja",
     "monthlyTitle": "Broj rezervacija po mesecu",
     "statusTitle": "Status rezervacija",
     "typeTitle": "Tipovi rezervacija",

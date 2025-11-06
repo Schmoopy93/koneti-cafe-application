@@ -7,7 +7,8 @@ import { upload } from "../middleware/upload.js";
 import { 
   createCareerApplication, 
   getCareerApplications, 
-  updateCareerApplicationStatus 
+  updateCareerApplicationStatus,
+  deleteCareerApplication
 } from "../controllers/careerController.js";
 import { authMiddleware } from "../middleware/adminMiddleware.js";
 
@@ -19,5 +20,6 @@ router.post("/", upload.single("cv"), createCareerApplication);
 // Admin rute
 router.get("/", authMiddleware, getCareerApplications);
 router.patch("/:id/status", authMiddleware, updateCareerApplicationStatus);
+router.delete("/:id", authMiddleware, deleteCareerApplication);
 
 export default router;
