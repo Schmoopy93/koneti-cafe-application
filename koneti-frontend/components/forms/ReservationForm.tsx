@@ -366,6 +366,7 @@ export default function ReservationForm() {
               <label className="section-label">{t("home.reservation.packageLabel")}</label>
               {formData.type && (
                 <div
+                  key={formData.type}
                   className={
                     subCategories[formData.type].length === 3
                       ? "type-grid-three"
