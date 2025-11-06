@@ -25,6 +25,7 @@ interface Event {
   time: string;
   guests: number;
   status: "approved" | "pending" | "rejected";
+  type?: "biznis" | "experience";
   createdAt?: string;
   updatedAt?: string;
 }
@@ -149,7 +150,7 @@ const EventStats: React.FC<EventStatsProps> = ({ events }) => {
                     innerRadius="45%"
                     paddingAngle={5}
                     label={({ value, percent }) => 
-                      value > 0 ? `${value} (${(percent * 100).toFixed(0)}%)` : ''
+                      (value as number) > 0 ? `${value} (${((percent as number) * 100).toFixed(0)}%)` : ''
                     }
                     labelLine={false}
                   >
@@ -248,7 +249,7 @@ const EventStats: React.FC<EventStatsProps> = ({ events }) => {
                     innerRadius="35%"
                     paddingAngle={5}
                     label={({ value, percent }) => 
-                      value > 0 ? `${value} (${(percent * 100).toFixed(0)}%)` : ''
+                      (value as number) > 0 ? `${value} (${((percent as number) * 100).toFixed(0)}%)` : ''
                     }
                     labelLine={false}
                   >
