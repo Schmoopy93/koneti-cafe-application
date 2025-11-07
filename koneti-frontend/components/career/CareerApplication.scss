@@ -702,8 +702,8 @@
   }
 }
 
-/* Popup styles */
-.popup-backdrop {
+
+.career-popup-backdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -717,7 +717,7 @@
   animation: fadeIn 0.3s ease-out;
 }
 
-.popup {
+.career-popup {
   background: white;
   padding: 2rem;
   border-radius: 1rem;

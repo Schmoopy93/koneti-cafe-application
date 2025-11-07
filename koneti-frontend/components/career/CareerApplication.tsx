@@ -304,8 +304,8 @@ const CareerApplication: React.FC<CareerApplicationProps> = ({ onSubmit }) => {
       </div>
       
       {showPopup && (
-        <div className="popup-backdrop" onClick={() => setShowPopup(false)}>
-          <div className="popup" onClick={(e) => e.stopPropagation()}>
+        <div className="career-popup-backdrop" onClick={() => setShowPopup(false)}>
+          <div className="career-popup" onClick={(e) => e.stopPropagation()}>
             <button className="close-btn" onClick={() => setShowPopup(false)}>
               ×
             </button>

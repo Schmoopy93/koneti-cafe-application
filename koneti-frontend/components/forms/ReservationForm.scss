@@ -564,7 +564,7 @@
   }
 }
 
-.popup-backdrop {
+.reservation-popup-backdrop {
   position: fixed;
   inset: 0;
   background: linear-gradient(
@@ -581,7 +581,7 @@
   animation: backdropFadeIn 0.3s ease-out;
 }
 
-.popup {
+.reservation-popup {
   background: linear-gradient(
     145deg,
     #ffffff 0%,
@@ -961,7 +961,7 @@
     }
   }
 
-  .popup {
+  .reservation-popup {
     max-width: 95%;
     padding: 1.5rem;
 

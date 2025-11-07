@@ -484,12 +484,12 @@ export default function ReservationForm() {
       <Tooltip id="tooltip-experience_celebration" />
 
       {showPopup && (
-        <div className="popup-backdrop" onClick={closePopup}>
-          <div className="popup" onClick={(e) => e.stopPropagation()}>
+        <div className="reservation-popup-backdrop" onClick={closePopup}>
+          <div className="reservation-popup" onClick={(e) => e.stopPropagation()}>
             <button className="close-btn" onClick={closePopup}>
               ×
             </button>
-            <h2 className="popup-title">{popupData.title}</h2>
+            <h2 className="reservation-popup-title">{popupData.title}</h2>
             {popupData.description && popupData.description.split('\n\n').map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))}
