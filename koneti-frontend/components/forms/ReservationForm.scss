@@ -239,26 +239,24 @@
   }
 
   .type-grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.8rem;
     margin-bottom: 0.8rem;
     width: 100%;
-    //contain: layout style;
   }
 
   .type-grid-two {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.8rem;
     margin-bottom: 0.8rem;
     width: 100%;
-    //contain: layout style;
   }
 
   .type-grid-three {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     margin-bottom: 0.8rem;
     max-width: 100%;
@@ -324,14 +322,13 @@
     cursor: pointer;
     transition: all 0.3s ease;
     color: #5a3e36;
-    display: flex !important;
-    flex-direction: column !important;
+    display: flex;
+    flex-direction: column;
     min-height: 140px;
     position: relative;
     overflow: hidden;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    //contain: layout style;
+    width: 100%;
+    box-sizing: border-box;
 
     &::before {
       content: "";
@@ -524,7 +521,7 @@
 
   .shake {
     animation: shake 0.3s ease-in-out;
-    border-color: #d9534f !important;
+    border-color: #d9534f;
   }
 
   .btn-submit {
@@ -687,7 +684,7 @@
   h2 {
     font-size: 1.7rem;
     margin-bottom: 0.4rem;
-    color: #cfa68a !important;
+    color: #cfa68a;
     font-weight: 700;
     text-align: center;
     padding-right: 3rem;
@@ -787,7 +784,7 @@
       #e6c79a 70%,
       #f2ddb8 100%
     );
-    color: #fff !important;
+    color: #fff;
     padding: 1.2rem 2rem;
     border-radius: 1.5rem;
     text-align: center;
@@ -836,7 +833,7 @@
         #f2ddb8 30%,
         #faf0e6 100%
       );
-      color: #5a3e36 !important;
+      color: #5a3e36;
       text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
     }
   }
