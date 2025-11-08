@@ -1,7 +1,16 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /_next/
 Disallow: /api/
-Disallow: /admin/
 
 # Sitemaps
 Sitemap: https://koneti.com/sitemap.xml
+
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1

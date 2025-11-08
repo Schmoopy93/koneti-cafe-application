@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   keywords: [
     "kafe", "kafa", "rezervacija", "Novi Sad", "specijaliteti", 
     "ambijent", "poslovni sastanci", "proslave", "kafić",
-    "specialty coffee", "ketering", "torte", "poslastice"
+    "specialty coffee", "brunch", "ketering"
   ],
   authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
   category: "Restaurant",
@@ -38,13 +38,13 @@ export const metadata: Metadata = {
     siteName: "Koneti Café",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "https://koneti.com/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Koneti Café - Ambijent i specijaliteti",
       },
       {
-        url: "/og-image-alt.jpg",
+        url: "https://koneti.com/og-image-alt.jpg",
         width: 1200,
         height: 630,
         alt: "Koneti Café - Enterijer",
@@ -93,10 +93,10 @@ export default function RootLayout({
     "telephone": "+381-XX-XXX-XXXX",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Vaša ulica i broj",
-      "addressLocality": "Beograd",
+      "streetAddress": "Bulevar Oslobođenja 97",
+      "addressLocality": "Novi Sad",
       "addressRegion": "Srbija",
-      "postalCode": "11000",
+      "postalCode": "21000",
       "addressCountry": "RS"
     },
     "geo": {
@@ -105,12 +105,12 @@ export default function RootLayout({
       "longitude": 20.4489
     },
     "openingHours": [
-      "Mo-Fr 07:00-22:00",
-      "Sa 08:00-23:00",
+      "Mo-Fr 07:30-23:00",
+      "Sa 07:30-24:00",
       "Su 08:00-21:00"
     ],
-    "servesCuisine": ["Coffee", "Desserts", "Mediterranean"],
-    "priceRange": "$$",
+    "servesCuisine": ["Coffee", "Juice", "Business Meetings", "Celebrations"],
+    "priceRange": "$",
     "image": "https://koneti.com/koneti-logo.png",
     "aggregateRating": {
       "@type": "AggregateRating",
@@ -145,7 +145,7 @@ export default function RootLayout({
     <html lang="sr" className={inter.variable} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -153,6 +153,7 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#cfa68a" />
         <meta name="msapplication-TileColor" content="#cfa68a" />
+        <meta name="google-site-verification" content="your-verification-code" />
       </head>
       <body className={inter.className} suppressHydrationWarning>
         <Script
@@ -161,6 +162,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(jsonLd),
           }}
+          strategy="afterInteractive"
         />
         <ClientProviders>
           {children}

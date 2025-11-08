@@ -39,7 +39,6 @@ export default function FullCalendarComponent({
   const [events, setEvents] = useState<any[]>([]);
 
   useEffect(() => {
-    console.log('Reservations received count:', reservations.length);
     const calendarEvents = reservations.map((reservation) => {
       // Fix date format - extract just the date part
       const dateOnly = reservation.date.split('T')[0];
@@ -47,7 +46,6 @@ export default function FullCalendarComponent({
       
       // Sanitize data for logging
       const sanitizedName = reservation.name?.replace(/[^a-zA-Z0-9\s]/g, '') || 'Unknown';
-      console.log('Processing reservation for:', sanitizedName.substring(0, 10));
       
       return {
         id: reservation._id,
@@ -61,7 +59,6 @@ export default function FullCalendarComponent({
         },
       };
     });
-    console.log('Calendar events created count:', calendarEvents.length);
     setEvents(calendarEvents);
   }, [reservations]);
 
@@ -81,7 +78,6 @@ export default function FullCalendarComponent({
 
 
   const handleEventClick = (clickInfo: any) => {
-    console.log('Event clicked with ID:', clickInfo.event.id);
     const reservation = clickInfo.event.extendedProps.reservation;
     if (reservation) {
       onEventClick(reservation);

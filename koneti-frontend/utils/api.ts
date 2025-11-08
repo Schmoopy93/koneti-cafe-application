@@ -112,9 +112,7 @@ export const apiRequest = async (endpoint: string, options: ApiOptions = {}) => 
       }
     }
 
-      const fullUrl = `${apiUrl}${endpoint}`;
-      console.log('Making request to:', fullUrl);
-      
+      const fullUrl = `${apiUrl}${endpoint}`;      
       // Add timeout to prevent hanging requests
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
@@ -166,7 +164,6 @@ export const apiRequest = async (endpoint: string, options: ApiOptions = {}) => 
           (error instanceof TypeError || 
            (error instanceof Error && (error.name === 'AbortError' || error.message.includes('fetch'))))) {
         retryCount++;
-        console.log(`Retrying request ${retryCount}/${maxRetries} for ${endpoint}`);
         await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
         return makeRequest();
       }
