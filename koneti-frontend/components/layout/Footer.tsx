@@ -104,7 +104,7 @@ const Footer: React.FC = () => {
           <h3>{t("home.footer.followUs")} </h3>
           <div className="social-grid">
             <a
-              href="https://www.facebook.com/koneticafe"
+              href="https://www.facebook.com/p/Koneti-61556722592298/"
               target="_blank"
               rel="noopener noreferrer"
               className="social-card facebook"
@@ -128,7 +128,7 @@ const Footer: React.FC = () => {
               </div>
             </a>
             <a
-              href="https://www.tiktok.com/@koneti.caffe"
+              href="https://www.tiktok.com/@koneti.cafe"
               target="_blank"
               rel="noopener noreferrer"
               className="social-card tiktok"
