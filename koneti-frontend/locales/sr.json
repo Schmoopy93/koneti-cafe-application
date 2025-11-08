@@ -28,15 +28,20 @@
         "biznis": "Profesionalan radni prostor sa premium cateringom i prezentacionim mogućnostima",
         "koneti": "Ekskluzivan prostor za nezaboravne proslave i privatna okupljanja"
       },
+
       "packageDescriptions": {
-        "basic": "Prijatna atmosfera za intimne proslave sa prijateljima i porodicom",
-        "premium": "Sofisticirana elegancija sa poboljšanom uslugom i premium sadržajima",
-        "vip": "Vrhunsko luksuzno iskustvo sa ekskluzivnim pogodnostima i personalizovanom uslugom"
+        "business_basic": "Osnovno poslovno okupljanje sa kafom i osveženjima",
+        "business_premium": "Premium poslovno okupljanje sa plate i opcionalnim pićima",
+        "business_corporate": "Celodan poslovni događaj sa svim potrebnim uslugama",
+        "experience_basic": "Prijatna atmosfera za intimne proslave sa prijateljima i porodicom",
+        "experience_premium": "Sofisticirana elegancija sa poboljšanom uslugom i premium sadržajima",
+        "experience_vip": "Vrhunsko luksuzno iskustvo sa ekskluzivnim pogodnostima i personalizovanom uslugom"
       },
+
       "packagePrices": {
-        "basic": "200€ na 2 sata",
-        "premium": "400€ na 2 sata",
-        "vip": "Od 70€ po osobi",
+        "business_basic": "100€ po satu",
+        "business_premium": "200€ po satu",
+        "business_corporate": "800€ na 6 sati",
         "experience_basic": "Od 35€ po osobi",
         "experience_premium": "Od 45€ po osobi",
         "experience_vip": "Od 70€ po osobi"
@@ -48,6 +53,7 @@
       "packages": {
         "basic": "KONETI BUSINESS BASIC",
         "premium": "KONETI BUSINESS HIGH",
+        "corporate_day": "KONETI BUSINESS CORPORATE DAY",
         "vip": "KONETI CELEBRATION EXPERIENCE",
         "experience_basic": "KONETI START",
         "experience_premium": "KONETI CLASSIC",
@@ -94,13 +100,14 @@
           "title": "🏢 Poslovni sastanci i prezentacije",
           "description": "U samom srcu Novog Sada, na Bulevaru Oslobođenja 97, Koneti je savršeno mesto za poslovne sastanke, prezentacije i dogovore koji zahtevaju prijatnu i profesionalnu atmosferu.\n\nU modernom, mirnom ambijentu – uz vrhunsku kafu, pažljivo odabrane zalogaje i diskretnu uslugu – svaka ideja dobija pravi prostor da oživi.",
           "details": [
-            "🥉 Koneti Business Basic - 200€ na dva sata",
-            "⭐ Koneti Business High - 400€ na dva sata",
+            "🥉 Koneti Business Basic - 100€ po satu",
+            "⭐ Koneti Business High - 200€ po satu",
+            "👑 Koneti Business Corporate - 800€ na 6 sati",
             "🏢 Privatni ambijent sa tehničkom podrškom",
             "📶 Besplatan Wi-Fi i prezentacijska oprema",
             "🅿️ Parking dostupan u blizini"
           ],
-          "price": "200€ - 400€ za dva sata",
+          "price": "100€ - 200€ po satu",
           "extraInfo": "Idealno rešenje za sve vaše poslovne potrebe u profesionalnom ambijentu."
         },
         "experience": {
@@ -118,25 +125,40 @@
         },
         "basic": {
           "title": "🥉 KONETI BUSINESS BASIC",
-          "description": "Koneti Business Basic / zakup Koneti Sobe / 200€ na dva sata",
+          "description": "Koneti Business Basic / zakup Koneti Sobe / 100€ po satu",
           "details": [
             "☕ Kafa po izboru, ceđeni sok, kroasan",
             "🏢 Privatni ambijent sa tehničkom podrškom"
           ],
-          "price": "200€ na dva sata",
+          "price": "100€ po satu",
           "extraInfo": "Idealno za manje poslovne sastanke i prezentacije."
         },
         "premium": {
           "title": "⭐ KONETI BUSINESS HIGH",
-          "description": "Koneti Business High / zakup Koneti Sobe / 400€ na dva sata",
+          "description": "Koneti Business High / zakup Koneti Sobe / 200€ po satu",
           "details": [
             "🍽️ Kafa i osveženje",
             "🧀 Plate (njeguška pršut, pečenica, kulen, 4 vrste sira, zelene i crne masline)",
             "🍷 Opciono vino ili prosecco",
             "🏢 Privatni ambijent sa tehničkom podrškom"
           ],
-          "price": "400€ na dva sata",
+          "price": "200€ po satu",
           "extraInfo": "Premium poslovni paket sa dodatnim uslugama."
+        },
+        "corporate_day": {
+          "title": "🏢 KONETI BUSINESS CORPORATE DAY",
+          "description": "Koneti Business Corporate Day / zakup Koneti Sobe / 800€ na 6 sati do 10 osoba",
+          "details": [
+            "☕ Dobrodošlica: kafa, voda, ceđeni sok, mini kroasani i sveže voće",
+            "💼 Radni blok prepodne: TV/povezivanje, flipchart i sve potrebne tehnike",
+            "🍽️ Ručak: topao ketering sa piletinom, rizi-bizi, salatom i hlebom",
+            "🍰 Poslepodnevna pauza: desert sa espresoom ili hladnim napitkom",
+            "🏢 Privatni ambijent sa elegantnom dekoracijom i ambijentnom muzikom",
+            "👥 Profesionalno osoblje koje uslužuje i dočekuje vaše goste",
+            "📶 Besplatan Wi-Fi i prezentacijska oprema"
+          ],
+          "price": "800€ na 6 sati do 10 osoba",
+          "extraInfo": "Idealno za celodan poslovni događaj sa svim potrebnim uslugama."
         },
         "experience_basic": {
           "title": "🥉 KONETI START",
@@ -486,7 +508,7 @@
       "menu": "Meni:",
       "message": "Poruka:",
       "confirm": "Potvrdi",
-      "reject": "Odbij",
+      "reject": "Otkaži",
       "delete": "Obriši",
       "status": "Status:",
       "deleteConfirm": {
@@ -498,6 +520,7 @@
       "packages": {
         "business_basic": "Business Basic",
         "business_high": "Business High",
+        "business_corporate": "Business Corporate",
         "experience_start": "Experience Start",
         "experience_classic": "Experience Classic",
         "experience_celebration": "Experience Celebration"
@@ -511,6 +534,7 @@
     "packages": {
       "business_basic": "Business Basic",
       "business_high": "Business High",
+      "business_corporate": "Business Corporate",
       "experience_start": "Experience Start",
       "experience_classic": "Experience Classic",
       "experience_celebration": "Experience Celebration"

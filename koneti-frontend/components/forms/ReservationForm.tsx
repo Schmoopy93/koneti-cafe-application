@@ -72,8 +72,8 @@ export default function ReservationForm() {
   const [currentStep, setCurrentStep] = useState(1);
 
   useEffect(() => {
-    const typeParam = searchParams.get('type');
-    if (typeParam && (typeParam === 'business' || typeParam === 'experience')) {
+    const typeParam = searchParams.get("type");
+    if (typeParam && (typeParam === "business" || typeParam === "experience")) {
       handleTypeSelect(typeParam);
     }
   }, [searchParams]);
@@ -107,6 +107,12 @@ export default function ReservationForm() {
         label: t("home.reservation.packages.premium"),
         icon: faStar,
         colorClass: "gold",
+      },
+      {
+        id: "business_corporate",
+        label: t("home.reservation.packages.corporate_day"),
+        icon: faCrown,
+        colorClass: "vip",
       },
     ],
     experience: [
@@ -181,6 +187,7 @@ export default function ReservationForm() {
       experience: "experience",
       business_basic: "basic",
       business_high: "premium",
+      business_corporate: "corporate_day",
       experience_start: "experience_basic",
       experience_classic: "experience_premium",
       experience_celebration: "experience_vip",
@@ -215,20 +222,22 @@ export default function ReservationForm() {
       const selectedDate = new Date(formData.date);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      
+
       let daysRequired = 0;
-      if (formData.subType === "business_high" || 
-          formData.subType === "experience_start" || 
-          formData.subType === "experience_classic") {
+      if (
+        formData.subType === "business_high" ||
+        formData.subType === "experience_start" ||
+        formData.subType === "experience_classic"
+      ) {
         daysRequired = 2;
       } else if (formData.subType === "experience_celebration") {
         daysRequired = 7;
       }
-      
+
       if (daysRequired > 0) {
         const minDate = new Date(today);
         minDate.setDate(today.getDate() + daysRequired);
-        
+
         if (selectedDate < minDate) {
           errors.date = t("home.reservation.errors.dateMinimum");
         }
@@ -252,11 +261,11 @@ export default function ReservationForm() {
 
     setIsSubmitting(true);
     try {
-      const res = await apiRequest('/reservations', {
+      const res = await apiRequest("/reservations", {
         method: "POST",
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
-      
+
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message || "Greška pri slanju rezervacije!");
@@ -277,15 +286,15 @@ export default function ReservationForm() {
       setFormErrors({});
       setShowEventForm(false);
       setCurrentStep(1);
-      
+
       toast.success(t("home.reservation.success.toast"));
-      
+
       setPopupData({
         title: t("home.reservation.success.title"),
         description: t("home.reservation.success.description"),
       });
       setShowPopup(true);
-      
+
       setTimeout(() => router.push("/"), 5000);
     } catch (error: any) {
       toast.error(error.message || t("home.reservation.errors.submitError"));
@@ -297,29 +306,45 @@ export default function ReservationForm() {
   return (
     <div className="reservation-wrapper">
       <Toaster position="top-right" reverseOrder={false} />
-      
+
       {/* <h2 className="section-title">
         {t("home.reservation.title1")}{" "}
         <span className="highlight">{t("home.reservation.title2")}</span>
       </h2> */}
-        
-        <form className="reservation-form" onSubmit={handleSubmit}>
-          <div className="intro-text">
-            <p><span className="highlight">{t("home.reservation.intro1_highlight")}</span>{t("home.reservation.intro1_rest")}</p>
-            <p>{t("home.reservation.intro2")}<span className="highlight">{t("home.reservation.intro2_highlight")}</span></p>
-          </div>
+
+      <form className="reservation-form" onSubmit={handleSubmit}>
+        <div className="intro-text">
+          <p>
+            <span className="highlight">
+              {t("home.reservation.intro1_highlight")}
+            </span>
+            {t("home.reservation.intro1_rest")}
+          </p>
+          <p>
+            {t("home.reservation.intro2")}
+            <span className="highlight">
+              {t("home.reservation.intro2_highlight")}
+            </span>
+          </p>
+        </div>
 
         <div className="step-slider">
           <div className="slider-indicators">
             {[1, 2, 3].map((step) => (
-              <div 
+              <div
                 key={step}
-                className={`indicator ${currentStep === step ? 'active' : ''} ${step < currentStep ? 'clickable' : ''}`}
+                className={`indicator ${currentStep === step ? "active" : ""} ${
+                  step < currentStep ? "clickable" : ""
+                }`}
                 onClick={() => step < currentStep && setCurrentStep(step)}
               >
                 <span className="step-number">{step}</span>
                 <span className="step-label">
-                  {t(`home.reservation.steps.${step === 1 ? 'type' : step === 2 ? 'package' : 'details'}`)}
+                  {t(
+                    `home.reservation.steps.${
+                      step === 1 ? "type" : step === 2 ? "package" : "details"
+                    }`
+                  )}
                 </span>
               </div>
             ))}
@@ -327,19 +352,21 @@ export default function ReservationForm() {
         </div>
 
         <div className="slider-container">
-          <div 
+          <div
             className="slider-content"
-            style={{transform: `translateX(-${(currentStep - 1) * 33.333}%)`}}
+            style={{ transform: `translateX(-${(currentStep - 1) * 33.333}%)` }}
           >
             <div className="slide">
-              <label className="section-label">{t("home.reservation.typeLabel")}</label>
+              <label className="section-label">
+                {t("home.reservation.typeLabel")}
+              </label>
               <div className="type-grid">
                 {types.map(({ id, label, icon }) => (
                   <div
                     key={id}
-                    className={`type-card ${formData.type === id ? "selected" : ""} ${
-                      shakeFields.type ? "shake" : ""
-                    }`}
+                    className={`type-card ${
+                      formData.type === id ? "selected" : ""
+                    } ${shakeFields.type ? "shake" : ""}`}
                     onClick={() => handleTypeSelect(id)}
                   >
                     <div className="card-header">
@@ -354,16 +381,26 @@ export default function ReservationForm() {
                     </div>
                     <div className="card-content">
                       <h3 className="card-title">{label}</h3>
-                      <p className="card-description">{t(`home.reservation.descriptions.${id === 'business' ? 'biznis' : 'koneti'}`)}</p>
+                      <p className="card-description">
+                        {t(
+                          `home.reservation.descriptions.${
+                            id === "business" ? "biznis" : "koneti"
+                          }`
+                        )}
+                      </p>
                     </div>
                   </div>
                 ))}
               </div>
-              {formErrors.type && <span className="error">{formErrors.type}</span>}
+              {formErrors.type && (
+                <span className="error">{formErrors.type}</span>
+              )}
             </div>
 
             <div className="slide">
-              <label className="section-label">{t("home.reservation.packageLabel")}</label>
+              <label className="section-label">
+                {t("home.reservation.packageLabel")}
+              </label>
               {formData.type && (
                 <div
                   key={formData.type}
@@ -397,8 +434,42 @@ export default function ReservationForm() {
                         </div>
                         <div className="card-content">
                           <h3 className="card-title">{label}</h3>
-                          <p className="card-description">{t(`home.reservation.packageDescriptions.${id.includes('business') ? (id.includes('basic') ? 'basic' : 'premium') : id.includes('start') ? 'basic' : id.includes('classic') ? 'premium' : 'vip'}`)}</p>
-                          <div className="card-price">{t(`home.reservation.packagePrices.${id.includes('business') ? (id.includes('basic') ? 'basic' : 'premium') : id.includes('start') ? 'experience_basic' : id.includes('classic') ? 'experience_premium' : 'experience_vip'}`)}</div>
+                          
+                          <p className="card-description">
+                            {t(
+                              `home.reservation.packageDescriptions.${
+                                id.includes("business")
+                                  ? id.includes("basic")
+                                    ? "business_basic"
+                                    : id.includes("high")
+                                    ? "business_premium"
+                                    : "business_corporate"
+                                  : id.includes("start")
+                                  ? "experience_basic"
+                                  : id.includes("classic")
+                                  ? "experience_premium"
+                                  : "experience_vip"
+                              }`
+                            )}
+                          </p>
+
+                          <div className="card-price">
+                            {t(
+                              `home.reservation.packagePrices.${
+                                id.includes("business")
+                                  ? id.includes("basic")
+                                    ? "business_basic"
+                                    : id.includes("high")
+                                    ? "business_premium"
+                                    : "business_corporate"
+                                  : id.includes("start")
+                                  ? "experience_basic"
+                                  : id.includes("classic")
+                                  ? "experience_premium"
+                                  : "experience_vip"
+                              }`
+                            )}
+                          </div>
                         </div>
                       </div>
                     )
@@ -411,7 +482,9 @@ export default function ReservationForm() {
             </div>
 
             <div className="slide">
-              <label className="section-label">{t("home.reservation.steps.details")}</label>
+              <label className="section-label">
+                {t("home.reservation.steps.details")}
+              </label>
               {showEventForm && (
                 <div className="event-form">
                   {["name", "email", "phone", "date", "time", "guests"].map(
@@ -437,7 +510,9 @@ export default function ReservationForm() {
                           onChange={handleChange}
                           placeholder={t(`home.reservation.form.${field}`)}
                           className={
-                            shakeFields[field as keyof ShakeFields] ? "shake" : ""
+                            shakeFields[field as keyof ShakeFields]
+                              ? "shake"
+                              : ""
                           }
                         />
                         {formErrors[field as keyof FormErrors] && (
@@ -473,26 +548,31 @@ export default function ReservationForm() {
             )}
           </button>
         )}
-        </form>
+      </form>
 
       <Tooltip id="tooltip-business" />
       <Tooltip id="tooltip-experience" />
       <Tooltip id="tooltip-business_basic" />
       <Tooltip id="tooltip-business_high" />
+      <Tooltip id="tooltip-business_corporate" />
       <Tooltip id="tooltip-experience_start" />
       <Tooltip id="tooltip-experience_classic" />
       <Tooltip id="tooltip-experience_celebration" />
 
       {showPopup && (
         <div className="reservation-popup-backdrop" onClick={closePopup}>
-          <div className="reservation-popup" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="reservation-popup"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button className="close-btn" onClick={closePopup}>
               ×
             </button>
             <h2 className="reservation-popup-title">{popupData.title}</h2>
-            {popupData.description && popupData.description.split('\n\n').map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
+            {popupData.description &&
+              popupData.description
+                .split("\n\n")
+                .map((paragraph, index) => <p key={index}>{paragraph}</p>)}
             {popupData.details && (
               <ul>
                 {popupData.details.map((d, i) => (

@@ -28,19 +28,25 @@
         "biznis": "Professional workspace with premium catering and presentation facilities",
         "koneti": "Exclusive venue for unforgettable celebrations and private gatherings"
       },
+
       "packageDescriptions": {
-        "basic": "Cozy atmosphere for intimate celebrations with friends and family",
-        "premium": "Sophisticated elegance with enhanced service and premium amenities",
-        "vip": "The ultimate luxury experience with exclusive perks and personalized service"
+        "business_basic": "Basic business gathering with coffee and refreshments",
+        "business_premium": "Premium business gathering with platters and optional drinks",
+        "business_corporate": "Full-day business event with all necessary services",
+        "experience_basic": "Cozy atmosphere for intimate celebrations with friends and family",
+        "experience_premium": "Sophisticated elegance with enhanced service and premium amenities",
+        "experience_vip": "The ultimate luxury experience with exclusive perks and personalized service"
       },
+
       "packagePrices": {
-        "basic": "200€ for 2 hours",
-        "premium": "400€ for 2 hours",
-        "vip": "From 70€ per person",
+        "business_basic": "100€ per hour",
+        "business_premium": "200€ per hour",
+        "business_corporate": "800€ for 6 hours",
         "experience_basic": "From 35€ per person",
         "experience_premium": "From 45€ per person",
         "experience_vip": "From 70€ per person"
       },
+
       "types": {
         "business": "Business meetings / presentations",
         "experience": "Koneti Experience"
@@ -94,13 +100,14 @@
           "title": "🏢 Business Meetings & Presentations",
           "description": "In the heart of Novi Sad, at Bulevar Oslobođenja 97, Koneti offers the perfect setting for business meetings, presentations, and agreements that deserve a refined atmosphere.\n\nIn a calm, modern environment – with premium coffee, carefully selected bites, and discreet service – every idea finds the right space to come to life.",
           "details": [
-            "🥉 Koneti Business Basic - 200€ for two hours",
-            "⭐ Koneti Business High - 400€ for two hours",
+            "🥉 Koneti Business Basic - 100€ per hour",
+            "⭐ Koneti Business High - 200€ per hour",
+            "👑 Koneti Business Corporate - 800€ for 6 hours",
             "🏢 Private environment with technical support",
             "📶 Free Wi-Fi and presentation equipment",
             "🅿️ Parking available nearby"
           ],
-          "price": "200€ - 400€ for two hours",
+          "price": "100€ - 200€ per hour",
           "extraInfo": "Ideal solution for all your business needs in a professional environment."
         },
         "experience": {
@@ -118,25 +125,40 @@
         },
         "basic": {
           "title": "🥉 KONETI BUSINESS BASIC",
-          "description": "Koneti Business Basic / Koneti Room rental / 200€ for two hours",
+          "description": "Koneti Business Basic / Koneti Room rental / 100€ per hour",
           "details": [
             "☕ Coffee of choice, fresh juice, croissant",
             "🏢 Private environment with technical support"
           ],
-          "price": "200€ for two hours",
+          "price": "100€ per hour",
           "extraInfo": "Ideal for smaller business meetings and presentations."
         },
         "premium": {
           "title": "⭐ KONETI BUSINESS HIGH",
-          "description": "Koneti Business High / Koneti Room rental / 400€ for two hours",
+          "description": "Koneti Business High / Koneti Room rental / 200€ per hour",
           "details": [
             "🍽️ Coffee and refreshments",
             "🧀 Plates (Njeguška prosciutto, ham, kulen, 4 types of cheese, green and black olives)",
             "🍷 Optional wine or prosecco",
             "🏢 Private environment with technical support"
           ],
-          "price": "400€ for two hours",
+          "price": "200€ per hour",
           "extraInfo": "Premium business package with additional services."
+        },
+        "corporate_day": {
+          "title": "🏢 KONETI BUSINESS CORPORATE DAY",
+          "description": "Koneti Business Corporate Day / Koneti Room rental / 800€ for 6 hours up to 10 people\n\nThe perfect solution for a full-day business event with all necessary services and premium amenities.",
+          "details": [
+            "☕ Welcome: coffee, water, fresh juice, mini croissants and fresh fruit",
+            "💼 Morning work block: TV/connectivity, flipchart and all necessary equipment",
+            "🍽️ Lunch: warm catering with chicken, rice and vegetables, salad and bread",
+            "🍰 Afternoon break: dessert with espresso or cold beverage",
+            "🏢 Private environment with elegant decoration and ambient music",
+            "👥 Professional staff to serve and welcome your guests",
+            "📶 Free Wi-Fi and presentation equipment"
+          ],
+          "price": "800€ for 6 hours up to 10 people",
+          "extraInfo": "Perfect solution for a full-day business event with all necessary services and premium amenities."
         },
         "experience_basic": {
           "title": "🥉 KONETI START",
@@ -160,19 +182,6 @@
           "extraInfo": "Classic elegance with expanded drink selection."
         },
         "experience_vip": {
-          "title": "👑 KONETI CELEBRATION EXPERIENCE",
-          "description": "The pinnacle of luxury dining and celebration. Exclusive service for the most important occasions.",
-          "details": [
-            "🎂 Cake of your choice (up to 10kg)",
-            "🎨 Decoration",
-            "📸 Photographer",
-            "🥂 Domestic and foreign drinks (Jameson, Campari, Chivas, Olmeca Tequila, Jack Daniels, Bombay Gin)",
-            "🧀 Plates (Njeguška prosciutto, ham, kulen, 4 types of cheese, green and black olives)"
-          ],
-          "price": "70€ per person / min. 800€ per package",
-          "extraInfo": "The pinnacle of luxury dining and celebration. Exclusive service for the most important occasions."
-        },
-        "vip": {
           "title": "👑 KONETI CELEBRATION EXPERIENCE",
           "description": "The pinnacle of luxury dining and celebration. Exclusive service for the most important occasions.",
           "details": [
@@ -503,6 +512,7 @@
       "packages": {
         "business_basic": "Business Basic",
         "business_high": "Business High",
+        "business_corporate": "Business Corporate",
         "experience_start": "Experience Start",
         "experience_classic": "Experience Classic",
         "experience_celebration": "Experience Celebration"
@@ -516,6 +526,7 @@
     "packages": {
       "business_basic": "Business Basic",
       "business_high": "Business High",
+      "business_corporate": "Business Corporate",
       "experience_start": "Experience Start",
       "experience_classic": "Experience Classic",
       "experience_celebration": "Experience Celebration"

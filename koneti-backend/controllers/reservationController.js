@@ -33,12 +33,13 @@ export const createReservation = async (req, res) => {
     }
     
     // Validate subType based on type
-    if (type === 'biznis' && !['basic', 'vip'].includes(subType)) {
+    if (type === 'biznis' && !['basic', 'vip', 'corporate_day'].includes(subType)) {
       return res.status(400).json({
         success: false,
-        message: 'Biznis događaji mogu biti samo basic ili vip'
+        message: 'Biznis događaji mogu biti samo basic, vip ili corporate_day'
       });
     }
+
     
     if (type === 'koneti' && !['basic', 'premium', 'vip'].includes(subType)) {
       return res.status(400).json({

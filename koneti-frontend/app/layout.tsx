@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://koneti.com'),
   title: {
     default: "Koneti Café - Dobrodošli",
-    template: "%s | Koneti Café",
+    template: "%s ",
   },
   description: "Uživajte u najboljoj kafi u prijatnom ambijentu. Rezervišite stolove, uživajte u specijalitetima i doživite nezaboravne trenutke u našem kafeu.",
   keywords: [

@@ -9,14 +9,14 @@ const reservationSchema = new mongoose.Schema({
   subType: {
     type: String,
     enum: {
-      values: ["business_basic", "business_high", "experience_start", "experience_classic", "experience_celebration"],
+      values: ["business_basic", "business_high", "business_corporate", "experience_start", "experience_classic", "experience_celebration"],
       message: "Podtip događaja nije validan",
     },
     required: [true, "Podtip je obavezan"],
     validate: {
       validator: function(value) {
         if (this.type === 'business') {
-          return ['business_basic', 'business_high'].includes(value);
+          return ['business_basic', 'business_high', 'business_corporate'].includes(value);
         }
         if (this.type === 'experience') {
           return ['experience_start', 'experience_classic', 'experience_celebration'].includes(value);

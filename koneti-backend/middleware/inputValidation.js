@@ -60,8 +60,8 @@ export const validateReservation = [
     .isIn(['business', 'experience'])
     .withMessage('Tip događaja mora biti business ili experience'),
   body('subType')
-    .isIn(['business_basic', 'business_high', 'experience_start', 'experience_classic', 'experience_celebration'])
-    .withMessage('Podtip mora biti business_basic, business_high, experience_start, experience_classic ili experience_celebration'),
+    .isIn(['business_basic', 'business_high', 'business_corporate', 'experience_start', 'experience_classic', 'experience_celebration'])
+    .withMessage('Podtip mora biti business_basic, business_high, business_corporate, experience_start, experience_classic ili experience_celebration'),
   body('name')
     .isLength({ min: 2, max: 50 })
     .matches(/^[a-zA-ZšđčćžŠĐČĆŽ\s]+$/)

@@ -51,14 +51,14 @@ export const validateReservation = [
   body('time').matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/),
   body('guests').isInt({ min: 1, max: 20 }),
   body('type').isIn(['business', 'experience']),
-  body('subType').isIn(['business_basic', 'business_high', 'experience_start', 'experience_classic', 'experience_celebration']),
+  body('subType').isIn(['business_basic', 'business_high', 'business_corporate', 'experience_start', 'experience_classic', 'experience_celebration']),
   body('subType').custom((value, { req }) => {
     try {
-      const allowedBusinessTypes = ['business_basic', 'business_high'];
+      const allowedBusinessTypes = ['business_basic', 'business_high' , 'business_corporate'];
       const allowedExperienceTypes = ['experience_start', 'experience_classic', 'experience_celebration'];
       
       if (req.body.type === 'business' && !allowedBusinessTypes.includes(value)) {
-        throw new Error('Business događaji mogu biti samo business_basic ili business_high');
+        throw new Error('Business događaji mogu biti samo business_basic, business_high ili business_corporate');
       }
       if (req.body.type === 'experience' && !allowedExperienceTypes.includes(value)) {
         throw new Error('Experience događaji mogu biti experience_start, experience_classic ili experience_celebration');

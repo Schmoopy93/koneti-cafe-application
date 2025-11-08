@@ -11,7 +11,9 @@ router.get("/types", (req, res) => {
         name: "Biznis događaj",
         subtypes: [
           { value: "basic", name: "Basic - Osnovno poslovno okupljanje" },
-          { value: "vip", name: "VIP - Premium poslovno okupljanje" }
+          { value: "vip", name: "VIP - Premium poslovno okupljanje" },
+          { value: "corporate_day", name: "Corporate Day Experience - 6h paket" }
+
         ]
       },
       koneti: {
