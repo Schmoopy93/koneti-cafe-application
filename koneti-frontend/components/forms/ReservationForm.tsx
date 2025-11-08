@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent, MouseEvent, useEffect } from "react";
+import { useState, ChangeEvent, FormEvent, MouseEvent, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -49,6 +49,8 @@ export default function ReservationForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t } = useTranslation();
+  const formRef = useRef<HTMLDivElement>(null);
+
 
   const [formData, setFormData] = useState<FormData>({
     type: "",
@@ -249,7 +251,7 @@ export default function ReservationForm() {
     return errors;
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const errors = validateForm();
     if (Object.keys(errors).length) {
@@ -295,7 +297,7 @@ export default function ReservationForm() {
       });
       setShowPopup(true);
 
-      setTimeout(() => router.push("/"), 5000);
+    formRef.current?.scrollIntoView({ behavior: "smooth" });
     } catch (error: any) {
       toast.error(error.message || t("home.reservation.errors.submitError"));
     } finally {
@@ -304,7 +306,7 @@ export default function ReservationForm() {
   };
 
   return (
-    <div className="reservation-wrapper">
+    <div className="reservation-wrapper" ref={formRef}>
       <Toaster position="top-right" reverseOrder={false} />
 
       {/* <h2 className="section-title">
