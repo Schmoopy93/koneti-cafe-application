@@ -98,8 +98,6 @@ const CareerApplication: React.FC<CareerApplicationProps> = ({ onSubmit }) => {
     }
     if (!formData.position.trim())
       newErrors.position = t("career.errors.position");
-    if (!formData.coverLetter.trim())
-      newErrors.coverLetter = t("career.errors.coverLetter");
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -326,7 +324,7 @@ const handleSubmit = async (e: React.FormEvent) => {
             </div>
           </div>
 
-          <div className="form-group">
+        <div className="form-group">
             <label>
               <FontAwesomeIcon icon={faFileAlt} />
               {t("career.form.coverLetter")}

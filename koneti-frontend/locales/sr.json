@@ -588,7 +588,7 @@
       "lastName": "Prezime *",
       "email": "Email *",
       "phone": "Telefon *",
-      "coverLetter": "Motivaciono pismo *",
+      "coverLetter": "Motivaciono pismo",
       "cv": "CV (opciono)",
       "submit": "Pošalji prijavu",
       "submitting": "Šalje se..."

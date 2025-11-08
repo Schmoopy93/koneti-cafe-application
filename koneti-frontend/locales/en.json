@@ -593,7 +593,7 @@
       "lastName": "Last Name *",
       "email": "Email *",
       "phone": "Phone *",
-      "coverLetter": "Cover Letter *",
+      "coverLetter": "Cover Letter",
       "cv": "CV (optional)",
       "submit": "Submit Application",
       "submitting": "Submitting..."

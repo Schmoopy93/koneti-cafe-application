@@ -10,7 +10,7 @@ const careerSchema = new mongoose.Schema({
   email: { type: String, required: true, trim: true },
   phone: { type: String, required: true, trim: true },
   position: { type: String, required: true, trim: true },
-  coverLetter: { type: String, required: true },
+  coverLetter: { type: String },
   cvUrl: { type: String }, // URL do CV-ja na Cloudinary
   cloudinary_id: { type: String }, // Cloudinary public_id
   status: {
