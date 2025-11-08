@@ -13,38 +13,45 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://koneti.com'),
   title: {
     default: "Koneti Café - Dobrodošli",
     template: "%s | Koneti Café",
   },
   description: "Uživajte u najboljoj kafi u prijatnom ambijentu. Rezervišite stolove, uživajte u specijalitetima i doživite nezaboravne trenutke u našem kafeu.",
-  keywords: ["kafe", "kafa", "rezervacija", "Novi Sad", "specijaliteti", "ambijent", "poslovni sastanci", "proslave"],
-  authors: [{ name: "Koneti Café" }],
-  creator: "Koneti Café",
-  publisher: "Koneti Café",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL('https://koneti-cafe.rs'),
-  alternates: {
-    canonical: '/',
+  keywords: [
+    "kafe", "kafa", "rezervacija", "Novi Sad", "specijaliteti", 
+    "ambijent", "poslovni sastanci", "proslave", "kafić",
+    "specialty coffee", "ketering", "torte", "poslastice"
+  ],
+  authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
+  category: "Restaurant",
+  applicationName: "Koneti Café",
+  other: {
+    'google-site-verification': 'your-verification-code',
+    'facebook-domain-verification': 'your-verification-code',
   },
   openGraph: {
     title: "Koneti Café - Dobrodošli",
     description: "Uživajte u najboljoj kafi u prijatnom ambijentu. Rezervišite stolove za poslovne sastanke ili proslave.",
-    url: "https://koneti-cafe.rs",
+    url: "https://koneti.com",
     siteName: "Koneti Café",
     images: [
       {
-        url: "/koneti-logo.png",
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Koneti Café Logo",
+        alt: "Koneti Café - Ambijent i specijaliteti",
       },
+      {
+        url: "/og-image-alt.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Koneti Café - Enterijer",
+      }
     ],
     locale: "sr_RS",
+    alternateLocale: ["en_US"],
     type: "website",
   },
   twitter: {
@@ -82,7 +89,7 @@ export default function RootLayout({
     "@type": "Restaurant",
     "name": "Koneti Café",
     "description": "Uživajte u najboljoj kafi u prijatnom ambijentu. Rezervišite stolove za poslovne sastanke ili proslave.",
-    "url": "https://koneti-cafe.rs",
+    "url": "https://koneti.com",
     "telephone": "+381-XX-XXX-XXXX",
     "address": {
       "@type": "PostalAddress",
@@ -104,7 +111,7 @@ export default function RootLayout({
     ],
     "servesCuisine": ["Coffee", "Desserts", "Mediterranean"],
     "priceRange": "$$",
-    "image": "https://koneti-cafe.rs/koneti-logo.png",
+    "image": "https://koneti.com/koneti-logo.png",
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.8",

@@ -1,20 +1,245 @@
+
 import Menu from "@/components/menu/Menu";
-import { Metadata } from "next";
+import type { Metadata } from 'next';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
-  title: 'Meni | Koneti Cafe Novi Sad',
-  description: 'Pogledajte našu ponudu kafa, pica i napitaka. U Koneti Cafe-u vas očekuje kvalitetna italijanska pica i bogat izbor toplih i hladnih napitaka.',
-  keywords: 'meni Koneti Cafe, kafa Novi Sad, pica Novi Sad, napici',
+  title: "Meni | Koneti Café - Specialty Coffee i Poslastice",
+  description: "Otkrijte naš meni sa premium specialty kafama, svežim poslasticama, cednjenim sokovima i brunch ponudom. Dostupan je i ketering za proslave i poslovne događaje.",
+  keywords: [
+    "meni", "kafa", "specialty coffee", "espresso", "cappuccino",
+    "poslastice", "napici", "cedjena malina", "smoothie", "brunch",
+    "ketering za proslave", "ketering za događaje", "kafić Novi Sad",
+    "premium kafa", "specialty napici", "doručak"
+  ],
   openGraph: {
-    title: 'Meni | Koneti Cafe Novi Sad',
-    description: 'Otkrijte našu ponudu kafa, pica i napitaka u Koneti Cafe-u',
-    type: 'website',
-    locale: 'sr_RS',
-  }
-}
+    title: "Meni | Koneti Café",
+    description: "Premium specialty kafe, poslastice i ketering za proslave",
+    url: "https://koneti.com/menu",
+    type: "website",
+    locale: "sr_RS",
+    siteName: "Koneti Café",
+    images: [
+      {
+        url: "/menu-og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Koneti Café Meni - Specialty Coffee i Poslastice",
+        type: "image/jpeg",
+      }
+    ],
+  },
+  alternates: {
+    canonical: 'https://koneti.com/menu',
+    languages: {
+      'sr-RS': 'https://koneti.com/menu',
+      'en-US': 'https://koneti.com/en/menu',
+    }
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: "your-google-verification-code",
+  },
+  category: "Restaurant",
+  applicationName: "Koneti Café Menu",
+};
 
 export const dynamic = "force-dynamic";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Početna",
+      "item": "https://koneti.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Meni",
+      "item": "https://koneti.com/menu"
+    }
+  ]
+};
+
+const menuJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Koneti Café",
+  "image": "https://koneti.com/koneti-cafe.jpg",
+  "url": "https://koneti.com",
+  "telephone": "+381XXXXXXXXX",
+  "email": "info@koneti.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Bulevar oslobođenja 97",
+    "addressLocality": "Novi Sad",
+    "addressRegion": "Vojvodina",
+    "postalCode": "21000",
+    "addressCountry": "RS"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 45.2551338,
+    "longitude": 19.8451756
+  },
+  "servesCuisine": [
+    "Coffee",
+    "Desserts",
+    "Brunch",
+    "Beverages"
+  ],
+  "priceRange": "$$",
+  "hasMenu": {
+    "@type": "Menu",
+    "name": "Koneti Café Meni",
+    "hasMenuSection": [
+      {
+        "@type": "MenuSection",
+        "name": "Specialty Coffee",
+        "description": "Premium specialty kafe od najboljih proizvoditelja",
+        "hasMenuItem": [
+          {
+            "@type": "MenuItem",
+            "name": "Espresso",
+            "description": "Single origin espresso",
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "RSD",
+              "availability": "https://schema.org/InStock"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "Cappuccino",
+            "description": "Espresso sa mlekom",
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "RSD",
+              "availability": "https://schema.org/InStock"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "MenuSection",
+        "name": "Napici",
+        "description": "Svežo cednjeni sokovi i smoothie-ji",
+        "hasMenuItem": [
+          {
+            "@type": "MenuItem",
+            "name": "Cedjena Malina",
+            "description": "Svežo cednjeni sok od maline",
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "RSD",
+              "availability": "https://schema.org/InStock"
+            }
+          },
+          {
+            "@type": "MenuItem",
+            "name": "Smoothie",
+            "description": "Voćni smoothie-ji",
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "RSD",
+              "availability": "https://schema.org/InStock"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "MenuSection",
+        "name": "Poslastice",
+        "description": "Svežo pripremljene poslastice",
+        "hasMenuItem": [
+          {
+            "@type": "MenuItem",
+            "name": "Razne Poslastice",
+            "description": "Svežo pripremljene poslastice",
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "RSD",
+              "availability": "https://schema.org/InStock"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "MenuSection",
+        "name": "Brunch",
+        "description": "Doručak i brunch ponuda",
+        "hasMenuItem": [
+          {
+            "@type": "MenuItem",
+            "name": "Brunch Ponuda",
+            "description": "Raznovrsna brunch jela",
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "RSD",
+              "availability": "https://schema.org/InStock"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "catering": {
+    "@type": "Service",
+    "name": "Ketering za Proslave i Događaje",
+    "description": "Ketering usluge dostupne po narudžbini za proslave, poslovne događaje i privatne proslavljanja",
+    "areaServed": {
+      "@type": "City",
+      "name": "Novi Sad"
+    },
+    "url": "https://koneti.com/reservation?type=experience"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "opens": "07:00",
+      "closes": "23:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "08:00",
+      "closes": "23:00"
+    }
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "250",
+    "bestRating": "5",
+    "worstRating": "1"
+  }
+};
 
 export default async function MenuPage() {
   try {
@@ -28,10 +253,25 @@ export default async function MenuPage() {
       drinkRes.json(),
     ]);
 
-    return <Menu initialCategories={categories} initialDrinks={drinks} />;
+    return (
+      <>
+        <Script 
+          id="menu-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(menuJsonLd) }}
+        />
+        <Script 
+          id="breadcrumb-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        />
+        <main>
+          <Menu initialCategories={categories} initialDrinks={drinks} />
+        </main>
+      </>
+    );
   } catch (error) {
     console.error("Error fetching menu data:", error);
-    return <div>Failed to load menu data.</div>;
+    return <div>Greška pri učitavanju menija.</div>;
   }
 }
-
