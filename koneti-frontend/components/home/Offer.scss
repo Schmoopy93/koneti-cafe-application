@@ -1,73 +1,174 @@
+// ===== Variables =====
+// Colors
+$color-accent-primary: #cfa68a;
+$color-accent-secondary: #d4a574;
+$color-text-primary: #5a3e36;
+$color-text-secondary: #4a3529;
+$color-white: white;
+$color-bg-main: #fdfaf6;
+
+// Opacity values
+$opacity-bg-light: 0.07;
+$opacity-bg-medium: 0.08;
+$opacity-border-light: 0.15;
+$opacity-border-medium: 0.2;
+$opacity-tag-1: 0.22;
+$opacity-tag-2: 0.12;
+$opacity-tag-hover: 0.28;
+$opacity-border-tag: 0.45;
+$opacity-border-tag-hover: 0.65;
+
+// Spacing
+$spacing-xs: 0.3rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.2rem;
+$spacing-xl: 1.5rem;
+$spacing-2xl: 2rem;
+$spacing-3xl: 2.5rem;
+$spacing-4xl: 4rem;
+$spacing-5xl: 5rem;
+
+// Border radius
+$radius-xs: 2px;
+$radius-sm: 12px;
+$radius-md: 15px;
+$radius-lg: 25px;
+
+// Font sizes
+$font-size-xs: 0.8rem;
+$font-size-sm: 0.9rem;
+$font-size-base: 0.95rem;
+$font-size-md: 1rem;
+$font-size-lg: 1.3rem;
+$font-size-xl: 1.6rem;
+$font-size-2xl: 1.8rem;
+$font-size-3xl: 2.2rem;
+$font-size-4xl: 2.6rem;
+
+// Font weights
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+// Font families
+$font-primary: "Poppins", system-ui, sans-serif;
+$font-secondary: "Playfair Display", "Times New Roman", serif;
+$font-tertiary: "Inter", system-ui, sans-serif;
+
+// Transitions
+$transition-default: all 0.3s ease;
+$transition-fast: all 0.25s ease;
+$transition-card: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-transform: transform 0.3s ease;
+$transition-image: transform 0.4s ease;
+
+// Shadows
+$shadow-card: 0 8px 25px rgba(90, 62, 54, 0.1);
+$shadow-card-hover: 0 20px 40px rgba(90, 62, 54, 0.2);
+$shadow-tag: 0 2px 5px rgba(207, 166, 138, 0.25);
+$shadow-tag-hover: 0 4px 10px rgba(207, 166, 138, 0.35);
+$shadow-btn: 0 4px 15px rgba(207, 166, 138, 0.3);
+$shadow-btn-hover: 0 6px 20px rgba(207, 166, 138, 0.4);
+
+// Dimensions
+$card-image-height: 260px;
+$card-image-height-mobile: 220px;
+$header-max-width: 700px;
+$grid-max-width: 1600px;
+$grid-gap: 5rem;
+$grid-gap-tablet: 2rem;
+
+// Letter spacing
+$letter-spacing-sm: 0.15px;
+$letter-spacing-md: 0.2px;
+$letter-spacing-lg: 0.3px;
+$letter-spacing-xl: 1.4px;
+$letter-spacing-2xl: 1.6px;
+
+// Breakpoints
+$breakpoint-large: 992px;
+$breakpoint-tablet: 768px;
+
+// ===== Mixins =====
+@mixin gradient-primary {
+  background: linear-gradient(135deg, $color-accent-primary, $color-accent-secondary);
+}
+
+@mixin gradient-tag {
+  background: linear-gradient(180deg, rgba($color-accent-primary, $opacity-tag-1), rgba($color-accent-primary, $opacity-tag-2));
+}
+
+@mixin accent-underline {
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 2px;
+    background: $color-accent-primary;
+    border-radius: $radius-xs;
+  }
+}
+
+// ===== Main Component =====
 .offer {
-  background: #fdfaf6;
-  padding: 5rem 2rem;
+  background: $color-bg-main;
+  padding: $spacing-5xl $spacing-2xl;
   position: relative;
 
-  /* ===== HEADER ===== */
   .offer-header {
     text-align: center;
-    margin: 0 auto 4rem;
-    max-width: 700px;
+    margin: 0 auto $spacing-4xl;
+    max-width: $header-max-width;
 
     .section-subtitle {
-      font-family: "Poppins", system-ui, sans-serif;
-      color: #cfa68a;
-      font-weight: 700;
-      font-size: 0.95rem;
+      font-family: $font-primary;
+      color: $color-accent-primary;
+      font-weight: $font-weight-bold;
+      font-size: $font-size-base;
       text-transform: uppercase;
-      letter-spacing: 1.6px;
+      letter-spacing: $letter-spacing-2xl;
       display: inline-block;
       position: relative;
-
-      &::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: -4px;
-        width: 100%;
-        height: 2px;
-        background: #cfa68a;
-        border-radius: 2px;
-      }
+      @include accent-underline;
     }
 
     .section-title {
-      font-family: "Playfair Display", "Times New Roman", serif;
-      font-size: 2.6rem;
-      font-weight: 700;
-      color: #5a3e36;
-      margin: 1rem 0 0;
-      letter-spacing: 0.3px;
+      font-family: $font-secondary;
+      font-size: $font-size-4xl;
+      font-weight: $font-weight-bold;
+      color: $color-text-primary;
+      margin: $spacing-md 0 0;
+      letter-spacing: $letter-spacing-lg;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
 
       .title-icon {
-        margin-right: 0.5rem;
+        margin-right: $spacing-sm;
       }
     }
   }
 
-  /* ===== GRID ===== */
   .offer-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 5rem;
-    max-width: 1600px;
+    gap: $grid-gap;
+    max-width: $grid-max-width;
     margin: 0 auto;
   }
 
-  /* ===== SERVICE CARD ===== */
   .service-card {
     display: flex;
     flex-direction: column;
-    background: rgba(207, 166, 138, 0.07); /* svetla, elegantna pozadina */
-    border-radius: 15px;
+    background: rgba($color-accent-primary, $opacity-bg-light);
+    border-radius: $radius-md;
     overflow: hidden;
-    box-shadow: 0 8px 25px rgba(90, 62, 54, 0.1);
-    border: 1px solid rgba(207, 166, 138, 0.15);
+    box-shadow: $shadow-card;
+    border: 1px solid rgba($color-accent-primary, $opacity-border-light);
     opacity: 0;
     transform: translateY(50px) scale(0.95);
-    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: $transition-card;
 
     &.in-view {
       opacity: 1;
@@ -76,7 +177,7 @@
 
     &:hover {
       transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 20px 40px rgba(90, 62, 54, 0.2);
+      box-shadow: $shadow-card-hover;
 
       .card-image {
         transform: scale(1.08);
@@ -84,107 +185,91 @@
 
       .feature-tag {
         transform: translateY(-2px);
-        background: rgba(207, 166, 138, 0.25);
+        background: rgba($color-accent-primary, $opacity-bg-light * 3.5);
       }
     }
 
-    /* Header sa slikom */
     .card-header {
       position: relative;
-      height: 260px;
+      height: $card-image-height;
       overflow: hidden;
 
       .card-image {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.4s ease;
+        transition: $transition-image;
       }
     }
 
-    /* Glavni sadržaj */
     .card-content {
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 1.5rem;
-      background: rgba(207, 166, 138, 0.08); /* proširuje pozadinu */
-      border-top: 1px solid rgba(207, 166, 138, 0.2);
+      padding: $spacing-xl;
+      background: rgba($color-accent-primary, $opacity-bg-medium);
+      border-top: 1px solid rgba($color-accent-primary, $opacity-border-medium);
 
       .card-title-section {
-        margin-bottom: 1.5rem;
+        margin-bottom: $spacing-xl;
 
         h3 {
-          font-family: "Playfair Display", serif;
-          font-weight: 700;
-          font-size: 1.6rem;
-          color: #5a3e36;
-          margin-bottom: 0.5rem;
+          font-family: $font-secondary;
+          font-weight: $font-weight-bold;
+          font-size: $font-size-xl;
+          color: $color-text-primary;
+          margin-bottom: $spacing-sm;
         }
 
         .subtitle {
-          font-family: "Poppins", sans-serif;
-          color: #cfa68a;
-          font-weight: 700;
-          font-size: 0.9rem;
+          font-family: $font-primary;
+          color: $color-accent-primary;
+          font-weight: $font-weight-bold;
+          font-size: $font-size-sm;
           text-transform: uppercase;
-          letter-spacing: 1.4px;
+          letter-spacing: $letter-spacing-xl;
           position: relative;
           display: inline-block;
-
-          &::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -4px;
-            width: 100%;
-            height: 2px;
-            background: #cfa68a;
-            border-radius: 2px;
-          }
+          @include accent-underline;
         }
       }
 
       .description {
-        font-family: "Inter", system-ui, sans-serif;
-        font-size: 1rem;
-        color: #4a3529;
+        font-family: $font-tertiary;
+        font-size: $font-size-md;
+        color: $color-text-secondary;
         line-height: 1.75;
-        font-weight: 500;
-        margin-bottom: 1.2rem;
-        letter-spacing: 0.15px;
+        font-weight: $font-weight-medium;
+        margin-bottom: $spacing-lg;
+        letter-spacing: $letter-spacing-sm;
       }
 
       .features {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.3rem;
-        margin-bottom: 1.5rem;
+        gap: $spacing-xs;
+        margin-bottom: $spacing-xl;
 
         .feature-tag {
-          background: linear-gradient(
-            180deg,
-            rgba(207, 166, 138, 0.22),
-            rgba(207, 166, 138, 0.12)
-          );
-          color: #5a3e36;
+          @include gradient-tag;
+          color: $color-text-primary;
           padding: 0.4rem 0.75rem;
-          border-radius: 12px;
-          font-size: 0.8rem;
-          font-weight: 700;
-          border: 1px solid rgba(207, 166, 138, 0.45);
-          transition: all 0.25s ease;
-          box-shadow: 0 2px 5px rgba(207, 166, 138, 0.25);
-          letter-spacing: 0.2px;
+          border-radius: $radius-sm;
+          font-size: $font-size-xs;
+          font-weight: $font-weight-bold;
+          border: 1px solid rgba($color-accent-primary, $opacity-border-tag);
+          transition: $transition-fast;
+          box-shadow: $shadow-tag;
+          letter-spacing: $letter-spacing-md;
           backdrop-filter: saturate(110%);
           white-space: nowrap;
 
           &:hover {
-            background: rgba(207, 166, 138, 0.28);
+            background: rgba($color-accent-primary, $opacity-tag-hover);
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(207, 166, 138, 0.35);
-            border-color: rgba(207, 166, 138, 0.65);
+            box-shadow: $shadow-tag-hover;
+            border-color: rgba($color-accent-primary, $opacity-border-tag-hover);
           }
         }
       }
@@ -193,20 +278,20 @@
         align-self: flex-start;
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
-        padding: 1rem 2rem;
-        background: linear-gradient(135deg, #cfa68a, #d4a574);
-        color: white;
+        gap: $spacing-sm;
+        padding: $spacing-md $spacing-2xl;
+        @include gradient-primary;
+        color: $color-white;
         text-decoration: none;
-        border-radius: 25px;
-        font-weight: 700;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(207, 166, 138, 0.3);
+        border-radius: $radius-lg;
+        font-weight: $font-weight-bold;
+        font-size: $font-size-md;
+        transition: $transition-default;
+        box-shadow: $shadow-btn;
 
         &:hover {
           transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(207, 166, 138, 0.4);
+          box-shadow: $shadow-btn-hover;
 
           svg {
             transform: translateX(3px);
@@ -214,51 +299,55 @@
         }
 
         svg {
-          transition: transform 0.3s ease;
+          transition: $transition-transform;
         }
       }
     }
   }
+}
 
-  /* ===== MEDIA QUERIES ===== */
-  @media (max-width: 992px) {
-    padding: 4rem 1.5rem;
+// ===== Responsive =====
+@media (max-width: $breakpoint-large) {
+  .offer {
+    padding: $spacing-4xl $spacing-xl;
 
     .offer-header .section-title {
-      font-size: 2.2rem;
+      font-size: $font-size-3xl;
     }
 
     .offer-grid {
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: $grid-gap-tablet;
     }
   }
+}
 
-  @media (max-width: 768px) {
-    padding: 3rem 1rem;
+@media (max-width: $breakpoint-tablet) {
+  .offer {
+    padding: 3rem $spacing-md;
 
     .offer-header {
-      margin-bottom: 2.5rem;
+      margin-bottom: $spacing-3xl;
 
       .section-title {
-        font-size: 1.8rem;
+        font-size: $font-size-2xl;
       }
 
       .section-subtitle {
-        font-size: 1rem;
+        font-size: $font-size-md;
       }
     }
 
     .service-card {
       .card-header {
-        height: 220px;
+        height: $card-image-height-mobile;
       }
 
       .card-content {
-        padding: 1.2rem;
+        padding: $spacing-lg;
 
         .card-title-section h3 {
-          font-size: 1.3rem;
+          font-size: $font-size-lg;
         }
       }
     }

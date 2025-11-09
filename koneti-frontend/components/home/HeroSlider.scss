@@ -1,29 +1,129 @@
+// ===== Variables =====
+// Colors
+$color-black: #000;
+$color-white: #fff;
+$color-accent-primary: #cfa68a;
+$color-accent-secondary: #d4a574;
+
+// Opacity values
+$opacity-overlay: 0.4;
+$opacity-gradient: 0.1;
+$opacity-text-light: 0.7;
+$opacity-text-normal: 0.9;
+$opacity-white-light: 0.4;
+$opacity-white-medium: 0.6;
+$opacity-white-high: 0.8;
+$opacity-white-hover: 0.1;
+
+// Spacing
+$spacing-xs: 0.3rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-2xl: 2.5rem;
+
+// Border radius
+$radius-sm: 25px;
+$radius-lg: 50px;
+$radius-full: 50%;
+
+// Font sizes
+$font-size-xs: 0.8rem;
+$font-size-sm: 0.9rem;
+$font-size-base: 1rem;
+$font-size-md: 1.1rem;
+$font-size-lg: 1.2rem;
+$font-size-xl: 1.4rem;
+$font-size-2xl: 2rem;
+$font-size-3xl: 2.2rem;
+$font-size-4xl: 3rem;
+$font-size-5xl: 3.2rem;
+
+// Font weights
+$font-weight-light: 300;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Font families
+$font-primary: "Poppins", sans-serif;
+
+// Transitions
+$transition-default: all 0.3s ease;
+$transition-cubic: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+// Shadows
+$shadow-text-light: 0 2px 10px rgba(0, 0, 0, 0.4);
+$shadow-text-strong: 0 4px 20px rgba(0, 0, 0, 0.6);
+$shadow-btn-primary: 0 4px 20px rgba(207, 166, 138, 0.4);
+$shadow-btn-primary-hover: 0 6px 25px rgba(207, 166, 138, 0.5);
+
+// Dimensions
+$hero-height: 90vh;
+$hero-height-mobile: 100vh;
+$slide-text-max-width: 600px;
+$btn-max-width-mobile: 250px;
+
+// Dots
+$dot-size: 12px;
+$dot-gap: 0.5rem;
+$dot-border: 2px;
+
+// Z-index
+$z-index-video: 0;
+$z-index-overlay-base: 1;
+$z-index-overlay: 2;
+$z-index-content: 3;
+$z-index-indicator: 4;
+
+// Animation durations
+$animation-main: 1s;
+$animation-zoom: 20s;
+$animation-bounce: 2s;
+$animation-delay: 0.3s;
+
+// ===== Mixins =====
+@mixin gradient-primary {
+  background: linear-gradient(135deg, $color-accent-primary, $color-accent-secondary);
+}
+
+@mixin gradient-overlay {
+  background: linear-gradient(to right, rgba($color-accent-primary, $opacity-gradient), transparent);
+}
+
+@mixin text-shadow-light {
+  text-shadow: $shadow-text-light;
+}
+
+@mixin text-shadow-strong {
+  text-shadow: $shadow-text-strong;
+}
+
+// ===== Main Slider =====
 .hero-slider {
   position: relative;
-  height: 90vh;
-  background: #000;
-  border-radius: 0 0 25px 25px;
+  height: $hero-height;
+  background: $color-black;
+  border-radius: 0 0 $radius-sm $radius-sm;
   margin-top: 0;
   overflow: hidden;
   opacity: 0;
   transform: translateY(30px) scale(0.98);
-  animation: slideUpFade 1s ease-out 0.3s forwards;
+  animation: slideUpFade $animation-main ease-out $animation-delay forwards;
 
-  /* --- Zajednički stilovi za sve slider delove --- */
   .slick-slider,
   .slick-list,
   .slide,
   .slide-image,
   .slide-video {
-    border-radius: 0 0 25px 25px;
+    border-radius: 0 0 $radius-sm $radius-sm;
     overflow: hidden;
   }
 
-  /* --- Glavni slajd --- */
   .slide,
   .slide-image,
   .slide-video {
-    height: 90vh;
+    height: $hero-height;
   }
 
   .slide-image {
@@ -35,8 +135,8 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.4);
-      z-index: 1;
+      background: rgba($color-black, $opacity-overlay);
+      z-index: $z-index-overlay-base;
     }
   }
 
@@ -54,102 +154,100 @@
       height: auto;
       transform: translate(-50%, -50%) scale(1.1);
       object-fit: cover;
-      z-index: 0;
-      animation: slowZoom 20s ease-in-out infinite alternate;
+      z-index: $z-index-video;
+      animation: slowZoom $animation-zoom ease-in-out infinite alternate;
     }
   }
 
-  /* --- Overlay --- */
   .slide-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to right, rgba(207, 166, 138, 0.1), transparent);
-    z-index: 2;
+    @include gradient-overlay;
+    z-index: $z-index-overlay;
   }
 
-  /* --- Tekst na slici --- */
   .slide-content {
     position: absolute;
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    z-index: 3;
+    z-index: $z-index-content;
     padding: 0 clamp(1.5rem, 4vw, 5%);
   }
 
   .slide-text {
-    max-width: 600px;
-    color: white;
-    animation: slideUpFade 1s ease-out;
-    font-family: "Poppins", sans-serif;
+    max-width: $slide-text-max-width;
+    color: $color-white;
+    animation: slideUpFade $animation-main ease-out;
+    font-family: $font-primary;
 
     * {
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+      @include text-shadow-light;
     }
 
     .slide-number {
       display: block;
-      font-size: 1rem;
-      font-weight: 300;
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 1rem;
+      font-size: $font-size-base;
+      font-weight: $font-weight-light;
+      color: rgba($color-white, $opacity-text-light);
+      margin-bottom: $spacing-md;
       letter-spacing: 2px;
     }
 
     .slide-title {
-      font-size: 3.2rem;
-      font-weight: 700;
+      font-size: $font-size-5xl;
+      font-weight: $font-weight-bold;
       line-height: 1.2;
-      margin-bottom: 1rem;
-      color: white;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      margin-bottom: $spacing-md;
+      color: $color-white;
+      @include text-shadow-strong;
     }
 
     .slide-subtitle {
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: #cfa68a;
-      margin-bottom: 1.5rem;
+      font-size: $font-size-xl;
+      font-weight: $font-weight-semibold;
+      color: $color-accent-primary;
+      margin-bottom: $spacing-lg;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
     .slide-description {
-      font-size: 1.1rem;
+      font-size: $font-size-md;
       line-height: 1.6;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 2.5rem;
+      color: rgba($color-white, $opacity-text-normal);
+      margin-bottom: $spacing-2xl;
     }
 
     .slide-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 1.5rem;
+      gap: $spacing-lg;
 
       .btn-primary,
       .btn-secondary {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 1rem 2rem;
-        font-weight: 600;
-        font-size: 1rem;
-        border-radius: 50px;
+        padding: $spacing-md $spacing-xl;
+        font-weight: $font-weight-semibold;
+        font-size: $font-size-base;
+        border-radius: $radius-lg;
         cursor: pointer;
         text-decoration: none;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: $transition-cubic;
       }
 
       .btn-primary {
-        background: linear-gradient(135deg, #cfa68a, #d4a574);
-        color: #fff;
-        box-shadow: 0 4px 20px rgba(207, 166, 138, 0.4);
+        @include gradient-primary;
+        color: $color-white;
+        box-shadow: $shadow-btn-primary;
         border: none;
 
         &:hover {
           transform: translateY(-2px);
-          box-shadow: 0 6px 25px rgba(207, 166, 138, 0.5);
+          box-shadow: $shadow-btn-primary-hover;
 
           svg {
             transform: translateX(3px);
@@ -163,128 +261,130 @@
 
       .btn-secondary {
         background: transparent;
-        color: white;
-        border: 2px solid rgba(255, 255, 255, 0.8);
+        color: $color-white;
+        border: $dot-border solid rgba($color-white, $opacity-white-high);
         backdrop-filter: blur(10px);
 
         &:hover {
-          background: rgba(255, 255, 255, 0.1);
-          border-color: white;
+          background: rgba($color-white, $opacity-white-hover);
+          border-color: $color-white;
           transform: translateY(-2px);
         }
       }
     }
   }
 
-  /* --- Scroll indikator --- */
   .hero-scroll-indicator {
     position: absolute;
-    bottom: 2rem;
+    bottom: $spacing-xl;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    color: rgba(255, 255, 255, 0.7);
-    z-index: 4;
+    color: rgba($color-white, $opacity-text-light);
+    z-index: $z-index-indicator;
 
     .scroll-text {
-      font-size: 0.8rem;
-      margin-bottom: 0.3rem;
+      font-size: $font-size-xs;
+      margin-bottom: $spacing-xs;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
     .scroll-arrow {
-      font-size: 1.2rem;
-      animation: bounceArrow 2s infinite;
+      font-size: $font-size-lg;
+      animation: bounceArrow $animation-bounce infinite;
     }
   }
 
-  /* --- Slick dots --- */
   .slick-dots {
-    bottom: 2rem;
-    right: 2rem;
+    bottom: $spacing-xl;
+    right: $spacing-xl;
     left: auto;
     width: auto;
     display: flex !important;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: $dot-gap;
 
     li {
       margin: 0;
 
       button {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.4);
-        border: 2px solid transparent;
-        transition: all 0.3s ease;
+        width: $dot-size;
+        height: $dot-size;
+        border-radius: $radius-full;
+        background: rgba($color-white, $opacity-white-light);
+        border: $dot-border solid transparent;
+        transition: $transition-default;
 
         &:before {
           display: none;
         }
 
         &:hover {
-          background: rgba(255, 255, 255, 0.6);
+          background: rgba($color-white, $opacity-white-medium);
           transform: scale(1.2);
         }
       }
 
       &.slick-active button {
-        background: #cfa68a;
-        border-color: rgba(255, 255, 255, 0.8);
+        background: $color-accent-primary;
+        border-color: rgba($color-white, $opacity-white-high);
         transform: scale(1.3);
       }
     }
   }
+}
 
-  /* --- Animacije --- */
-  @keyframes slideUpFade {
-    from {
-      opacity: 0;
-      transform: translateY(var(--offset, 30px)) scale(0.98);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+// ===== Animations =====
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(var(--offset, 30px)) scale(0.98);
   }
-
-  @keyframes bounceArrow {
-    0%, 20%, 50%, 80%, 100% {
-      transform: translateY(0);
-    }
-    40% {
-      transform: translateY(-5px);
-    }
-    60% {
-      transform: translateY(-2px);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
+}
 
-  @keyframes slowZoom {
-    0% {
-      transform: translate(-50%, -50%) scale(1);
-    }
-    100% {
-      transform: translate(-50%, -50%) scale(1.1);
-    }
+@keyframes bounceArrow {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
   }
+  40% {
+    transform: translateY(-5px);
+  }
+  60% {
+    transform: translateY(-2px);
+  }
+}
 
-  /* --- Responsive --- */
-  @media (max-width: 1200px) {
+@keyframes slowZoom {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+// ===== Responsive =====
+@media (max-width: 1200px) {
+  .hero-slider {
     .slide-text .slide-title {
-      font-size: 3rem;
+      font-size: $font-size-4xl;
     }
   }
+}
 
-  @media (max-width: 768px) {
-    height: 100vh;
+@media (max-width: 768px) {
+  .hero-slider {
+    height: $hero-height-mobile;
 
     .slide,
     .slide-image,
     .slide-video {
-      height: 100vh;
+      height: $hero-height-mobile;
     }
 
     .slide-content {
@@ -296,45 +396,47 @@
       max-width: 100%;
 
       .slide-title {
-        font-size: 2.2rem;
+        font-size: $font-size-3xl;
       }
 
       .slide-subtitle {
-        font-size: 1.2rem;
+        font-size: $font-size-lg;
       }
 
       .slide-description {
-        font-size: 1rem;
+        font-size: $font-size-base;
       }
 
       .slide-actions {
         justify-content: center;
-        gap: 1rem;
+        gap: $spacing-md;
 
         .btn-primary,
         .btn-secondary {
-          padding: 0.8rem 1.5rem;
-          font-size: 0.9rem;
+          padding: 0.8rem $spacing-lg;
+          font-size: $font-size-sm;
         }
       }
     }
 
     .slick-dots {
-      bottom: 1rem;
+      bottom: $spacing-md;
       right: 50%;
       transform: translateX(50%);
       flex-direction: row;
     }
 
     .hero-scroll-indicator {
-      bottom: 1rem;
+      bottom: $spacing-md;
     }
   }
+}
 
-  @media (max-width: 480px) {
+@media (max-width: 480px) {
+  .hero-slider {
     .slide-text {
       .slide-title {
-        font-size: 2rem;
+        font-size: $font-size-2xl;
       }
 
       .slide-actions {
@@ -344,7 +446,7 @@
         .btn-primary,
         .btn-secondary {
           width: 100%;
-          max-width: 250px;
+          max-width: $btn-max-width-mobile;
         }
       }
     }
