@@ -87,6 +87,7 @@ const MenuClient: React.FC<MenuClientProps> = ({
   const [mounted, setMounted] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<{src: string, name: string} | null>(null);
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState<boolean>(false);
   const itemsPerPage = 8;
 
   useEffect(() => {
@@ -98,9 +99,9 @@ const MenuClient: React.FC<MenuClientProps> = ({
   }, []);
 
   const activeCategory = selectedCategory || categories[0]?._id || "";
-  const activeCategoryObj = categories.find(
-    (cat) => cat._id === activeCategory
-  );
+  const activeCategoryObj = Array.isArray(categories) 
+    ? categories.find((cat) => cat._id === activeCategory)
+    : undefined;
 
   const getCategoryName = (cat?: Category) => {
     if (!cat || !i18n.isInitialized) return "";
@@ -151,7 +152,7 @@ const MenuClient: React.FC<MenuClientProps> = ({
               : t("menu.title")}
           </div>
           <div className="category-list">
-            {categories.map((cat) => (
+            {Array.isArray(categories) && categories.map((cat) => (
               <button
                 key={cat._id}
                 className={`category-btn ${
@@ -184,23 +185,47 @@ const MenuClient: React.FC<MenuClientProps> = ({
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         {isMobile && (
-          <div className="mobile-category-grid">
-            {categories.map((cat) => (
-              <button
-                key={cat._id}
-                className={`category-btn ${
-                  activeCategory === cat._id ? "active" : ""
-                }`}
-                onClick={() => setSelectedCategory(cat._id)}
-              >
-                {cat.icon && (
-                  <FontAwesomeIcon
-                    icon={faIconsMap[cat.icon]}
-                    className="icon"
-                  />
+          <div className="mobile-category-container">
+            <button 
+              className="category-dropdown-trigger"
+              onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+            >
+              <span className="trigger-icon">
+                {activeCategoryObj?.icon && (
+                  <FontAwesomeIcon icon={faIconsMap[activeCategoryObj.icon]} />
                 )}
-              </button>
-            ))}
+              </span>
+              <span className="trigger-text">
+                {activeCategoryObj ? getCategoryName(activeCategoryObj) : t("menu.title")}
+              </span>
+              <FontAwesomeIcon 
+                icon={showCategoryDropdown ? faChevronRight : faChevronLeft} 
+                className="trigger-chevron"
+              />
+            </button>
+            
+            <div className={`mobile-category-grid ${showCategoryDropdown ? 'show' : ''}`}>
+              {Array.isArray(categories) && categories.map((cat) => (
+                <button
+                  key={cat._id}
+                  className={`mobile-category-btn ${
+                    activeCategory === cat._id ? "active" : ""
+                  }`}
+                  onClick={() => {
+                    setSelectedCategory(cat._id);
+                    setShowCategoryDropdown(false);
+                  }}
+                  title={getCategoryName(cat)}
+                >
+                  {cat.icon && (
+                    <FontAwesomeIcon
+                      icon={faIconsMap[cat.icon]}
+                      className="icon"
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
         )}
 

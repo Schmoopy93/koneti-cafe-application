@@ -1,65 +1,124 @@
 .add-category-form {
-  font-family: "Poppins", sans-serif;
+  /* ===== CSS VARIJABLE ===== */
+  --font-primary: "Poppins", sans-serif;
+  
+  /* Boje */
+  --color-primary: #5a3e36;
+  --color-secondary: #cfa68a;
+  --color-secondary-light: #d4a574;
+  --color-secondary-dark: #926447;
+  --color-accent: #caa27e;
+  --color-white: #fff;
+  --color-error: #e74c3c;
+  --color-error-light: rgba(231, 76, 60, 0.1);
+  --color-error-border: rgba(231, 76, 60, 0.2);
+  --color-placeholder: #999;
+  
+  /* Border i shadow efekti */
+  --border-radius-sm: 0.5rem;
+  --border-radius-md: 10px;
+  --border-radius-lg: 15px;
+  --border-color: rgba(207, 166, 138, 0.3);
+  --shadow-sm: 0 2px 8px rgba(207, 166, 138, 0.35);
+  --shadow-md: 0 4px 15px rgba(207, 166, 138, 0.3);
+  --shadow-lg: 0 8px 25px rgba(207, 166, 138, 0.4);
+  --shadow-focus: 0 0 0 3px rgba(207, 166, 138, 0.2);
+  --shadow-selected: 0 0 10px rgba(146, 100, 71, 0.4);
+  
+  /* Dimenzije i spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.3rem;
+  --spacing-md: 0.5rem;
+  --spacing-lg: 0.6rem;
+  --spacing-xl: 0.8rem;
+  --spacing-xxl: 1rem;
+  --spacing-xxxl: 1.2rem;
+  --spacing-jumbo: 1.5rem;
+  
+  /* Font sizes */
+  --text-xs: 0.75rem;
+  --text-sm: 0.85rem;
+  --text-md: 0.95rem;
+  --text-lg: 1rem;
+  --text-xl: 1.2rem;
+  
+  /* Animacije */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-bounce: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --animation-fadeIn: fadeIn 0.4s ease-in-out;
+  --animation-formFadeIn: formFadeIn 0.4s ease-in-out;
+  --animation-shake: shake 0.3s ease;
+  
+  /* Z-index */
+  --z-sticky: 10;
+
+  /* ===== GLAVNI STILOVI ===== */
+  font-family: var(--font-primary);
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: var(--spacing-xxxl);
   padding: 0;
   margin: 0;
   background: transparent;
   border: none;
   box-shadow: none;
   border-radius: 0;
-  animation: formFadeIn 0.4s ease-in-out; // ✅ isti fade efekat kao kod drink forme
+  animation: var(--animation-formFadeIn);
 
+  /* ===== HEADING STYLES ===== */
   h2, h3 {
     display: none;
   }
 
+  /* ===== FORM LAYOUT ===== */
   form {
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: var(--spacing-xxxl);
 
+    /* ===== LABEL STYLES ===== */
     label {
       font-weight: 600;
-      color: #5a3e36;
+      color: var(--color-primary);
       display: block;
-      margin-bottom: 0.3rem;
+      margin-bottom: var(--spacing-sm);
     }
 
+    /* ===== INPUT STYLES ===== */
     input {
       width: 100%;
-      padding: 0.8rem 1rem;
-      border-radius: 10px;
-      border: 2px solid rgba(207, 166, 138, 0.3);
-      font-size: 0.95rem;
-      font-family: "Poppins", sans-serif;
+      padding: var(--spacing-xl) var(--spacing-xxl);
+      border-radius: var(--border-radius-md);
+      border: 2px solid var(--border-color);
+      font-size: var(--text-md);
+      font-family: var(--font-primary);
       background: rgba(255, 255, 255, 0.9);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all var(--transition-bounce);
       box-sizing: border-box;
-      color: #5a3e36;
+      color: var(--color-primary);
 
       &:focus {
-        border-color: #cfa68a;
-        box-shadow: 0 0 0 3px rgba(207, 166, 138, 0.2);
+        border-color: var(--color-secondary);
+        box-shadow: var(--shadow-focus);
         outline: none;
-        background: white;
+        background: var(--color-white);
         transform: translateY(-2px);
       }
 
       &::placeholder {
-        color: #999;
+        color: var(--color-placeholder);
         font-style: italic;
       }
     }
 
-    /* === ICON PICKER === */
+    /* ===== ICON PICKER SECTION ===== */
     .icon-picker {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
-      gap: 0.6rem;
-      margin-top: 0.5rem;
-      animation: fadeIn 0.4s ease-in-out; // ✅ isti fade-in kao kod drink grid-a
+      gap: var(--spacing-lg);
+      margin-top: var(--spacing-md);
+      animation: var(--animation-fadeIn);
 
       .icon-wrap {
         position: relative;
@@ -69,49 +128,49 @@
       }
 
       .icon-btn {
-        background: #cfa68a;
+        background: var(--color-secondary);
         border: 2px solid transparent;
-        border-radius: 0.5rem;
+        border-radius: var(--border-radius-sm);
         padding: 0.55rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 1.2rem;
+        font-size: var(--text-xl);
         cursor: pointer;
-        color: #fff;
-        transition: all 0.3s ease;
+        color: var(--color-white);
+        transition: all var(--transition-normal);
 
         &:hover {
-          border-color: #caa27e;
+          border-color: var(--color-accent);
           transform: translateY(-2px);
         }
 
         &.selected {
-          background-color: #fff;
-          border-color: #926447;
-          color: #926447;
+          background-color: var(--color-white);
+          border-color: var(--color-secondary-dark);
+          color: var(--color-secondary-dark);
           transform: scale(1.15);
-          box-shadow: 0 0 10px rgba(146, 100, 71, 0.4);
+          box-shadow: var(--shadow-selected);
         }
       }
 
       .icon-tooltip.koneti-tooltip {
         position: absolute;
-        bottom: calc(100% + 0.5rem);
+        bottom: calc(100% + var(--spacing-md));
         left: 50%;
         transform: translateX(-50%);
         background: rgba(207, 166, 138, 0.95);
-        color: #5a3e36;
-        padding: 0.25rem 0.5rem;
+        color: var(--color-primary);
+        padding: var(--spacing-xs) var(--spacing-md);
         border-radius: 6px;
-        font-size: 0.75rem;
+        font-size: var(--text-xs);
         white-space: nowrap;
         font-weight: 700;
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.2s ease, transform 0.2s ease;
+        transition: opacity var(--transition-fast), transform var(--transition-fast);
         border: 1px solid rgba(146, 100, 71, 0.4);
-        box-shadow: 0 2px 8px rgba(207, 166, 138, 0.35);
+        box-shadow: var(--shadow-sm);
       }
 
       .icon-wrap:hover .icon-tooltip.koneti-tooltip {
@@ -120,60 +179,47 @@
       }
     }
 
+    /* ===== SUBMIT BUTTON ===== */
     button[type="submit"] {
       width: 100%;
-      padding: 1rem 1.5rem;
-      background: linear-gradient(135deg, #cfa68a, #d4a574);
-      color: white;
+      padding: var(--spacing-xxl) var(--spacing-jumbo);
+      background: linear-gradient(135deg, var(--color-secondary), var(--color-secondary-light));
+      color: var(--color-white);
       border: none;
-      border-radius: 15px;
-      font-family: "Poppins", sans-serif;
-      font-size: 1rem;
+      border-radius: var(--border-radius-lg);
+      font-family: var(--font-primary);
+      font-size: var(--text-lg);
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(207, 166, 138, 0.3);
-      margin-top: 1.5rem;
+      transition: all var(--transition-normal);
+      box-shadow: var(--shadow-md);
+      margin-top: var(--spacing-jumbo);
       position: sticky;
       bottom: 0;
-      z-index: 10;
+      z-index: var(--z-sticky);
 
       &:hover:not(:disabled) {
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(207, 166, 138, 0.4);
+        box-shadow: var(--shadow-lg);
       }
     }
   }
 
-  /* === ERROR ANIMATION === */
-  @keyframes shake {
-    0% { transform: translateX(0); }
-    20% { transform: translateX(-5px); }
-    40% { transform: translateX(5px); }
-    60% { transform: translateX(-5px); }
-    80% { transform: translateX(5px); }
-    100% { transform: translateX(0); }
-  }
-
-  .shake {
-    animation: shake 0.3s ease;
-    border-color: #d9534f !important;
-  }
-
+  /* ===== ERROR STATES ===== */
   .error {
-    color: #e74c3c;
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
+    color: var(--color-error);
+    font-size: var(--text-sm);
+    margin-top: var(--spacing-md);
     display: block;
-    animation: fadeIn 0.3s ease-in-out;
+    animation: var(--animation-fadeIn);
     font-weight: 700;
-    background: rgba(231, 76, 60, 0.1);
-    padding: 0.5rem;
-    border-radius: 8px;
-    border: 1px solid rgba(231, 76, 60, 0.2);
+    background: var(--color-error-light);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--color-error-border);
   }
 
-  /* === ANIMATIONS === */
+  /* ===== ANIMATIONS ===== */
   @keyframes formFadeIn {
     0% {
       opacity: 0;
@@ -186,7 +232,27 @@
   }
 
   @keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(10px); }
-    100% { opacity: 1; transform: translateY(0); }
+    0% { 
+      opacity: 0; 
+      transform: translateY(10px); 
+    }
+    100% { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
+  }
+
+  .shake {
+    animation: var(--animation-shake);
+    border-color: #d9534f !important;
   }
 }
