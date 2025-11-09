@@ -124,9 +124,9 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
     <div className="menu-management">
       {/* HEADER */}
       <div className="management-header">
-        <div className="search-section">
+        <div className="search-filter-row">
           <div className="search-box">
-            <FontAwesomeIcon icon={faSearch} />
+            <FontAwesomeIcon icon={faSearch} className="search-icon" />
             <input
               type="text"
               placeholder={t("admin.menuManagement.searchPlaceholder")}
@@ -134,6 +134,30 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+
+          <div className="sort-select-wrapper">
+            <FontAwesomeIcon icon={faSort} className="sort-icon" />
+            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+              <option value="name">
+                {t("admin.menuManagement.sortOptions.name")}
+              </option>
+              <option value="price-low">
+                {t("admin.menuManagement.sortOptions.priceLow")}
+              </option>
+              <option value="price-high">
+                {t("admin.menuManagement.sortOptions.priceHigh")}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div className="action-buttons">
+          <button className="btn-add-drink" onClick={onAddDrink}>
+            <FontAwesomeIcon icon={faPlus} /> {t("admin.addDrink.addButton")}
+          </button>
+          <button className="btn-add-category" onClick={onAddCategory}>
+            <FontAwesomeIcon icon={faTag} /> {t("admin.addCategory.addButton")}
+          </button>
         </div>
 
         <div className="category-tabs">
@@ -161,31 +185,6 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
             </button>
           ))}
         </div>
-
-        <div className="filter-container">
-          <FontAwesomeIcon icon={faSort} className="filter-icon" />
-          <label>{t("admin.menuManagement.sortLabel")}</label>
-          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-            <option value="name">
-              {t("admin.menuManagement.sortOptions.name")}
-            </option>
-            <option value="price-low">
-              {t("admin.menuManagement.sortOptions.priceLow")}
-            </option>
-            <option value="price-high">
-              {t("admin.menuManagement.sortOptions.priceHigh")}
-            </option>
-          </select>
-        </div>
-
-        <div className="action-buttons">
-          <button className="btn-add-drink" onClick={onAddDrink}>
-            <FontAwesomeIcon icon={faPlus} /> {t("admin.addDrink.addButton")}
-          </button>
-          <button className="btn-add-category" onClick={onAddCategory}>
-            <FontAwesomeIcon icon={faTag} /> {t("admin.addCategory.addButton")}
-          </button>
-        </div>
       </div>
 
       {/* DRINKS GRID */}
@@ -200,9 +199,9 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
                 filteredDrinks.length
               })`
             : `${getCategoryName(
-                categories.find(
-                  (c) => String(c._id) === String(selectedCategory)
-                )
+                Array.isArray(categories) 
+                  ? categories.find((c) => String(c._id) === String(selectedCategory))
+                  : undefined
               )} (${filteredDrinks.length})`}
         </h3>
 
