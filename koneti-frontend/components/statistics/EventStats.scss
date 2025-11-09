@@ -11,6 +11,133 @@ $bg-light: rgba(255, 255, 255, 0.95);
 $shadow: rgba(61, 47, 40, 0.08);
 $border: rgba(207, 166, 138, 0.2);
 
+/* =========================================
+   🎯 MIXINS
+========================================= */
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin chart-card-base {
+  background: linear-gradient(145deg, #ffffff 0%, #fdfaf6 30%, #f8f5f1 70%, #f0ebe4 100%);
+  border-radius: 25px;
+  border: 2px solid $border;
+  box-shadow: 0 15px 50px rgba(207, 166, 138, 0.15);
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@mixin chart-card-hover {
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(207, 166, 138, 0.25);
+    border-color: rgba(207, 166, 138, 0.4);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+@mixin chart-legend-mobile {
+  position: static;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 15px;
+  border: 1px solid rgba(207, 166, 138, 0.3);
+  box-shadow: 0 4px 15px rgba(207, 166, 138, 0.2);
+  width: 100%;
+
+  .recharts-legend {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 0;
+  }
+
+  .recharts-legend-item {
+    font-size: 0.9rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.3rem 0;
+    text-align: center;
+  }
+}
+
+@mixin mobile-chart-wrapper($height: 550px, $container-height: 450px, $wrapper-height: 300px, $legend-padding: 1rem, $legend-radius: 15px, $legend-gap: 0.8rem, $legend-font-size: 0.9rem) {
+  min-height: $height;
+  display: flex;
+  flex-direction: column;
+
+  h3 {
+    flex-shrink: 0;
+    margin-bottom: 1rem;
+  }
+
+  .pie-chart-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: $container-height;
+
+    .recharts-wrapper {
+      flex: 1;
+      min-height: $wrapper-height;
+    }
+  }
+
+  .recharts-legend-wrapper {
+    @include chart-legend-mobile;
+  }
+
+  .recharts-pie-label-text {
+    display: none;
+  }
+}
+
+@mixin chart-legend-mobile-small($padding: 0.8rem, $radius: 12px, $gap: 0.6rem, $font-size: 0.8rem) {
+  position: static;
+  margin-top: 1rem;
+  padding: $padding;
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: $radius;
+  border: 1px solid rgba(207, 166, 138, 0.3);
+  box-shadow: 0 4px 12px rgba(207, 166, 138, 0.15);
+  width: 100%;
+
+  .recharts-legend {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $gap;
+    margin: 0;
+  }
+
+  .recharts-legend-item {
+    font-size: $font-size;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.2rem 0;
+    text-align: center;
+  }
+}
+
 .event-stats {
   min-height: 100vh;
   background: linear-gradient(135deg, #fdfaf6 0%, #f8f5f1 50%, #f0ebe5 100%);
@@ -75,6 +202,8 @@ $border: rgba(207, 166, 138, 0.2);
       justify-content: center;
       gap: 1rem;
       flex-wrap: wrap;
+      max-width: 500px;
+      margin: 0 auto;
       
       label {
         font-family: "Poppins", sans-serif;
@@ -96,17 +225,40 @@ $border: rgba(207, 166, 138, 0.2);
         transition: all 0.3s ease;
         box-shadow: 0 4px 15px rgba(207, 166, 138, 0.1);
         min-width: 120px;
-        
+        appearance: none; // Uklanja default browser styling
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23cfa68a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 1.2em;
+        padding-right: 2.5rem;
+        width: auto;
+        text-align: center;
+
         &:hover {
           border-color: $primary-color;
           box-shadow: 0 6px 20px rgba(207, 166, 138, 0.2);
           transform: translateY(-2px);
         }
-        
+
         &:focus {
           outline: none;
           border-color: $primary-color;
           box-shadow: 0 0 0 3px rgba(207, 166, 138, 0.2);
+        }
+
+        // Poboljšanje za mobilne uređaje
+        &:active {
+          transform: translateY(0);
+        }
+
+        // Styling za opcije
+        option {
+          background: #ffffff;
+          color: $text-dark;
+          padding: 0.5rem;
+          font-weight: 500;
         }
       }
       
@@ -171,15 +323,8 @@ $border: rgba(207, 166, 138, 0.2);
   }
 
   .chart-wrapper {
-    background: linear-gradient(145deg, #ffffff 0%, #fdfaf6 30%, #f8f5f1 70%, #f0ebe4 100%);
-    border-radius: 25px;
+    @include chart-card-base;
     padding: 2rem;
-    box-shadow: 0 15px 50px rgba(207, 166, 138, 0.15);
-    border: 2px solid $border;
-    backdrop-filter: blur(20px);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
     &::before {
       content: '';
@@ -193,27 +338,14 @@ $border: rgba(207, 166, 138, 0.2);
       transition: opacity 0.3s ease;
     }
 
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 60px rgba(207, 166, 138, 0.25);
-      border-color: rgba(207, 166, 138, 0.4);
-
-      &::before {
-        opacity: 1;
-      }
-    }
+    @include chart-card-hover;
   }
 
   .loading-container {
-    display: flex;
+    @include chart-card-base;
+    @include flex-center;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     min-height: 400px;
-    background: linear-gradient(145deg, #ffffff 0%, #fdfaf6 30%, #f8f5f1 70%, #f0ebe4 100%);
-    border-radius: 25px;
-    border: 2px solid $border;
-    box-shadow: 0 15px 50px rgba(207, 166, 138, 0.15);
 
     .loading-text {
       font-size: 1.2rem;
@@ -234,10 +366,8 @@ $border: rgba(207, 166, 138, 0.2);
   }
 
   .error-container {
-    display: flex;
+    @include flex-center;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     min-height: 400px;
     background: linear-gradient(145deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.05));
     border-radius: 25px;
@@ -259,15 +389,10 @@ $border: rgba(207, 166, 138, 0.2);
   }
 
   .no-results {
-    display: flex;
+    @include chart-card-base;
+    @include flex-center;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     min-height: 400px;
-    background: linear-gradient(145deg, #ffffff 0%, #fdfaf6 30%, #f8f5f1 70%, #f0ebe4 100%);
-    border-radius: 25px;
-    border: 2px solid rgba(207, 166, 138, 0.2);
-    box-shadow: 0 10px 40px rgba(207, 166, 138, 0.15);
     margin: 2rem 0;
     padding: 3rem;
     text-align: center;
@@ -335,14 +460,14 @@ $border: rgba(207, 166, 138, 0.2);
     padding: 1rem;
 
     .charts-container {
-      grid-template-columns: 1fr !important;
-      gap: 1.5rem !important;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
       padding: 0 0.5rem;
     }
 
     .stats-header {
       margin-bottom: 2rem;
-      
+
       h2 {
         font-size: 1.8rem;
         margin-bottom: 1.5rem;
@@ -353,16 +478,17 @@ $border: rgba(207, 166, 138, 0.2);
           font-size: 1.8rem;
         }
       }
-      
+
       .year-filter {
         flex-direction: column;
         gap: 0.8rem;
-        
+
         .year-select {
           min-width: 200px;
           padding: 0.6rem 1rem;
+          padding-right: 2.5rem;
         }
-        
+
         .total-events {
           font-size: 0.9rem;
         }
@@ -377,65 +503,10 @@ $border: rgba(207, 166, 138, 0.2);
     .chart-wrapper {
       padding: 1rem;
       border-radius: 20px;
-      
+
       &.status-chart,
       &.type-chart {
-        min-height: 550px;
-        display: flex;
-        flex-direction: column;
-        
-        h3 {
-          flex-shrink: 0;
-          margin-bottom: 1rem;
-        }
-        
-        .pie-chart-container {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          min-height: 450px;
-          
-          .recharts-wrapper {
-            flex: 1;
-            min-height: 300px;
-          }
-        }
-        
-        .recharts-legend-wrapper {
-          position: static !important;
-          margin-top: 1rem !important;
-          padding: 1rem !important;
-          background: rgba(255, 255, 255, 0.98) !important;
-          border-radius: 15px !important;
-          border: 1px solid rgba(207, 166, 138, 0.3) !important;
-          box-shadow: 0 4px 15px rgba(207, 166, 138, 0.2) !important;
-          width: 100% !important;
-          
-          .recharts-legend {
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            gap: 0.8rem !important;
-            margin: 0 !important;
-          }
-          
-          .recharts-legend-item {
-            font-size: 0.9rem !important;
-            font-family: "Poppins", sans-serif !important;
-            font-weight: 600 !important;
-            margin: 0 !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            width: 100% !important;
-            padding: 0.3rem 0 !important;
-            text-align: center !important;
-          }
-        }
-      }
-      
-      .recharts-pie-label-text {
-        display: none !important;
+        @include mobile-chart-wrapper;
       }
     }
   }
@@ -445,25 +516,26 @@ $border: rgba(207, 166, 138, 0.2);
 
     .stats-header {
       margin-bottom: 1.5rem;
-      
+
       h2 {
         font-size: 1.5rem;
         margin-bottom: 1rem;
       }
-      
+
       .year-filter {
         gap: 0.6rem;
-        
+
         label {
           font-size: 0.9rem;
         }
-        
+
         .year-select {
           min-width: 180px;
           padding: 0.5rem 0.8rem;
+          padding-right: 2.3rem;
           font-size: 0.9rem;
         }
-        
+
         .total-events {
           font-size: 0.8rem;
           padding: 0.4rem 0.8rem;
@@ -479,65 +551,18 @@ $border: rgba(207, 166, 138, 0.2);
     .chart-wrapper {
       padding: 0.8rem;
       border-radius: 15px;
-      
+
       &.status-chart,
       &.type-chart {
-        min-height: 500px;
-        display: flex;
-        flex-direction: column;
-        
-        h3 {
-          flex-shrink: 0;
-          margin-bottom: 0.8rem;
-        }
-        
-        .pie-chart-container {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          min-height: 400px;
-          
-          .recharts-wrapper {
-            flex: 1;
-            min-height: 250px;
-          }
-        }
-        
+        @include mobile-chart-wrapper(500px, 400px, 250px);
+
         .recharts-legend-wrapper {
-          position: static !important;
-          margin-top: 1rem !important;
-          padding: 0.8rem !important;
-          background: rgba(255, 255, 255, 0.98) !important;
-          border-radius: 12px !important;
-          border: 1px solid rgba(207, 166, 138, 0.3) !important;
-          box-shadow: 0 4px 12px rgba(207, 166, 138, 0.15) !important;
-          width: 100% !important;
-          
-          .recharts-legend {
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            gap: 0.6rem !important;
-            margin: 0 !important;
-          }
-          
-          .recharts-legend-item {
-            font-size: 0.8rem !important;
-            margin: 0 !important;
-            justify-content: center !important;
-            width: 100% !important;
-            text-align: center !important;
-            font-weight: 600 !important;
-            font-family: "Poppins", sans-serif !important;
-            display: flex !important;
-            align-items: center !important;
-            padding: 0.2rem 0 !important;
-          }
+          @include chart-legend-mobile-small;
         }
       }
-      
+
       .recharts-pie-label-text {
-        display: none !important;
+        display: none;
       }
     }
 

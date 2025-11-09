@@ -12,10 +12,10 @@ const router = express.Router();
 router.post("/", reservationLimiter, validateReservation, createReservation);
 
 // Check availability for a date
-router.get("/check-availability", generalLimiter, checkAvailability);
+router.get("/check-availability", checkAvailability);
 
 // Get all reservations (admin only)
-router.get("/", protectAdmin, generalLimiter, getReservations);
+router.get("/", protectAdmin, getReservations);
 
 // Update reservation status by ID (admin only)
 router.patch("/:id", protectAdmin, generalLimiter, validateObjectId, updateReservationStatus);

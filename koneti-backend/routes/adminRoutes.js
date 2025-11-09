@@ -1,5 +1,5 @@
 import express from "express";
-import { createAdmin, loginAdmin, getAdmins, deleteAdmin, verifyToken } from "../controllers/adminController.js";
+import { createAdmin, loginAdmin, getAdmins, deleteAdmin, verifyToken, getDashboardData } from "../controllers/adminController.js";
 import { protectAdmin } from "../middleware/adminMiddleware.js";
 import Admin from "../models/Admin.js";
 import { csrfProtection, getCSRFToken } from "../middleware/csrfProtection.js";
@@ -11,6 +11,9 @@ const router = express.Router();
 
 // Get CSRF token
 router.get("/csrf-token", getCSRFToken);
+
+// Get dashboard data - sve (rezervacije, pića, kategorije) u jedan zahtjev
+router.get("/dashboard", protectAdmin, getDashboardData);
 
 // Get current logged-in admin information
 router.get("/me", protectAdmin, (req, res) => {

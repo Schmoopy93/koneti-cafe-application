@@ -10,13 +10,10 @@ import {
   faPlus,
   faList,
   faEdit,
-  faTrash,
   faEye,
   faSignOutAlt,
-  faCheck,
-  faTimes,
   faBriefcase,
-  faGlassCheers,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion, Variants } from "framer-motion";
 
@@ -25,7 +22,6 @@ import { useAuth } from "../../contexts/AuthContext";
 import { apiRequest } from "@/utils/api";
 import CareerManagement from "./CareerManagement";
 import Spinner from "../ui/Spinner";
-import FullCalendarComponent from "../calendar/FullCalendarComponent";
 
 import "./AdminPage.scss";
 
@@ -71,7 +67,7 @@ interface StatusCounters {
   approved: number;
 }
 
-type ModalType = "calendar" | "career" | null;
+type ModalType = "career" | null;
 
 const AdminPage: React.FC = () => {
   const { t } = useTranslation();
@@ -81,11 +77,7 @@ const AdminPage: React.FC = () => {
   // State declarations with proper types
   const [drinks, setDrinks] = useState<Drink[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [reservations, setReservations] = useState<Reservation[]>([]);
   const [showModal, setShowModal] = useState<ModalType>(null);
-  const [selectedEvent, setSelectedEvent] = useState<Reservation | null>(
-    null
-  );
   const [stats, setStats] = useState<Stats>({
     totalDrinks: 0,
     totalCategories: 0,
@@ -96,8 +88,6 @@ const AdminPage: React.FC = () => {
     approved: 0,
   });
   const [loading, setLoading] = useState<boolean>(true);
-  const [updatingReservation, setUpdatingReservation] = useState<string | null>(null);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState<Reservation | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -120,26 +110,22 @@ const AdminPage: React.FC = () => {
   const fetchData = async (): Promise<void> => {
     try {
       setLoading(true);
-      
-      const [reservationsRes, drinksRes, categoriesRes] = await Promise.all([
-        apiRequest(`/reservations`),
-        apiRequest(`/drinks`),
-        apiRequest(`/categories`),
-      ]);
 
-      if (!reservationsRes?.ok || !drinksRes?.ok || !categoriesRes?.ok) {
+      const response = await apiRequest(`/admin/dashboard`);
+
+      if (!response?.ok) {
         throw new Error("Failed to fetch data");
       }
 
-      const reservationsData: Reservation[] = await reservationsRes.json();
-      const drinksData: Drink[] = await drinksRes.json();
-      const categoriesData: Category[] = await categoriesRes.json();
+      const data = await response.json();
+      const drinksData = data.drinks as Drink[];
+      const categoriesData = data.categories as Category[];
+      const reservationsData = data.reservations || [];
 
-      const pendingCount = reservationsData.filter(r => r.status === "pending").length;
-      const approvedCount = reservationsData.filter(r => r.status === "approved").length;
+      const pendingCount = reservationsData.filter((r: Reservation) => r.status === "pending").length;
+      const approvedCount = reservationsData.filter((r: Reservation) => r.status === "approved").length;
 
       setStatusCounters({ pending: pendingCount, approved: approvedCount });
-      setReservations(reservationsData);
       setDrinks(drinksData);
       setCategories(categoriesData);
       setStats({
@@ -176,75 +162,6 @@ const AdminPage: React.FC = () => {
       transition: { duration: 0.5, ease: "easeOut" },
     },
     hover: { scale: 1.05, boxShadow: "0 20px 40px rgba(61, 47, 40, 0.15)" },
-  };
-
-  const handleDeleteReservation = async (reservationId: string): Promise<void> => {
-    setUpdatingReservation(reservationId);
-    try {
-      const response = await apiRequest(`/reservations/${reservationId}`, {
-        method: "DELETE",
-        useToken: true
-      });
-
-      if (response.ok) {
-        await fetchData();
-        setSelectedEvent(null);
-        setShowDeleteConfirm(null);
-      } else {
-        console.error('Failed to delete reservation');
-      }
-    } catch (error) {
-      console.error("Error deleting reservation:", error);
-    } finally {
-      setUpdatingReservation(null);
-    }
-  };
-
-  const handleReservationAction = async (
-    reservationId: string,
-    action: string
-  ): Promise<void> => {
-    // Sanitize inputs for logging
-    const sanitizedAction = ['approved', 'rejected', 'pending'].includes(action) ? action : 'unknown';
-    const sanitizedId = reservationId?.replace(/[^a-zA-Z0-9]/g, '') || 'invalid';
-    
-    setUpdatingReservation(reservationId);
-    
-    // Optimistic update - ažuriraj UI odmah
-    const updatedReservations = reservations.map(reservation => 
-      reservation._id === reservationId 
-        ? { ...reservation, status: action }
-        : reservation
-    );
-    setReservations(updatedReservations);
-
-    // Ažuriraj selectedEvent ako je otvoren
-    if (selectedEvent && selectedEvent._id === reservationId) {
-      setSelectedEvent({ ...selectedEvent, status: action });
-    }
-    
-    try {
-      const response = await apiRequest(`/reservations/${reservationId}`, {
-        method: "PATCH",
-        body: JSON.stringify({ status: action }),
-        useToken: true
-      });
-
-      
-      if (response.ok) {
-        await fetchData();
-        const actionText = action === "approved" ? t("adminPage.status.approved") : t("adminPage.status.rejected");
-      } else {
-        const errorData = await response.json();
-        console.error('[DEBUG] Greška pri ažuriranju rezervacije');
-        await fetchData();
-      }
-    } catch (error) {
-      console.error('[DEBUG] Network error occurred');
-      await fetchData();
-    } finally {
-      setUpdatingReservation(null);
-    }
   };
 
   const getStatusBadgeColor = (
@@ -350,7 +267,7 @@ const AdminPage: React.FC = () => {
 
             <motion.div
               className="action-card calendar-card"
-              onClick={() => setShowModal("calendar")}
+              onClick={() => router.push("/calendar")}
               variants={cardVariants}
               whileHover="hover"
             >
@@ -436,189 +353,6 @@ const AdminPage: React.FC = () => {
         </div>
       )}
 
-      {/* Calendar Modal */}
-      {showModal === "calendar" && (
-        <div
-          className="modal-overlay fullscreen blur-backdrop"
-          onClick={() => setShowModal(null)}
-        >
-          <div
-            className="modal-content fullscreen-modal"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="modal-header">
-              <h3>{t("adminPage.calendar.title")}</h3>
-              <button className="modal-close-btn" onClick={() => setShowModal(null)}>
-                <FontAwesomeIcon icon={faTimes} />
-              </button>
-            </div>
-            <div className="modal-body">
-              <div className="calendar-wrapper">
-                <div style={{ marginBottom: "1rem", color: "#666" }}>
-                  {t("adminPage.calendar.totalEvents")} {reservations.length}
-                </div>
-                <FullCalendarComponent
-                  reservations={reservations}
-                  onEventClick={(reservation) => setSelectedEvent(reservation)}
-                  onStatusUpdate={handleReservationAction}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Event Details Panel */}
-      {selectedEvent && (
-        <div
-          className="modal-overlay blur-backdrop"
-          onClick={() => setSelectedEvent(null)}
-        >
-          <div
-            className={`event-details-panel ${
-              selectedEvent.type === "koneti"
-                ? `${selectedEvent.subType || "basic"}-package`
-                : ""
-            }`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="event-header">
-              <FontAwesomeIcon
-                icon={
-                  selectedEvent.type === "business" ? faBriefcase : faGlassCheers
-                }
-                className="event-icon"
-              />
-              <h4>{selectedEvent.name}</h4>
-              <button
-                className="close-event"
-                onClick={() => setSelectedEvent(null)}
-              >
-                ×
-              </button>
-            </div>
-            <div className="event-body">
-              <div className="event-info">
-                <p className={`event-status ${selectedEvent.status}`}>
-                  <strong>{t("adminPage.event.status")}</strong>{" "}
-                  {selectedEvent.status === "pending"
-                    ? t("adminPage.status.pending")
-                    : selectedEvent.status === "approved"
-                    ? t("adminPage.status.approved")
-                    : selectedEvent.status === "rejected"
-                    ? t("adminPage.status.rejected")
-                    : selectedEvent.status}
-                </p>
-                <p>
-                  <strong>{t("adminPage.event.type")}</strong>{" "}
-                  {selectedEvent.type === "business"
-                    ? `${t("adminPage.event.businessMeeting")}${selectedEvent.subType ? ` - ${t(`adminPage.packages.${selectedEvent.subType}`)}` : ""}`
-                    : selectedEvent.type === "experience"
-                    ? `${t("adminPage.event.konetiExperience")}${selectedEvent.subType ? ` - ${t(`adminPage.packages.${selectedEvent.subType}`)}` : ""}`
-                    : selectedEvent.type}
-                </p>
-                <p>
-                  <strong>{t("adminPage.event.email")}</strong>{" "}
-                  {selectedEvent.email}
-                </p>
-                <p>
-                  <strong>{t("adminPage.event.phone")}</strong>{" "}
-                  {selectedEvent.phone}
-                </p>
-                <p>
-                  <strong>{t("adminPage.event.date")}</strong>{" "}
-                  {new Date(selectedEvent.date).toLocaleDateString("sr-RS")}
-                </p>
-                <p>
-                  <strong>{t("adminPage.event.time")}</strong>{" "}
-                  {selectedEvent.time}
-                </p>
-                <p>
-                  <strong>{t("adminPage.event.guests")}</strong>{" "}
-                  {selectedEvent.guests}
-                </p>
-                {selectedEvent.selectedMenu && (
-                  <p>
-                    <strong>{t("adminPage.event.menu")}:</strong>{" "}
-                    {selectedEvent.selectedMenu}
-                  </p>
-                )}
-                {selectedEvent.message && (
-                  <p>
-                    <strong>{t("adminPage.event.message")}</strong>{" "}
-                    {selectedEvent.message}
-                  </p>
-                )}
-              </div>
-              <div className="event-actions">
-                {selectedEvent.status === "pending" && (
-                  <>
-                    <button
-                      className="btn-approve"
-                      onClick={() =>
-                        handleReservationAction(selectedEvent._id, "approved")
-                      }
-                      disabled={updatingReservation === selectedEvent._id}
-                    >
-                      <FontAwesomeIcon icon={faCheck} />{" "}
-                      {updatingReservation === selectedEvent._id ? t("adminPage.actions.updating") : t("adminPage.event.confirm")}
-                    </button>
-                    <button
-                      className="btn-reject"
-                      onClick={() =>
-                        handleReservationAction(selectedEvent._id, "rejected")
-                      }
-                      disabled={updatingReservation === selectedEvent._id}
-                    >
-                      <FontAwesomeIcon icon={faTimes} />{" "}
-                      {updatingReservation === selectedEvent._id ? t("adminPage.actions.updating") : t("adminPage.event.reject")}
-                    </button>
-                  </>
-                )}
-                <button
-                  className="btn-delete"
-                  onClick={() => setShowDeleteConfirm(selectedEvent)}
-                  disabled={updatingReservation === selectedEvent._id}
-                >
-                  <FontAwesomeIcon icon={faTrash} />{" "}
-                  {t("adminPage.event.delete")}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Delete Confirmation Modal */}
-      {showDeleteConfirm && (
-        <div
-          className="modal-overlay blur-backdrop"
-          onClick={() => setShowDeleteConfirm(null)}
-        >
-          <div
-            className="delete-confirm-popup"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3>{t("adminPage.event.deleteConfirm.title")}</h3>
-            <p>{t("adminPage.event.deleteConfirm.message")}</p>
-            <div className="confirm-actions">
-              <button
-                className="btn-cancel"
-                onClick={() => setShowDeleteConfirm(null)}
-              >
-                {t("adminPage.event.deleteConfirm.cancel")}
-              </button>
-              <button
-                className="btn-confirm"
-                onClick={() => handleDeleteReservation(showDeleteConfirm._id)}
-                disabled={updatingReservation === showDeleteConfirm._id}
-              >
-                {updatingReservation === showDeleteConfirm._id ? t("adminPage.actions.updating") : t("adminPage.event.deleteConfirm.delete")}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

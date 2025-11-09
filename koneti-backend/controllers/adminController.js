@@ -1,6 +1,9 @@
 import Admin from "../models/Admin.js";
 import jwt from "jsonwebtoken";
 import { logger } from "../utils/logger.js";
+import Category from "../models/Category.js";
+import Drink from "../models/Drink.js";
+import Reservation from "../models/Reservation.js";
 
 // Create a new admin user
 export const createAdmin = async (req, res) => {
@@ -222,5 +225,29 @@ export const deleteAdmin = async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Učitaj sve podatke za admin dashboard - jedan zahtjev umjesto 3
+export const getDashboardData = async (req, res) => {
+  try {
+    const [reservations, drinks, categories] = await Promise.all([
+      Reservation.find().sort({ createdAt: -1 }),
+      Drink.find(),
+      Category.find()
+    ]);
+
+    return res.json({
+      success: true,
+      reservations,
+      drinks,
+      categories
+    });
+  } catch (err) {
+    logger.error('Greška pri učitavanju dashboard podataka:', err);
+    return res.status(500).json({
+      success: false,
+      message: "Greška pri učitavanju podataka"
+    });
   }
 };

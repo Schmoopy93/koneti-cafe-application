@@ -634,5 +634,10 @@
       "submitError": "Error submitting application. Please try again.",
       "submitErrorGeneral": "Error submitting application"
     }
+  },
+  "calendarPage": {
+    "title": "Reservation Calendar",
+    "backToAdmin": "Back to Admin",
+    "totalEvents": "Total Events"
   }
 }

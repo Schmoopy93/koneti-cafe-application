@@ -642,5 +642,10 @@
       "submitError": "Greška pri slanju prijave. Pokušajte ponovo.",
       "submitErrorGeneral": "Greška pri slanju prijave"
     }
+  },
+  "calendarPage": {
+    "title": "Kalendar Rezervacija",
+    "backToAdmin": "Nazad na Admin",
+    "totalEvents": "Ukupno događaja"
   }
 }

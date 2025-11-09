@@ -32,6 +32,35 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 // === Security Middleware ===
 app.set("trust proxy", 1);
 
+// CORS konfiguracija - MORA biti PRE svih ostalih middleware
+if (NODE_ENV === 'development') {
+  // Development - dozvoli sve
+  app.use(cors({
+    origin: true,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token']
+  }));
+} else {
+  // Production - striktna kontrola
+  const allowedOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').map(origin => origin.trim()).filter(Boolean);
+  app.use(cors({
+    origin: (origin, callback) => {
+      if (!origin || origin === 'undefined') return callback(null, true);
+      
+      if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        logger.warn(`CORS blokiran za origin: ${origin}`);
+        callback(new Error('Nije dozvoljeno od strane CORS politike'));
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token']
+  }));
+}
+
 // Primeni security middleware samo ako nije deploy proces
 const isDeploy = process.env.RENDER || process.env.VERCEL || process.env.CI;
 if (!isDeploy) {
@@ -49,33 +78,6 @@ if (!isDeploy) {
   app.use(generalLimiter);
 }
 // app.use(compression()); // Privremeno isključeno za testiranje
-
-// CORS konfiguracija
-if (NODE_ENV === 'development') {
-  // Development - dozvoli sve
-  app.use(cors({
-    origin: true,
-    credentials: true
-  }));
-} else {
-  // Production - striktna kontrola
-  const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
-  app.use(cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        logger.warn(`CORS blokiran za origin: ${origin}`);
-        callback(new Error('Nije dozvoljeno od strane CORS politike'));
-      }
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token']
-  }));
-}
 
 app.use(cookieParser());
 app.use(express.json({ limit: "5mb" })); // Smanjen limit

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -14,6 +14,7 @@ import {
   Legend,
 } from "recharts";
 import { useTranslation } from "react-i18next";
+import { useSearchParams, useRouter } from "next/navigation";
 import "./EventStats.scss";
 
 interface Event {
@@ -42,7 +43,23 @@ const COLORS = {
 
 const EventStats: React.FC<EventStatsProps> = ({ events }) => {
   const { t, i18n } = useTranslation();
-  const [selectedYear, setSelectedYear] = React.useState<string>('all');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // Inicijalizuj selectedYear iz URL parametara ili postavi na 'all'
+  const [selectedYear, setSelectedYear] = React.useState<string>(() => {
+    return searchParams.get('year') || 'all';
+  });
+
+  // Sinhronizuj state sa URL parametrima kada se promene
+  useEffect(() => {
+    const yearParam = searchParams.get('year');
+    if (yearParam && yearParam !== selectedYear) {
+      setSelectedYear(yearParam);
+    } else if (!yearParam && selectedYear !== 'all') {
+      setSelectedYear('all');
+    }
+  }, [searchParams]);
 
   const availableYears = useMemo(() => {
     const years = new Set<number>();
@@ -95,7 +112,6 @@ const EventStats: React.FC<EventStatsProps> = ({ events }) => {
       }
     });
 
-    // Return all statuses, even if they have 0 values
     return Object.keys(stats).map((key) => ({
       key,
       name: t(`eventStats.statuses.${key}`),
@@ -129,7 +145,7 @@ const EventStats: React.FC<EventStatsProps> = ({ events }) => {
         const date = new Date(ev.date);
         if (!isNaN(date.getTime())) {
           const dayIndex = date.getDay();
-          const dayKey = days[dayIndex === 0 ? 6 : dayIndex - 1]; // Convert Sunday=0 to Sunday=6
+          const dayKey = days[dayIndex === 0 ? 6 : dayIndex - 1];
           stats[dayKey] += 1;
         }
       }
@@ -145,6 +161,23 @@ const EventStats: React.FC<EventStatsProps> = ({ events }) => {
   const hasStatusData = statusData.some((d) => d.value > 0);
   const hasTypeData = typeData.some((d) => d.value > 0);
 
+  // Handler za promenu godine - ažurira i state i URL
+  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newYear = e.target.value;
+    setSelectedYear(newYear);
+    
+    // Ažuriraj URL parametar
+    const params = new URLSearchParams(searchParams.toString());
+    if (newYear === 'all') {
+      params.delete('year');
+    } else {
+      params.set('year', newYear);
+    }
+    
+    const newUrl = params.toString() ? `?${params.toString()}` : window.location.pathname;
+    router.push(newUrl, { scroll: false });
+  };
+
   return (
     <div className="event-stats">
       <div className="stats-header">
@@ -154,7 +187,7 @@ const EventStats: React.FC<EventStatsProps> = ({ events }) => {
           <select 
             id="year-select"
             value={selectedYear} 
-            onChange={(e) => setSelectedYear(e.target.value)}
+            onChange={handleYearChange}
             className="year-select"
           >
             <option value="all">{t("eventStats.allYears")}</option>
