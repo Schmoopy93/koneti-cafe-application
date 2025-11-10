@@ -92,7 +92,7 @@
   display: grid;
   grid-template-columns: repeat($cols-desktop, 1fr);
   gap: var(--spacing-md);
-  
+
   @media screen and (max-width: 768px) {
     grid-template-columns: $cols-mobile;
     gap: var(--spacing-sm);
@@ -105,6 +105,7 @@
     opacity: 0;
     transform: translateY(50px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -112,17 +113,33 @@
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  50% { transform: translateX(4px); }
-  75% { transform: translateX(-4px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-4px);
+  }
+
+  50% {
+    transform: translateX(4px);
+  }
+
+  75% {
+    transform: translateX(-4px);
+  }
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
+
   50% {
     transform: scale(1.05);
     opacity: 0.8;
@@ -134,6 +151,7 @@
     transform: scale(1);
     opacity: 0.6;
   }
+
   to {
     transform: scale(1.4);
     opacity: 0;
@@ -141,15 +159,23 @@
 }
 
 @keyframes shimmer {
-  from { left: -100%; }
-  to { left: 100%; }
+  from {
+    left: -100%;
+  }
+
+  to {
+    left: 100%;
+  }
 }
 
 @keyframes sparkle {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.6;
     transform: scale(1);
   }
+
   50% {
     opacity: 1;
     transform: scale(1.2);
@@ -157,8 +183,13 @@
 }
 
 @keyframes backdropFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes popupSlideIn {
@@ -166,6 +197,7 @@
     opacity: 0;
     transform: scale(0.8) translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -409,13 +441,13 @@ input[type="date"],
 input[type="time"] {
   position: relative;
   display: block;
-  
+
   // iOS specifično
   &::-webkit-date-and-time-value {
     text-align: left;
     padding: 0;
   }
-  
+
   &::-webkit-datetime-edit-fields-wrapper {
     padding: 0;
   }
@@ -576,6 +608,7 @@ textarea {
     }
 
     .card-content {
+
       .card-title,
       .card-description {
         color: var(--color-white);
@@ -658,9 +691,17 @@ textarea {
   color: var(--color-primary);
   transition: color var(--transition-fast);
 
-  &.silver { color: #c0c0c0; }
-  &.gold { color: #ffd700; }
-  &.vip { color: #9b59b6; }
+  &.silver {
+    color: #c0c0c0;
+  }
+
+  &.gold {
+    color: #ffd700;
+  }
+
+  &.vip {
+    color: #9b59b6;
+  }
 }
 
 .info-icon {
@@ -858,6 +899,8 @@ textarea {
     border-radius: var(--radius-full);
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 15px rgba(207, 166, 138, 0.2);
+    z-index: 9999;
+    pointer-events: all;
 
     &:hover {
       background: var(--gradient-primary);
