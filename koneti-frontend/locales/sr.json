@@ -476,7 +476,7 @@
         "pending": "Na čekanju",
         "reviewed": "Pregledano",
         "contacted": "Kontaktirano",
-        "rejected": "Odbijeno"
+        "rejected": "Otkazano"
       },
       "deleteApplication": "Obriši prijavu",
       "applicationDeleted": "Prijava je uspešno obrisana",
@@ -529,7 +529,7 @@
     "status": {
       "pending": "Na čekanju",
       "approved": "Prihvaćen",
-      "rejected": "Odbijen"
+      "rejected": "Otkazan"
     },
     "packages": {
       "business_basic": "Business Basic",
@@ -578,7 +578,7 @@
       "approved": "Odobreno",
       "pending": "Na čekanju",
       "rejected": "Odbijeno",
-      "cancelled": "Otkazano"
+      "cancelled": "Otkazan"
     },
     "types": {
       "business": "Poslovni sastanci",

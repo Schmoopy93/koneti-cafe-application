@@ -53,8 +53,7 @@ const Calendar: React.FC = () => {
 
   const fetchReservations = async (): Promise<void> => {
     try {
-      setLoading(true);
-
+      if (reservations.length === 0) setLoading(true);
       const response = await apiRequest(`/admin/dashboard`);
 
       if (!response?.ok) {
