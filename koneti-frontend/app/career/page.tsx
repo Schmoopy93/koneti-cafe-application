@@ -3,15 +3,26 @@ import CareerApplication from "@/components/career/CareerApplication";
 import Script from 'next/script';
 
 export const metadata: Metadata = {
-  title: "Karijera | Pridruži se Koneti Café Timu | Poslovi",
-  description: "Traži se timski igrač! Otkri mogućnosti za rad u Koneti Café-u. Podnesi prijavu i postani deo našeg dinamičnog tima. Fleksibilan raspored, odličan ambijent.",
+  title: "Karijera | Pridruži se Koneti Café Timu | Poslovi u Novom Sadu",
+  description: "Traži se timski igrač! Otkri mogućnosti za rad u Koneti Café-u. Podnesi prijavu i postani deo našeg dinamičnog tima.",
   keywords: [
-    "poslovi", "karijera", "zaposlenje",
-    "koneti cafe", "novi sad", "barista",
-    "konobar", "kuhinja", "menadžer",
-    "rad u kaficu", "sezonski poslovi",
-    "stalni poslovi", "timski rad",
-    "mogućnosti zaposlenja", "prijava za posao"
+    "poslovi",
+    "karijera",
+    "zaposlenje",
+    "koneti café",
+    "kafić Novi Sad",
+    "barista",
+    "konobar",
+    "kuhinja",
+    "menadžer",
+    "rad u kaficu",
+    "sezonski poslovi",
+    "stalni poslovi",
+    "timski rad",
+    "mogućnosti zaposlenja",
+    "prijava za posao",
+    "razvoj karijere",
+    "dinamično radno okruženje"
   ],
   authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
   creator: "Koneti Café",
@@ -254,22 +265,22 @@ const faqJsonLd = {
 export default function CareerPage() {
   return (
     <>
-      <Script 
+      <Script
         id="career-jsonld"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
       />
-      <Script 
+      <Script
         id="breadcrumb-career-jsonld"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <Script 
+      <Script
         id="job-posting-jsonld"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingJsonLd) }}
       />
-      <Script 
+      <Script
         id="faq-career-jsonld"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}

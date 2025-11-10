@@ -4,17 +4,17 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 
 export const metadata: Metadata = {
-  title: "Meni | Koneti Café - Specialty Coffee i Poslastice",
-  description: "Otkrijte naš meni sa premium specialty kafama, svežim poslasticama, cednjenim sokovima i brunch ponudom. Dostupan je i ketering za proslave i poslovne događaje.",
+  title: "Meni | Koneti Café - Kafa, Piće i Proslave",
+  description: "Otkrijte naš meni sa premium kafama, osvežavajućim pićima i mogućnošću keteringa za proslave i poslovne događaje u Novom Sadu.",
   keywords: [
-    "meni", "kafa", "specialty coffee", "espresso", "cappuccino",
-    "poslastice", "napici", "cedjena malina", "smoothie", "brunch",
+    "meni", "kafa", "espresso", "cappuccino", "filter kafa",
+    "piće", "osvežavajući napici", "brunch", "cedjeni sokovi",
     "ketering za proslave", "ketering za događaje", "kafić Novi Sad",
-    "premium kafa", "specialty napici", "doručak"
+    "premium kafa", "specijalni napici", "doručak"
   ],
   openGraph: {
     title: "Meni | Koneti Café",
-    description: "Premium specialty kafe, poslastice i ketering za proslave",
+    description: "Premium kafa, pića i ketering za proslave i događaje",
     url: "https://koneti.com/menu",
     type: "website",
     locale: "sr_RS",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
         url: "/menu-og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Koneti Café Meni - Specialty Coffee i Poslastice",
+        alt: "Koneti Café Meni - Kafa, Piće i Proslave",
         type: "image/jpeg",
       }
     ],
@@ -255,12 +255,12 @@ export default async function MenuPage() {
 
     return (
       <>
-        <Script 
+        <Script
           id="menu-jsonld"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(menuJsonLd) }}
         />
-        <Script 
+        <Script
           id="breadcrumb-jsonld"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}

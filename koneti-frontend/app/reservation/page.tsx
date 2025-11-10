@@ -3,9 +3,8 @@ import ReservationForm from "../../components/forms/ReservationForm";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "Rezervacije | Poslovni Sastanci i Proslave | Koneti Café",
-  description:
-    "Rezervišite svoj idealan prostor za poslovne sastanke, proslave ili intimne trenutke. Posebni paketi za različite prilike u Koneti Café-u.",
+  title: "Rezervacije | Poslovni Sastanci, Proslave i Privatni Eventi | Koneti Café",
+  description: "Rezervišite svoj prostor u Koneti Café-u za poslovne sastanke, proslave, rođendane, team building ili privatne događaje. Nudimo fleksibilne pakete, prijatnu atmosferu i sve što je potrebno za uspešan event u Novom Sadu.",
   keywords: [
     "rezervacije",
     "poslovni sastanci",
@@ -16,11 +15,17 @@ export const metadata: Metadata = {
     "konferencije",
     "team building",
     "networking",
-    "kafić novi sad",
+    "kafić Novi Sad",
     "prostor za proslave",
     "sala za sastanke",
     "privatna događanja",
     "korporativni eventi",
+    "organizacija događaja",
+    "mala sala za sastanke",
+    "ketering za evente",
+    "prostor za team building",
+    "intimni događaji",
+    "posebni paketi za proslave"
   ],
   authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
   creator: "Koneti Café",
