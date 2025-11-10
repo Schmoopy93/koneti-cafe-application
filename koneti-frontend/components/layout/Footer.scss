@@ -1,9 +1,53 @@
+// =========================
+// VARIABLES
+// =========================
+$color-primary: #cfa68a;
+$color-secondary: #d4a574;
+$color-bg-light: rgba(255, 255, 255, 0.6);
+$color-bg-light-hover: rgba(255, 255, 255, 0.8);
+$color-text-dark: #5a3e36;
+$color-text-medium: #6b4e42;
+$color-text-strong: #7d5a4f;
+$color-shadow: rgba(90, 62, 54, 0.1);
+$font-main: 'Poppins', sans-serif;
+$border-radius-lg: 15px;
+$border-radius-xl: 25px;
+
+// =========================
+// MIXINS
+// =========================
+@mixin flex-center($dir: row, $justify: center, $align: center) {
+  display: flex;
+  flex-direction: $dir;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin card($bg: $color-bg-light, $radius: $border-radius-lg, $shadow: 0 4px 15px $color-shadow) {
+  background: $bg;
+  border-radius: $radius;
+  box-shadow: $shadow;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+@mixin hover-lift($bg-hover: $color-bg-light-hover, $shadow-hover: 0 8px 25px rgba(207, 166, 138, 0.2)) {
+  &:hover {
+    transform: translateY(-3px);
+    background: $bg-hover;
+    box-shadow: $shadow-hover;
+  }
+}
+
+// =========================
+// FOOTER STYLES
+// =========================
 .footer {
+  font-family: $font-main;
+  color: $color-text-dark;
+  border-radius: $border-radius-xl $border-radius-xl 0 0;
   background: linear-gradient(135deg, #f3e8db, #e8dcc6);
-  color: #5a3e36;
-  font-family: "Poppins", sans-serif;
-  border-radius: 25px 25px 0 0;
-  box-shadow: 0 -8px 32px rgba(90, 62, 54, 0.1);
+  box-shadow: 0 -8px 32px $color-shadow;
   position: relative;
   overflow: hidden;
 
@@ -14,10 +58,12 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #cfa68a, #d4a574, #cfa68a);
+    background: linear-gradient(90deg, $color-primary, $color-secondary, $color-primary);
   }
 
-  /* ===== TOP SECTION ===== */
+  // =========================
+  // TOP SECTION
+  // =========================
   .footer-top {
     text-align: center;
     padding: 3rem 2rem 2rem;
@@ -38,22 +84,24 @@
         font-size: 1.1rem;
         line-height: 1.6;
         margin-bottom: 2rem;
-        color: #6b4e42;
+        color: $color-text-medium;
 
         .coffee-icon {
-          color: #cfa68a;
+          color: $color-primary;
           margin-right: 0.5rem;
         }
 
         strong {
-          color: #7d5a4f;
+          color: $color-text-strong;
           font-weight: 700;
         }
       }
     }
   }
 
-  /* ===== MAIN GRID ===== */
+  // =========================
+  // MAIN GRID
+  // =========================
   .footer-main {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -64,12 +112,12 @@
 
     h3,
     h4 {
-      color: #7d5a4f;
-      display: flex;
-      align-items: center;
+      color: $color-text-strong;
+      @include flex-center(row, flex-start, center);
       gap: 0.5rem;
+
       svg {
-        color: #cfa68a;
+        color: $color-primary;
       }
     }
 
@@ -86,7 +134,9 @@
     }
   }
 
-  /* ===== LEFT COLUMN ===== */
+  // =========================
+  // LEFT COLUMN
+  // =========================
   .footer-left {
     .contact-grid {
       display: flex;
@@ -96,53 +146,40 @@
     }
 
     .contact-item {
-      display: flex;
-      align-items: flex-start;
+      @include card();
+      border-left: 4px solid $color-primary;
+      @include hover-lift();
+
+      @include flex-center(row, flex-start, flex-start);
       gap: 1rem;
       padding: 1.2rem;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 15px;
-      border-left: 4px solid #cfa68a;
-      transition: all 0.3s ease;
-
-      &:hover {
-        transform: translateY(-3px);
-        background: rgba(255, 255, 255, 0.8);
-        box-shadow: 0 8px 25px rgba(207, 166, 138, 0.2);
-      }
 
       svg {
-        color: #cfa68a;
+        color: $color-primary;
         font-size: 1.4rem;
         margin-top: 0.2rem;
-        flex-shrink: 0;
       }
 
       strong {
         display: block;
-        color: #7d5a4f;
+        color: $color-text-strong;
         font-weight: 700;
         margin-bottom: 0.3rem;
       }
 
       span {
-        color: #6b4e42;
+        color: $color-text-medium;
         line-height: 1.4;
       }
     }
 
     .hours-section {
       .hours-card {
-        background: rgba(255, 255, 255, 0.6);
-        border-radius: 15px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 15px rgba(90, 62, 54, 0.1);
+        @include card();
       }
 
       .hours-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        @include flex-center(row, space-between, center);
         padding: 0.8rem 0;
         border-bottom: 1px solid rgba(207, 166, 138, 0.2);
 
@@ -164,29 +201,22 @@
 
         .day {
           font-weight: 600;
-          color: #7d5a4f;
+          color: $color-text-strong;
         }
 
         .time {
           font-weight: 700;
-          color: #cfa68a;
+          color: $color-primary;
           font-size: 1.1rem;
         }
       }
     }
 
     .google-map {
+      @include card();
       margin-top: 1.5rem;
-      border-radius: 15px;
       overflow: hidden;
-      background: rgba(255, 255, 255, 0.6);
-      box-shadow: 0 8px 25px rgba(207, 166, 138, 0.2);
-      transition: all 0.3s ease;
-
-      &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 35px rgba(207, 166, 138, 0.3);
-      }
+      @include hover-lift($color-bg-light, 0 12px 35px rgba(207, 166, 138, 0.3));
 
       iframe {
         border-radius: 10px;
@@ -200,7 +230,9 @@
     }
   }
 
-  /* ===== RIGHT COLUMN ===== */
+  // =========================
+  // RIGHT COLUMN
+  // =========================
   .footer-right {
     .social-grid {
       display: flex;
@@ -210,21 +242,11 @@
     }
 
     .social-card {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1.2rem;
-      border-radius: 15px;
-      background: rgba(255, 255, 255, 0.6);
+      @include card();
       text-decoration: none;
-      color: #5a3e36;
-      transition: all 0.3s ease;
+      color: $color-text-dark;
       border: 2px solid transparent;
-
-      &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-      }
+      @include hover-lift();
 
       &.facebook:hover {
         background: #1877f2;
@@ -242,9 +264,12 @@
         color: white;
       }
 
+      @include flex-center(row, flex-start, center);
+      gap: 1rem;
+      padding: 1.2rem;
+
       svg {
         font-size: 1.8rem;
-        flex-shrink: 0;
       }
 
       strong {
@@ -260,7 +285,9 @@
     }
   }
 
-  /* ===== BOTTOM SECTION ===== */
+  // =========================
+  // BOTTOM SECTION
+  // =========================
   .footer-bottom {
     background: rgba(90, 62, 54, 0.08);
     padding: 2rem;
@@ -278,12 +305,12 @@
 
         &:first-child {
           font-weight: 600;
-          color: #7d5a4f;
+          color: $color-text-strong;
         }
       }
 
       .footer-tagline {
-        color: #cfa68a;
+        color: $color-primary;
         font-style: italic;
         font-weight: 500;
         font-size: 1.1rem;
@@ -295,41 +322,37 @@
       right: 2rem;
       top: 50%;
       transform: translateY(-50%);
-      background: #cfa68a;
+      background: $color-primary;
       color: white;
       border: none;
       border-radius: 50%;
       width: 50px;
       height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @include flex-center();
       font-size: 1.2rem;
       cursor: pointer;
       box-shadow: 0 4px 15px rgba(207, 166, 138, 0.3);
       transition: all 0.3s ease;
 
       &:hover {
-        background: #b8947a;
+        background: darken($color-primary, 10%);
         transform: translateY(-50%) scale(1.1);
         box-shadow: 0 6px 20px rgba(207, 166, 138, 0.4);
+
+        svg {
+          transform: translateY(-2px);
+        }
       }
 
       &:active {
         transform: translateY(-50%) scale(0.95);
       }
-
-      svg {
-        transition: transform 0.3s ease;
-      }
-
-      &:hover svg {
-        transform: translateY(-2px);
-      }
     }
   }
 
-  /* ===== RESPONSIVE ===== */
+  // =========================
+  // RESPONSIVE
+  // =========================
   @media (max-width: 992px) {
     .footer-main {
       grid-template-columns: 1fr;

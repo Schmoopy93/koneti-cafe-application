@@ -155,7 +155,7 @@ const Footer: React.FC = () => {
               }}
             />
           </p>
-          <p className="footer-tagline">{t("home.footer.tagline")}</p>
+          {/* <p className="footer-tagline">{t("home.footer.tagline")}</p> */}
         </div>
         <button
           className="scroll-to-top"
