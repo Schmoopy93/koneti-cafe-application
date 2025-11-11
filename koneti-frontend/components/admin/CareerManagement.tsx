@@ -1,7 +1,3 @@
-/**
- * CareerManagement - Upravljanje prijavama za posao
- * CareerManagement - Job applications management
- */
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -23,7 +19,8 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import Spinner from "../ui/Spinner";
-import { apiRequest } from "@/utils/api";
+import Modal from "../ui/Modal";
+import { apiRequest, API_URL } from "@/utils/api";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import "./CareerManagement.scss";
@@ -50,7 +47,7 @@ interface Position {
 }
 
 const CareerManagement: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [applications, setApplications] = useState<CareerApplication[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedApplication, setSelectedApplication] = useState<CareerApplication | null>(null);
@@ -58,9 +55,12 @@ const CareerManagement: React.FC = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<CareerApplication | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [showAddPosition, setShowAddPosition] = useState(false);
+  const [showAddPositionPopup, setShowAddPositionPopup] = useState(false);
   const [newPosition, setNewPosition] = useState({ title: '' });
   const [positions, setPositions] = useState<Position[]>([]);
   const [positionError, setPositionError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [stats, setStats] = useState({ total: 0, pending: 0, reviewed: 0, contacted: 0, rejected: 0 });
   const itemsPerPage = 4;
 
   useEffect(() => {
@@ -114,7 +114,7 @@ const CareerManagement: React.FC = () => {
         toast.success(t("adminPage.career.positionAdded"));
         setNewPosition({ title: '' });
         setPositionError('');
-        setShowAddPosition(false);
+        setShowAddPositionPopup(false);
         fetchPositions();
       } else {
         const error = await response.json();
@@ -214,6 +214,14 @@ const CareerManagement: React.FC = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
+  const getPositionDisplayName = (positionSr: string) => {
+    const position = positions.find(pos => pos.title.sr === positionSr);
+    if (position) {
+      return i18n.language === "en" && position.title.en ? position.title.en : position.title.sr;
+    }
+    return positionSr;
+  };
+
   if (loading) {
     return <Spinner size="lg" text={t("adminPage.career.loading")} />;
   }
@@ -223,20 +231,34 @@ const CareerManagement: React.FC = () => {
       <div className="career-header">
 
         <div className="header-actions">
-          <button 
+          <button
             className="btn-add-position"
-            onClick={() => setShowAddPosition(!showAddPosition)}
+            onClick={() => setShowAddPositionPopup(true)}
           >
             <FontAwesomeIcon icon={faPlus} />
             {t("adminPage.career.addPosition")}
           </button>
           <div className="stats">
-            <span className="stat">
-              {t("adminPage.career.total")}: <strong>{applications.length}</strong>
-            </span>
-            <span className="stat">
-              {t("adminPage.career.pending")}: <strong>{applications.filter(a => a.status === "pending").length}</strong>
-            </span>
+            <div className="stat-item">
+              <span className="stat-number">{applications.length}</span>
+              <span className="stat-label">{t("adminPage.career.total")}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">{applications.filter(a => a.status === "pending").length}</span>
+              <span className="stat-label">{t("adminPage.career.pending")}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">{applications.filter(a => a.status === "reviewed").length}</span>
+              <span className="stat-label">{t("adminPage.career.status.reviewed")}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">{applications.filter(a => a.status === "contacted").length}</span>
+              <span className="stat-label">{t("adminPage.career.status.contacted")}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">{applications.filter(a => a.status === "rejected").length}</span>
+              <span className="stat-label">{t("adminPage.career.status.rejected")}</span>
+            </div>
             {totalPages > 1 && (
               <span className="stat">
                 {t("adminPage.career.page")}: <strong>{currentPage} {t("adminPage.career.of")} {totalPages}</strong>
@@ -277,89 +299,96 @@ const CareerManagement: React.FC = () => {
       )}
 
       <div className="main-content-container">
-        <div className="applications-grid">
-          {currentApplications.map((app) => (
-            <div key={app._id} className="application-card">
-              <div className="card-header">
-                <div className="applicant-info">
-                  <h3>{app.firstName} {app.lastName}</h3>
-                  <span className="position">{app.position}</span>
-                </div>
-                <span 
-                  className="status-badge" 
-                  style={{ backgroundColor: getStatusColor(app.status) }}
-                >
-                  {getStatusText(app.status)}
-                </span>
-              </div>
-
-              <div className="card-body">
-                <div className="contact-info">
-                  <div className="info-item">
-                    <FontAwesomeIcon icon={faEnvelope} />
-                    <span>{app.email}</span>
-                  </div>
-                  <div className="info-item">
-                    <FontAwesomeIcon icon={faPhone} />
-                    <span>{app.phone}</span>
-                  </div>
-                </div>
-
-                <div className="application-date">
-                  {t("adminPage.career.submitted")}: {new Date(app.createdAt).toLocaleDateString("sr-RS")}
-                </div>
-              </div>
-
-              <div className="card-actions">
-                <button
-                  className="btn-view"
-                  onClick={() => setSelectedApplication(app)}
-                >
-                  <FontAwesomeIcon icon={faEye} />
-                  {t("adminPage.career.view")}
-                </button>
-
-                {app.cvUrl && (
-                  <a
-                    href={app.cvUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-download"
-                  >
-                    <FontAwesomeIcon icon={faDownload} />
-                    CV
-                  </a>
-                )}
-
-                {app.status === "pending" && (
-                  <div className="status-actions">
-                    <button
-                      className="btn-approve"
-                      onClick={() => updateApplicationStatus(app._id, "reviewed")}
-                      disabled={updatingStatus === app._id}
+        <div className="applications-table-container">
+          <table className="applications-table">
+            <thead>
+              <tr>
+                <th>{t("adminPage.career.name")}</th>
+                <th>{t("adminPage.career.position")}</th>
+                <th>{t("adminPage.career.email")}</th>
+                <th>{t("adminPage.career.phone")}</th>
+                <th>{t("adminPage.career.statusHeader")}</th>
+                <th>{t("adminPage.career.date")}</th>
+                <th>{t("adminPage.career.actions")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentApplications.map((app) => (
+                <tr key={app._id}>
+                  <td className="applicant-name">
+                    {app.firstName} {app.lastName}
+                  </td>
+                  <td className="position">{getPositionDisplayName(app.position)}</td>
+                  <td className="email">{app.email}</td>
+                  <td className="phone">{app.phone}</td>
+                  <td>
+                    <span
+                      className="status-badge"
+                      style={{ backgroundColor: getStatusColor(app.status) }}
                     >
-                      <FontAwesomeIcon icon={faCheck} />
-                    </button>
-                    <button
-                      className="btn-reject"
-                      onClick={() => updateApplicationStatus(app._id, "rejected")}
-                      disabled={updatingStatus === app._id}
-                    >
-                      <FontAwesomeIcon icon={faTimes} />
-                    </button>
-                  </div>
-                )}
+                      {getStatusText(app.status)}
+                    </span>
+                  </td>
+                  <td className="date">
+                    {new Date(app.createdAt).toLocaleDateString("sr-RS")}
+                  </td>
+                  <td className="actions">
+                    <div className="action-buttons">
+                      <button
+                        className="btn-view"
+                        onClick={() => setSelectedApplication(app)}
+                        title={t("adminPage.career.viewTooltip")}
+                      >
+                        <FontAwesomeIcon icon={faEye} />
+                      </button>
 
-                <button
-                  className="btn-delete"
-                  onClick={() => setShowDeleteConfirm(app)}
-                  disabled={updatingStatus === app._id}
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </div>
-            </div>
-          ))}
+                      {app.cvUrl && (
+                        <a
+                          href={`${API_URL}/career/${app._id}/download-cv`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-download"
+                          title={t("adminPage.career.downloadTooltip")}
+                        >
+                          <FontAwesomeIcon icon={faDownload} />
+                        </a>
+                      )}
+
+                      {app.status === "pending" && (
+                        <>
+                          <button
+                            className="btn-approve"
+                            onClick={() => updateApplicationStatus(app._id, "reviewed")}
+                            disabled={updatingStatus === app._id}
+                            title={t("adminPage.career.approveTooltip")}
+                          >
+                            <FontAwesomeIcon icon={faCheck} />
+                          </button>
+                          <button
+                            className="btn-reject"
+                            onClick={() => updateApplicationStatus(app._id, "rejected")}
+                            disabled={updatingStatus === app._id}
+                            title={t("adminPage.career.rejectTooltip")}
+                          >
+                            <FontAwesomeIcon icon={faTimes} />
+                          </button>
+                        </>
+                      )}
+
+                      <button
+                        className="btn-delete"
+                        onClick={() => setShowDeleteConfirm(app)}
+                        disabled={updatingStatus === app._id}
+                        title={t("adminPage.career.deleteTooltip")}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
         {applications.length === 0 && (
@@ -373,14 +402,14 @@ const CareerManagement: React.FC = () => {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="pagination">
-            <button 
-              className="pagination-btn" 
-              onClick={goToPrevious} 
+            <button
+              className="pagination-btn"
+              onClick={goToPrevious}
               disabled={currentPage === 1}
             >
               <FontAwesomeIcon icon={faChevronLeft} />
             </button>
-            
+
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}
@@ -390,10 +419,10 @@ const CareerManagement: React.FC = () => {
                 {page}
               </button>
             ))}
-            
-            <button 
-              className="pagination-btn" 
-              onClick={goToNext} 
+
+            <button
+              className="pagination-btn"
+              onClick={goToNext}
               disabled={currentPage === totalPages}
             >
               <FontAwesomeIcon icon={faChevronRight} />
@@ -403,73 +432,99 @@ const CareerManagement: React.FC = () => {
       </div>
 
       {/* Application Details Modal */}
-      {selectedApplication && (
-        <div className="modal-overlay" onClick={() => setSelectedApplication(null)}>
-          <div className="application-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3>{selectedApplication.firstName} {selectedApplication.lastName}</h3>
-              <button onClick={() => setSelectedApplication(null)}>×</button>
+      <Modal
+        show={!!selectedApplication}
+        onClose={() => setSelectedApplication(null)}
+        title={t("adminPage.career.applicationDetails")}
+      >
+        {selectedApplication && (
+          <>
+            <div className="applicant-details">
+              <div className="detail-row">
+                <FontAwesomeIcon icon={faUser} />
+                <span><strong>{t("adminPage.career.name")}:</strong> {selectedApplication.firstName} {selectedApplication.lastName}</span>
+              </div>
+              <div className="detail-row">
+                <FontAwesomeIcon icon={faBriefcase} />
+                <span><strong>{t("adminPage.career.position")}:</strong> {getPositionDisplayName(selectedApplication.position)}</span>
+              </div>
+              <div className="detail-row">
+                <FontAwesomeIcon icon={faEnvelope} />
+                <span><strong>{t("adminPage.career.email")}:</strong> {selectedApplication.email}</span>
+              </div>
+              <div className="detail-row">
+                <FontAwesomeIcon icon={faPhone} />
+                <span><strong>{t("adminPage.career.phone")}:</strong> {selectedApplication.phone}</span>
+              </div>
             </div>
 
-            <div className="modal-body">
-              <div className="applicant-details">
-                <div className="detail-row">
-                  <FontAwesomeIcon icon={faBriefcase} />
-                  <span><strong>{t("adminPage.career.position")}:</strong> {selectedApplication.position}</span>
-                </div>
-                <div className="detail-row">
-                  <FontAwesomeIcon icon={faEnvelope} />
-                  <span><strong>{t("adminPage.career.email")}:</strong> {selectedApplication.email}</span>
-                </div>
-                <div className="detail-row">
-                  <FontAwesomeIcon icon={faPhone} />
-                  <span><strong>{t("adminPage.career.phone")}:</strong> {selectedApplication.phone}</span>
-                </div>
-              </div>
-
+            {selectedApplication.coverLetter && (
               <div className="cover-letter">
                 <h4><FontAwesomeIcon icon={faFileAlt} /> {t("adminPage.career.coverLetter")}</h4>
                 <div className="letter-content">
                   {selectedApplication.coverLetter}
                 </div>
               </div>
+            )}
 
-              <div className="status-section">
-                <h4>{t("adminPage.career.updateStatus")}</h4>
-                <div className="status-buttons">
-                  {["reviewed", "contacted", "rejected"].map((status) => (
-                    <button
-                      key={status}
-                      className={`status-btn ${selectedApplication.status === status ? "active" : ""}`}
-                      onClick={() => updateApplicationStatus(selectedApplication._id, status)}
-                      disabled={updatingStatus === selectedApplication._id}
-                    >
-                      {updatingStatus === selectedApplication._id ? (
-                        <FontAwesomeIcon icon={faSpinner} spin />
-                      ) : (
-                        getStatusText(status)
-                      )}
-                    </button>
-                  ))}
-                </div>
+            <div className="status-section">
+              <h4>{t("adminPage.career.updateStatus")}</h4>
+              <div className="status-buttons">
+                <button
+                  className={`status-btn ${selectedApplication.status === "reviewed" ? "active" : ""}`}
+                  onClick={() => updateApplicationStatus(selectedApplication._id, "reviewed")}
+                  disabled={updatingStatus === selectedApplication._id}
+                  title={t("adminPage.career.status.reviewed")}
+                >
+                  {updatingStatus === selectedApplication._id ? (
+                    <FontAwesomeIcon icon={faSpinner} spin />
+                  ) : (
+                    <FontAwesomeIcon icon={faEye} />
+                  )}
+                </button>
+                <button
+                  className={`status-btn ${selectedApplication.status === "contacted" ? "active" : ""}`}
+                  onClick={() => updateApplicationStatus(selectedApplication._id, "contacted")}
+                  disabled={updatingStatus === selectedApplication._id}
+                  title={t("adminPage.career.status.contacted")}
+                >
+                  {updatingStatus === selectedApplication._id ? (
+                    <FontAwesomeIcon icon={faSpinner} spin />
+                  ) : (
+                    <FontAwesomeIcon icon={faCheck} />
+                  )}
+                </button>
+                <button
+                  className={`status-btn ${selectedApplication.status === "rejected" ? "active" : ""}`}
+                  onClick={() => updateApplicationStatus(selectedApplication._id, "rejected")}
+                  disabled={updatingStatus === selectedApplication._id}
+                  title={t("adminPage.career.status.rejected")}
+                >
+                  {updatingStatus === selectedApplication._id ? (
+                    <FontAwesomeIcon icon={faSpinner} spin />
+                  ) : (
+                    <FontAwesomeIcon icon={faTimes} />
+                  )}
+                </button>
                 <button
                   className="btn-delete-modal"
                   onClick={() => setShowDeleteConfirm(selectedApplication)}
                   disabled={updatingStatus === selectedApplication._id}
+                  title={t("adminPage.career.deleteApplication")}
                 >
                   <FontAwesomeIcon icon={faTrash} />
-                  {t("adminPage.career.deleteApplication")}
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </Modal>
 
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
         <div className="modal-overlay" onClick={() => setShowDeleteConfirm(null)}>
           <div className="delete-confirm-popup" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setShowDeleteConfirm(null)}>×</button>
             <h3>{t("adminPage.career.deleteConfirm.title")}</h3>
             <p>{t("adminPage.career.deleteConfirm.message")}</p>
             <div className="confirm-actions">
@@ -490,6 +545,44 @@ const CareerManagement: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Add Position Modal */}
+      <Modal
+        show={showAddPositionPopup}
+        onClose={() => setShowAddPositionPopup(false)}
+        title={t("adminPage.career.addPosition")}
+      >
+        <div className="add-position-form">
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            handleAddPosition();
+          }}>
+            <div className="form-group">
+              <label>{t("adminPage.career.positionPlaceholder")}:</label>
+              <input
+                type="text"
+                placeholder={t("adminPage.career.positionPlaceholder")}
+                value={newPosition.title}
+                onChange={(e) => {
+                  setNewPosition({title: e.target.value});
+                  if (positionError) setPositionError('');
+                }}
+                onKeyPress={(e) => e.key === 'Enter' && handleAddPosition()}
+                className={positionError ? 'error' : ''}
+              />
+              {positionError && <span className="error">{positionError}</span>}
+            </div>
+
+            <button type="submit" className="gradient-btn" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <Spinner size="sm" text={t("adminPage.career.savePosition")} />
+              ) : (
+                t("adminPage.career.savePosition")
+              )}
+            </button>
+          </form>
+        </div>
+      </Modal>
     </div>
   );
 };

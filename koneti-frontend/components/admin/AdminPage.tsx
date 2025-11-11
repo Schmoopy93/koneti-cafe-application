@@ -318,7 +318,7 @@ const AdminPage: React.FC = () => {
 
             <motion.div
               className="action-card career-card"
-              onClick={() => setShowModal("career")}
+              onClick={() => router.push("/admin/career")}
               variants={cardVariants}
               whileHover="hover"
             >

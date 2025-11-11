@@ -393,6 +393,7 @@ export default function ReservationForm() {
                         className="info-icon"
                         data-tooltip-id={`tooltip-${id}`}
                         data-tooltip-content={t("home.reservation.tooltip")}
+                        data-tooltip-hidden={showPopup}
                         onClick={(e) => openInfo(id, e)}
                       />
                     </div>
@@ -446,6 +447,7 @@ export default function ReservationForm() {
                             className="info-icon"
                             data-tooltip-id={`tooltip-${id}`}
                             data-tooltip-content={t("home.reservation.tooltip")}
+                            data-tooltip-hidden={showPopup}
                             onClick={(e) => openInfo(id, e)}
                           />
                         </div>
@@ -574,14 +576,7 @@ export default function ReservationForm() {
         )}
       </form>
 
-      <Tooltip id="tooltip-business" />
-      <Tooltip id="tooltip-experience" />
-      <Tooltip id="tooltip-business_basic" />
-      <Tooltip id="tooltip-business_high" />
-      <Tooltip id="tooltip-business_corporate" />
-      <Tooltip id="tooltip-experience_start" />
-      <Tooltip id="tooltip-experience_classic" />
-      <Tooltip id="tooltip-experience_celebration" />
+
 
       {showPopup && (
         <div className="reservation-popup-backdrop" onClick={closePopup}>
@@ -609,6 +604,15 @@ export default function ReservationForm() {
           </div>
         </div>
       )}
+
+      <Tooltip id="tooltip-business" place="top" offset={15} />
+      <Tooltip id="tooltip-experience" place="top" offset={15} />
+      <Tooltip id="tooltip-business_basic" place="top" offset={15} />
+      <Tooltip id="tooltip-business_high" place="top" offset={15} />
+      <Tooltip id="tooltip-business_corporate" place="top" offset={15} />
+      <Tooltip id="tooltip-experience_start" place="top" offset={15} />
+      <Tooltip id="tooltip-experience_classic" place="top" offset={15} />
+      <Tooltip id="tooltip-experience_celebration" place="top" offset={15} />
     </div>
   );
 }

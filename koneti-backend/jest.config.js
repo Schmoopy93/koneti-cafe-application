@@ -1,13 +1,13 @@
 export default {
   testEnvironment: 'node',
-  transform: {},
+  preset: null,
   extensionsToTreatAsEsm: ['.js'],
   globals: {
     'ts-jest': {
       useESM: true
     }
   },
-  moduleNameMapping: {
+  moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1'
   },
   testMatch: ['**/tests/**/*.test.js'],
@@ -18,5 +18,8 @@ export default {
     'middleware/**/*.js'
   ],
   coverageDirectory: 'coverage',
-  coverageReporters: ['text', 'lcov', 'html']
+  coverageReporters: ['text', 'lcov', 'html'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(supertest|axios)/)'
+  ]
 };

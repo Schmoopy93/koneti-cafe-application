@@ -39,14 +39,15 @@ export default function FullCalendarComponent({
   const [events, setEvents] = useState<any[]>([]);
 
   useEffect(() => {
-    const calendarEvents = reservations.map((reservation) => {
+    const validReservations = reservations.filter(reservation => reservation && typeof reservation.date === 'string' && reservation.date);
+    const calendarEvents = validReservations.map((reservation) => {
       // Fix date format - extract just the date part
       const dateOnly = reservation.date.split('T')[0];
       const startDateTime = `${dateOnly}T${reservation.time}`;
-      
+
       // Sanitize data for logging
       const sanitizedName = reservation.name?.replace(/[^a-zA-Z0-9\s]/g, '') || 'Unknown';
-      
+
       return {
         id: reservation._id,
         title: `${reservation.name} (${reservation.guests} guests)`,

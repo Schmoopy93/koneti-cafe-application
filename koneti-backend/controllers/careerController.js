@@ -10,21 +10,30 @@ import cloudinary from "../middleware/cloudinary.js";
 export const createCareerApplication = async (req, res) => {
   try {
     const { firstName, lastName, email, phone, position, coverLetter } = req.body;
-    
+
     let cvUrl = "";
     let cloudinaryId = "";
 
     // Upload CV ako postoji
     if (req.file) {
       const result = await cloudinary.uploader.upload(
-        `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`,
+        req.file.path,
         {
           folder: "career",
-          resource_type: "auto"
+          resource_type: "raw",
+          public_id: `cv_${Date.now()}_${req.file.originalname.replace(/\.[^/.]+$/, "")}`,
+          use_filename: true,
+          unique_filename: false
         }
       );
       cvUrl = result.secure_url;
       cloudinaryId = result.public_id;
+
+      // Clean up local file after upload
+      const fs = await import('fs');
+      fs.unlink(req.file.path, (err) => {
+        if (err) console.warn('Warning: failed to delete local file', err);
+      });
     }
 
     const application = new Career({
@@ -60,7 +69,7 @@ export const createCareerApplication = async (req, res) => {
 
   } catch (error) {
     logger.error("Error creating career application:", error);
-    
+
     if (error.name === "ValidationError") {
       return res.status(400).json({
         success: false,
@@ -68,10 +77,10 @@ export const createCareerApplication = async (req, res) => {
         errors: error.errors
       });
     }
-    
-    res.status(500).json({ 
-      success: false, 
-      message: "Došlo je do greške na serveru." 
+
+    res.status(500).json({
+      success: false,
+      message: "Došlo je do greške na serveru."
     });
   }
 };
@@ -95,9 +104,9 @@ export const updateCareerApplicationStatus = async (req, res) => {
     const { status } = req.body;
 
     if (!["pending", "reviewed", "contacted", "rejected"].includes(status)) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Nevažeći status." 
+      return res.status(400).json({
+        success: false,
+        message: "Nevažeći status."
       });
     }
 
@@ -108,9 +117,9 @@ export const updateCareerApplicationStatus = async (req, res) => {
     );
 
     if (!application) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Prijava nije pronađena." 
+      return res.status(404).json({
+        success: false,
+        message: "Prijava nije pronađena."
       });
     }
 
@@ -135,23 +144,23 @@ export const updateCareerApplicationStatus = async (req, res) => {
 export const deleteCareerApplication = async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     const application = await Career.findById(id);
-    
+
     if (!application) {
       return res.status(404).json({
         success: false,
         message: "Prijava nije pronađena."
       });
     }
-    
+
     // Obriši CV iz cloudinary-ja ako postoji
     if (application.cloudinary_id) {
       await cloudinary.uploader.destroy(application.cloudinary_id);
     }
-    
+
     await Career.findByIdAndDelete(id);
-    
+
     logger.info(`Career application ${id} deleted`);
     res.json({ success: true, message: "Prijava je obrisana." });
   } catch (error) {
@@ -159,6 +168,46 @@ export const deleteCareerApplication = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Greška prilikom brisanja prijave."
+    });
+  }
+};
+
+export const downloadCV = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const application = await Career.findById(id);
+
+    if (!application) {
+      return res.status(404).json({
+        success: false,
+        message: "Prijava nije pronađena."
+      });
+    }
+
+    if (!application.cloudinary_id) {
+      return res.status(404).json({
+        success: false,
+        message: "CV fajl nije pronađen."
+      });
+    }
+
+    // Generate download URL with attachment flag
+    const downloadUrl = cloudinary.url(application.cloudinary_id, {
+      resource_type: 'raw',
+      attachment: true,
+      flags: 'attachment'
+    });
+
+    logger.info(`CV download initiated for application ${id}: ${downloadUrl}`);
+
+    // Redirect to Cloudinary download URL
+    res.redirect(downloadUrl);
+  } catch (error) {
+    logger.error("Error downloading CV:", error);
+    res.status(500).json({
+      success: false,
+      message: "Greška prilikom preuzimanja CV-ja."
     });
   }
 };
