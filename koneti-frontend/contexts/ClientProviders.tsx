@@ -13,14 +13,20 @@ import Spinner from "../components/ui/Spinner";
 
 export default function ClientProviders({
   children,
+  lang,
 }: {
   children: React.ReactNode;
+  lang: string;
 }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    // Set the language in i18n when component mounts
+    if (i18n.language !== lang) {
+      i18n.changeLanguage(lang);
+    }
+  }, [lang]);
 
   if (!mounted) {
     return (
@@ -28,6 +34,11 @@ export default function ClientProviders({
         <Spinner size="lg" text="Loading application..." />
       </div>
     );
+  }
+
+  // Initialize i18n with the correct language before rendering
+  if (typeof window !== 'undefined' && i18n.language !== lang) {
+    i18n.changeLanguage(lang);
   }
 
   return (

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -21,10 +21,39 @@ const Header: React.FC = () => {
   const { isAuthenticated, loading } = useAuth();
   const { t, i18n } = useTranslation();
   const router = useRouter();
+  const pathname = usePathname();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  // Extract current language from pathname
+  const currentLang = pathname?.startsWith('/sr') ? 'sr' : pathname?.startsWith('/en') ? 'en' : 'sr';
+  
+  // Helper function to switch language in URL
+  const switchLanguage = (newLang: string) => {
+    const currentPath = pathname || '/';
+    let newPath = currentPath;
+    
+    // Remove current language prefix
+    if (currentPath.startsWith('/sr')) {
+      newPath = currentPath.substring(3) || '/';
+    } else if (currentPath.startsWith('/en')) {
+      newPath = currentPath.substring(3) || '/';
+    }
+    
+    // Add new language prefix
+    newPath = `/${newLang}${newPath}`;
+    
+    router.push(newPath);
+    setIsLangDropdownOpen(false);
+    setIsOpen(false);
+  };
+
+  // Helper function to get localized path
+  const getLocalizedPath = (path: string) => {
+    return `/${currentLang}${path}`;
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -74,7 +103,7 @@ const Header: React.FC = () => {
       <div className="nav-container">
         {/* Logo vodi na /login ako nije autentifikovan, / ako jeste */}
         <Link
-          href={mounted && !loading && isAuthenticated ? "/" : "/login"}
+          href={mounted && !loading && isAuthenticated ? getLocalizedPath("/") : "/login"}
           className="logo"
         >
           <img
@@ -91,7 +120,7 @@ const Header: React.FC = () => {
             </button>
           )}
           <Link
-            href="/"
+            href={getLocalizedPath("/")}
             onClick={() => setIsOpen(false)}
             title={t("header.home")}
             style={{ '--delay': 1 } as React.CSSProperties}
@@ -99,7 +128,7 @@ const Header: React.FC = () => {
             <FontAwesomeIcon icon={faHouse} /> {t("header.home")}
           </Link>
           <Link
-            href="/menu"
+            href={getLocalizedPath("/menu")}
             onClick={() => setIsOpen(false)}
             title={t("header.menu")}
             style={{ '--delay': 2 } as React.CSSProperties}
@@ -109,7 +138,7 @@ const Header: React.FC = () => {
 
           {!loading && !isAuthenticated && (
             <Link
-              href="/reservation"
+              href={getLocalizedPath("/reservation")}
               onClick={() => setIsOpen(false)}
               title={t("header.reservation")}
               style={{ '--delay': 3 } as React.CSSProperties}
@@ -122,7 +151,7 @@ const Header: React.FC = () => {
           
           {!loading && !isAuthenticated && (
             <Link
-              href="/career"
+              href={getLocalizedPath("/career")}
               onClick={() => setIsOpen(false)}
               title={t("header.career")}
               style={{ '--delay': 4 } as React.CSSProperties}
@@ -134,7 +163,7 @@ const Header: React.FC = () => {
 
           {!loading && isAuthenticated && (
             <Link
-              href="/admin"
+              href={getLocalizedPath("/admin")}
               onClick={() => setIsOpen(false)}
               title={t("header.admin")}
               style={{ '--delay': 3 } as React.CSSProperties}
@@ -149,7 +178,7 @@ const Header: React.FC = () => {
               onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
               className="language-switcher-mobile"
             >
-              {i18n.language === "sr" ? (
+              {currentLang === "sr" ? (
                 <>
                   <ReactCountryFlag
                     countryCode="RS"
@@ -178,13 +207,9 @@ const Header: React.FC = () => {
 
             {isLangDropdownOpen && (
               <div className="language-dropdown-menu-mobile">
-                {i18n.language === "sr" ? (
+                {currentLang === "sr" ? (
                   <button
-                    onClick={async () => {
-                      await i18n.changeLanguage("en");
-                      setIsLangDropdownOpen(false);
-                      setIsOpen(false);
-                    }}
+                    onClick={() => switchLanguage("en")}
                   >
                     <ReactCountryFlag
                       countryCode="GB"
@@ -195,11 +220,7 @@ const Header: React.FC = () => {
                   </button>
                 ) : (
                   <button
-                    onClick={async () => {
-                      await i18n.changeLanguage("sr");
-                      setIsLangDropdownOpen(false);
-                      setIsOpen(false);
-                    }}
+                    onClick={() => switchLanguage("sr")}
                   >
                     <ReactCountryFlag
                       countryCode="RS"
@@ -222,7 +243,7 @@ const Header: React.FC = () => {
               onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
               className="language-switcher"
             >
-              {i18n.language === "sr" ? (
+              {currentLang === "sr" ? (
                 <>
                   <ReactCountryFlag
                     countryCode="RS"
@@ -246,13 +267,10 @@ const Header: React.FC = () => {
 
             {isLangDropdownOpen && (
               <div className="language-dropdown-menu">
-                {i18n.language === "sr" ? (
+                {currentLang === "sr" ? (
                   <button
                     className="language-option"
-                    onClick={async () => {
-                      await i18n.changeLanguage("en");
-                      setIsLangDropdownOpen(false);
-                    }}
+                    onClick={() => switchLanguage("en")}
                   >
                     <ReactCountryFlag
                       countryCode="GB"
@@ -264,10 +282,7 @@ const Header: React.FC = () => {
                 ) : (
                   <button
                     className="language-option"
-                    onClick={async () => {
-                      await i18n.changeLanguage("sr");
-                      setIsLangDropdownOpen(false);
-                    }}
+                    onClick={() => switchLanguage("sr")}
                   >
                     <ReactCountryFlag
                       countryCode="RS"

@@ -14,14 +14,11 @@ const resources = {
   }
 };
 
-// Provera da li smo na klijentu
-const isBrowser = typeof window !== 'undefined';
-
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: isBrowser ? (localStorage.getItem('language') || 'sr') : 'sr',
+    lng: 'sr', // Default language, will be overridden by URL parameter
     fallbackLng: 'sr',
     interpolation: {
       escapeValue: false
