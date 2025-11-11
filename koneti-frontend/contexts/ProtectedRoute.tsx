@@ -20,7 +20,9 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   useEffect(() => {
     if (!mounted) return;
     if (!loading && !isAuthenticated) {
-      router.replace("/login");
+      // Get current language from pathname or default to 'sr'
+      const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
+      router.replace(`/${currentLang}/login`);
     }
   }, [mounted, loading, isAuthenticated, router]);
 

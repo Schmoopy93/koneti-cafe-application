@@ -26,7 +26,9 @@ const StaffLogin: React.FC = () => {
 
   useEffect(() => {
     if (mounted && !authLoading && isAuthenticated) {
-      router.replace("/admin");
+      // Get current language from pathname or default to 'sr'
+      const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
+      router.replace(`/${currentLang}/admin`);
     }
   }, [mounted, authLoading, isAuthenticated, router]);
 

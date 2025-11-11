@@ -94,7 +94,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         
         setUser(data.admin || data);
         setIsAuthenticated(true);
-        router.push("/admin"); // preusmeri na admin panel
+        // Get current language from pathname or default to 'sr'
+        const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
+        router.push(`/${currentLang}/admin`); // preusmeri na admin panel sa jezikom
         return true;
       } else {
         setIsAuthenticated(false);

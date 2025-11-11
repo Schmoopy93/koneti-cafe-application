@@ -253,7 +253,10 @@ const AdminPage: React.FC = () => {
           <motion.div className="action-cards" variants={containerVariants}>
             <motion.div
               className="action-card menu-card"
-              onClick={() => router.push("/menu-management")}
+              onClick={() => {
+                const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
+                router.push(`/${currentLang}/menu-management`);
+              }}
               variants={cardVariants}
               whileHover="hover"
             >
@@ -267,7 +270,10 @@ const AdminPage: React.FC = () => {
 
             <motion.div
               className="action-card calendar-card"
-              onClick={() => router.push("/calendar")}
+              onClick={() => {
+                const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
+                router.push(`/${currentLang}/calendar`);
+              }}
               variants={cardVariants}
               whileHover="hover"
             >
@@ -300,7 +306,10 @@ const AdminPage: React.FC = () => {
           >
             <motion.div
               className="action-card statistics-card"
-              onClick={() => router.push("/statistics")}
+              onClick={() => {
+                const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
+                router.push(`/${currentLang}/statistics`);
+              }}
               variants={cardVariants}
               whileHover="hover"
             >
@@ -318,7 +327,10 @@ const AdminPage: React.FC = () => {
 
             <motion.div
               className="action-card career-card"
-              onClick={() => router.push("/admin/career")}
+              onClick={() => {
+                const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
+                router.push(`/${currentLang}/admin/career`);
+              }}
               variants={cardVariants}
               whileHover="hover"
             >

@@ -165,7 +165,7 @@ const EventStats: React.FC<EventStatsProps> = ({ events }) => {
   const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newYear = e.target.value;
     setSelectedYear(newYear);
-    
+
     // Ažuriraj URL parametar
     const params = new URLSearchParams(searchParams.toString());
     if (newYear === 'all') {
@@ -173,8 +173,9 @@ const EventStats: React.FC<EventStatsProps> = ({ events }) => {
     } else {
       params.set('year', newYear);
     }
-    
-    const newUrl = params.toString() ? `?${params.toString()}` : window.location.pathname;
+
+    const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
+    const newUrl = params.toString() ? `/${currentLang}/statistics?${params.toString()}` : `/${currentLang}/statistics`;
     router.push(newUrl, { scroll: false });
   };
 

@@ -130,7 +130,9 @@ const Calendar: React.FC = () => {
   };
 
   const handleBackToAdmin = () => {
-    router.push("/admin");
+    // Get current language from pathname or default to 'sr'
+    const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
+    router.push(`/${currentLang}/admin`);
   };
 
   if (loading) {
