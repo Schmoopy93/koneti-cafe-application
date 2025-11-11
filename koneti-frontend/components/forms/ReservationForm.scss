@@ -839,7 +839,7 @@ textarea {
 
 .reservation-popup {
   background: linear-gradient(145deg, #ffffff 0%, #fdfaf6 40%, #f8f5f1 70%, #f0ebe4 100%);
-  padding: 2.5rem;
+  padding: 2.5rem 3rem 2.5rem 2.5rem;
   border-radius: var(--spacing-xl);
   max-width: 550px;
   width: 92%;
@@ -853,28 +853,11 @@ textarea {
   overflow-y: auto;
   overflow-x: hidden;
 
-  // Custom scrollbar
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-primary) rgba(207, 166, 138, 0.1);
+  // Hide scrollbar to prevent it from extending beyond modal boundaries
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(207, 166, 138, 0.08);
-    border-radius: 8px;
-    margin: 20px 8px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--gradient-primary);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-
-    &:hover {
-      background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary-lighter));
-    }
+    display: none;
   }
 
   @include gradient-border-top(5px);
