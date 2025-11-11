@@ -272,6 +272,37 @@ export default async function MenuPage() {
     );
   } catch (error) {
     console.error("Error fetching menu data:", error);
-    return <div>Greška pri učitavanju menija.</div>;
+    return (
+      <main>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '50vh',
+          padding: '2rem',
+          textAlign: 'center'
+        }}>
+          <h2 style={{ color: '#e74c3c', marginBottom: '1rem' }}>Greška pri učitavanju menija</h2>
+          <p style={{ color: '#666', marginBottom: '2rem' }}>
+            Došlo je do greške prilikom učitavanja podataka. Molimo pokušajte ponovo kasnije.
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            style={{
+              padding: '0.75rem 1.5rem',
+              backgroundColor: '#3498db',
+              color: 'white',
+              border: 'none',
+              borderRadius: '0.5rem',
+              cursor: 'pointer',
+              fontSize: '1rem'
+            }}
+          >
+            Pokušaj ponovo
+          </button>
+        </div>
+      </main>
+    );
   }
 }

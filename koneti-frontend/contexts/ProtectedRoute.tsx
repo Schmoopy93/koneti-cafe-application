@@ -25,13 +25,13 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }, [mounted, loading, isAuthenticated, router]);
 
 
-  if (!mounted || loading || !isAuthenticated) {
-    return (
-      <div style={{ minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <span>Učitavanje...</span>
-      </div>
-    );
-  }
+  // if (!mounted || loading || !isAuthenticated) {
+  //   return (
+  //     <div style={{ minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+  //       <span>Učitavanje...</span>
+  //     </div>
+  //   );
+  // }
 
   return <>{children}</>;
 };
