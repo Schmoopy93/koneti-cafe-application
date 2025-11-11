@@ -5,8 +5,8 @@ import MenuManagement from "@/components/menu/MenuManagement";
 import AddCategory from "@/components/forms/AddCategory";
 import AddDrink from "@/components/forms/AddDrink";
 import Modal from "../ui/Modal";
-import { Drink } from "@/app/types/drink";
-import { Category } from "@/app/types/category";
+import type { Drink } from "@/app/[lang]/types/drink";
+import type { Category } from "@/app/[lang]/types/category";
 import { apiRequest } from "@/utils/api";
 
 interface MenuManagementPageProps {

@@ -1,7 +1,7 @@
 "use client";
 
-import Calendar from "../../components/calendar/Calendar";
-import { ProtectedRoute } from "@/contexts/ProtectedRoute";
+import Calendar from "../../../components/calendar/Calendar";
+import { ProtectedRoute } from "../../../contexts/ProtectedRoute";
 
 const CalendarPage = () => {
   return (

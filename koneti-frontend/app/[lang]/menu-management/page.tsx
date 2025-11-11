@@ -1,8 +1,8 @@
 import MenuManagementPage from "@/components/menu/MenuManagementPage";
 import { Metadata } from "next";
 import { ProtectedRoute } from "@/contexts/ProtectedRoute";
-import { Category } from "@/app/types/category";
-import { Drink } from "@/app/types/drink";
+import type { Category } from "@/app/[lang]/types/category";
+import type { Drink } from "@/app/[lang]/types/drink";
 
 export const metadata: Metadata = {
   title: "Menu Management | Admin",

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ReservationForm from "../../components/forms/ReservationForm";
+import ReservationForm from "../../../components/forms/ReservationForm";
 import Script from "next/script";
 
 export const metadata: Metadata = {

@@ -16,8 +16,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 
-import { Drink } from "../../app/types/drink";
-import { Category } from "../../app/types/category";
+import type { Drink } from "../../app/[lang]/types/drink";
+import type { Category } from "../../app/[lang]/types/category";
 import Spinner from "../ui/Spinner";
 import "./MenuManagement.scss";
 

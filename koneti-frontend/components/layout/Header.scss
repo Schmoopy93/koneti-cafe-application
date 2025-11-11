@@ -1,29 +1,102 @@
+@use "sass:color";
+
+// =========================
+// VARIABLES
+// =========================
+$color-primary: #cfa68a;
+$color-secondary: #d4a574;
+$color-accent: #e6c79a;
+$color-text-dark: #5a3e36;
+$color-white: #fff;
+$color-bg-light: #f5e6d3;
+$color-bg-lighter: #f8f0e6;
+
+// Spacing
+$spacing-xs: 0.4rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 0.8rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-2xl: 2.5rem;
+
+// Border radius
+$radius-sm: 0.5rem;
+$radius-md: 0.6rem;
+$radius-lg: 1.2rem;
+$radius-xl: 1.5rem;
+$radius-2xl: 2rem;
+$radius-full: 50%;
+
+// Transitions
+$transition-fast: 0.2s ease;
+$transition-base: 0.3s ease;
+$transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+// Shadows
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 12px rgba(90, 62, 54, 0.2);
+$shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.15);
+$shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
+
+// =========================
+// MIXINS
+// =========================
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin glass-effect($opacity: 0.2) {
+  background: rgba(255, 255, 255, $opacity);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@mixin gradient-primary {
+  background: linear-gradient(135deg, $color-primary, $color-secondary);
+}
+
+@mixin gradient-light {
+  background: linear-gradient(135deg, $color-bg-light, $color-bg-lighter);
+}
+
+@mixin hover-lift {
+  &:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: $shadow-md;
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(1.02);
+  }
+}
+
+// =========================
+// NAVBAR
+// =========================
 .navbar {
-  background-color: #cfa68a;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background-color: $color-primary;
+  box-shadow: $shadow-sm;
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-radius: 0;
-  padding: 0;
   width: 100%;
-  margin: 0;
 }
 
 .nav-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0.8rem 1.5rem;
+  padding: $spacing-md $spacing-lg;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: $spacing-lg;
   margin-left: auto;
 }
 
@@ -31,39 +104,40 @@
   height: 35px;
   width: auto;
   object-fit: contain;
-  transition: transform 0.3s ease;
+  transition: transform $transition-base;
 
   &:hover {
     transform: scale(1.1);
   }
 }
 
-/* ===== LANGUAGE DROPDOWN ===== */
+// =========================
+// LANGUAGE DROPDOWN (Desktop)
+// =========================
 .language-dropdown {
   position: relative;
 }
 
 .language-switcher {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: linear-gradient(135deg, #cfa68a, #d4a574);
+  @include flex-center;
+  gap: $spacing-sm;
+  @include gradient-primary;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 0.6rem;
-  padding: 0.5rem 0.75rem;
+  border-radius: $radius-md;
+  padding: $spacing-sm 0.75rem;
   cursor: pointer;
-  color: #fff;
+  color: $color-white;
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 0.85rem;
   transition: all 0.25s ease;
-  box-shadow: 0 2px 8px rgba(90, 62, 54, 0.2);
+  box-shadow: $shadow-sm;
   white-space: nowrap;
 
   &:hover {
-    background: linear-gradient(135deg, #d4a574, #e6c79a);
+    background: linear-gradient(135deg, $color-secondary, $color-accent);
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(90, 62, 54, 0.25);
+    box-shadow: $shadow-md;
   }
 
   &:active {
@@ -75,99 +149,77 @@
   position: absolute;
   top: 110%;
   right: 0;
-  background: linear-gradient(135deg, #f5e6d3, #f8f0e6);
-  border-radius: 0.6rem;
+  @include gradient-light;
+  border-radius: $radius-md;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 12px rgba(90, 62, 54, 0.25);
+  box-shadow: $shadow-md;
   overflow: hidden;
   z-index: 1000;
   min-width: 120px;
-  margin-top: 0.5rem;
-  animation: fadeIn 0.2s ease-out;
+  margin-top: $spacing-sm;
+  animation: fadeIn $transition-fast;
 }
 
 .language-option {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+  @include flex-center;
+  gap: $spacing-sm;
   width: 100%;
-  padding: 0.7rem 0.8rem;
+  padding: 0.7rem $spacing-md;
   background: transparent;
   border: none;
-  color: #5a3e36;
+  color: $color-text-dark;
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all $transition-fast;
   white-space: nowrap;
 
   &:hover {
-    background: linear-gradient(135deg, #cfa68a, #d4a574);
-    color: #fff;
+    @include gradient-primary;
+    color: $color-white;
   }
 
   &.active {
-    background: linear-gradient(135deg, #d4a574, #e6c79a);
-    color: #fff;
+    background: linear-gradient(135deg, $color-secondary, $color-accent);
+    color: $color-white;
   }
 }
 
-/* ===== MOBILE LANGUAGE SWITCHER ===== */
+// =========================
+// MOBILE LANGUAGE SWITCHER
+// =========================
 .mobile-language-switcher {
   display: none;
   width: 85%;
   max-width: 320px;
-  margin: 2rem auto 0;
+  margin: $spacing-xl auto 0;
   animation: slideInFromBottom 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.8s both;
 }
 
 .language-switcher-mobile {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
+  @include flex-center;
+  gap: $spacing-md;
   width: 100%;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-  color: #fff;
+  @include glass-effect(0.2);
+  color: $color-white;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 1.1rem;
-  padding: 1rem 1.5rem;
-  border-radius: 1.5rem;
+  padding: 1rem $spacing-lg;
+  border-radius: $radius-xl;
   border: 2px solid rgba(255, 255, 255, 0.3);
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all $transition-smooth;
   white-space: nowrap;
-  backdrop-filter: blur(15px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), inset 0 2px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: $shadow-lg, inset 0 2px 0 rgba(255, 255, 255, 0.2);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 1.5rem;
-    padding: 2px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), transparent, rgba(255, 255, 255, 0.2));
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: xor;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
 
   &:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.15));
+    background: rgba(255, 255, 255, 0.3);
     transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: $shadow-xl, inset 0 2px 0 rgba(255, 255, 255, 0.3);
     border-color: rgba(255, 255, 255, 0.5);
-
-    &::before {
-      opacity: 1;
-    }
   }
 
   &:active {
@@ -178,35 +230,32 @@
 .language-dropdown-menu-mobile {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: $spacing-md;
   width: 100%;
   margin-top: 1rem;
-  border-radius: 1.5rem;
+  border-radius: $radius-xl;
   overflow: hidden;
   animation: slideDown 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 
   button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.8rem;
+    @include flex-center;
+    gap: $spacing-md;
     width: 100%;
-    padding: 1rem 1.5rem;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
-    color: #fff;
+    padding: 1rem $spacing-lg;
+    @include glass-effect(0.15);
+    color: $color-white;
     font-family: "Poppins", sans-serif;
     font-weight: 700;
     font-size: 1rem;
     border: 2px solid rgba(255, 255, 255, 0.25);
-    border-radius: 1.2rem;
+    border-radius: $radius-lg;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(15px);
+    transition: all $transition-smooth;
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
     &:hover {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+      background: rgba(255, 255, 255, 0.25);
       transform: translateY(-2px) scale(1.02);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 2px 0 rgba(255, 255, 255, 0.3);
       border-color: rgba(255, 255, 255, 0.4);
@@ -215,21 +264,14 @@
     &:active {
       transform: translateY(-1px) scale(0.98);
     }
-
-    &.active {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.15));
-      border-color: rgba(255, 255, 255, 0.5);
-    }
   }
 }
 
 .language-dropdown-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
   background: transparent;
   border: none;
-  color: #fff;
+  color: $color-white;
   cursor: pointer;
   font-size: 1rem;
   width: 1.2rem;
@@ -244,39 +286,31 @@
   &.open {
     transform: rotate(180deg);
   }
-
-  i,
-  svg {
-    width: 100%;
-    height: 100%;
-  }
 }
 
-/* ===== NAVIGATION LINKS ===== */
+// =========================
+// NAVIGATION LINKS
+// =========================
 .nav-links {
   display: flex;
-  gap: 1.5rem;
+  gap: $spacing-lg;
   align-items: center;
   margin-left: auto;
-  margin-right: 1.5rem;
+  margin-right: $spacing-lg;
 
   a {
     position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.4rem 0.8rem;
-    border-radius: 1.5rem;
-    background: rgba(255, 255, 255, 0.2);
-    color: #5a3e36;
+    @include flex-center;
+    padding: $spacing-xs $spacing-md;
+    border-radius: $radius-xl;
+    @include glass-effect(0.2);
+    color: $color-text-dark;
     font-family: "Poppins", sans-serif;
     font-weight: 600;
     font-size: 0.85rem;
     text-decoration: none;
     cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all $transition-smooth;
     overflow: hidden;
 
     &::before {
@@ -286,12 +320,7 @@
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.4),
-        transparent
-      );
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
       transition: left 0.6s ease;
     }
 
@@ -299,7 +328,6 @@
       background: rgba(255, 255, 255, 0.9);
       transform: translateY(-3px) scale(1.05);
       box-shadow: 0 6px 20px rgba(90, 62, 54, 0.3);
-      animation: pulse 0.6s ease-out;
 
       &::before {
         left: 100%;
@@ -309,34 +337,10 @@
     &:active {
       transform: translateY(-1px) scale(1.02);
     }
-
-    &::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      bottom: -2.4rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(5px);
-      background: #e4bb89;
-      color: #fdfaf6;
-      padding: 0.4rem 0.6rem;
-      border-radius: 0.5rem;
-      font-size: 0.85rem;
-      font-family: "Poppins", sans-serif;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      z-index: 10;
-    }
-
-    &:hover::after {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
   }
 }
 
+// Mobile menu
 .nav-links.open {
   display: flex;
   flex-direction: column;
@@ -348,48 +352,38 @@
   background: linear-gradient(
     135deg,
     rgba(207, 166, 138, 0.98) 0%,
-    rgba(212, 165, 116, 0.95) 25%,
-    rgba(230, 199, 154, 0.92) 50%,
-    rgba(212, 165, 116, 0.95) 75%,
+    rgba(212, 165, 116, 0.95) 50%,
     rgba(207, 166, 138, 0.98) 100%
   );
-  backdrop-filter: blur(20px) saturate(1.2);
-  border: none;
-  border-radius: 0;
-  box-shadow: inset 0 0 100px rgba(255, 255, 255, 0.1);
-  padding: 3rem 2rem;
-  gap: 1.5rem;
-  opacity: 1;
+  backdrop-filter: blur(20px);
+  padding: 3rem $spacing-xl;
+  gap: $spacing-lg;
   z-index: 9999;
   justify-content: center;
   align-items: center;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   animation: slideInFromTop 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 
   .mobile-close-btn {
     position: absolute;
-    top: 2.5rem;
-    right: 2.5rem;
+    top: $spacing-2xl;
+    right: $spacing-2xl;
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+    @include glass-effect(0.25);
     border: 2px solid rgba(255, 255, 255, 0.4);
-    border-radius: 50%;
-    color: #fff;
+    border-radius: $radius-full;
+    color: $color-white;
     font-size: 1.8rem;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 2px 0 rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(15px);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    @include flex-center;
+    box-shadow: $shadow-lg, inset 0 2px 0 rgba(255, 255, 255, 0.3);
+    transition: all $transition-smooth;
     animation: fadeInScale 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
 
     &:hover {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.2));
+      background: rgba(255, 255, 255, 0.4);
       transform: scale(1.15) rotate(90deg);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.5);
+      box-shadow: $shadow-xl, inset 0 2px 0 rgba(255, 255, 255, 0.5);
       border-color: rgba(255, 255, 255, 0.6);
     }
 
@@ -401,92 +395,49 @@
   a {
     width: 85%;
     max-width: 320px;
-    margin: 0 auto;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
-    color: #fff;
+    @include glass-effect(0.15);
+    color: $color-white;
     font-size: 1.3rem;
     font-weight: 700;
-    padding: 1.4rem 2.5rem;
-    border-radius: 2rem;
+    padding: 1.4rem $spacing-2xl;
+    border-radius: $radius-2xl;
     text-align: center;
     border: 2px solid rgba(255, 255, 255, 0.3);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), inset 0 2px 0 rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(15px) saturate(1.1);
-    position: relative;
-    overflow: hidden;
+    box-shadow: $shadow-lg, inset 0 2px 0 rgba(255, 255, 255, 0.2);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    letter-spacing: 0.5px;
     animation: slideInFromBottom 0.6s cubic-bezier(0.4, 0, 0.2, 1) calc(var(--delay, 0) * 0.1s) both;
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-      transition: left 0.6s ease;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 2rem;
-      padding: 2px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), transparent, rgba(255, 255, 255, 0.2));
-      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      mask-composite: xor;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-
     &:hover {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+      background: rgba(255, 255, 255, 0.25);
       transform: translateY(-5px) scale(1.05);
       box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25), inset 0 2px 0 rgba(255, 255, 255, 0.4);
       border-color: rgba(255, 255, 255, 0.5);
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-
-      &::before {
-        left: 100%;
-      }
-
-      &::after {
-        opacity: 1;
-      }
     }
 
     &:active {
       transform: translateY(-2px) scale(1.02);
     }
-
-    &::after {
-      display: none;
-    }
   }
 }
 
-/* ===== MENU TOGGLE ===== */
+// =========================
+// MENU TOGGLE
+// =========================
 .menu-toggle {
   display: none;
-  background: rgba(255, 255, 255, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 0.6rem;
-  padding: 0.5rem;
+  @include glass-effect(0.25);
+  border-radius: $radius-md;
+  padding: $spacing-sm;
   cursor: pointer;
-  color: #5a3e36;
+  color: $color-text-dark;
   font-size: 1.1rem;
-  backdrop-filter: blur(15px);
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(90, 62, 54, 0.1);
+  transition: all $transition-base;
+  box-shadow: $shadow-sm;
 
   &:hover {
     background: rgba(255, 255, 255, 0.9);
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(90, 62, 54, 0.2);
+    box-shadow: $shadow-md;
   }
 
   &:active {
@@ -494,7 +445,9 @@
   }
 }
 
-/* ===== ANIMATIONS ===== */
+// =========================
+// ANIMATIONS
+// =========================
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -506,82 +459,56 @@
   }
 }
 
-@keyframes pulse {
-  0% {
-    box-shadow: 0 6px 20px rgba(90, 62, 54, 0.3);
-  }
-  50% {
-    box-shadow: 0 8px 25px rgba(90, 62, 54, 0.4),
-      0 0 0 4px rgba(255, 255, 255, 0.3);
-  }
-  100% {
-    box-shadow: 0 6px 20px rgba(90, 62, 54, 0.3);
-  }
-}
-
-@keyframes menuOpen {
-  0% {
-    opacity: 0;
-    transform: translateX(-50%) scale(0.9) translateY(-10px);
-  }
-  50% {
-    opacity: 0.8;
-    transform: translateX(-50%) scale(1.02) translateY(2px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(-50%) scale(1) translateY(0);
-  }
-}
-
 @keyframes slideDown {
-  0% {
+  from {
     opacity: 0;
     transform: translateY(-8px);
   }
-  100% {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
 @keyframes slideInFromTop {
-  0% {
+  from {
     opacity: 0;
     transform: translateY(-100vh);
   }
-  100% {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
 @keyframes slideInFromBottom {
-  0% {
+  from {
     opacity: 0;
     transform: translateY(50px);
   }
-  100% {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
 @keyframes fadeInScale {
-  0% {
+  from {
     opacity: 0;
     transform: scale(0.8);
   }
-  100% {
+  to {
     opacity: 1;
     transform: scale(1);
   }
 }
 
-/* ===== RESPONSIVE ===== */
+// =========================
+// RESPONSIVE
+// =========================
 @media screen and (max-width: 1024px) {
   .language-switcher {
-    padding: 0.4rem 0.6rem;
+    padding: $spacing-xs 0.6rem;
     font-size: 0.8rem;
   }
 
@@ -594,8 +521,6 @@
 @media screen and (max-width: 768px) {
   .nav-links {
     display: none;
-    flex-direction: column;
-    align-items: center;
   }
 
   .nav-links.open {
@@ -610,52 +535,37 @@
     display: block;
   }
 
-  .language-switcher-mobile {
-    font-size: 0.8rem;
-    padding: 0.5rem 0.7rem;
-  }
-
-  .language-option-mobile {
-    font-size: 0.8rem;
-    padding: 0.5rem 0.7rem;
-  }
-
   .menu-toggle {
     display: block;
   }
 
   .header-right {
-    gap: 0.5rem;
+    gap: $spacing-sm;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .language-switcher-mobile {
+    font-size: 0.75rem;
+    padding: $spacing-xs 0.6rem;
+    gap: 0.3rem;
   }
 
-  .mobile-language-switcher {
-    display: block;
+  .language-dropdown-menu-mobile {
+    gap: 0.3rem;
+
+    button {
+      font-size: 0.75rem;
+      padding: $spacing-xs 0.6rem;
+    }
   }
 
-  @media screen and (max-width: 480px) {
-    .language-switcher-mobile {
-      font-size: 0.75rem;
-      padding: 0.4rem 0.6rem;
-      gap: 0.3rem;
-    }
+  .nav-links.open {
+    padding: $spacing-lg;
 
-    .language-option-mobile {
-      font-size: 0.75rem;
-      padding: 0.4rem 0.6rem;
-      gap: 0.3rem;
-    }
-
-    .language-dropdown-menu-mobile {
-      gap: 0.3rem;
-    }
-
-    .nav-links.open {
-      padding: 1.5rem;
-
-      a {
-        font-size: 1.1rem;
-        padding: 0.8rem 1.5rem;
-      }
+    a {
+      font-size: 1.1rem;
+      padding: $spacing-md $spacing-lg;
     }
   }
 }
