@@ -16,14 +16,6 @@ function getLocale(request: NextRequest): string {
     return cookieLocale;
   }
 
-  const acceptLanguage = request.headers.get('accept-language');
-  if (acceptLanguage) {
-    const browserLocale = acceptLanguage.split(',')[0].split('-')[0];
-    if (locales.includes(browserLocale)) {
-      return browserLocale;
-    }
-  }
-
   return defaultLocale;
 }
 
