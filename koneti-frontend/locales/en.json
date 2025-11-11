@@ -318,7 +318,12 @@
       "description": "Description",
       "image": "Image",
       "save": "Save",
+      "saveChanges": "Save Changes",
       "addButton": "Add Drink",
+      "confirmCrop": "Confirm crop",
+      "cancelCrop": "Cancel",
+      "saving": "Saving...",
+      "savingChanges": "Saving changes...",
       "errors": {
         "name": "Name is required.",
         "price": "Price is required.",
@@ -334,7 +339,8 @@
         "sendDataError": "Error sending data",
         "serverError": "Server error",
         "cropSaved": "Crop saved!",
-        "cropError": "Error cropping image"
+        "cropError": "Error cropping image",
+        "saveError": "Error saving drink!"
       }
     },
     "addCategory": {
@@ -342,6 +348,7 @@
       "name": "Category Name",
       "icon": "Select Icon",
       "save": "Save",
+      "saving": "Saving...",
       "addButton": "Add Category",
       "errors": {
         "name": "Category name is required.",
@@ -349,7 +356,8 @@
         "checkFormErrors": "Check form errors!",
         "categoryAdded": "Category successfully added!",
         "addCategoryError": "Error adding category",
-        "serverError": "Server error"
+        "serverError": "Server error",
+        "saveError": "Error saving category!"
       }
     },
     "menuManagement": {

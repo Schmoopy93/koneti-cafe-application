@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import MenuManagement from "@/components/menu/MenuManagement";
 import AddCategory from "@/components/forms/AddCategory";
 import AddDrink from "@/components/forms/AddDrink";
@@ -18,6 +19,7 @@ const MenuManagementPage: React.FC<MenuManagementPageProps> = ({
   drinks: initialDrinks,
   categories: initialCategories,
 }) => {
+  const { t } = useTranslation();
   const [drinks, setDrinks] = useState<Drink[]>(initialDrinks);
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [isLoading, setIsLoading] = useState(false);
@@ -96,7 +98,7 @@ const MenuManagementPage: React.FC<MenuManagementPageProps> = ({
       <Modal
         show={showAddCategory}
         onClose={() => setShowAddCategory(false)}
-        title="Dodaj novu kategoriju"
+        title={t("admin.addCategory.title")}
         emoji="🍸"
       >
         <AddCategory onClose={() => setShowAddCategory(false)} onSuccess={handleCategoryAdded} />
@@ -109,7 +111,7 @@ const MenuManagementPage: React.FC<MenuManagementPageProps> = ({
           setShowAddDrink(false);
           setEditingDrink(null);
         }}
-        title={editingDrink ? "Uredi piće" : "Dodaj novo piće"}
+        title={editingDrink ? t("admin.addDrink.editTitle") : t("admin.addDrink.title")}
         emoji="🍹"
       >
         <AddDrink

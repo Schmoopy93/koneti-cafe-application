@@ -326,7 +326,12 @@
       "description": "Opis",
       "image": "Slika",
       "save": "Sačuvaj",
+      "saveChanges": "Sačuvaj izmene",
       "addButton": "Dodaj piće",
+      "confirmCrop": "Potvrdi crop",
+      "cancelCrop": "Otkaži",
+      "saving": "Čuvanje...",
+      "savingChanges": "Čuvanje izmena...",
       "errors": {
         "name": "Naziv je obavezan.",
         "price": "Cena je obavezna.",
@@ -342,7 +347,8 @@
         "sendDataError": "Greška prilikom slanja podataka",
         "serverError": "Greška na serveru",
         "cropSaved": "Crop je sačuvan!",
-        "cropError": "Greška prilikom cropovanja slike"
+        "cropError": "Greška prilikom cropovanja slike",
+        "saveError": "Greška pri čuvanju pića!"
       }
     },
     "addCategory": {
@@ -350,6 +356,7 @@
       "name": "Naziv kategorije",
       "icon": "Izaberi ikonicu",
       "save": "Sačuvaj",
+      "saving": "Čuvanje...",
       "addButton": "Dodaj kategoriju",
       "errors": {
         "name": "Naziv kategorije je obavezan.",
@@ -357,7 +364,8 @@
         "checkFormErrors": "Proverite greške u formi!",
         "categoryAdded": "Kategorija uspešno dodata!",
         "addCategoryError": "Greška pri dodavanju kategorije",
-        "serverError": "Greška na serveru"
+        "serverError": "Greška na serveru",
+        "saveError": "Greška pri čuvanju kategorije!"
       }
     },
     "menuManagement": {

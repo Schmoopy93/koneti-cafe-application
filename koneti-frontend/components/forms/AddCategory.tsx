@@ -130,14 +130,14 @@ export default function AddCategory({ onClose, onSuccess }: AddCategoryProps) {
 
       if (res.ok) {
         const data = await res.json();
-        toast.success("Kategorija je uspešno dodana!");
+        toast.success(t("admin.addCategory.errors.categoryAdded"));
         setFormData({ name: "", icon: "" });
         setErrors({});
         setShakeFields({});
         if (onSuccess) onSuccess(data);
       } else {
         const err = await res.json();
-        toast.error(err.message || "Greška pri dodavanju kategorije!");
+        toast.error(err.message || t("admin.addCategory.errors.saveError"));
       }
     } catch (err) {
       console.error(err);
@@ -193,7 +193,7 @@ export default function AddCategory({ onClose, onSuccess }: AddCategoryProps) {
 
         <button type="submit" className="gradient-btn" disabled={isSubmitting}>
           {isSubmitting ? (
-            <Spinner size="sm" text="Čuvanje..." />
+            <Spinner size="sm" text={t("admin.addCategory.saving")} />
           ) : (
             t("admin.addCategory.save")
           )}

@@ -173,11 +173,11 @@ export default function AddDrink({
       });
       if (res.ok) {
         const data = await res.json();
-        toast.success(editData ? "Piće je uspešno ažurirano!" : "Piće je uspešno dodato!");
+        toast.success(editData ? t("admin.addDrink.errors.drinkUpdated") : t("admin.addDrink.errors.drinkAdded"));
         onSuccess?.(data);
         onClose();
       } else {
-        toast.error("Greška pri čuvanju pića!");
+        toast.error(t("admin.addDrink.errors.saveError"));
       }
     } catch (err) {
       console.error(err);
@@ -190,12 +190,12 @@ export default function AddDrink({
   return (
     <div className="add-drink-form">
       <Toaster position="top-right" />
-      <h2>{editData ? "Uredi piće" : "Dodaj novo piće"}</h2>
+      <h2>{editData ? t("admin.addDrink.editTitle") : t("admin.addDrink.title")}</h2>
 
       <form onSubmit={handleSubmit}>
         {/* Naziv */}
         <div className="form-group">
-          <label>Naziv:</label>
+          <label>{t("admin.addDrink.name")}:</label>
           <input
             type="text"
             name="name"
@@ -208,7 +208,7 @@ export default function AddDrink({
 
         {/* Cena */}
         <div className="form-group">
-          <label>Cena:</label>
+          <label>{t("admin.addDrink.price")}:</label>
           <input
             type="number"
             name="price"
@@ -221,14 +221,14 @@ export default function AddDrink({
 
         {/* Kategorija */}
         <div className="form-group">
-          <label>Kategorija:</label>
+          <label>{t("admin.addDrink.category")}:</label>
           <select
             name="categoryId"
             value={String(formData.categoryId)}
             onChange={handleChange}
             className={shakeFields.categoryId ? "shake" : ""}
           >
-            <option value="">Izaberi kategoriju</option>
+            <option value="">{t("admin.addDrink.category")}</option>
             {categories.map((cat) => {
               const name =
                 typeof cat.name === "object"
@@ -250,7 +250,7 @@ export default function AddDrink({
 
         {/* Slika */}
         <div className="form-group">
-          <label>Slika:</label>
+          <label>{t("admin.addDrink.image")}:</label>
           <input
             type="file"
             accept="image/png, image/jpeg"
@@ -296,7 +296,7 @@ export default function AddDrink({
                   className="btn-confirm-crop"
                   onClick={saveCroppedImage}
                 >
-                  Potvrdi crop
+                  {t("admin.addDrink.confirmCrop")}
                 </button>
                 <button
                   type="button"
@@ -308,7 +308,7 @@ export default function AddDrink({
                     if (fileInputRef.current) fileInputRef.current.value = "";
                   }}
                 >
-                  Otkaži
+                  {t("admin.addDrink.cancelCrop")}
                 </button>
               </div>
             </div>
@@ -317,9 +317,9 @@ export default function AddDrink({
 
         <button type="submit" className="submit-btn" disabled={isSubmitting}>
           {isSubmitting ? (
-            <Spinner size="sm" text={editData ? "Čuvanje izmena..." : "Čuvanje..."} />
+            <Spinner size="sm" text={editData ? t("admin.addDrink.savingChanges") : t("admin.addDrink.saving")} />
           ) : (
-            editData ? "Sačuvaj izmene" : "Sačuvaj"
+            editData ? t("admin.addDrink.saveChanges") : t("admin.addDrink.save")
           )}
         </button>
       </form>
