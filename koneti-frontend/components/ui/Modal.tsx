@@ -10,15 +10,16 @@ interface ModalProps {
   onClose: () => void;
   title?: string;
   emoji?: string;
+  className?: string;
   children: React.ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ show, onClose, title, emoji, children }) => {
+const Modal: React.FC<ModalProps> = ({ show, onClose, title, emoji, className, children }) => {
   if (!show) return null;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="add-category-modal" onClick={(e) => e.stopPropagation()}>
+      <div className={`add-category-modal ${className || ""}`} onClick={(e) => e.stopPropagation()}>
         <button className="close-btn" onClick={onClose}>
           <FontAwesomeIcon icon={faTimes} />
         </button>

@@ -18,6 +18,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { apiRequest } from "@/utils/api";
 import FullCalendarComponent from "./FullCalendarComponent";
 import Spinner from "../ui/Spinner";
+import Modal from "../ui/Modal";
 import "./Calendar.scss";
 
 interface Reservation {
@@ -191,125 +192,115 @@ const Calendar: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Event Details Panel */}
+      {/* Event Details Modal */}
       {selectedEvent && (
-        <div
-          className="modal-overlay blur-backdrop"
-          onClick={() => setSelectedEvent(null)}
+        <Modal
+          show={!!selectedEvent}
+          onClose={() => setSelectedEvent(null)}
+          className={`event-details-modal ${
+            selectedEvent.type === "koneti"
+              ? `${selectedEvent.subType || "basic"}-package`
+              : ""
+          }`}
         >
-          <div
-            className={`event-details-panel ${
-              selectedEvent.type === "koneti"
-                ? `${selectedEvent.subType || "basic"}-package`
-                : ""
-            }`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="event-header">
-              <FontAwesomeIcon
-                icon={
-                  selectedEvent.type === "business" ? faBriefcase : faGlassCheers
-                }
-                className="event-icon"
-              />
-              <h4>{selectedEvent.name}</h4>
+          <div className="event-header">
+            <FontAwesomeIcon
+              icon={
+                selectedEvent.type === "business" ? faBriefcase : faGlassCheers
+              }
+              className="event-icon"
+            />
+            <h4>{selectedEvent.name}</h4>
+          </div>
+          <div className="event-body">
+            <div className="event-info">
+              <p className={`event-status ${selectedEvent.status}`}>
+                <strong>{t("adminPage.event.status")}</strong>{" "}
+                {selectedEvent.status === "pending"
+                  ? t("adminPage.status.pending")
+                  : selectedEvent.status === "approved"
+                  ? t("adminPage.status.approved")
+                  : selectedEvent.status === "rejected"
+                  ? t("adminPage.status.rejected")
+                  : selectedEvent.status}
+              </p>
+              <p>
+                <strong>{t("adminPage.event.type")}</strong>{" "}
+                {selectedEvent.type === "business"
+                  ? `${t("adminPage.event.businessMeeting")}${selectedEvent.subType ? ` - ${t(`adminPage.packages.${selectedEvent.subType}`)}` : ""}`
+                  : selectedEvent.type === "experience"
+                  ? `${t("adminPage.event.konetiExperience")}${selectedEvent.subType ? ` - ${t(`adminPage.packages.${selectedEvent.subType}`)}` : ""}`
+                  : selectedEvent.type}
+              </p>
+              <p>
+                <strong>{t("adminPage.event.email")}</strong>{" "}
+                {selectedEvent.email}
+              </p>
+              <p>
+                <strong>{t("adminPage.event.phone")}</strong>{" "}
+                {selectedEvent.phone}
+              </p>
+              <p>
+                <strong>{t("adminPage.event.date")}</strong>{" "}
+                {new Date(selectedEvent.date).toLocaleDateString("sr-RS")}
+              </p>
+              <p>
+                <strong>{t("adminPage.event.time")}</strong>{" "}
+                {selectedEvent.time}
+              </p>
+              <p>
+                <strong>{t("adminPage.event.guests")}</strong>{" "}
+                {selectedEvent.guests}
+              </p>
+              {selectedEvent.selectedMenu && (
+                <p>
+                  <strong>{t("adminPage.event.menu")}:</strong>{" "}
+                  {selectedEvent.selectedMenu}
+                </p>
+              )}
+              {selectedEvent.message && (
+                <p>
+                  <strong>{t("adminPage.event.message")}</strong>{" "}
+                  {selectedEvent.message}
+                </p>
+              )}
+            </div>
+            <div className="event-actions">
+              {selectedEvent.status === "pending" && (
+                <>
+                  <button
+                    className="btn-approve"
+                    onClick={() =>
+                      handleReservationAction(selectedEvent._id, "approved")
+                    }
+                    disabled={updatingReservation === selectedEvent._id}
+                  >
+                    <FontAwesomeIcon icon={faCheck} />{" "}
+                    {updatingReservation === selectedEvent._id ? t("adminPage.actions.updating") : t("adminPage.event.confirm")}
+                  </button>
+                  <button
+                    className="btn-reject"
+                    onClick={() =>
+                      handleReservationAction(selectedEvent._id, "rejected")
+                    }
+                    disabled={updatingReservation === selectedEvent._id}
+                  >
+                    <FontAwesomeIcon icon={faTimes} />{" "}
+                    {updatingReservation === selectedEvent._id ? t("adminPage.actions.updating") : t("adminPage.event.reject")}
+                  </button>
+                </>
+              )}
               <button
-                className="close-event"
-                onClick={() => setSelectedEvent(null)}
+                className="btn-delete"
+                onClick={() => setShowDeleteConfirm(selectedEvent)}
+                disabled={updatingReservation === selectedEvent._id}
               >
-                ×
+                <FontAwesomeIcon icon={faTrash} />{" "}
+                {t("adminPage.event.delete")}
               </button>
             </div>
-            <div className="event-body">
-              <div className="event-info">
-                <p className={`event-status ${selectedEvent.status}`}>
-                  <strong>{t("adminPage.event.status")}</strong>{" "}
-                  {selectedEvent.status === "pending"
-                    ? t("adminPage.status.pending")
-                    : selectedEvent.status === "approved"
-                    ? t("adminPage.status.approved")
-                    : selectedEvent.status === "rejected"
-                    ? t("adminPage.status.rejected")
-                    : selectedEvent.status}
-                </p>
-                <p>
-                  <strong>{t("adminPage.event.type")}</strong>{" "}
-                  {selectedEvent.type === "business"
-                    ? `${t("adminPage.event.businessMeeting")}${selectedEvent.subType ? ` - ${t(`adminPage.packages.${selectedEvent.subType}`)}` : ""}`
-                    : selectedEvent.type === "experience"
-                    ? `${t("adminPage.event.konetiExperience")}${selectedEvent.subType ? ` - ${t(`adminPage.packages.${selectedEvent.subType}`)}` : ""}`
-                    : selectedEvent.type}
-                </p>
-                <p>
-                  <strong>{t("adminPage.event.email")}</strong>{" "}
-                  {selectedEvent.email}
-                </p>
-                <p>
-                  <strong>{t("adminPage.event.phone")}</strong>{" "}
-                  {selectedEvent.phone}
-                </p>
-                <p>
-                  <strong>{t("adminPage.event.date")}</strong>{" "}
-                  {new Date(selectedEvent.date).toLocaleDateString("sr-RS")}
-                </p>
-                <p>
-                  <strong>{t("adminPage.event.time")}</strong>{" "}
-                  {selectedEvent.time}
-                </p>
-                <p>
-                  <strong>{t("adminPage.event.guests")}</strong>{" "}
-                  {selectedEvent.guests}
-                </p>
-                {selectedEvent.selectedMenu && (
-                  <p>
-                    <strong>{t("adminPage.event.menu")}:</strong>{" "}
-                    {selectedEvent.selectedMenu}
-                  </p>
-                )}
-                {selectedEvent.message && (
-                  <p>
-                    <strong>{t("adminPage.event.message")}</strong>{" "}
-                    {selectedEvent.message}
-                  </p>
-                )}
-              </div>
-              <div className="event-actions">
-                {selectedEvent.status === "pending" && (
-                  <>
-                    <button
-                      className="btn-approve"
-                      onClick={() =>
-                        handleReservationAction(selectedEvent._id, "approved")
-                      }
-                      disabled={updatingReservation === selectedEvent._id}
-                    >
-                      <FontAwesomeIcon icon={faCheck} />{" "}
-                      {updatingReservation === selectedEvent._id ? t("adminPage.actions.updating") : t("adminPage.event.confirm")}
-                    </button>
-                    <button
-                      className="btn-reject"
-                      onClick={() =>
-                        handleReservationAction(selectedEvent._id, "rejected")
-                      }
-                      disabled={updatingReservation === selectedEvent._id}
-                    >
-                      <FontAwesomeIcon icon={faTimes} />{" "}
-                      {updatingReservation === selectedEvent._id ? t("adminPage.actions.updating") : t("adminPage.event.reject")}
-                    </button>
-                  </>
-                )}
-                <button
-                  className="btn-delete"
-                  onClick={() => setShowDeleteConfirm(selectedEvent)}
-                  disabled={updatingReservation === selectedEvent._id}
-                >
-                  <FontAwesomeIcon icon={faTrash} />{" "}
-                  {t("adminPage.event.delete")}
-                </button>
-              </div>
-            </div>
           </div>
-        </div>
+        </Modal>
       )}
 
       {/* Delete Confirmation Modal */}
