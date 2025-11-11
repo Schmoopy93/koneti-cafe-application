@@ -1,6 +1,13 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent, MouseEvent, useEffect, useRef } from "react";
+import {
+  useState,
+  ChangeEvent,
+  FormEvent,
+  MouseEvent,
+  useEffect,
+  useRef,
+} from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -51,7 +58,6 @@ export default function ReservationForm() {
   const { t } = useTranslation();
   const formRef = useRef<HTMLDivElement>(null);
 
-
   const [formData, setFormData] = useState<FormData>({
     type: "",
     subType: "",
@@ -60,7 +66,7 @@ export default function ReservationForm() {
     phone: "",
     date: "",
     time: "",
-    guests: 1,
+    guests: 0,
     message: "",
     duration: 2,
   });
@@ -166,7 +172,7 @@ export default function ReservationForm() {
       phone: "",
       date: "",
       time: "",
-      guests: 1,
+      guests: 0,
       message: "",
       duration: type === "business" ? 2 : 3,
     });
@@ -227,13 +233,16 @@ export default function ReservationForm() {
 
       let daysRequired = 0;
       if (
+        formData.subType === "business_basic" ||
         formData.subType === "business_high" ||
         formData.subType === "experience_start" ||
         formData.subType === "experience_classic"
       ) {
-        daysRequired = 2;
+        daysRequired = 2; // ovi paketi se moraju rezervisati barem 2 dana ranije
+      } else if (formData.subType === "business_corporate") {
+        daysRequired = 4; // corporate dan treba rezervisati 4 dana unapred
       } else if (formData.subType === "experience_celebration") {
-        daysRequired = 7;
+        daysRequired = 7; // VIP iskustvo mora 7 dana ranije
       }
 
       if (daysRequired > 0) {
@@ -241,7 +250,13 @@ export default function ReservationForm() {
         minDate.setDate(today.getDate() + daysRequired);
 
         if (selectedDate < minDate) {
-          errors.date = t("home.reservation.errors.dateMinimum");
+          if (daysRequired === 2) {
+            errors.date = t("home.reservation.errors.dateMinimum2Days");
+          } else if (daysRequired === 4) {
+            errors.date = t("home.reservation.errors.dateMinimum4Days");
+          } else if (daysRequired === 7) {
+            errors.date = t("home.reservation.errors.dateMinimum7Days");
+          }
         }
       }
     }
@@ -251,7 +266,7 @@ export default function ReservationForm() {
     return errors;
   };
 
-    const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const errors = validateForm();
     if (Object.keys(errors).length) {
@@ -297,7 +312,7 @@ export default function ReservationForm() {
       });
       setShowPopup(true);
 
-    formRef.current?.scrollIntoView({ behavior: "smooth" });
+      formRef.current?.scrollIntoView({ behavior: "smooth" });
     } catch (error: any) {
       toast.error(error.message || t("home.reservation.errors.submitError"));
     } finally {
@@ -436,7 +451,7 @@ export default function ReservationForm() {
                         </div>
                         <div className="card-content">
                           <h3 className="card-title">{label}</h3>
-                          
+
                           <p className="card-description">
                             {t(
                               `home.reservation.packageDescriptions.${
@@ -508,7 +523,13 @@ export default function ReservationForm() {
                               : "text"
                           }
                           min={field === "guests" ? 1 : undefined}
-                          value={(formData as any)[field]}
+                          value={
+                            field === "guests"
+                              ? formData.guests === 0
+                                ? ""
+                                : formData.guests
+                              : (formData as any)[field]
+                          }
                           onChange={handleChange}
                           placeholder={t(`home.reservation.form.${field}`)}
                           className={
@@ -525,6 +546,7 @@ export default function ReservationForm() {
                       </div>
                     )
                   )}
+
                   <textarea
                     name="message"
                     value={formData.message}
