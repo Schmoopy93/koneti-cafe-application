@@ -475,6 +475,7 @@
       "totalReservations": "Rezervacije",
       "approved": "Odobreno",
       "pending": "Na čekanju",
+      "rejected": "Otkazano",
       "trend": {
         "up": "+12%",
         "down": "Pad",

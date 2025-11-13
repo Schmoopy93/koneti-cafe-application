@@ -14,6 +14,7 @@ import {
   faSort,
   faTag,
 } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 import type { Drink } from "../../app/[lang]/types/drink";
@@ -121,7 +122,12 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
   );
 
   return (
-    <div className="menu-management">
+    <motion.div
+      className="menu-management"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       {/* HEADER */}
       <div className="management-header">
         <div className="search-filter-row">
@@ -310,7 +316,7 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

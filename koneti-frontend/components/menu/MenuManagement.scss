@@ -692,7 +692,6 @@ $z-index-overlay: 2000;
     background: $color-overlay-dark;
     padding: $spacing-lg;
     backdrop-filter: blur(6px);
-    animation: fadeIn 0.3s ease;
   }
 
   .delete-confirm-overlay {
@@ -876,23 +875,12 @@ $z-index-overlay: 2000;
   // ===== Animations =====
   @keyframes fadeUp {
     from {
-      opacity: 0;
       transform: translateY(30px);
       filter: blur(6px);
     }
     to {
-      opacity: 1;
       transform: translateY(0);
       filter: blur(0);
-    }
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
     }
   }
 

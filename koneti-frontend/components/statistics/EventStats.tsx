@@ -13,6 +13,7 @@ import {
   Cell,
   Legend,
 } from "recharts";
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useSearchParams, useRouter } from "next/navigation";
 import "./EventStats.scss";
@@ -180,14 +181,19 @@ const EventStats: React.FC<EventStatsProps> = ({ events }) => {
   };
 
   return (
-    <div className="event-stats">
+    <motion.div
+      className="event-stats"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+    >
       <div className="stats-header">
         <h2>{t("eventStats.title")}</h2>
         <div className="year-filter">
           <label htmlFor="year-select">{t("eventStats.selectYear")}:</label>
-          <select 
+          <select
             id="year-select"
-            value={selectedYear} 
+            value={selectedYear}
             onChange={handleYearChange}
             className="year-select"
           >
@@ -405,7 +411,7 @@ const EventStats: React.FC<EventStatsProps> = ({ events }) => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

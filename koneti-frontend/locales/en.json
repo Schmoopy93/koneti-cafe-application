@@ -467,6 +467,7 @@
       "totalReservations": "Reservations",
       "approved": "Approved",
       "pending": "Pending",
+      "rejected": "Rejected",
       "trend": {
         "up": "+12%",
         "down": "Decrease",

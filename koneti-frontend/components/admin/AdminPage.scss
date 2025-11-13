@@ -294,11 +294,26 @@ $border: rgba(207, 166, 138, 0.2);
           color: #f39c12;
           border: 1px solid rgba(243, 156, 18, 0.2);
         }
-        
+
         .approved-count {
           background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(46, 204, 113, 0.05));
           color: #27ae60;
           border: 1px solid rgba(39, 174, 96, 0.2);
+        }
+
+        .rejected-count {
+          background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.05));
+          color: #e74c3c;
+          border: 1px solid rgba(231, 76, 60, 0.2);
+          position: relative;
+          top: 0;
+          right: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 0.3rem 0.5rem;
+          border-radius: 6px;
+          min-width: 45px;
         }
       }
     }

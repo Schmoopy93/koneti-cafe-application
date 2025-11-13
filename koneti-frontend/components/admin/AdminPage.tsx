@@ -65,6 +65,7 @@ interface Stats {
 interface StatusCounters {
   pending: number;
   approved: number;
+  rejected: number;
 }
 
 type ModalType = "career" | null;
@@ -86,6 +87,7 @@ const AdminPage: React.FC = () => {
   const [statusCounters, setStatusCounters] = useState<StatusCounters>({
     pending: 0,
     approved: 0,
+    rejected: 0,
   });
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -124,8 +126,9 @@ const AdminPage: React.FC = () => {
 
       const pendingCount = reservationsData.filter((r: Reservation) => r.status === "pending").length;
       const approvedCount = reservationsData.filter((r: Reservation) => r.status === "approved").length;
+      const rejectedCount = reservationsData.filter((r: Reservation) => r.status === "rejected").length;
 
-      setStatusCounters({ pending: pendingCount, approved: approvedCount });
+      setStatusCounters({ pending: pendingCount, approved: approvedCount, rejected: rejectedCount });
       setDrinks(drinksData);
       setCategories(categoriesData);
       setStats({
@@ -242,6 +245,10 @@ const AdminPage: React.FC = () => {
                   <span className="pending-count">
                     <span className="count-number">{statusCounters.pending}</span>
                     <span className="count-label">{t("adminPage.stats.pending")}</span>
+                  </span>
+                  <span className="rejected-count">
+                    <span className="count-number">{statusCounters.rejected}</span>
+                    <span className="count-label">{t("adminPage.stats.rejected")}</span>
                   </span>
                 </div>
               </div>

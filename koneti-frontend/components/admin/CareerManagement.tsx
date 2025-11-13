@@ -20,6 +20,7 @@ import {
   faSearch,
   faSort,
 } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
 import Spinner from "../ui/Spinner";
 import Modal from "../ui/Modal";
 import { apiRequest, API_URL } from "@/utils/api";
@@ -247,7 +248,12 @@ const CareerManagement: React.FC = () => {
   }
 
   return (
-    <div className="career-management">
+    <motion.div
+      className="career-management"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       <div className="career-header">
 
         <div className="header-actions">
@@ -646,7 +652,7 @@ const CareerManagement: React.FC = () => {
           </form>
         </div>
       </Modal>
-    </div>
+    </motion.div>
   );
 };
 

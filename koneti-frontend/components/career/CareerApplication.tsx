@@ -12,6 +12,7 @@ import {
   faPaperPlane,
   faBriefcase,
 } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { apiRequest } from "@/utils/api";
 import toast from "react-hot-toast";
@@ -208,7 +209,12 @@ const handleSubmit = async (e: React.FormEvent) => {
   };
 
   return (
-    <div className="career-application-page">
+    <motion.div
+      className="career-application-page"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
       <div className="career-application-container">
         <div className={`page-header ${isLoaded ? "loaded" : ""}`}>
           <div className="header-content">
@@ -418,7 +424,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 
