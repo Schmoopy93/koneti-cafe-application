@@ -443,23 +443,23 @@ $border: rgba(207, 166, 138, 0.2);
     }
     
     &.menu-card {
-      > svg {
-        color: #cfa68a !important;
+      .card-icon-wrapper svg {
+        color: #ffc107 !important;
       }
-      
-      &:hover > svg {
-        color: #d4a574 !important;
+
+      &:hover .card-icon-wrapper svg {
+        color: #e6b800 !important;
         transform: scale(1.1);
       }
     }
-    
+
     &.calendar-card {
-      > svg {
-        color: #d4a574 !important;
+      .card-icon-wrapper svg {
+        color: #1e3a8a !important;
       }
-      
-      &:hover > svg {
-        color: #cfa68a !important;
+
+      &:hover .card-icon-wrapper svg {
+        color: #1e40af !important;
         transform: scale(1.1);
       }
     }

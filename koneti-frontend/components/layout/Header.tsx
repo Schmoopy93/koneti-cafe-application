@@ -10,7 +10,8 @@ import {
   faMartiniGlass,
   faCalendarCheck,
   faUserShield,
-  faBusinessTime
+  faBusinessTime,
+  faImage
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../contexts/AuthContext";
 import { useTranslation } from "react-i18next";
@@ -151,10 +152,22 @@ const Header: React.FC = () => {
           
           {!loading && !isAuthenticated && (
             <Link
+              href={getLocalizedPath("/gallery")}
+              onClick={() => setIsOpen(false)}
+              title={t("header.gallery")}
+              style={{ '--delay': 4 } as React.CSSProperties}
+            >
+              <FontAwesomeIcon icon={faImage} />{" "}
+              {t("header.gallery")}
+            </Link>
+          )}
+
+          {!loading && !isAuthenticated && (
+            <Link
               href={getLocalizedPath("/career")}
               onClick={() => setIsOpen(false)}
               title={t("header.career")}
-              style={{ '--delay': 4 } as React.CSSProperties}
+              style={{ '--delay': 5 } as React.CSSProperties}
             >
               <FontAwesomeIcon icon={faBusinessTime} />{" "}
               {t("header.career")}

@@ -7,6 +7,23 @@
     "admin": "Administracija",
     "career": "Karijera"
   },
+  "gallery": {
+    "loading": "Učitavanje galerije...",
+    "subtitle": "Istražite naše trenutke i uspomene",
+    "noImages": "Nema slika",
+    "noImagesDesc": "Galerija je trenutno prazna. Proverite kasnije za nove fotografije.",
+    "view": "Pogledaj",
+    "imageDeleted": "Slika uspešno obrisana",
+    "deleteError": "Greška pri brisanju slike",
+    "deleting": "Brisanje...",
+    "imageDetails": "Detalji slike",
+    "description": "Opis",
+    "noDescription": "Bez opisa",
+    "createdAt": "Kreirano",
+    "totalImages": "Ukupno slika",
+    "page": "Stranica",
+    "of": "od"
+  },
   "home": {
     "reservation": {
       "title1": "KONETI EXPERIENCE",
@@ -320,40 +337,54 @@
     "title": "Administracija",
     "closeButton": "×",
     "galleryManagement": {
-      "searchPlaceholder": "Pretraži slike...",
-      "sortOptions": {
-        "order": "Redosled",
-        "title": "Naziv",
-        "newest": "Najnovije",
-        "oldest": "Najstarije"
-      },
       "addButton": "Dodaj sliku",
+      "addTitle": "Dodaj novu sliku",
       "allImages": "Sve slike",
+      "cancel": "Otkaži",
+      "createdAt": "Kreirano",
+      "deleteConfirm": {
+        "cancel": "Otkaži",
+        "delete": "Obriši",
+        "message": "Da li ste sigurni da želite da obrišete sliku?",
+        "title": "Potvrda brisanja"
+      },
+      "deleteError": "Greška pri brisanju slike",
+      "deleteTooltip": "Obriši sliku",
+      "deleting": "Brisanje...",
+      "description": "Opis",
+      "descriptionEn": "Opis (engleski)",
+      "descriptionEnPlaceholder": "Unesite opis slike na engleskom",
+      "descriptionSr": "Opis (srpski)",
+      "descriptionSrPlaceholder": "Unesite opis slike na srpskom",
+      "editTitle": "Uredi sliku",
+      "editTooltip": "Uredi sliku",
+      "imageDeleted": "Slika uspešno obrisana",
+      "imageDetails": "Detalji slike",
+      "loading": "Učitavanje...",
+      "noDescription": "Bez opisa",
       "noImages": "Nema slika",
       "noImagesDesc": "Još uvek nema slika u galeriji. Dodajte prvu sliku da započnete.",
-      "deleteConfirm": {
-        "title": "Potvrda brisanja",
-        "message": "Da li ste sigurni da želite da obrišete sliku",
-        "cancel": "Otkaži",
-        "delete": "Obriši"
-      },
-      "editTitle": "Uredi sliku",
-      "addTitle": "Dodaj novu sliku",
-      "uploadPlaceholder": "Kliknite da otpremite sliku",
-      "uploadHint": "JPG, PNG, WEBP (max 5MB)",
-      "titleSr": "Naziv (srpski)",
-      "titleEn": "Naziv (engleski)",
-      "titleSrPlaceholder": "Unesite naziv slike na srpskom",
-      "titleEnPlaceholder": "Unesite naziv slike na engleskom",
-      "descriptionSr": "Opis (srpski)",
-      "descriptionEn": "Opis (engleski)",
-      "descriptionSrPlaceholder": "Unesite opis slike na srpskom",
-      "descriptionEnPlaceholder": "Unesite opis slike na engleskom",
+      "of": "od",
       "order": "Redosled",
-      "cancel": "Otkaži",
-      "saving": "Čuvanje...",
+      "page": "Stranica",
       "save": "Sačuvaj",
-      "update": "Ažuriraj"
+      "saving": "Čuvanje...",
+      "searchPlaceholder": "Pretraži slike...",
+      "sortOptions": {
+        "newest": "Najnovije",
+        "oldest": "Najstarije",
+        "order": "Redosled",
+        "title": "Naziv"
+      },
+      "titleEn": "Naziv (engleski)",
+      "titleEnPlaceholder": "Unesite naziv slike na engleskom",
+      "titleSr": "Naziv (srpski)",
+      "titleSrPlaceholder": "Unesite naziv slike na srpskom",
+      "totalImages": "Ukupno slika",
+      "update": "Ažuriraj",
+      "uploadHint": "JPG, PNG, WEBP (max 5MB)",
+      "uploadPlaceholder": "Kliknite da otpremite sliku",
+      "viewTooltip": "Pogledaj sliku"
     },
     "addDrink": {
       "title": "Dodaj novo piće",
@@ -425,10 +456,23 @@
       "currency": "RSD",
       "deleteConfirm": {
         "title": "Potvrda brisanja",
-        "message": "Da li ste sigurni da želite da obrišete piće",
+        "message": "Da li ste sigurni da želite da obrišete piće?",
         "cancel": "Otkaži",
         "delete": "Obriši"
       }
+    },
+    "addGalleryImage": {
+      "title": "Dodaj novu sliku galerije",
+      "editTitle": "Uredi sliku galerije",
+      "titleSr": "Naziv",
+      "titleSrPlaceholder": "Unesite naziv slike",
+      "descriptionSr": "Opis",
+      "descriptionSrPlaceholder": "Unesite opis slike",
+      "image": "Slika",
+      "saving": "Čuvanje...",
+      "savingChanges": "Čuvanje izmena...",
+      "save": "Sačuvaj",
+      "saveChanges": "Sačuvaj izmene"
     }
   },
   "menu": {
@@ -713,5 +757,13 @@
     "title": "Kalendar Rezervacija",
     "backToAdmin": "Nazad na Admin",
     "totalEvents": "Ukupno događaja"
+  },
+    "testimonials": {
+    "title": "Šta kažu naši klijenti",
+    "subtitle": "Pročitajte recenzije naših zadovoljnih klijenata",
+    "noReviews": "Još nema recenzija. Budite prvi koji će ostaviti recenziju!",
+    "totalReviews": "Ukupno recenzija",
+    "averageRating": "Prosečna ocena",
+    "fiveStar": "5-zvezdica recenzija"
   }
 }

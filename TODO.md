@@ -1,4 +1,5 @@
-- [x] Import Modal component in Calendar.tsx
-- [x] Replace custom event details panel with Modal component
-- [x] Keep event-info and event-actions inside modal with existing styling
-- [x] Test modal functionality (open on event click, close, etc.)
+# TODO: Prevent "Koneti" from being translated in gallery title and description
+
+- [x] Modify createGalleryImage function in galleryController.js to exclude "Koneti" from translation
+- [x] Modify updateGalleryImage function in galleryController.js to exclude "Koneti" from translation
+- [x] Test the changes to ensure translations work correctly

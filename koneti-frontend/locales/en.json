@@ -7,6 +7,23 @@
     "admin": "Administration",
     "career": "Career"
   },
+  "gallery": {
+    "loading": "Loading gallery...",
+    "subtitle": "Explore our moments and memories",
+    "noImages": "No images",
+    "noImagesDesc": "Gallery is currently empty. Check back later for new photos.",
+    "view": "View",
+    "imageDeleted": "Image deleted successfully",
+    "deleteError": "Error deleting image",
+    "deleting": "Deleting...",
+    "imageDetails": "Image Details",
+    "description": "Description",
+    "noDescription": "No description",
+    "createdAt": "Created at",
+    "totalImages": "Total images",
+    "page": "Page",
+    "of": "of"
+  },
   "home": {
     "reservation": {
       "title1": "KONETI EXPERIENCE",
@@ -312,40 +329,54 @@
     "title": "Administration",
     "closeButton": "×",
     "galleryManagement": {
-      "searchPlaceholder": "Search images...",
-      "sortOptions": {
-        "order": "Order",
-        "title": "Title",
-        "newest": "Newest",
-        "oldest": "Oldest"
-      },
       "addButton": "Add image",
+      "addTitle": "Add new image",
       "allImages": "All images",
+      "cancel": "Cancel",
+      "createdAt": "Created at",
+      "deleteConfirm": {
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "message": "Are you sure you want to delete the image?",
+        "title": "Delete Confirmation"
+      },
+      "deleteError": "Error deleting image",
+      "deleteTooltip": "Delete image",
+      "deleting": "Deleting...",
+      "description": "Description",
+      "descriptionEn": "Description (English)",
+      "descriptionEnPlaceholder": "Enter image description in English",
+      "descriptionSr": "Description (Serbian)",
+      "descriptionSrPlaceholder": "Enter image description in Serbian",
+      "editTitle": "Edit image",
+      "editTooltip": "Edit image",
+      "imageDeleted": "Image deleted successfully",
+      "imageDetails": "Image Details",
+      "loading": "Loading...",
+      "noDescription": "No description",
       "noImages": "No images",
       "noImagesDesc": "There are no images in the gallery yet. Add the first image to get started.",
-      "deleteConfirm": {
-        "title": "Delete Confirmation",
-        "message": "Are you sure you want to delete the image",
-        "cancel": "Cancel",
-        "delete": "Delete"
-      },
-      "editTitle": "Edit image",
-      "addTitle": "Add new image",
-      "uploadPlaceholder": "Click to upload image",
-      "uploadHint": "JPG, PNG, WEBP (max 5MB)",
-      "titleSr": "Title (Serbian)",
-      "titleEn": "Title (English)",
-      "titleSrPlaceholder": "Enter image title in Serbian",
-      "titleEnPlaceholder": "Enter image title in English",
-      "descriptionSr": "Description (Serbian)",
-      "descriptionEn": "Description (English)",
-      "descriptionSrPlaceholder": "Enter image description in Serbian",
-      "descriptionEnPlaceholder": "Enter image description in English",
+      "of": "of",
       "order": "Order",
-      "cancel": "Cancel",
-      "saving": "Saving...",
+      "page": "Page",
       "save": "Save",
-      "update": "Update"
+      "saving": "Saving...",
+      "searchPlaceholder": "Search images...",
+      "sortOptions": {
+        "newest": "Newest",
+        "oldest": "Oldest",
+        "order": "Order",
+        "title": "Title"
+      },
+      "titleEn": "Title (English)",
+      "titleEnPlaceholder": "Enter image title in English",
+      "titleSr": "Title (Serbian)",
+      "titleSrPlaceholder": "Enter image title in Serbian",
+      "totalImages": "Total images",
+      "update": "Update",
+      "uploadHint": "JPG, PNG, WEBP (max 5MB)",
+      "uploadPlaceholder": "Click to upload image",
+      "viewTooltip": "View image"
     },
     "addDrink": {
       "title": "Add New Drink",
@@ -415,12 +446,25 @@
         "next": "Next"
       },
       "currency": "RSD",
-      "deleteConfirm": {
+      "deleteConfiirm": {
         "title": "Delete Confirmation",
-        "message": "Are you sure you want to delete the drink",
+        "message": "Are you sure you want to delete the drink?",
         "cancel": "Cancel",
         "delete": "Delete"
       }
+    },
+    "addGalleryImage": {
+      "title": "Add New Gallery Image",
+      "editTitle": "Edit Gallery Image",
+      "titleSr": "Title",
+      "titleSrPlaceholder": "Enter image title",
+      "descriptionSr": "Description",
+      "descriptionSrPlaceholder": "Enter image description",
+      "image": "Image",
+      "saving": "Saving...",
+      "savingChanges": "Saving changes...",
+      "save": "Save",
+      "saveChanges": "Save Changes"
     }
   },
   "menu": {
@@ -705,5 +749,13 @@
     "title": "Reservation Calendar",
     "backToAdmin": "Back to Admin",
     "totalEvents": "Total Events"
+  },
+  "testimonials": {
+    "title": "What Our Customers Say",
+    "subtitle": "Read reviews from our satisfied customers",
+    "noReviews": "No reviews yet. Be the first to leave a review!",
+    "totalReviews": "Total Reviews",
+    "averageRating": "Average Rating",
+    "fiveStar": "5-Star Reviews"
   }
 }

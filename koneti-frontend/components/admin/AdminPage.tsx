@@ -14,6 +14,7 @@ import {
   faSignOutAlt,
   faBriefcase,
   faTimes,
+  faImage,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion, Variants } from "framer-motion";
 
@@ -268,7 +269,7 @@ const AdminPage: React.FC = () => {
               whileHover="hover"
             >
               <div className="card-icon-wrapper">
-                <FontAwesomeIcon icon={faGlassMartiniAlt} />
+                <FontAwesomeIcon icon={faGlassMartiniAlt} style={{ color: '#ffc107' }} />
                 <div className="icon-glow"></div>
               </div>
               <h3>{t("adminPage.actions.manageMenu")}</h3>
@@ -341,11 +342,33 @@ const AdminPage: React.FC = () => {
               variants={cardVariants}
               whileHover="hover"
             >
-              <FontAwesomeIcon icon={faBriefcase} />
+              <div className="card-icon-wrapper">
+                <FontAwesomeIcon icon={faBriefcase} />
+                <div className="icon-glow"></div>
+              </div>
               <h3>{t("adminPage.actions.jobApplications")}</h3>
               <p>{t("adminPage.actions.jobApplicationsDesc")}</p>
             </motion.div>
+
+            <motion.div
+              className="action-card gallery-card"
+              onClick={() => {
+                const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
+                router.push(`/${currentLang}/admin/gallery`);
+              }}
+              variants={cardVariants}
+              whileHover="hover"
+            >
+              <div className="card-icon-wrapper">
+                <FontAwesomeIcon icon={faImage} style={{ color: '#28a745' }} />
+                <div className="icon-glow"></div>
+              </div>
+              <h3>{t("adminPage.actions.gallery")}</h3>
+              <p>{t("adminPage.actions.galleryDesc")}</p>
+            </motion.div>
           </motion.div>
+
+
         </motion.div>
       </main>
 

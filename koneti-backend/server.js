@@ -13,14 +13,18 @@ import { securityHeaders } from "./middleware/securityHeaders.js";
 import { generalLimiter, authLimiter, adminLimiter } from "./middleware/security.js";
 import { sanitizeInput } from "./middleware/inputValidation.js";
 import { logger } from "./utils/logger.js";
+import https from 'https';
+import fs from 'fs';
 
 import reservationRoutes from "./routes/reservationRoutes.js";
 import reservationTypesRoutes from "./routes/reservationTypesRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import categoriesRoutes from "./routes/categoryRoutes.js";
 import drinkRoutes from "./routes/drinkRoutes.js";
+import galleryRoutes from "./routes/galleryRoutes.js";
 import careerRoutes from "./routes/careerRoutes.js";
 import positionRoutes from "./routes/positionRoutes.js";
+import reviewRoutes from "./routes/reviewRoutes.js";
 
 // === Init ===
 const app = express();
@@ -77,7 +81,19 @@ if (!isDeploy) {
   app.use(securityHeaders);
   app.use(generalLimiter);
 }
-// app.use(compression()); // Privremeno isključeno za testiranje
+// Kompresija za bolje performanse
+app.use(compression({
+  level: 6, // Balanced compression level
+  threshold: 1024, // Only compress responses larger than 1KB
+  filter: (req, res) => {
+    // Don't compress responses with this request header
+    if (req.headers['x-no-compression']) {
+      return false;
+    }
+    // Use compression filter function
+    return compression.filter(req, res);
+  }
+}));
 
 app.use(cookieParser());
 app.use(express.json({ limit: "5mb" })); // Smanjen limit
@@ -120,8 +136,10 @@ app.use("/api/reservation-types", reservationTypesRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/categories", categoriesRoutes);
 app.use("/api/drinks", drinkRoutes);
+app.use("/api/gallery", galleryRoutes);
 app.use("/api/career", careerRoutes);
 app.use("/api/positions", positionRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 // === Health check ===
 app.get("/", (req, res) => {
@@ -154,10 +172,35 @@ mongoose.connect(process.env.MONGO_URI)
   });
 
 // === Start ===
-const server = app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`Environment: ${NODE_ENV}`);
-});
+let server;
+const sslKeyPath = process.env.SSL_KEY_PATH;
+const sslCertPath = process.env.SSL_CERT_PATH;
+
+if (sslKeyPath && sslCertPath && fs.existsSync(sslKeyPath) && fs.existsSync(sslCertPath)) {
+  try {
+    const privateKey = fs.readFileSync(sslKeyPath, 'utf8');
+    const certificate = fs.readFileSync(sslCertPath, 'utf8');
+    const credentials = { key: privateKey, cert: certificate };
+
+    server = https.createServer(credentials, app);
+    server.listen(PORT, () => {
+      console.log(`🔒 HTTPS Server running on port ${PORT}`);
+      console.log(`Environment: ${NODE_ENV}`);
+    });
+  } catch (error) {
+    console.error('❌ Error loading SSL certificates:', error);
+    console.log('⚠️  Falling back to HTTP server');
+    server = app.listen(PORT, () => {
+      console.log(`🚀 HTTP Server running on port ${PORT}`);
+      console.log(`Environment: ${NODE_ENV}`);
+    });
+  }
+} else {
+  server = app.listen(PORT, () => {
+    console.log(`🚀 HTTP Server running on port ${PORT}`);
+    console.log(`Environment: ${NODE_ENV}`);
+  });
+}
 
 // Graceful shutdown za Render
 process.on('SIGTERM', () => {

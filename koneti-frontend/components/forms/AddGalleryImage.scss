@@ -1,0 +1,265 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+// ==================== CSS VARIJABLE ====================
+:root {
+  // Boje
+  --drink-primary: #cfa68a;
+  --drink-primary-light: #d4a574;
+  --drink-text-primary: #5a3e36;
+  --drink-text-secondary: #926447;
+  --drink-text-muted: #999;
+  --drink-border: rgba(207, 166, 138, 0.3);
+  --drink-bg-input: rgba(255, 255, 255, 0.9);
+  --drink-error: #e74c3c;
+  --drink-error-bg: rgba(231, 76, 60, 0.1);
+  --drink-error-border: rgba(231, 76, 60, 0.2);
+  
+  // Spacing
+  --drink-spacing-xs: 0.3rem;
+  --drink-spacing-sm: 0.5rem;
+  --drink-spacing-md: 0.8rem;
+  --drink-spacing-lg: 1rem;
+  --drink-spacing-xl: 1.2rem;
+  --drink-spacing-2xl: 2rem;
+  
+  // Border radius
+  --drink-radius-sm: 8px;
+  --drink-radius-md: 10px;
+  --drink-radius-lg: 15px;
+  --drink-radius-xl: 1rem;
+  
+  // Shadows
+  --drink-shadow-sm: 0 0 10px rgba(207, 166, 138, 0.15);
+  --drink-shadow-md: 0 4px 15px rgba(207, 166, 138, 0.3);
+  --drink-shadow-lg: 0 8px 25px rgba(207, 166, 138, 0.4);
+  --drink-shadow-focus: 0 0 0 3px rgba(207, 166, 138, 0.2);
+  
+  // Transitions
+  --drink-transition: all 0.3s ease;
+  --drink-transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ==================== MIXINS ====================
+@mixin input-focus-state {
+  border-color: var(--drink-primary);
+  box-shadow: var(--drink-shadow-focus);
+  outline: none;
+  background: white;
+  transform: translateY(-2px);
+}
+
+@mixin button-hover {
+  transform: translateY(-2px);
+  box-shadow: var(--drink-shadow-lg);
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--drink-border);
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(207, 166, 138, 0.1);
+  }
+  
+  scrollbar-width: thin;
+  scrollbar-color: var(--drink-border) rgba(207, 166, 138, 0.1);
+}
+
+// ==================== ANIMACIJE ====================
+@keyframes formFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// ==================== GLAVNI WRAPPER ====================
+.add-gallery-image-form {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: var(--drink-spacing-xl);
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  max-height: 95vh;
+  overflow-y: auto;
+  animation: formFadeIn 0.4s ease-in-out;
+  
+  @include custom-scrollbar;
+
+  h2 {
+    display: none;
+  }
+}
+
+// ==================== FORMA ====================
+form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.8rem, 2vw, var(--drink-spacing-xl));
+
+  // Labels
+  label {
+    font-weight: 600;
+    color: var(--drink-text-primary);
+    display: block;
+    margin-bottom: var(--drink-spacing-xs);
+    font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+  }
+}
+
+// ==================== INPUT FIELDS ====================
+input,
+textarea {
+  width: 100%;
+  padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(0.8rem, 2vw, var(--drink-spacing-lg));
+  border-radius: var(--drink-radius-md);
+  border: 2px solid var(--drink-border);
+  font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+  font-family: "Poppins", sans-serif;
+  background: var(--drink-bg-input);
+  transition: var(--drink-transition-smooth);
+  box-sizing: border-box;
+  color: var(--drink-text-primary);
+
+  &:focus {
+    @include input-focus-state;
+  }
+
+  &::placeholder {
+    color: var(--drink-text-muted);
+    font-style: italic;
+  }
+
+  // iOS optimizacije
+  @media screen and (max-width: 768px) {
+    font-size: 16px; // Sprečava zoom na iOS
+    min-height: 44px; // iOS minimum touch target
+  }
+}
+
+textarea {
+  min-height: clamp(60px, 12vh, 80px);
+  resize: vertical;
+  line-height: 1.5;
+}
+
+// ==================== SUBMIT BUTTON ====================
+button[type="submit"] {
+  width: 100%;
+  padding: clamp(0.8rem, 2vw, var(--drink-spacing-lg)) clamp(1rem, 3vw, 1.5rem);
+  background: linear-gradient(135deg, var(--drink-primary), var(--drink-primary-light));
+  color: white;
+  border: none;
+  border-radius: var(--drink-radius-lg);
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(0.9rem, 2vw, var(--drink-spacing-lg));
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--drink-transition);
+  box-shadow: var(--drink-shadow-md);
+  margin-top: clamp(1rem, 3vw, var(--drink-spacing-2xl));
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  min-height: 44px; // iOS touch target
+  touch-action: manipulation;
+
+  // Hover samo na desktop
+  @media (hover: hover) {
+    &:hover:not(:disabled) {
+      @include button-hover;
+    }
+  }
+
+  // Active za sve uređaje
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// ==================== IMAGE PREVIEW ====================
+.image-preview {
+  margin-top: var(--drink-spacing-sm);
+  max-width: 100%;
+  max-height: clamp(150px, 30vh, 200px);
+  object-fit: contain;
+  border-radius: var(--drink-spacing-sm);
+  border: 1px solid #ccc;
+  display: block;
+}
+
+// ==================== ERROR HANDLING ====================
+.shake {
+  animation: shake 0.3s ease;
+  border-color: var(--drink-error) !important;
+}
+
+.error {
+  color: var(--drink-error);
+  font-size: clamp(0.8rem, 1.5vw, 0.85rem);
+  margin-top: var(--drink-spacing-sm);
+  display: block;
+  animation: fadeIn 0.3s ease-in-out;
+  font-weight: 700;
+  background: var(--drink-error-bg);
+  padding: var(--drink-spacing-sm);
+  border-radius: var(--drink-radius-sm);
+  border: 1px solid var(--drink-error-border);
+  line-height: 1.4;
+}
+
+// ==================== RESPONSIVE OPTIMIZACIJE ====================
+@media screen and (max-width: 480px) {
+  .add-gallery-image-form {
+    gap: var(--drink-spacing-md);
+  }
+
+  form {
+    gap: var(--drink-spacing-md);
+  }
+}
+
+// Dark mode support (opciono)
+@media (prefers-color-scheme: dark) {
+  .add-gallery-image-form {
+    input,
+    textarea {
+      background: rgba(255, 255, 255, 0.95);
+    }
+  }
+}
