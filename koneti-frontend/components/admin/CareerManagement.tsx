@@ -17,6 +17,8 @@ import {
   faChevronRight,
   faPlus,
   faTrash,
+  faSearch,
+  faSort,
 } from "@fortawesome/free-solid-svg-icons";
 import Spinner from "../ui/Spinner";
 import Modal from "../ui/Modal";
@@ -61,6 +63,8 @@ const CareerManagement: React.FC = () => {
   const [positionError, setPositionError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [stats, setStats] = useState({ total: 0, pending: 0, reviewed: 0, contacted: 0, rejected: 0 });
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [sortBy, setSortBy] = useState<string>("date-desc");
   const itemsPerPage = 4;
 
   useEffect(() => {
@@ -196,11 +200,35 @@ const CareerManagement: React.FC = () => {
     }
   };
 
+  const getPositionDisplayName = (positionSr: string) => {
+    const position = positions.find(pos => pos.title.sr === positionSr);
+    if (position) {
+      return i18n.language === "en" && position.title.en ? position.title.en : position.title.sr;
+    }
+    return positionSr;
+  };
+
+  // Filter and sort applications
+  const filteredApplications = applications
+    .filter((app) =>
+      `${app.firstName} ${app.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      app.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      getPositionDisplayName(app.position).toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sortBy === "date-asc") {
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      } else if (sortBy === "date-desc") {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      }
+      return 0;
+    });
+
   // Pagination logic
-  const totalPages = Math.ceil(applications.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredApplications.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentApplications = applications.slice(startIndex, endIndex);
+  const currentApplications = filteredApplications.slice(startIndex, endIndex);
 
   const goToPage = (page: number) => {
     setCurrentPage(page);
@@ -212,14 +240,6 @@ const CareerManagement: React.FC = () => {
 
   const goToNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
-
-  const getPositionDisplayName = (positionSr: string) => {
-    const position = positions.find(pos => pos.title.sr === positionSr);
-    if (position) {
-      return i18n.language === "en" && position.title.en ? position.title.en : position.title.sr;
-    }
-    return positionSr;
   };
 
   if (loading) {
@@ -299,6 +319,41 @@ const CareerManagement: React.FC = () => {
       )}
 
       <div className="main-content-container">
+        <div className="menu-controls">
+          <div className="search-filter-row">
+            <div className="search-container">
+              <FontAwesomeIcon icon={faSearch} className="search-icon" />
+              <input
+                type="text"
+                className="search-input"
+                placeholder={t("adminPage.career.searchPlaceholder")}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              {searchTerm && (
+                <button
+                  className="clear-search"
+                  onClick={() => setSearchTerm('')}
+                >
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              )}
+            </div>
+
+            <div className="filter-container">
+              <FontAwesomeIcon icon={faSort} className="filter-icon" />
+              <select
+                className="filter-dropdown"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value="date-desc">{t("adminPage.career.sortOptions.dateDesc")}</option>
+                <option value="date-asc">{t("adminPage.career.sortOptions.dateAsc")}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <div className="applications-table-container">
           <table className="applications-table">
             <thead>
@@ -390,6 +445,14 @@ const CareerManagement: React.FC = () => {
             </tbody>
           </table>
         </div>
+
+        {filteredApplications.length === 0 && applications.length > 0 && (
+          <div className="no-results">
+            <div className="no-results-icon">🔍</div>
+            <h3>{t("menu.noResults")}</h3>
+            <p>{t("menu.tryDifferent")}</p>
+          </div>
+        )}
 
         {applications.length === 0 && (
           <div className="empty-state">

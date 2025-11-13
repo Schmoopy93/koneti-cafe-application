@@ -11,14 +11,17 @@ export const createDrink = async (req, res) => {
     let cloudinaryId = "";
 
     if (req.file) {
-      const result = await cloudinary.uploader.upload(
-        `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`,
-        {
-          folder: "drinks",
-        }
-      );
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "drinks",
+      });
       imageUrl = result.secure_url;
       cloudinaryId = result.public_id;
+
+      // Clean up local file after upload
+      const fs = await import('fs');
+      fs.unlink(req.file.path, (err) => {
+        if (err) console.warn('Warning: failed to delete local file', err);
+      });
     }
 
     // Validation
@@ -108,12 +111,17 @@ export const updateDrink = async (req, res) => {
       }
 
       // Upload new image to Cloudinary
-      const result = await cloudinary.uploader.upload(
-        `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`,
-        { folder: 'drinks' }
-      );
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: 'drinks'
+      });
       drink.image = result.secure_url;
       drink.cloudinary_id = result.public_id;
+
+      // Clean up local file after upload
+      const fs = await import('fs');
+      fs.unlink(req.file.path, (err) => {
+        if (err) console.warn('Warning: failed to delete local file', err);
+      });
     }
 
     await drink.save();

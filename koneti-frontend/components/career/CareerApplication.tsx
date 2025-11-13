@@ -212,11 +212,24 @@ const handleSubmit = async (e: React.FormEvent) => {
       <div className="career-application-container">
         <div className={`page-header ${isLoaded ? "loaded" : ""}`}>
           <div className="header-content">
-            <h1>
+            <h1 className="career-title">
               <FontAwesomeIcon icon={faBriefcase} className="title-icon" />
-              {t("career.joinTeam")}
+              {(() => {
+                const text = t("career.joinTeam");
+                const parts = text.split("Koneti");
+                return (
+                  <>
+                    <span className="dark-text">{parts[0]}</span>
+                    <span className="light-text">Koneti{parts[1]}</span>
+                  </>
+                );
+              })()}
             </h1>
-            <p className="team-description">{t("career.teamDescription")}</p>
+            <div className="intro-text">
+              <p className="team-description">
+                <span className="highlight">{t("career.teamDescription")}</span>
+              </p>
+            </div>
           </div>
         </div>
 

@@ -229,6 +229,7 @@
   box-sizing: border-box;
   position: relative;
   margin: 0 auto;
+  isolation: isolate; // Kreira novi stacking context
 
   @include gradient-border-top;
 }
@@ -783,7 +784,7 @@ textarea {
 }
 
 // ==================== SUBMIT BUTTON ====================
-.btn-submit {
+.reservation-form .btn-submit {
   padding: clamp(0.7rem, 1.5vw, 0.9rem) var(--spacing-xl);
   font-size: clamp(0.9rem, 1.8vw, 1rem);
   font-weight: 600;
@@ -793,13 +794,17 @@ textarea {
   border-radius: var(--radius-2xl);
   cursor: pointer;
   transition: var(--transition-fast);
-  margin-top: var(--spacing-sm);
+  margin: var(--spacing-sm) auto 0; // Centriranje sa margin umesto align-self
   font-family: "Poppins", sans-serif;
   box-shadow: 0 6px 20px rgba(212, 165, 116, 0.3);
-  align-self: center;
+  display: block; // Block display za bolje pozicioniranje
+  position: relative; // Sprečava lebdenje
+  width: fit-content; // Širina prema sadržaju
   min-width: clamp(140px, 30vw, 160px);
+  max-width: 100%; // Sprečava overflow
   min-height: 44px; // iOS minimum touch target
   touch-action: manipulation; // Faster touch response
+  z-index: 1; // Osigurava da je dugme iznad ostalih elemenata
 
   // Hover samo na desktop
   @media (hover: hover) {
@@ -818,10 +823,13 @@ textarea {
   @media screen and (max-width: 768px) {
     width: 100%;
     max-width: 250px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   @media screen and (max-width: 480px) {
     max-width: 100%;
+    width: 100%;
   }
 }
 

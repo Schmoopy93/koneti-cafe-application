@@ -311,6 +311,42 @@
   "admin": {
     "title": "Administration",
     "closeButton": "×",
+    "galleryManagement": {
+      "searchPlaceholder": "Search images...",
+      "sortOptions": {
+        "order": "Order",
+        "title": "Title",
+        "newest": "Newest",
+        "oldest": "Oldest"
+      },
+      "addButton": "Add image",
+      "allImages": "All images",
+      "noImages": "No images",
+      "noImagesDesc": "There are no images in the gallery yet. Add the first image to get started.",
+      "deleteConfirm": {
+        "title": "Delete Confirmation",
+        "message": "Are you sure you want to delete the image",
+        "cancel": "Cancel",
+        "delete": "Delete"
+      },
+      "editTitle": "Edit image",
+      "addTitle": "Add new image",
+      "uploadPlaceholder": "Click to upload image",
+      "uploadHint": "JPG, PNG, WEBP (max 5MB)",
+      "titleSr": "Title (Serbian)",
+      "titleEn": "Title (English)",
+      "titleSrPlaceholder": "Enter image title in Serbian",
+      "titleEnPlaceholder": "Enter image title in English",
+      "descriptionSr": "Description (Serbian)",
+      "descriptionEn": "Description (English)",
+      "descriptionSrPlaceholder": "Enter image description in Serbian",
+      "descriptionEnPlaceholder": "Enter image description in English",
+      "order": "Order",
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "save": "Save",
+      "update": "Update"
+    },
     "addDrink": {
       "title": "Add New Drink",
       "editTitle": "Edit Drink",
@@ -367,11 +403,13 @@
       "allCategories": "All categories",
       "allDrinks": "All drinks",
       "sortLabel": "Sort by:",
-      "sortOptions": {
-        "name": "A-Z",
-        "priceLow": "Cheapest",
-        "priceHigh": "Most expensive"
-      },
+    "sortOptions": {
+      "name": "A-Z",
+      "priceLow": "Cheapest",
+      "priceHigh": "Most expensive",
+      "dateDesc": "Newest",
+      "dateAsc": "Oldest"
+    },
       "pagination": {
         "prev": "Previous",
         "next": "Next"
@@ -447,6 +485,8 @@
       "statisticsDesc": "View reservation statistics",
       "jobApplications": "Job Applications",
       "jobApplicationsDesc": "View and manage job applications",
+      "gallery": "Gallery Management",
+      "galleryDesc": "Manage gallery images",
       "updating": "Updating..."
     },
     "career": {
@@ -498,6 +538,11 @@
         "message": "Are you sure you want to delete this application?",
         "cancel": "Cancel",
         "delete": "Delete"
+      },
+      "searchPlaceholder": "Search applications...",
+      "sortOptions": {
+        "dateDesc": "Newest first",
+        "dateAsc": "Oldest first"
       }
     },
     "calendar": {
@@ -611,7 +656,7 @@
     "subtitle": "Career at Our Café",
     "description": "We are looking for passionate and dedicated people who want to be part of our team. Apply and show us why you are the perfect choice for Koneti.",
     "joinTeam": "Join the Koneti Team",
-    "teamDescription": "We are looking for talented and motivated people who share our passion for quality and hospitality",
+    "teamDescription": "Join our team and be part of a culture built on quality, hospitality, and genuine teamwork",
     "success": {
       "title": "Successfully sent!",
       "description": "Your job application has been received. We will contact you soon. Check your email for confirmation.",

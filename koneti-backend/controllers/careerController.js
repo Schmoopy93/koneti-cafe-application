@@ -5,35 +5,31 @@
 import Career from "../models/Career.js";
 import { logger } from "../utils/logger.js";
 import { sendCareerApplicationEmail, sendCareerConfirmationEmail, sendCareerStatusEmail } from "../utils/nodemailer.js";
-import cloudinary from "../middleware/cloudinary.js";
+import path from "path";
+import fs from "fs";
 
 export const createCareerApplication = async (req, res) => {
   try {
     const { firstName, lastName, email, phone, position, coverLetter } = req.body;
 
+    let cvPath = "";
     let cvUrl = "";
-    let cloudinaryId = "";
 
-    // Upload CV ako postoji
+    // Save CV locally ako postoji
     if (req.file) {
-      const result = await cloudinary.uploader.upload(
-        req.file.path,
-        {
-          folder: "career",
-          resource_type: "raw",
-          public_id: `cv_${Date.now()}_${req.file.originalname.replace(/\.[^/.]+$/, "")}`,
-          use_filename: true,
-          unique_filename: false
-        }
-      );
-      cvUrl = result.secure_url;
-      cloudinaryId = result.public_id;
+      const careerDir = path.join(process.cwd(), 'uploads', 'career');
+      if (!fs.existsSync(careerDir)) {
+        fs.mkdirSync(careerDir, { recursive: true });
+      }
 
-      // Clean up local file after upload
-      const fs = await import('fs');
-      fs.unlink(req.file.path, (err) => {
-        if (err) console.warn('Warning: failed to delete local file', err);
-      });
+      const filename = `cv_${Date.now()}_${req.file.originalname}`;
+      const filePath = path.join(careerDir, filename);
+
+      // Move file from temp to career directory
+      fs.renameSync(req.file.path, filePath);
+
+      cvPath = path.relative(process.cwd(), filePath);
+      cvUrl = `/uploads/career/${filename}`;
     }
 
     const application = new Career({
@@ -44,7 +40,7 @@ export const createCareerApplication = async (req, res) => {
       position,
       coverLetter,
       cvUrl,
-      cloudinary_id: cloudinaryId,
+      cvPath,
       status: "pending"
     });
 
@@ -154,9 +150,12 @@ export const deleteCareerApplication = async (req, res) => {
       });
     }
 
-    // Obriši CV iz cloudinary-ja ako postoji
-    if (application.cloudinary_id) {
-      await cloudinary.uploader.destroy(application.cloudinary_id);
+    // Obriši lokalni CV fajl ako postoji
+    if (application.cvPath) {
+      const filePath = path.join(process.cwd(), application.cvPath);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
     }
 
     await Career.findByIdAndDelete(id);
@@ -185,24 +184,33 @@ export const downloadCV = async (req, res) => {
       });
     }
 
-    if (!application.cloudinary_id) {
+    if (!application.cvPath) {
       return res.status(404).json({
         success: false,
         message: "CV fajl nije pronađen."
       });
     }
 
-    // Generate download URL with attachment flag
-    const downloadUrl = cloudinary.url(application.cloudinary_id, {
-      resource_type: 'raw',
-      attachment: true,
-      flags: 'attachment'
-    });
+    // Serve the local file
+    const filePath = path.join(process.cwd(), application.cvPath);
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({
+        success: false,
+        message: "CV fajl nije pronađen."
+      });
+    }
 
-    logger.info(`CV download initiated for application ${id}: ${downloadUrl}`);
+    logger.info(`CV download initiated for application ${id}: ${filePath}`);
 
-    // Redirect to Cloudinary download URL
-    res.redirect(downloadUrl);
+    // Set headers for download
+    const filename = `CV_${application.firstName}_${application.lastName}.pdf`;
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+
+    // Stream the file
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
+
   } catch (error) {
     logger.error("Error downloading CV:", error);
     res.status(500).json({

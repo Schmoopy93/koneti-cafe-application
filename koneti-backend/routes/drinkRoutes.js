@@ -6,7 +6,7 @@ import {
   updateDrink,
   deleteDrink,
 } from "../controllers/drinkController.js";
-import { upload } from "../middleware/upload.js";
+import { imageUpload } from "../middleware/imageUpload.js";
 import { protectAdmin } from "../middleware/adminMiddleware.js";
 import { generalLimiter } from "../middleware/security.js";
 
@@ -19,10 +19,10 @@ router.get("/", getDrinks);
 router.get("/:id", getDrinkById);
 
 // Create a new drink with image upload (admin only)
-router.post("/", protectAdmin, generalLimiter, upload.single("image"), createDrink);
+router.post("/", protectAdmin, generalLimiter, imageUpload.single("image"), createDrink);
 
 // Update drink by ID with optional image upload (admin only)
-router.put("/:id", protectAdmin, generalLimiter, upload.single("image"), updateDrink);
+router.put("/:id", protectAdmin, generalLimiter, imageUpload.single("image"), updateDrink);
 
 // Delete drink by ID (admin only)
 router.delete("/:id", protectAdmin, generalLimiter, deleteDrink);

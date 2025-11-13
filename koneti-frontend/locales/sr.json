@@ -319,6 +319,42 @@
   "admin": {
     "title": "Administracija",
     "closeButton": "×",
+    "galleryManagement": {
+      "searchPlaceholder": "Pretraži slike...",
+      "sortOptions": {
+        "order": "Redosled",
+        "title": "Naziv",
+        "newest": "Najnovije",
+        "oldest": "Najstarije"
+      },
+      "addButton": "Dodaj sliku",
+      "allImages": "Sve slike",
+      "noImages": "Nema slika",
+      "noImagesDesc": "Još uvek nema slika u galeriji. Dodajte prvu sliku da započnete.",
+      "deleteConfirm": {
+        "title": "Potvrda brisanja",
+        "message": "Da li ste sigurni da želite da obrišete sliku",
+        "cancel": "Otkaži",
+        "delete": "Obriši"
+      },
+      "editTitle": "Uredi sliku",
+      "addTitle": "Dodaj novu sliku",
+      "uploadPlaceholder": "Kliknite da otpremite sliku",
+      "uploadHint": "JPG, PNG, WEBP (max 5MB)",
+      "titleSr": "Naziv (srpski)",
+      "titleEn": "Naziv (engleski)",
+      "titleSrPlaceholder": "Unesite naziv slike na srpskom",
+      "titleEnPlaceholder": "Unesite naziv slike na engleskom",
+      "descriptionSr": "Opis (srpski)",
+      "descriptionEn": "Opis (engleski)",
+      "descriptionSrPlaceholder": "Unesite opis slike na srpskom",
+      "descriptionEnPlaceholder": "Unesite opis slike na engleskom",
+      "order": "Redosled",
+      "cancel": "Otkaži",
+      "saving": "Čuvanje...",
+      "save": "Sačuvaj",
+      "update": "Ažuriraj"
+    },
     "addDrink": {
       "title": "Dodaj novo piće",
       "editTitle": "Uredi piće",
@@ -375,11 +411,13 @@
       "allCategories": "Sve kategorije",
       "allDrinks": "Sva pića",
       "sortLabel": "Sortiraj po:",
-      "sortOptions": {
-        "name": "A-Z",
-        "priceLow": "Najjeftiniji",
-        "priceHigh": "Najskuplji"
-      },
+    "sortOptions": {
+      "name": "A-Z",
+      "priceLow": "Najjeftiniji",
+      "priceHigh": "Najskuplji",
+      "dateDesc": "Najnoviji",
+      "dateAsc": "Najstariji"
+    },
       "pagination": {
         "prev": "Prethodna",
         "next": "Sledeća"
@@ -455,6 +493,8 @@
       "statisticsDesc": "Prikazivanje statistike rezervacija",
       "jobApplications": "Prijave za posao",
       "jobApplicationsDesc": "Pregled i upravljanje prijavama za posao",
+      "gallery": "Upravljanje galerijom",
+      "galleryDesc": "Upravljanje slikama u galeriji",
       "updating": "Ažuriranje..."
     },
     "career": {
@@ -506,6 +546,11 @@
         "message": "Da li ste sigurni da želite da obrišete ovu prijavu?",
         "cancel": "Otkaži",
         "delete": "Obriši"
+      },
+      "searchPlaceholder": "Pretraži prijave...",
+      "sortOptions": {
+        "dateDesc": "Najnovije prvo",
+        "dateAsc": "Najstarije prvo"
       }
     },
     "calendar": {
@@ -619,7 +664,7 @@
     "subtitle": "Karijera u našem kafeu",
     "description": "Tražimo strastvene i posvećene ljude koji žele da budu deo našeg tima. Prijavite se i pokažite nam zašto ste savršen izbor za Koneti.",
     "joinTeam": "Pridružite se Koneti timu",
-    "teamDescription": "Tražimo talentovane i motivišane ljude koji dele našu strast prema kvalitetu i gostoprimstvu",
+    "teamDescription": "Pridruži se našem timu posvećenom kvalitetu, gostoprimstvu i timskom duhu.",
     "success": {
       "title": "Uspešno poslato!",
       "description": "Vaša prijava za posao je primljena. Kontaktiraćemo Vas uskoro. Proverite svoj email za potvrdu.",

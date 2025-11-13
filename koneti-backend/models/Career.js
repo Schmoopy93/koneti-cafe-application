@@ -11,8 +11,8 @@ const careerSchema = new mongoose.Schema({
   phone: { type: String, required: true, trim: true },
   position: { type: String, required: true, trim: true },
   coverLetter: { type: String },
-  cvUrl: { type: String }, // URL do CV-ja na Cloudinary
-  cloudinary_id: { type: String }, // Cloudinary public_id
+  cvUrl: { type: String }, // URL do CV-ja na serveru
+  cvPath: { type: String }, // Putanja do CV-ja na serveru
   status: {
     type: String,
     enum: ['pending', 'reviewed', 'contacted', 'rejected'],
