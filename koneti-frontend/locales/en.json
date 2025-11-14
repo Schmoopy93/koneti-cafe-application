@@ -382,7 +382,9 @@
       "title": "Add New Drink",
       "editTitle": "Edit Drink",
       "name": "Name",
+      "namePlaceholder": "Enter drink name",
       "price": "Price",
+      "pricePlaceholder": "Enter price",
       "category": "Category",
       "description": "Description",
       "image": "Image",
@@ -414,16 +416,21 @@
     },
     "addCategory": {
       "title": "Add New Category",
+      "editTitle": "Edit Category",
       "name": "Category Name",
+      "namePlaceholder": "Enter category name",
       "icon": "Select Icon",
       "save": "Save",
+      "saveChanges": "Save Changes",
       "saving": "Saving...",
+      "savingChanges": "Saving changes...",
       "addButton": "Add Category",
       "errors": {
         "name": "Category name is required.",
         "icon": "Icon is required.",
         "checkFormErrors": "Check form errors!",
         "categoryAdded": "Category successfully added!",
+        "categoryUpdated": "Category successfully updated!",
         "addCategoryError": "Error adding category",
         "serverError": "Server error",
         "saveError": "Error saving category!"
@@ -446,12 +453,19 @@
         "next": "Next"
       },
       "currency": "RSD",
-      "deleteConfiirm": {
+      "deleteConfirm": {
         "title": "Delete Confirmation",
         "message": "Are you sure you want to delete the drink?",
         "cancel": "Cancel",
         "delete": "Delete"
-      }
+      },
+      "filters": "Filters",
+      "categories": "Categories",
+      "categoriesManagement": "Categories Management",
+      "categoriesManagementButton": "Categories Management",
+      "priceRange": "Price Range",
+      "pricePresets": "Price Presets",
+      "all": "All"
     },
     "addGalleryImage": {
       "title": "Add New Gallery Image",

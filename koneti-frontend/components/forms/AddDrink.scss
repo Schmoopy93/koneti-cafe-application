@@ -111,14 +111,30 @@
   box-shadow: none;
   border-radius: 0;
   max-height: 95vh;
-  overflow-y: auto;
+  overflow: hidden; // Sprečava dupli scrollbar
   animation: formFadeIn 0.4s ease-in-out;
-  
-  @include custom-scrollbar;
 
   h2 {
     display: none;
   }
+}
+
+// ==================== FORM CONTAINER ====================
+.add-drink-form > form {
+  flex: 1;
+  overflow-y: auto;
+  @include custom-scrollbar;
+  padding-right: var(--drink-spacing-sm); // Prostor za scrollbar
+}
+
+// ==================== CROPPER CONTAINER ====================
+.cropper-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--drink-spacing-md);
+  flex: 1;
+  overflow-y: auto;
+  @include custom-scrollbar;
 }
 
 // ==================== FORMA ====================

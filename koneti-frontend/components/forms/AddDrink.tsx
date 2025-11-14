@@ -17,11 +17,11 @@ interface AddDrinkProps {
   editData?: Drink;
 }
 
-export default function AddDrink({
+const AddDrink: React.FC<AddDrinkProps> = ({
   onClose,
   onSuccess,
   editData,
-}: AddDrinkProps) {
+}) => {
   const { t, i18n } = useTranslation();
   const [categories, setCategories] = useState<Category[]>([]);
   const [formData, setFormData] = useState<
@@ -32,7 +32,7 @@ export default function AddDrink({
   >({
     _id: "",
     name: "",
-    price: 0,
+    price: "" as any,
     categoryId: "",
     description: "",
     image: null,
@@ -42,6 +42,7 @@ export default function AddDrink({
   const [shakeFields, setShakeFields] = useState<Record<string, boolean>>({});
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   // Cropper state
   const [showCropper, setShowCropper] = useState(false);
@@ -105,6 +106,7 @@ export default function AddDrink({
   const saveCroppedImage = async () => {
     try {
       if (!imagePreview || !croppedAreaPixels || !formData.image) return;
+
       const croppedBlob = await getCroppedImg(imagePreview, croppedAreaPixels);
       const croppedFile = new File(
         [croppedBlob],
@@ -113,13 +115,14 @@ export default function AddDrink({
           type: "image/jpeg",
         }
       );
+
       setFormData({ ...formData, image: croppedFile });
       setImagePreview(URL.createObjectURL(croppedFile));
       setShowCropper(false);
-      toast.success(t("admin.addDrink.errors.cropSaved"));
+      toast.success("Slika uspešno obrađena!");
     } catch (err) {
-      console.error(err);
-      toast.error(t("admin.addDrink.errors.cropError"));
+      console.error("Image processing error:", err);
+      toast.error("Greška pri obradi slike");
     }
   };
 
@@ -201,6 +204,7 @@ export default function AddDrink({
             name="name"
             value={formData.name}
             onChange={handleChange}
+            placeholder={t("admin.addDrink.namePlaceholder")}
             className={shakeFields.name ? "shake" : ""}
           />
           {errors.name && <span className="error">{errors.name}</span>}
@@ -214,6 +218,7 @@ export default function AddDrink({
             name="price"
             value={formData.price}
             onChange={handleChange}
+            placeholder={t("admin.addDrink.pricePlaceholder")}
             className={shakeFields.price ? "shake" : ""}
           />
           {errors.price && <span className="error">{errors.price}</span>}
@@ -325,4 +330,6 @@ export default function AddDrink({
       </form>
     </div>
   );
-}
+};
+
+export default AddDrink;

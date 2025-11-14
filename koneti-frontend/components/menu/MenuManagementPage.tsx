@@ -26,6 +26,7 @@ const MenuManagementPage: React.FC<MenuManagementPageProps> = ({
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [showAddDrink, setShowAddDrink] = useState(false);
   const [editingDrink, setEditingDrink] = useState<Drink | null>(null);
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
   const fetchCategories = async () => {
     try {
@@ -61,6 +62,12 @@ const MenuManagementPage: React.FC<MenuManagementPageProps> = ({
   const handleCategoryAdded = async () => {
     await fetchCategories();
     setShowAddCategory(false);
+    setEditingCategory(null);
+  };
+
+  const handleEditCategory = (category: Category) => {
+    setEditingCategory(category);
+    setShowAddCategory(true);
   };
 
   const handleEditDrink = (drink: Drink) => {
@@ -82,6 +89,22 @@ const MenuManagementPage: React.FC<MenuManagementPageProps> = ({
     }
   };
 
+  const handleDeleteCategory = async (categoryId: string) => {
+    try {
+      const res = await apiRequest(`/categories/${categoryId}`, {
+        method: "DELETE",
+        useToken: true
+      });
+      if (res.ok) {
+        setCategories((prev) => prev.filter((c) => c._id !== categoryId));
+        // Also remove drinks that belong to this category
+        setDrinks((prev) => prev.filter((d) => d.category?._id !== categoryId));
+      }
+    } catch (err) {
+      console.error("Greška pri brisanju kategorije:", err);
+    }
+  };
+
   return (
     <div className="menu-management-page">
       <MenuManagement
@@ -89,19 +112,31 @@ const MenuManagementPage: React.FC<MenuManagementPageProps> = ({
         categories={categories}
         onAddDrink={handleAddDrink}
         onAddCategory={handleAddCategory}
+        onEditCategory={handleEditCategory}
         onEditDrink={handleEditDrink}
         onDeleteDrink={handleDeleteDrink}
+        onDeleteCategory={handleDeleteCategory}
         isLoading={isLoading}
       />
 
       {/* ✅ Modal za kategorije */}
       <Modal
         show={showAddCategory}
-        onClose={() => setShowAddCategory(false)}
-        title={t("admin.addCategory.title")}
+        onClose={() => {
+          setShowAddCategory(false);
+          setEditingCategory(null);
+        }}
+        title={editingCategory ? t("admin.addCategory.editTitle") : t("admin.addCategory.title")}
         emoji="🍸"
       >
-        <AddCategory onClose={() => setShowAddCategory(false)} onSuccess={handleCategoryAdded} />
+        <AddCategory
+          onClose={() => {
+            setShowAddCategory(false);
+            setEditingCategory(null);
+          }}
+          onSuccess={handleCategoryAdded}
+          editData={editingCategory || undefined}
+        />
       </Modal>
 
       {/* ✅ Modal za pića */}

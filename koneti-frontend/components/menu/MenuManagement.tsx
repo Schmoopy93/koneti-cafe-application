@@ -1,66 +1,106 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faEdit,
   faTrash,
   faPlus,
-  faSearch,
-  faGlassMartiniAlt,
+  faTag,
+  faFilter,
+  faChevronDown,
+  faChevronUp,
   faChevronLeft,
   faChevronRight,
+  faEdit,
+  faCoffee,
+  faGlassWhiskey,
+  faCocktail,
+  faWineGlassAlt,
+  faBeer,
+  faMugHot,
+  faWineBottle,
+  faGlassMartiniAlt,
+  faGlassCheers,
+  faGlassWater,
+  faBlender,
+  faBottleDroplet,
+  faChampagneGlasses,
+  faIceCream,
+  faLemon,
+  faSearch,
   faSort,
-  faTag,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 import type { Drink } from "../../app/[lang]/types/drink";
 import type { Category } from "../../app/[lang]/types/category";
-import Spinner from "../ui/Spinner";
 import "./MenuManagement.scss";
+
+const faIconsMap: Record<string, any> = {
+  faCoffee,
+  faGlassWhiskey,
+  faCocktail,
+  faWineGlassAlt,
+  faBeer,
+  faMugHot,
+  faWineBottle,
+  faGlassMartiniAlt,
+  faGlassCheers,
+  faGlassWater,
+  faBlender,
+  faBottleDroplet,
+  faChampagneGlasses,
+  faIceCream,
+  faLemon,
+};
 
 interface MenuManagementProps {
   drinks: Drink[];
   categories: Category[];
   onAddDrink?: () => void;
   onAddCategory?: () => void;
+  onEditCategory?: (category: Category) => void;
   onEditDrink?: (drink: Drink) => void;
   onDeleteDrink?: (id: string) => Promise<void>;
+  onDeleteCategory?: (id: string) => Promise<void>;
   isLoading?: boolean;
 }
 
 const MenuManagement: React.FC<MenuManagementProps> = ({
-  drinks: externalDrinks,
-  categories: externalCategories,
+  drinks,
+  categories,
   onAddDrink,
   onAddCategory,
+  onEditCategory,
   onEditDrink,
   onDeleteDrink,
-  isLoading: externalLoading = false,
+  onDeleteCategory,
+  isLoading = false,
 }) => {
   const { t, i18n } = useTranslation();
   const language = i18n.language || "sr";
 
-  const [categories, setCategories] = useState<Category[]>(externalCategories);
-  const [drinks, setDrinks] = useState<Drink[]>(externalDrinks);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<Drink | Category | null>(null);
+  const [showFilters, setShowFilters] = useState<boolean>(false);
+  const [showCategories, setShowCategories] = useState<boolean>(false);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  const [pricePreset, setPricePreset] = useState<string>("all");
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("name");
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState<Drink | null>(
-    null
-  );
-  const [isLoading, setIsLoading] = useState<boolean>(externalLoading);
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
+  const topRef = useRef<HTMLDivElement>(null);
 
-  // 🔹 Sync sa props
-  useEffect(() => setCategories(externalCategories), [externalCategories]);
-  useEffect(() => setDrinks(externalDrinks), [externalDrinks]);
-  useEffect(() => setIsLoading(externalLoading), [externalLoading]);
-  useEffect(() => setCurrentPage(1), [selectedCategory, searchTerm]);
+  // Calculate min and max prices
+  const prices = drinks.map(d => d.price);
+  const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
+  const maxPrice = prices.length > 0 ? Math.max(...prices) : 1000;
+
+  useEffect(() => {
+    setPriceRange([minPrice, maxPrice]);
+  }, [minPrice, maxPrice]);
 
   // 🔹 ESC zatvara modal
   useEffect(() => {
@@ -70,13 +110,6 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
-
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, [currentPage]);
 
   const getCategoryName = (cat?: Category) => {
     if (!cat) return "";
@@ -97,29 +130,81 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
     }
   };
 
-  // 🔹 Filtriranje i sortiranje
+  const handleCategoryToggle = (categoryId: string) => {
+    setSelectedCategories(prev =>
+      prev.includes(categoryId)
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
+    );
+  };
+
+  const handlePricePreset = (preset: string) => {
+    setPricePreset(preset);
+    switch (preset) {
+      case "<500":
+        setPriceRange([minPrice, 500]);
+        break;
+      case "500–1000":
+        setPriceRange([500, 1000]);
+        break;
+      case ">1000":
+        setPriceRange([1000, maxPrice]);
+        break;
+      default:
+        setPriceRange([minPrice, maxPrice]);
+    }
+  };
+
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+    // Scroll to top after state update
+    setTimeout(() => {
+      topRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 0);
+  };
+
+  const goToPrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      // Scroll to top after state update
+      setTimeout(() => {
+        topRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 0);
+    }
+  };
+
+  const goToNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+      // Scroll to top after state update
+      setTimeout(() => {
+        topRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 0);
+    }
+  };
+
   const filteredDrinks = drinks
-    .filter((d) => {
-      if (selectedCategory === "all") return true;
-      const catId =
-        typeof (d as any).categoryId === "string"
-          ? (d as any).categoryId
-          : d.category?._id;
-      return String(catId) === String(selectedCategory);
+    .filter(drink => {
+      const categoryMatch = selectedCategories.length === 0 ||
+        selectedCategories.includes(drink.category?._id || (drink as any).categoryId);
+
+      const priceMatch = drink.price >= priceRange[0] && drink.price <= priceRange[1];
+
+      const searchMatch = drink.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        getCategoryName(drink.category as Category).toLowerCase().includes(searchTerm.toLowerCase());
+
+      return categoryMatch && priceMatch && searchMatch;
     })
-    .filter((d) => d.name.toLowerCase().includes(searchTerm.toLowerCase()))
     .sort((a, b) => {
       if (sortBy === "name") return a.name.localeCompare(b.name);
-      if (sortBy === "price-low") return Number(a.price) - Number(b.price);
-      if (sortBy === "price-high") return Number(b.price) - Number(a.price);
+      if (sortBy === "priceLow") return a.price - b.price;
+      if (sortBy === "priceHigh") return b.price - a.price;
       return 0;
     });
 
   const totalPages = Math.ceil(filteredDrinks.length / itemsPerPage);
-  const paginatedDrinks = filteredDrinks.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedDrinks = filteredDrinks.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <motion.div
@@ -127,32 +212,40 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
+      ref={topRef}
     >
       {/* HEADER */}
       <div className="management-header">
         <div className="search-filter-row">
-          <div className="search-box">
+          <div className="search-container">
             <FontAwesomeIcon icon={faSearch} className="search-icon" />
             <input
               type="text"
+              className="search-input"
               placeholder={t("admin.menuManagement.searchPlaceholder")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
+            {searchTerm && (
+              <button
+                className="clear-search"
+                onClick={() => setSearchTerm('')}
+              >
+                ×
+              </button>
+            )}
           </div>
 
-          <div className="sort-select-wrapper">
-            <FontAwesomeIcon icon={faSort} className="sort-icon" />
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-              <option value="name">
-                {t("admin.menuManagement.sortOptions.name")}
-              </option>
-              <option value="price-low">
-                {t("admin.menuManagement.sortOptions.priceLow")}
-              </option>
-              <option value="price-high">
-                {t("admin.menuManagement.sortOptions.priceHigh")}
-              </option>
+          <div className="filter-container">
+            <FontAwesomeIcon icon={faSort} className="filter-icon" />
+            <select
+              className="filter-dropdown"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="name">{t("admin.menuManagement.sortOptions.name")}</option>
+              <option value="priceLow">{t("admin.menuManagement.sortOptions.priceLow")}</option>
+              <option value="priceHigh">{t("admin.menuManagement.sortOptions.priceHigh")}</option>
             </select>
           </div>
         </div>
@@ -164,125 +257,206 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
           <button className="btn-add-category" onClick={onAddCategory}>
             <FontAwesomeIcon icon={faTag} /> {t("admin.addCategory.addButton")}
           </button>
-        </div>
-
-        <div className="category-tabs">
           <button
-            className={selectedCategory === "all" ? "active" : ""}
-            onClick={() => setSelectedCategory("all")}
+            className="btn-filters"
+            onClick={() => {
+              setShowFilters(!showFilters);
+              if (!showFilters) setShowCategories(false);
+            }}
           >
-            {t("admin.menuManagement.allCategories")} ({drinks.length})
+            <FontAwesomeIcon icon={faFilter} /> {t("admin.menuManagement.filters")}
+            <FontAwesomeIcon icon={showFilters ? faChevronUp : faChevronDown} />
           </button>
-          {categories.map((cat) => (
-            <button
-              key={cat._id}
-              className={selectedCategory === cat._id ? "active" : ""}
-              onClick={() => setSelectedCategory(String(cat._id))}
-            >
-              {getCategoryName(cat)} (
-              {
-                drinks.filter(
-                  (d) =>
-                    String(d.category?._id || (d as any).categoryId) ===
-                    String(cat._id)
-                ).length
-              }
-              )
-            </button>
-          ))}
+          <button
+            className="btn-categories"
+            onClick={() => {
+              setShowCategories(!showCategories);
+              if (!showCategories) setShowFilters(false);
+            }}
+          >
+            <FontAwesomeIcon icon={faTag} /> {t("admin.menuManagement.categoriesManagementButton")}
+            <FontAwesomeIcon icon={showCategories ? faChevronUp : faChevronDown} />
+          </button>
         </div>
-      </div>
 
-      {/* DRINKS GRID */}
-      <div className="admin-drinks-section">
-        <h3>
-          <FontAwesomeIcon
-            icon={faGlassMartiniAlt}
-            style={{ marginRight: "0.5rem" }}
-          />
-          {selectedCategory === "all"
-            ? `${t("admin.menuManagement.allDrinks")} (${
-                filteredDrinks.length
-              })`
-            : `${getCategoryName(
-                Array.isArray(categories) 
-                  ? categories.find((c) => String(c._id) === String(selectedCategory))
-                  : undefined
-              )} (${filteredDrinks.length})`}
-        </h3>
-
-        <div className="admin-drinks-grid">
-          {isLoading ? (
-            <Spinner size="md" text="Loading drinks..." />
-          ) : paginatedDrinks.length === 0 ? (
-            <div className="no-results">
-              <div className="no-results-icon">🍸</div>
-              <h3>{t("menu.noArticles")}</h3>
-              <p>{t("menu.noArticlesDesc")}</p>
-            </div>
-          ) : (
-            paginatedDrinks.map((drink) => (
-              <div key={drink._id} className="admin-drink-card">
-                {(drink as any).image || (drink as any).imageUrl ? (
-                  <Image
-                    src={(drink as any).image || (drink as any).imageUrl}
-                    alt={drink.name}
-                    width={200}
-                    height={200}
-                    className="admin-drink-image"
-                  />
-                ) : null}
-                <div className="admin-card-content">
-                  <h4>{drink.name}</h4>
-                  <p>{getCategoryName(drink.category)}</p>
-                  <span className="price">{drink.price} RSD</span>
+        {/* FILTERS COLLAPSIBLE */}
+        {showFilters && (
+          <div className="filters-container">
+            <div className="filters-grid">
+              {/* CATEGORIES */}
+              <div className="filter-section">
+                <h4>{t("admin.menuManagement.categories")}</h4>
+                <div className="categories-list">
+                  {categories.map((cat) => (
+                    <label key={cat._id} className="category-checkbox">
+                      <input
+                        type="checkbox"
+                        checked={selectedCategories.includes(cat._id)}
+                        onChange={() => handleCategoryToggle(cat._id)}
+                      />
+                      <span className="checkmark"></span>
+                      <FontAwesomeIcon icon={faIconsMap[cat.icon]} className="category-icon" />
+                      {getCategoryName(cat)}
+                    </label>
+                  ))}
                 </div>
-                <div className="admin-drink-actions">
+              </div>
+
+              {/* PRICE RANGE SLIDER */}
+              <div className="filter-section">
+                <h4>{t("admin.menuManagement.priceRange")}</h4>
+                <div className="price-slider-container">
+                  <input
+                    type="range"
+                    min={minPrice}
+                    max={maxPrice}
+                    value={priceRange[0]}
+                    onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
+                    className="price-slider"
+                  />
+                  <input
+                    type="range"
+                    min={minPrice}
+                    max={maxPrice}
+                    value={priceRange[1]}
+                    onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
+                    className="price-slider"
+                  />
+                  <div className="price-range-display">
+                    {priceRange[0]} RSD - {priceRange[1]} RSD
+                  </div>
+                </div>
+              </div>
+
+              {/* PRICE PRESETS */}
+              <div className="filter-section">
+                <h4>{t("admin.menuManagement.pricePresets")}</h4>
+                <div className="price-presets">
                   <button
-                    onClick={() => onEditDrink?.(drink)}
-                    className="edit-btn"
+                    className={pricePreset === "<500" ? "active" : ""}
+                    onClick={() => handlePricePreset("<500")}
                   >
-                    <FontAwesomeIcon icon={faEdit} />
+                    {'<500'}
                   </button>
                   <button
-                    onClick={() => setShowDeleteConfirm(drink)}
-                    className="delete-btn"
+                    className={pricePreset === "500–1000" ? "active" : ""}
+                    onClick={() => handlePricePreset("500–1000")}
                   >
+                    500–1000
+                  </button>
+                  <button
+                    className={pricePreset === ">1000" ? "active" : ""}
+                    onClick={() => handlePricePreset(">1000")}
+                  >
+                    {'>1000'}
+                  </button>
+                  <button
+                    className={pricePreset === "all" ? "active" : ""}
+                    onClick={() => handlePricePreset("all")}
+                  >
+                    {t("admin.menuManagement.all")}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* CATEGORIES MANAGEMENT COLLAPSIBLE */}
+      {showCategories && (
+        <div className="categories-management">
+          <h4>{t("admin.menuManagement.categoriesManagement")}</h4>
+          <div className="categories-list">
+            {categories.map((cat) => (
+              <div key={cat._id} className="category-item">
+                <div className="category-info">
+                  <FontAwesomeIcon icon={faIconsMap[cat.icon]} className="category-icon" />
+                  <span>{getCategoryName(cat)}</span>
+                </div>
+                <div className="category-actions">
+                  <button className="edit-btn" onClick={() => onEditCategory?.(cat)}>
+                    <FontAwesomeIcon icon={faEdit} />
+                  </button>
+                  <button className="delete-btn" onClick={() => setShowDeleteConfirm(cat)}>
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
                 </div>
               </div>
-            ))
-          )}
-        </div>
-
-        {/* PAGINATION */}
-        {totalPages > 1 && (
-          <div className="pagination">
-            <button
-              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-              disabled={currentPage === 1}
-            >
-              <FontAwesomeIcon icon={faChevronLeft} /> Prev
-            </button>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button
-                key={i}
-                className={currentPage === i + 1 ? "active" : ""}
-                onClick={() => setCurrentPage(i + 1)}
-              >
-                {i + 1}
-              </button>
             ))}
-            <button
-              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-              disabled={currentPage === totalPages}
-            >
-              Next <FontAwesomeIcon icon={faChevronRight} />
-            </button>
           </div>
+        </div>
+      )}
+
+      {/* DRINKS LIST */}
+      <div className="drinks-list">
+        {isLoading ? (
+          <div className="loading">Loading...</div>
+        ) : (
+          paginatedDrinks.map((drink) => (
+            <div key={drink._id} className="drink-item">
+              <div className="image-container">
+                {drink.image ? (
+                  <img
+                    src={drink.image}
+                    alt={drink.name}
+                    className="drink-img"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="placeholder-image">
+                    <FontAwesomeIcon icon={faCoffee} />
+                  </div>
+                )}
+              </div>
+              <div className="drink-info">
+                <h4>{drink.name}</h4>
+                <p>{getCategoryName(drink.category as Category)}</p>
+                <span className="price">{drink.price} RSD</span>
+              </div>
+              <div className="drink-actions">
+                <button onClick={() => onEditDrink?.(drink)}>
+                  <FontAwesomeIcon icon={faEdit} />
+                </button>
+                <button onClick={() => setShowDeleteConfirm(drink)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
+            </div>
+          ))
         )}
       </div>
+
+      {/* PAGINATION */}
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button
+            className="pagination-btn"
+            onClick={goToPrevious}
+            disabled={currentPage === 1}
+          >
+            <FontAwesomeIcon icon={faChevronLeft} />
+          </button>
+
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+              onClick={() => goToPage(page)}
+            >
+              {page}
+            </button>
+          ))}
+
+          <button
+            className="pagination-btn"
+            onClick={goToNext}
+            disabled={currentPage === totalPages}
+          >
+            <FontAwesomeIcon icon={faChevronRight} />
+          </button>
+        </div>
+      )}
 
       {/* DELETE CONFIRM */}
       {showDeleteConfirm && (
@@ -297,7 +471,7 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
             <h3>{t("admin.menuManagement.deleteConfirm.title")}</h3>
             <p>
               {t("admin.menuManagement.deleteConfirm.message")}{" "}
-              <strong>{showDeleteConfirm.name}</strong>?
+              <strong>{'price' in showDeleteConfirm ? showDeleteConfirm.name : getCategoryName(showDeleteConfirm as Category)}</strong>?
             </p>
             <div className="confirm-actions">
               <button
@@ -308,7 +482,16 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
               </button>
               <button
                 className="btn-confirm"
-                onClick={() => deleteDrink(showDeleteConfirm._id)}
+                onClick={() => {
+                  if ('price' in showDeleteConfirm) {
+                    // It's a drink
+                    deleteDrink(showDeleteConfirm._id);
+                  } else {
+                    // It's a category
+                    onDeleteCategory?.(showDeleteConfirm._id);
+                    setShowDeleteConfirm(null);
+                  }
+                }}
               >
                 {t("admin.menuManagement.deleteConfirm.delete")}
               </button>

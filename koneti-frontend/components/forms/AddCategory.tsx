@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,12 +14,14 @@ import {
 import toast, { Toaster } from "react-hot-toast";
 import { apiRequest } from "@/utils/api";
 import Spinner from "../ui/Spinner";
+import type { Category } from "@/app/[lang]/types/category";
 import "./AddCategory.scss";
 
 // ✅ Tipovi
 interface AddCategoryProps {
   onClose?: () => void;
   onSuccess?: (data: any) => void;
+  editData?: Category;
 }
 
 interface CategoryPayload {
@@ -70,13 +72,23 @@ const iconOptions: IconOption[] = [
   { name: "faLemon", icon: faLemon, label: { sr: "Limunada", en: "Lemonade" } },
 ];
 
-export default function AddCategory({ onClose, onSuccess }: AddCategoryProps) {
+export default function AddCategory({ onClose, onSuccess, editData }: AddCategoryProps) {
   const { t, i18n } = useTranslation();
 
   const [formData, setFormData] = useState<FormData>({ name: "", icon: "" });
   const [errors, setErrors] = useState<Errors>({});
   const [shakeFields, setShakeFields] = useState<ShakeFields>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (editData) {
+      const name = typeof editData.name === "object" ? editData.name.sr || editData.name.en || "" : editData.name;
+      setFormData({
+        name,
+        icon: editData.icon,
+      });
+    }
+  }, [editData]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -122,18 +134,23 @@ export default function AddCategory({ onClose, onSuccess }: AddCategoryProps) {
         description: { sr: "" },
       };
 
-      const res = await apiRequest("/categories", {
-        method: "POST",
+      const endpoint = editData ? `/categories/${editData._id}` : "/categories";
+      const method = editData ? "PUT" : "POST";
+
+      const res = await apiRequest(endpoint, {
+        method,
         body: JSON.stringify(payload),
         useToken: true
       });
 
       if (res.ok) {
         const data = await res.json();
-        toast.success(t("admin.addCategory.errors.categoryAdded"));
-        setFormData({ name: "", icon: "" });
-        setErrors({});
-        setShakeFields({});
+        toast.success(editData ? t("admin.addCategory.errors.categoryUpdated") : t("admin.addCategory.errors.categoryAdded"));
+        if (!editData) {
+          setFormData({ name: "", icon: "" });
+          setErrors({});
+          setShakeFields({});
+        }
         if (onSuccess) onSuccess(data);
       } else {
         const err = await res.json();
@@ -150,7 +167,7 @@ export default function AddCategory({ onClose, onSuccess }: AddCategoryProps) {
   return (
     <div className="add-category-form">
       <Toaster position="top-right" reverseOrder={false} />
-      <h3>{t("admin.addCategory.title")}</h3>
+      <h3>{editData ? t("admin.addCategory.editTitle") : t("admin.addCategory.title")}</h3>
 
       <form onSubmit={handleSubmit}>
         {/* Naziv kategorije */}
@@ -161,6 +178,7 @@ export default function AddCategory({ onClose, onSuccess }: AddCategoryProps) {
             name="name"
             value={formData.name}
             onChange={handleChange}
+            placeholder={t("admin.addCategory.namePlaceholder")}
             className={shakeFields.name ? "shake" : ""}
           />
           {errors.name && <span className="error">{errors.name}</span>}
@@ -193,9 +211,9 @@ export default function AddCategory({ onClose, onSuccess }: AddCategoryProps) {
 
         <button type="submit" className="gradient-btn" disabled={isSubmitting}>
           {isSubmitting ? (
-            <Spinner size="sm" text={t("admin.addCategory.saving")} />
+            <Spinner size="sm" text={editData ? t("admin.addCategory.savingChanges") : t("admin.addCategory.saving")} />
           ) : (
-            t("admin.addCategory.save")
+            editData ? t("admin.addCategory.saveChanges") : t("admin.addCategory.save")
           )}
         </button>
       </form>

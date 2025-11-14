@@ -390,7 +390,9 @@
       "title": "Dodaj novo piće",
       "editTitle": "Uredi piće",
       "name": "Naziv",
+      "namePlaceholder": "Unesite naziv pića",
       "price": "Cena",
+      "pricePlaceholder": "Unesite cenu",
       "category": "Kategorija",
       "description": "Opis",
       "image": "Slika",
@@ -422,16 +424,21 @@
     },
     "addCategory": {
       "title": "Dodaj novu kategoriju",
+      "editTitle": "Uredi kategoriju",
       "name": "Naziv kategorije",
+      "namePlaceholder": "Unesite naziv kategorije",
       "icon": "Izaberi ikonicu",
       "save": "Sačuvaj",
+      "saveChanges": "Sačuvaj izmene",
       "saving": "Čuvanje...",
+      "savingChanges": "Čuvanje izmena...",
       "addButton": "Dodaj kategoriju",
       "errors": {
         "name": "Naziv kategorije je obavezan.",
         "icon": "Morate izabrati ikonicu.",
         "checkFormErrors": "Proverite greške u formi!",
         "categoryAdded": "Kategorija uspešno dodata!",
+        "categoryUpdated": "Kategorija uspešno ažurirana!",
         "addCategoryError": "Greška pri dodavanju kategorije",
         "serverError": "Greška na serveru",
         "saveError": "Greška pri čuvanju kategorije!"
@@ -459,7 +466,14 @@
         "message": "Da li ste sigurni da želite da obrišete piće?",
         "cancel": "Otkaži",
         "delete": "Obriši"
-      }
+      },
+      "filters": "Filteri",
+      "categories": "Kategorije",
+      "categoriesManagement": "Upravljanje Kategorijama",
+      "categoriesManagementButton": "Upravljanje Kategorijama",
+      "priceRange": "Cenovni opseg",
+      "pricePresets": "Cenovni predlozi",
+      "all": "Sve"
     },
     "addGalleryImage": {
       "title": "Dodaj novu sliku galerije",
