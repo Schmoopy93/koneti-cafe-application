@@ -45,6 +45,9 @@ export default async function getCroppedImg(
       canvas.width = pixelCrop.width;
       canvas.height = pixelCrop.height;
 
+      // Fill canvas with transparent background instead of black
+      ctx.clearRect(0, 0, pixelCrop.width, pixelCrop.height);
+
       // paste generated rotated image with correct offsets for x,y crop values.
       ctx.putImageData(
         data,
@@ -52,14 +55,14 @@ export default async function getCroppedImg(
         Math.round(0 - safeArea / 2 + image.naturalHeight / 2 - pixelCrop.y)
       );
 
-      // As Base64 string
+      // As PNG to preserve transparency
       canvas.toBlob((blob) => {
         if (blob) {
           resolve(blob);
         } else {
           reject(new Error("Failed to create blob"));
         }
-      }, "image/jpeg", 0.95);
+      }, "image/png");
     };
 
     image.onerror = () => {

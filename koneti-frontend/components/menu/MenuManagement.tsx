@@ -30,6 +30,8 @@ import {
   faLemon,
   faSearch,
   faSort,
+  faEye,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 
@@ -90,6 +92,8 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("name");
+  const [showImagePreview, setShowImagePreview] = useState<boolean>(false);
+  const [previewImage, setPreviewImage] = useState<string>("");
   const itemsPerPage = 10;
   const topRef = useRef<HTMLDivElement>(null);
 
@@ -105,7 +109,10 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
   // 🔹 ESC zatvara modal
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setShowDeleteConfirm(null);
+      if (e.key === "Escape") {
+        setShowDeleteConfirm(null);
+        setShowImagePreview(false);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -375,10 +382,10 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
                   <span>{getCategoryName(cat)}</span>
                 </div>
                 <div className="category-actions">
-                  <button className="edit-btn" onClick={() => onEditCategory?.(cat)}>
+                  <button className="edit-btn" onClick={() => onEditCategory?.(cat)} title={t("admin.menuManagement.tooltips.editCategory")}>
                     <FontAwesomeIcon icon={faEdit} />
                   </button>
-                  <button className="delete-btn" onClick={() => setShowDeleteConfirm(cat)}>
+                  <button className="delete-btn" onClick={() => setShowDeleteConfirm(cat)} title={t("admin.menuManagement.tooltips.deleteCategory")}>
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
                 </div>
@@ -395,14 +402,29 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
         ) : (
           paginatedDrinks.map((drink) => (
             <div key={drink._id} className="drink-item">
-              <div className="image-container">
+              <div
+                className="image-container"
+                onClick={() => {
+                  if (drink.image) {
+                    setPreviewImage(drink.image);
+                    setShowImagePreview(true);
+                  }
+                }}
+                style={{ cursor: drink.image ? 'pointer' : 'default' }}
+              >
                 {drink.image ? (
-                  <img
-                    src={drink.image}
-                    alt={drink.name}
-                    className="drink-img"
-                    loading="lazy"
-                  />
+                  <>
+                    <img
+                      src={drink.image}
+                      alt={drink.name}
+                      className="drink-img"
+                      loading="lazy"
+                    />
+                    <div className="image-overlay">
+                      <FontAwesomeIcon icon={faEye} className="preview-icon" />
+                      <span className="preview-text">{t("admin.menuManagement.preview")}</span>
+                    </div>
+                  </>
                 ) : (
                   <div className="placeholder-image">
                     <FontAwesomeIcon icon={faCoffee} />
@@ -415,10 +437,10 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
                 <span className="price">{drink.price} RSD</span>
               </div>
               <div className="drink-actions">
-                <button onClick={() => onEditDrink?.(drink)}>
+                <button onClick={() => onEditDrink?.(drink)} title={t("admin.menuManagement.tooltips.editDrink")}>
                   <FontAwesomeIcon icon={faEdit} />
                 </button>
-                <button onClick={() => setShowDeleteConfirm(drink)}>
+                <button onClick={() => setShowDeleteConfirm(drink)} title={t("admin.menuManagement.tooltips.deleteDrink")}>
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
               </div>
@@ -458,20 +480,21 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
         </div>
       )}
 
-      {/* DELETE CONFIRM */}
+      {/* DELETE CONFIRM MODAL */}
       {showDeleteConfirm && (
-        <div
-          className="delete-confirm-overlay"
-          onClick={() => setShowDeleteConfirm(null)}
-        >
-          <div
-            className="delete-confirm-popup"
-            onClick={(e) => e.stopPropagation()}
-          >
+        <div className="modal-overlay" onClick={() => setShowDeleteConfirm(null)}>
+          <div className="delete-confirm-popup" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setShowDeleteConfirm(null)}>×</button>
             <h3>{t("admin.menuManagement.deleteConfirm.title")}</h3>
             <p>
-              {t("admin.menuManagement.deleteConfirm.message")}{" "}
-              <strong>{'price' in showDeleteConfirm ? showDeleteConfirm.name : getCategoryName(showDeleteConfirm as Category)}</strong>?
+              {showDeleteConfirm && 'price' in showDeleteConfirm
+                ? t("admin.menuManagement.deleteConfirm.drinkMessage")
+                : t("admin.menuManagement.deleteConfirm.categoryMessage")
+              }{" "}
+              {showDeleteConfirm && 'price' in showDeleteConfirm
+                ? showDeleteConfirm.name
+                : showDeleteConfirm && getCategoryName(showDeleteConfirm as Category)
+              }
             </p>
             <div className="confirm-actions">
               <button
@@ -495,6 +518,24 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
               >
                 {t("admin.menuManagement.deleteConfirm.delete")}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* IMAGE PREVIEW MODAL */}
+      {showImagePreview && (
+        <div className="menu-modal-overlay" onClick={() => setShowImagePreview(false)}>
+          <div className="menu-modal-content image-preview-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="menu-modal-close" onClick={() => setShowImagePreview(false)}>
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+            <div className="image-preview-container">
+              <img
+                src={previewImage}
+                alt="Full size preview"
+                className="preview-image"
+              />
             </div>
           </div>
         </div>

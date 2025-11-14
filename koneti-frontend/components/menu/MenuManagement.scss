@@ -1,3 +1,4 @@
+@use "sass:color";
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 // ===== Variables =====
@@ -135,6 +136,7 @@ $shadow-tabs: 0 4px 14px $color-shadow-secondary;
 $shadow-card-hover: 0 18px 40px rgba(0, 0, 0, 0.12), 0 5px 15px $color-shadow-accent;
 $shadow-price: 0 3px 8px $color-shadow-secondary, inset 0 1px 1px rgba(255, 255, 255, $opacity-inset);
 $shadow-no-results: 0 8px 30px $color-shadow-secondary;
+$shadow-red: 0 3px 8px $color-shadow-red;
 
 // Dimensions
 $card-max-width: 250px;
@@ -200,6 +202,38 @@ $z-index-overlay: 2000;
   font-size: $font-size-md;
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+%overlay-base {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  padding: 1rem;
+}
+
+%popup-base {
+  background: linear-gradient(145deg, #ffffff 0%, #fdfaf6 40%, #f8f5f1 70%, #f0ebe4 100%);
+  padding: 2.5rem;
+  border-radius: $radius-xl;
+  max-width: 450px;
+  width: 92%;
+  position: relative;
+  box-shadow: 0 30px 80px rgba(90, 62, 54, 0.5), 0 15px 40px rgba(207, 166, 138, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.8);
+  border: 3px solid rgba(207, 166, 138, 0.4);
+  font-family: "Poppins", sans-serif;
+  margin: auto;
+  animation: popupSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 // ===== Base Layout - SCOPED TO .menu-management =====
@@ -578,7 +612,7 @@ $z-index-overlay: 2000;
           justify-content: center;
 
           &:hover {
-            background: darken($color-accent-1, 10%);
+            background: color.adjust($color-accent-1, $lightness: -10%);
             transform: scale(1.05);
           }
 
@@ -591,12 +625,14 @@ $z-index-overlay: 2000;
   }
 }
 
-.filters-container {
+  .filters-container {
     background: linear-gradient(135deg, $color-bg-cream-5, $color-bg-cream-6, $color-bg-cream-2);
     border-radius: $radius-lg;
     padding: $spacing-xl;
     box-shadow: $shadow-card;
     border: 1px solid $color-border-primary;
+    animation: slideDownFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: top center;
 
     .filters-grid {
       display: grid;
@@ -833,6 +869,8 @@ $z-index-overlay: 2000;
     box-shadow: $shadow-card;
     border: 1px solid $color-border-primary;
     margin-bottom: $spacing-2xl;
+    animation: slideDownFadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: top center;
 
     h4 {
       color: $color-text-primary;
@@ -855,21 +893,41 @@ $z-index-overlay: 2000;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: $spacing-lg;
 
-      .category-item {
-        background: linear-gradient(145deg, $color-bg-cream-5, $color-bg-cream-6, $color-bg-cream-2);
-        border-radius: $radius-md;
-        padding: $spacing-lg;
-        box-shadow: $shadow-input;
-        border: 1px solid $color-border-secondary;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+    .category-item {
+      background: linear-gradient(145deg, $color-bg-cream-5, $color-bg-cream-6, $color-bg-cream-2);
+      border-radius: $radius-md;
+      padding: $spacing-lg;
+      box-shadow: $shadow-input;
+      border: 2px solid $color-border-secondary;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
 
-        &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px $color-shadow-secondary;
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba($color-accent-1, 0.03), rgba($color-accent-2, 0.02), rgba($color-accent-1, 0.01));
+        border-radius: $radius-md;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px $color-shadow-secondary;
+        border-color: $color-accent-1;
+
+        &::after {
+          background: linear-gradient(135deg, rgba($color-accent-1, 0.06), rgba($color-accent-2, 0.04), rgba($color-accent-1, 0.02));
         }
+      }
 
         .category-info {
           display: flex;
@@ -1040,8 +1098,12 @@ $z-index-overlay: 2000;
       border-radius: $radius-lg;
       padding: $spacing-xl;
       box-shadow: $shadow-card;
-      border: 1px solid $color-border-primary;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 3px solid transparent;
+      background-clip: padding-box;
+      background-image: linear-gradient(145deg, $color-bg-cream-5, $color-bg-cream-6, $color-bg-cream-2),
+                        linear-gradient(135deg, $color-accent-1, $color-accent-2, $color-accent-1, $color-accent-2);
+      background-origin: padding-box, border-box;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-image 0.4s ease;
       display: flex;
       flex-direction: column;
       gap: $spacing-lg;
@@ -1054,14 +1116,41 @@ $z-index-overlay: 2000;
         top: 0;
         left: 0;
         right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, $color-accent-1, $color-accent-2, $color-accent-1);
+        height: 6px;
+        background: linear-gradient(90deg, $color-accent-1, $color-accent-2, $color-accent-1, $color-accent-2);
         border-radius: $radius-lg $radius-lg 0 0;
+        box-shadow: 0 2px 8px rgba($color-accent-1, 0.3);
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba($color-accent-1, 0.03), rgba($color-accent-2, 0.02), rgba($color-accent-1, 0.01), rgba($color-accent-2, 0.02));
+        border-radius: $radius-lg;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.7;
       }
 
       &:hover {
-        transform: translateY(-5px);
-        box-shadow: $shadow-card-hover;
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 8px 25px rgba($color-accent-1, 0.2);
+        background-image: linear-gradient(145deg, $color-bg-cream-5, $color-bg-cream-6, $color-bg-cream-2),
+                          linear-gradient(135deg, $color-accent-1, $color-accent-2, $color-accent-1, $color-accent-2, $color-accent-1);
+
+        &::before {
+          height: 8px;
+          box-shadow: 0 4px 12px rgba($color-accent-1, 0.4);
+        }
+
+        &::after {
+          background: linear-gradient(135deg, rgba($color-accent-1, 0.08), rgba($color-accent-2, 0.06), rgba($color-accent-1, 0.04), rgba($color-accent-2, 0.06));
+          opacity: 1;
+        }
       }
 
       .image-container {
@@ -1169,6 +1258,16 @@ $z-index-overlay: 2000;
 
       .drink-item {
         padding: $spacing-lg;
+        background: linear-gradient(145deg, $color-bg-cream-5, $color-bg-cream-6, $color-bg-cream-2);
+        border-radius: $radius-lg;
+        box-shadow: $shadow-card;
+        border: 1px solid $color-border-primary;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        &:hover {
+          transform: translateY(-5px);
+          box-shadow: $shadow-card-hover;
+        }
 
         .image-container {
           height: 180px;
@@ -1192,6 +1291,12 @@ $z-index-overlay: 2000;
           button {
             padding: $spacing-xs $spacing-sm;
             font-size: $font-size-sm;
+            border-radius: $radius-md;
+            transition: all 0.2s ease;
+
+            &:hover {
+              transform: scale(1.05);
+            }
           }
         }
       }
@@ -1201,220 +1306,313 @@ $z-index-overlay: 2000;
   @media (max-width: $breakpoint-mobile-small) {
     .drinks-list {
       grid-template-columns: 1fr;
-      gap: $spacing-md;
-      margin-top: $spacing-lg;
+      gap: $spacing-lg;
+      margin-top: $spacing-xl;
 
       .drink-item {
-        padding: $spacing-md;
+        padding: $spacing-xl;
+        background: linear-gradient(145deg, $color-bg-cream-5, $color-bg-cream-6, $color-bg-cream-2);
+        border-radius: $radius-xl;
+        box-shadow: $shadow-card;
+        border: 1px solid $color-border-primary;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: linear-gradient(90deg, $color-accent-1, $color-accent-2, $color-accent-1);
+          border-radius: $radius-xl $radius-xl 0 0;
+        }
+
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: $shadow-card-hover;
+        }
 
         .image-container {
-          height: 160px;
+          height: 200px;
+          border-radius: $radius-lg;
+          overflow: hidden;
+          position: relative;
+
+          .drink-img {
+            transition: transform 0.3s ease;
+
+            &:hover {
+              transform: scale(1.05);
+            }
+          }
+
+          .placeholder-image {
+            background: linear-gradient(135deg, rgba($color-accent-1, 0.1), rgba($color-accent-2, 0.08));
+            border-radius: $radius-lg;
+          }
         }
 
         .drink-info {
+          padding-top: $spacing-lg;
+
           h4 {
-            font-size: $font-size-sm;
+            font-size: $font-size-lg;
+            font-weight: $font-weight-bold;
+            margin-bottom: $spacing-sm;
+            color: $color-text-primary;
           }
 
           p {
-            font-size: $font-size-xs;
+            font-size: $font-size-base;
+            color: $color-text-secondary;
+            margin-bottom: $spacing-md;
           }
 
           .price {
-            font-size: $font-size-base;
+            font-size: $font-size-xl;
+            font-weight: $font-weight-bold;
+            color: $color-accent-1;
+            background: linear-gradient(135deg, rgba($color-accent-1, 0.1), rgba($color-accent-2, 0.08));
+            padding: $spacing-sm $spacing-lg;
+            border-radius: $radius-lg;
+            border: 1px solid rgba($color-accent-1, 0.2);
+            display: inline-block;
+            transition: all 0.3s ease;
+
+            &:hover {
+              background: linear-gradient(135deg, $color-accent-1, $color-accent-2);
+              color: $color-bg-white;
+              transform: translateY(-2px);
+              box-shadow: 0 4px 15px rgba($color-accent-1, 0.3);
+            }
           }
         }
 
         .drink-actions {
-          justify-content: center;
+          display: flex;
+          justify-content: space-between;
+          gap: $spacing-md;
+          margin-top: $spacing-lg;
 
           button {
             flex: 1;
-            padding: $spacing-xs $spacing-sm;
-            font-size: $font-size-xs;
+            padding: $spacing-md $spacing-lg;
+            font-size: $font-size-base;
+            border-radius: $radius-lg;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: $font-weight-semibold;
+            min-height: 48px; // Touch-friendly size
+
+            &:first-child {
+              background: linear-gradient(135deg, $color-accent-1, $color-accent-2);
+              color: $color-bg-white;
+              box-shadow: 0 4px 12px rgba($color-accent-1, 0.3);
+
+              &:hover {
+                background: linear-gradient(135deg, $color-accent-2, color.adjust($color-accent-2, $lightness: -10%));
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba($color-accent-1, 0.4);
+              }
+
+              &:active {
+                transform: translateY(0);
+              }
+            }
+
+            &:last-child {
+              background: linear-gradient(135deg, $color-btn-delete-1, $color-btn-delete-2);
+              color: $color-bg-white;
+              box-shadow: 0 4px 12px rgba($color-btn-delete-1, 0.3);
+
+              &:hover {
+                background: linear-gradient(135deg, $color-btn-delete-2, $color-btn-delete-3);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba($color-btn-delete-1, 0.4);
+              }
+
+              &:active {
+                transform: translateY(0);
+              }
+            }
           }
         }
       }
     }
   }
 
-  // ===== Overlays & Popups =====
-  .overlay-base {
+  //-----------------------------------------------------------------
+  // Delete Confirmation Modal
+  //-----------------------------------------------------------------
+  .modal-overlay {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: $z-index-overlay;
-    background: $color-overlay-dark;
-    padding: $spacing-lg;
-    backdrop-filter: blur(6px);
-  }
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+    padding: 1rem;
 
-  .delete-confirm-overlay {
-    @extend .overlay-base;
-    background: $color-overlay-brown;
-  }
-
-  .popup-base {
-    @include gradient-modal;
-    border-radius: $radius-2xl;
-    padding: $spacing-4xl;
-    max-width: $popup-max-width;
-    width: 100%;
-    min-height: $popup-min-height;
-    text-align: center;
-    box-shadow: $shadow-modal;
-    border: 2px solid $color-border-modal;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: $modal-header-accent;
-      background: linear-gradient(90deg, $color-accent-1, $color-accent-2, $color-accent-1);
-    }
-
-    h3 {
-      color: $color-text-secondary;
-      font-weight: $font-weight-bold;
-      font-size: $font-size-3xl;
-      margin-bottom: $spacing-lg;
-      font-family: $font-primary;
-    }
-
-    p {
-      color: $color-text-tertiary;
-      margin-bottom: $spacing-3xl;
-      line-height: 1.5;
-    }
-
-    .confirm-actions {
-      display: flex;
-      gap: $spacing-lg;
-      justify-content: center;
-    }
-
-    button {
-      padding: $spacing-lg $spacing-3xl;
-      border-radius: $radius-lg;
-      font-weight: $font-weight-semibold;
-      cursor: pointer;
-      transition: $transition-cubic;
-      font-family: $font-primary;
-      font-size: $font-size-regular;
-      min-width: $btn-min-width;
+    .delete-confirm-popup {
+      background: linear-gradient(145deg, #ffffff 0%, #fdfaf6 40%, #f8f5f1 70%, #f0ebe4 100%);
+      padding: 2.5rem;
+      border-radius: $radius-xl;
+      max-width: 450px;
+      width: 92%;
       position: relative;
-      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(90, 62, 54, 0.5), 0 15px 40px rgba(207, 166, 138, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.8);
+      border: 3px solid rgba(207, 166, 138, 0.4);
+      font-family: "Poppins", sans-serif;
+      margin: auto;
+      animation: popupSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      // Custom scrollbar
+      scrollbar-width: thin;
+      scrollbar-color: $color-accent-1 rgba(207, 166, 138, 0.1);
+
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: rgba(207, 166, 138, 0.08);
+        border-radius: 8px;
+        margin: 20px 8px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, $color-accent-1, $color-accent-2);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+
+        &:hover {
+          background: linear-gradient(135deg, $color-accent-2, $color-accent-1);
+        }
+      }
 
       &::before {
         content: "";
         position: absolute;
         top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, $opacity-medium), transparent);
-        transition: $transition-slide;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, $color-accent-1 0%, $color-accent-2 25%, $color-accent-1 50%, $color-accent-2 75%, $color-accent-1 100%);
       }
 
-      &.btn-cancel {
-        background: linear-gradient(135deg, rgba(255, 255, 255, $opacity-bg-white-dark), rgba(248, 244, 240, $opacity-bg-white));
-        color: $color-text-secondary;
-        border: 2px solid $color-border-primary;
-        box-shadow: 0 4px 15px rgba(207, 166, 138, $opacity-light);
-
-        &:hover {
-          @include gradient-primary;
-          color: $color-bg-white;
-          transform: translateY(-3px);
-          box-shadow: 0 8px 25px $color-shadow-accent;
-
-          &::before {
-            left: 100%;
-          }
-        }
-      }
-
-      &.btn-confirm {
-        background: linear-gradient(135deg, $color-btn-confirm-1, $color-btn-confirm-2);
-        color: white;
-        box-shadow: 0 4px 15px $color-shadow-red;
-        border: 2px solid transparent;
-
-        &:hover {
-          background: linear-gradient(135deg, $color-btn-confirm-2, $color-btn-confirm-3);
-          transform: translateY(-3px);
-          box-shadow: 0 8px 25px rgba(231, 76, 60, 0.5);
-
-          &::before {
-            left: 100%;
-          }
-        }
-      }
-    }
-  }
-
-  .delete-confirm-popup {
-    @extend .popup-base;
-    max-width: $popup-max-width-delete;
-
-    h3 {
-      color: $color-text-error;
-      font-size: $font-size-4xl;
-      font-weight: $font-weight-bold;
-    }
-
-    p {
-      color: $color-text-tertiary;
-      font-size: $font-size-lg;
-      margin-bottom: $spacing-3xl;
-    }
-
-    .confirm-actions {
-      display: flex;
-      justify-content: center;
-      gap: $spacing-lg;
-
-      button {
-        padding: 0.8rem 1.8rem;
-        border-radius: $radius-md;
-        font-weight: $font-weight-semibold;
-        font-size: $font-size-regular;
+      .close-btn {
+        position: absolute;
+        top: 1.2rem;
+        right: 1.2rem;
+        font-size: 1.6rem;
+        background: linear-gradient(135deg, rgba(207, 166, 138, 0.15), rgba(212, 165, 116, 0.1));
+        border: 2px solid rgba(207, 166, 138, 0.4);
         cursor: pointer;
-        transition: $transition-default;
-        min-width: $btn-min-width;
+        color: $color-accent-1;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: $radius-full;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(207, 166, 138, 0.2);
+        z-index: 9999;
+        pointer-events: all;
 
-        &.btn-cancel {
-          background: linear-gradient(135deg, $color-bg-cream-15, $color-bg-cream-16);
-          color: $color-text-secondary;
-          border: 2px solid $color-border-tertiary;
-
-          &:hover {
-            @include gradient-primary;
-            color: $color-bg-white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px $color-shadow-accent;
-          }
+        &:hover {
+          background: linear-gradient(135deg, $color-accent-1, $color-accent-2);
+          color: white;
+          transform: scale(1.15) rotate(90deg);
+          box-shadow: 0 8px 25px rgba(207, 166, 138, 0.4);
         }
+      }
 
-        &.btn-confirm {
-          background: linear-gradient(135deg, $color-btn-confirm-1, $color-btn-confirm-2);
-          color: $color-bg-white;
+      h3 {
+        margin: 0 0 1rem 0;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: $color-text-primary;
+        text-align: center;
+        padding-right: 3rem;
+        position: relative;
+
+        &::before {
+          content: "";
+          position: absolute;
+          bottom: -5px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 80px;
+          height: 3px;
+          background: linear-gradient(90deg, transparent, $color-accent-1, transparent);
+          border-radius: 2px;
+        }
+      }
+
+      p {
+        margin: 0 0 2rem 0;
+        font-size: 1rem;
+        color: $color-text-secondary;
+        line-height: 1.6;
+        text-align: center;
+        font-weight: 600;
+        text-shadow: 0 1px 2px rgba(90, 62, 54, 0.1);
+      }
+
+      .confirm-actions {
+        display: flex;
+        gap: 1rem;
+
+        button {
+          flex: 1;
+          padding: 0.9rem 1.5rem;
           border: none;
-          box-shadow: 0 4px 10px $color-shadow-red;
+          border-radius: 10px;
+          font-weight: 600;
+          font-size: 0.95rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
 
-          &:hover {
-            background: linear-gradient(135deg, $color-btn-confirm-2, $color-btn-confirm-3);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.5);
+          &.btn-cancel {
+            background: rgba($color-bg-cream-9, 0.8);
+            color: $color-text-primary;
+            border: 2px solid $color-border-primary;
+
+            &:hover {
+              background: rgba($color-bg-cream-9, 1);
+              transform: translateY(-2px);
+              box-shadow: $shadow-input;
+            }
+          }
+
+          &.btn-confirm {
+            background: $color-btn-confirm-1;
+            color: white;
+
+            &:hover:not(:disabled) {
+              background: color.adjust($color-btn-confirm-2, $lightness: -10%);
+              transform: translateY(-2px);
+              box-shadow: $shadow-red;
+            }
+
+            &:disabled {
+              opacity: 0.6;
+              cursor: not-allowed;
+            }
           }
         }
       }
@@ -1422,11 +1620,11 @@ $z-index-overlay: 2000;
   }
 
   .add-category-overlay {
-    @extend .overlay-base;
+    @extend %overlay-base !optional;
   }
 
   .add-category-popup {
-    @extend .popup-base;
+    @extend %popup-base !optional;
   }
 
   // ===== Pagination =====
@@ -1454,13 +1652,254 @@ $z-index-overlay: 2000;
       }
 
       &:hover:not(:disabled) {
-        background: lighten($color-accent-1, 10%);
+        background: color.adjust($color-accent-1, $lightness: 10%);
         color: white;
       }
 
       &:disabled {
         opacity: 0.6;
         cursor: not-allowed;
+      }
+    }
+  }
+
+  // ===== Image Preview Modal =====
+  .image-preview-overlay {
+    @extend %overlay-base;
+  }
+
+  .image-preview-popup {
+    @extend %popup-base;
+    max-width: 90vw;
+    max-height: 90vh;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: $radius-md;
+
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 2rem;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.8);
+        transform: scale(1.1);
+      }
+    }
+
+    .preview-image {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: $radius-md;
+    }
+  }
+
+  // ===== Image Overlay =====
+  .image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: $radius-sm;
+    color: white;
+
+    .preview-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .preview-text {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+  }
+
+  .image-container:hover .image-overlay {
+    opacity: 1;
+  }
+
+  // ===== MENU MANAGEMENT MODALS =====
+  .menu-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(40, 26, 18, 0.45);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    animation: fadeIn 0.3s ease;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+
+  .menu-modal-content {
+    background: linear-gradient(135deg, #ffffff 0%, #fdfaf6 50%, #f8f5f1 100%);
+    position: relative;
+    width: 90vw;
+    max-width: 90vw;
+    height: 90vh;
+    border-radius: 1.25rem;
+    border: 2px solid #e9d9c6;
+    box-shadow: 0 20px 60px rgba(90, 62, 54, 0.4),
+      0 0 0 1px rgba(207, 166, 138, 0.2);
+    font-family: "Poppins", sans-serif;
+    padding: 2rem;
+    animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-sizing: border-box;
+
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: auto;
+
+    scrollbar-width: thin;
+    scrollbar-color: #cfa68a #fdfaf6;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #cfa68a;
+      border-radius: 8px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #fdfaf6;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #cfa68a, #d4a574, #cfa68a);
+    }
+
+    /* === Close Button === */
+    .menu-modal-close {
+      position: absolute;
+      top: 0.8rem;
+      right: 0.8rem;
+      font-size: 1.2rem;
+      background: linear-gradient(
+        135deg,
+        rgba(207, 166, 138, 0.12),
+        rgba(255, 255, 255, 0.25)
+      );
+      border: 1px solid rgba(207, 166, 138, 0.3);
+      cursor: pointer;
+      color: #b68c6b;
+      transition: all 0.3s ease;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      backdrop-filter: blur(3px);
+
+      &:hover {
+        background: linear-gradient(135deg, #cfa68a, #d4a574);
+        color: #fff;
+        transform: scale(1.1) rotate(90deg);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+
+    /* === Heading === */
+    h2 {
+      font-size: 1.7rem;
+      margin-bottom: 1.2rem;
+      color: #5a3e36;
+      font-weight: 700;
+      text-align: center;
+      background: linear-gradient(135deg, #5a3e36, #7d5a4f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      line-height: 1.7;
+      color: #5a3e36;
+      font-size: 1rem;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      max-width: 95vw;
+      height: 95vh;
+      padding: 1.5rem 1rem;
+      border-radius: 1rem;
+    }
+
+    @media (max-width: 480px) {
+      max-width: 98vw;
+      height: 98vh;
+      padding: 1rem;
+      border-radius: 0.8rem;
+      margin: auto;
+      h2 {
+        font-size: 1.4rem;
+      }
+    }
+  }
+
+  .image-preview-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+
+    .image-preview-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .preview-image {
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: contain;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       }
     }
   }
@@ -1474,6 +1913,37 @@ $z-index-overlay: 2000;
     to {
       transform: translateY(0);
       filter: blur(0);
+    }
+  }
+
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDownFadeIn {
+  from {
+    transform: translateY(-20px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
     }
   }
 }

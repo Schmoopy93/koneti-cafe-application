@@ -396,6 +396,14 @@
       "category": "Kategorija",
       "description": "Opis",
       "image": "Slika",
+      "aspectRatio": "Odnos strana",
+      "free": "Slobodno",
+      "square": "Kvadratno",
+      "standard": "Standardno",
+      "wide": "Široko",
+      "portrait": "Portretno",
+      "vertical": "Vertikalno",
+      "horizontal": "Horizontalno",
       "save": "Sačuvaj",
       "saveChanges": "Sačuvaj izmene",
       "addButton": "Dodaj piće",
@@ -463,7 +471,8 @@
       "currency": "RSD",
       "deleteConfirm": {
         "title": "Potvrda brisanja",
-        "message": "Da li ste sigurni da želite da obrišete piće?",
+        "drinkMessage": "Da li ste sigurni da želite da obrišete ovo piće?",
+        "categoryMessage": "Da li ste sigurni da želite da obrišete ovu kategoriju?",
         "cancel": "Otkaži",
         "delete": "Obriši"
       },
@@ -473,7 +482,14 @@
       "categoriesManagementButton": "Upravljanje Kategorijama",
       "priceRange": "Cenovni opseg",
       "pricePresets": "Cenovni predlozi",
-      "all": "Sve"
+      "all": "Sve",
+      "preview": "Pregled",
+      "tooltips": {
+        "editDrink": "Uredi piće",
+        "deleteDrink": "Obriši piće",
+        "editCategory": "Uredi kategoriju",
+        "deleteCategory": "Obriši kategoriju"
+      }
     },
     "addGalleryImage": {
       "title": "Dodaj novu sliku galerije",

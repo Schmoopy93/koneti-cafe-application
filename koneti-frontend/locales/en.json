@@ -388,6 +388,14 @@
       "category": "Category",
       "description": "Description",
       "image": "Image",
+      "aspectRatio": "Aspect Ratio",
+      "free": "Free",
+      "square": "Square",
+      "standard": "Standard",
+      "wide": "Wide",
+      "portrait": "Portrait",
+      "vertical": "Vertical",
+      "horizontal": "Horizontal",
       "save": "Save",
       "saveChanges": "Save Changes",
       "addButton": "Add Drink",
@@ -455,7 +463,8 @@
       "currency": "RSD",
       "deleteConfirm": {
         "title": "Delete Confirmation",
-        "message": "Are you sure you want to delete the drink?",
+        "drinkMessage": "Are you sure you want to delete this drink?",
+        "categoryMessage": "Are you sure you want to delete this category?",
         "cancel": "Cancel",
         "delete": "Delete"
       },
@@ -465,7 +474,14 @@
       "categoriesManagementButton": "Categories Management",
       "priceRange": "Price Range",
       "pricePresets": "Price Presets",
-      "all": "All"
+      "all": "All",
+      "preview": "Preview",
+      "tooltips": {
+        "editDrink": "Edit drink",
+        "deleteDrink": "Delete drink",
+        "editCategory": "Edit category",
+        "deleteCategory": "Delete category"
+      }
     },
     "addGalleryImage": {
       "title": "Add New Gallery Image",

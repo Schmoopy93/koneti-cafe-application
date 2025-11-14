@@ -49,6 +49,7 @@ const AddDrink: React.FC<AddDrinkProps> = ({
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
+  const [aspectRatio, setAspectRatio] = useState<number | undefined>(4 / 3);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -278,7 +279,7 @@ const AddDrink: React.FC<AddDrinkProps> = ({
                 image={imagePreview || ""}
                 crop={crop}
                 zoom={zoom}
-                aspect={4 / 3}
+                aspect={aspectRatio}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
                 onCropComplete={onCropComplete}
@@ -286,15 +287,39 @@ const AddDrink: React.FC<AddDrinkProps> = ({
             </div>
 
             <div className="cropper-controls">
-              <label>Zoom:</label>
-              <input
-                type="range"
-                min={1}
-                max={3}
-                step={0.01}
-                value={zoom}
-                onChange={(e) => setZoom(Number(e.target.value))}
-              />
+              <div className="aspect-ratio-selector">
+                <label>{t("admin.addDrink.aspectRatio")}:</label>
+                <select
+                  value={aspectRatio}
+                  onChange={(e) => setAspectRatio(Number(e.target.value))}
+                >
+                  <option value={undefined}>{t("admin.addDrink.free")}</option>
+                  <option value={1}>1:1 ({t("admin.addDrink.square")})</option>
+                  <option value={4/3}>4:3 ({t("admin.addDrink.standard")})</option>
+                  <option value={16/9}>16:9 ({t("admin.addDrink.wide")})</option>
+                  <option value={3/4}>3:4 ({t("admin.addDrink.portrait")})</option>
+                  <option value={2/3}>2:3 ({t("admin.addDrink.vertical")})</option>
+                  <option value={5/4}>5:4 ({t("admin.addDrink.horizontal")})</option>
+                  <option value={9/16}>9:16 ({t("admin.addDrink.vertical")})</option>
+                  <option value={3/2}>3:2 ({t("admin.addDrink.horizontal")})</option>
+                  <option value={4/5}>4:5 ({t("admin.addDrink.vertical")})</option>
+                </select>
+              </div>
+
+              <div className="zoom-control">
+                <label>Zoom:</label>
+                <input
+                  type="range"
+                  min={1}
+                  max={3}
+                  step={0.01}
+                  value={zoom}
+                  onChange={(e) => setZoom(Number(e.target.value))}
+                />
+              </div>
+
+
+
               <div className="cropper-buttons">
                 <button
                   type="button"
