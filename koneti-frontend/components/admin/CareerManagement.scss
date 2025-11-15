@@ -551,13 +551,17 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
 
           .status-badge {
             color: white;
-            padding: 0.35rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 14px;
+            font-size: 0.7rem;
             font-weight: 600;
             text-transform: capitalize;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             letter-spacing: 0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 60px;
           }
         }
       }
@@ -610,6 +614,125 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
       .btn-approve { background: $success-color; }
       .btn-reject { background: $warning-color; }
       .btn-delete { background: $danger-color; }
+    }
+  }
+
+  //-----------------------------------------------------------------
+  // Mobile Card Layout (Alternative to table on very small screens)
+  //-----------------------------------------------------------------
+  .applications-cards {
+    display: none;
+    gap: 1rem;
+
+    .application-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: $shadow-soft;
+      border: 1px solid rgba(207, 166, 138, 0.2);
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: $shadow-hover;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.8rem;
+
+        .applicant-name {
+          font-weight: 700;
+          font-size: 1.1rem;
+          color: $text-primary;
+        }
+
+        .status-badge {
+          color: white;
+          padding: 0.25rem 0.6rem;
+          border-radius: 16px;
+          font-size: 0.75rem;
+          font-weight: 600;
+          text-transform: capitalize;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          letter-spacing: 0.3px;
+        }
+      }
+
+      .card-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem 1rem;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+
+        .detail-item {
+          display: flex;
+          flex-direction: column;
+          gap: 0.2rem;
+
+          .detail-label {
+            font-weight: 600;
+            color: $text-secondary;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+
+          .detail-value {
+            color: $text-primary;
+            font-weight: 500;
+            word-break: break-word;
+          }
+        }
+      }
+
+      .card-actions {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+
+        button,
+        a {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.3rem;
+          padding: 0.4rem 0.6rem;
+          border-radius: 6px;
+          color: white;
+          font-size: 0.8rem;
+          font-weight: 600;
+          border: none;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          text-transform: capitalize;
+          letter-spacing: 0.2px;
+
+          svg {
+            font-size: 0.9rem;
+          }
+
+          &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
+        }
+
+        .btn-view { background: $info-color; }
+        .btn-download { background: $secondary-color; }
+        .btn-approve { background: $success-color; }
+        .btn-reject { background: $warning-color; }
+        .btn-delete { background: $danger-color; }
+      }
     }
   }
 
@@ -1197,10 +1320,14 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
         }
       }
 
+      // Switch to card layout on very small screens
       .applications-table-container {
-        .applications-table {
-          min-width: 700px; // Ensure horizontal scroll on very small screens
-        }
+        display: none;
+      }
+
+      .applications-cards {
+        display: flex;
+        flex-direction: column;
       }
 
       .pagination {

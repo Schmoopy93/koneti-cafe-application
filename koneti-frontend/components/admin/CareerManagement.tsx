@@ -360,6 +360,7 @@ const CareerManagement: React.FC = () => {
           </div>
         </div>
 
+        {/* Desktop Table Layout */}
         <div className="applications-table-container">
           <table className="applications-table">
             <thead>
@@ -450,6 +451,101 @@ const CareerManagement: React.FC = () => {
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile Card Layout */}
+        <div className="applications-cards">
+          {currentApplications.map((app) => (
+            <div key={app._id} className="application-card">
+              <div className="card-header">
+                <div className="applicant-name">
+                  {app.firstName} {app.lastName}
+                </div>
+                <span
+                  className="status-badge"
+                  style={{ backgroundColor: getStatusColor(app.status) }}
+                >
+                  {getStatusText(app.status)}
+                </span>
+              </div>
+
+              <div className="card-details">
+                <div className="detail-item">
+                  <div className="detail-label">{t("adminPage.career.position")}</div>
+                  <div className="detail-value">{getPositionDisplayName(app.position)}</div>
+                </div>
+                <div className="detail-item">
+                  <div className="detail-label">{t("adminPage.career.email")}</div>
+                  <div className="detail-value">{app.email}</div>
+                </div>
+                <div className="detail-item">
+                  <div className="detail-label">{t("adminPage.career.phone")}</div>
+                  <div className="detail-value">{app.phone}</div>
+                </div>
+                <div className="detail-item">
+                  <div className="detail-label">{t("adminPage.career.date")}</div>
+                  <div className="detail-value">{new Date(app.createdAt).toLocaleDateString("sr-RS")}</div>
+                </div>
+              </div>
+
+              <div className="card-actions">
+                <button
+                  className="btn-view"
+                  onClick={() => setSelectedApplication(app)}
+                  title={t("adminPage.career.viewTooltip")}
+                >
+                  <FontAwesomeIcon icon={faEye} />
+                  {t("adminPage.career.view")}
+                </button>
+
+                {app.cvUrl && (
+                  <a
+                    href={`${API_URL}/career/${app._id}/download-cv`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-download"
+                    title={t("adminPage.career.downloadTooltip")}
+                  >
+                    <FontAwesomeIcon icon={faDownload} />
+                    {t("adminPage.career.download")}
+                  </a>
+                )}
+
+                {app.status === "pending" && (
+                  <>
+                    <button
+                      className="btn-approve"
+                      onClick={() => updateApplicationStatus(app._id, "reviewed")}
+                      disabled={updatingStatus === app._id}
+                      title={t("adminPage.career.approveTooltip")}
+                    >
+                      <FontAwesomeIcon icon={faCheck} />
+                      {t("adminPage.career.approve")}
+                    </button>
+                    <button
+                      className="btn-reject"
+                      onClick={() => updateApplicationStatus(app._id, "rejected")}
+                      disabled={updatingStatus === app._id}
+                      title={t("adminPage.career.rejectTooltip")}
+                    >
+                      <FontAwesomeIcon icon={faTimes} />
+                      {t("adminPage.career.reject")}
+                    </button>
+                  </>
+                )}
+
+                <button
+                  className="btn-delete"
+                  onClick={() => setShowDeleteConfirm(app)}
+                  disabled={updatingStatus === app._id}
+                  title={t("adminPage.career.deleteTooltip")}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                  {t("adminPage.career.delete")}
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
 
         {filteredApplications.length === 0 && applications.length > 0 && (
