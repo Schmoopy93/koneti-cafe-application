@@ -24,15 +24,17 @@ const AddDrink: React.FC<AddDrinkProps> = ({
 }) => {
   const { t, i18n } = useTranslation();
   const [categories, setCategories] = useState<Category[]>([]);
-  const [formData, setFormData] = useState<
-    Omit<Drink, "image"> & {
-      description?: string;
-      image?: string | File | null;
-    }
-  >({
+  const [formData, setFormData] = useState<{
+    _id: string;
+    name: { sr: string; en: string };
+    price: string;
+    categoryId: string;
+    description?: string;
+    image?: string | File | null;
+  }>({
     _id: "",
-    name: "",
-    price: "" as any,
+    name: { sr: "", en: "" },
+    price: "",
     categoryId: "",
     description: "",
     image: null,
@@ -68,9 +70,13 @@ const AddDrink: React.FC<AddDrinkProps> = ({
     fetchCategories();
 
     if (editData) {
+      const name = typeof editData.name === "object" ? editData.name.sr || editData.name.en || "" : editData.name;
       setFormData({
-        ...editData,
+        _id: editData._id,
+        name: { sr: name, en: "" },
+        price: String(editData.price),
         categoryId: editData.category?._id || editData.categoryId || "",
+        description: editData.description || "",
         image: null,
       });
 
@@ -84,8 +90,13 @@ const AddDrink: React.FC<AddDrinkProps> = ({
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    if (errors[e.target.name]) setErrors({ ...errors, [e.target.name]: "" });
+    const { name, value } = e.target;
+    if (name === 'name') {
+      setFormData({ ...formData, name: { sr: value, en: "" } });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+    if (errors[name]) setErrors({ ...errors, [name]: "" });
   };
 
   // 🔹 Učitavanje slike
@@ -130,7 +141,7 @@ const AddDrink: React.FC<AddDrinkProps> = ({
   // 🔹 Validacija
   const validate = (): Record<string, string> => {
     const newErrors: Record<string, string> = {};
-    if (!formData.name.trim()) newErrors.name = t("admin.addDrink.errors.name");
+    if (!formData.name.sr.trim()) newErrors.name = t("admin.addDrink.errors.name");
     if (!formData.price || Number(formData.price) <= 0)
       newErrors.price = t("admin.addDrink.errors.priceInvalid");
     if (!formData.categoryId) newErrors.categoryId = t("admin.addDrink.errors.category");
@@ -159,7 +170,7 @@ const AddDrink: React.FC<AddDrinkProps> = ({
     setIsSubmitting(true);
     try {
       const payload = new FormData();
-      payload.append("name", formData.name);
+      payload.append("name", JSON.stringify(formData.name));
       payload.append("price", String(formData.price));
       payload.append("category", String(formData.categoryId));
       if (formData.image instanceof File)
@@ -170,8 +181,8 @@ const AddDrink: React.FC<AddDrinkProps> = ({
         : `/drinks`;
       const method = editData ? "PUT" : "POST";
 
-      const res = await apiRequest(endpoint, { 
-        method, 
+      const res = await apiRequest(endpoint, {
+        method,
         body: payload,
         useToken: true
       });
@@ -203,7 +214,7 @@ const AddDrink: React.FC<AddDrinkProps> = ({
           <input
             type="text"
             name="name"
-            value={formData.name}
+            value={formData.name.sr}
             onChange={handleChange}
             placeholder={t("admin.addDrink.namePlaceholder")}
             className={shakeFields.name ? "shake" : ""}

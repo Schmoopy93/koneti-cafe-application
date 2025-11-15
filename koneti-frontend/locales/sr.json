@@ -516,7 +516,9 @@
     },
     "pagination": {
       "prev": "Prethodni",
-      "next": "Sledeći"
+      "next": "Sledeći",
+      "pageLabel": "Stranica",
+      "of": "od"
     },
     "currency": "RSD",
     "viewPDF": "Pogledaj meni",
@@ -526,7 +528,10 @@
     "allCategories": "Sve kategorije",
     "itemsFound": "stavki pronađeno",
     "noArticles": "Nema artikala za prikaz",
-    "noArticlesDesc": "Trenutno nema artikala u ovoj kategoriji ili pokušajte sa drugačijom pretragom."
+    "noArticlesDesc": "Trenutno nema artikala u ovoj kategoriji ili pokušajte sa drugačijom pretragom.",
+    "stats": {
+      "total": "Ukupno"
+    }
   },
   "staffLogin": {
     "title": "Koneti Café",

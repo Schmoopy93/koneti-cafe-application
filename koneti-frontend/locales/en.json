@@ -508,7 +508,9 @@
     },
     "pagination": {
       "prev": "Prev",
-      "next": "Next"
+      "next": "Next",
+      "pageLabel": "Page",
+      "of": "of"
     },
     "currency": "RSD",
     "viewPDF": "View Menu",
@@ -518,7 +520,10 @@
     "allCategories": "All Categories",
     "itemsFound": "items found",
     "noArticles": "No articles to display",
-    "noArticlesDesc": "Currently no articles in this category or try a different search."
+    "noArticlesDesc": "Currently no articles in this category or try a different search.",
+    "stats": {
+      "total": "Total"
+    }
   },
   "staffLogin": {
     "title": "Koneti Café",

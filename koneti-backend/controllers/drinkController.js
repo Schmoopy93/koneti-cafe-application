@@ -6,9 +6,18 @@ import cloudinary from "../middleware/cloudinary.js";
 /* Create a new drink with optional image upload to Cloudinary */
 export const createDrink = async (req, res) => {
   try {
-    const { name, price, category, description } = req.body;
+    let { name, price, category, description } = req.body;
     let imageUrl = "";
     let cloudinaryId = "";
+
+    // Parse name if it's a JSON string
+    if (typeof name === 'string') {
+      try {
+        name = JSON.parse(name);
+      } catch (e) {
+        return res.status(400).json({ message: "Invalid name format." });
+      }
+    }
 
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path, {
@@ -25,7 +34,7 @@ export const createDrink = async (req, res) => {
     }
 
     // Validation
-    if (!name || !price || !category) {
+    if (!name?.sr || !price || !category) {
       return res.status(400).json({ message: "Required fields are missing." });
     }
 
@@ -34,9 +43,17 @@ export const createDrink = async (req, res) => {
       return res.status(400).json({ message: "Category does not exist." });
     }
 
+    // Auto-translate name if English is missing
+    let nameEn = name?.en;
+    if (!nameEn) {
+      const translate = (await import("@iamtraction/google-translate")).default;
+      const translation = await translate(name.sr, { from: "sr", to: "en" });
+      nameEn = translation.text;
+    }
+
     // Save to MongoDB
     const drink = new Drink({
-      name,
+      name: { sr: name.sr, en: nameEn },
       price,
       category,
       description,
@@ -86,7 +103,16 @@ export const updateDrink = async (req, res) => {
       return res.status(404).json({ message: "Drink not found." });
     }
 
-    const { name, price, category, description } = req.body;
+    let { name, price, category, description } = req.body;
+
+    // Parse name if it's a JSON string
+    if (typeof name === 'string') {
+      try {
+        name = JSON.parse(name);
+      } catch (e) {
+        return res.status(400).json({ message: "Invalid name format." });
+      }
+    }
 
     if (category) {
       const categoryExists = await Category.findById(category);
@@ -96,7 +122,15 @@ export const updateDrink = async (req, res) => {
       drink.category = category;
     }
 
-    if (name) drink.name = name;
+    if (name?.sr) {
+      let nameEn = name?.en;
+      if (!nameEn) {
+        const translate = (await import("@iamtraction/google-translate")).default;
+        const translation = await translate(name.sr, { from: "sr", to: "en" });
+        nameEn = translation.text;
+      }
+      drink.name = { sr: name.sr, en: nameEn };
+    }
     if (price) drink.price = price;
     if (description) drink.description = description;
 

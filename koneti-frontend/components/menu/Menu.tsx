@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -27,7 +27,13 @@ import {
   faDownload,
   faEye,
   faTimes,
+  faShareAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFacebook,
+  faInstagram,
+  faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
 import { motion } from "framer-motion";
 import "./Menu.scss";
 
@@ -39,7 +45,7 @@ interface Category {
 
 interface Drink {
   _id: string;
-  name: string;
+  name: string | Record<string, string>;
   price: number;
   image?: string;
   category?: Category;
@@ -80,6 +86,7 @@ const MenuClient: React.FC<MenuClientProps> = ({
     initialCategories[0]?._id || ""
   );
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [lastFilterKey, setLastFilterKey] = useState<string>("");
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -88,7 +95,14 @@ const MenuClient: React.FC<MenuClientProps> = ({
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<{src: string, name: string} | null>(null);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState<boolean>(false);
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
+  const [keyboardFocusIndex, setKeyboardFocusIndex] = useState<number>(-1);
   const itemsPerPage = 8;
+  const topRef = useRef<HTMLDivElement>(null);
+
+  const activeCategory = selectedCategory || categories[0]?._id || "";
+
+
 
   useEffect(() => {
     setMounted(true);
@@ -98,7 +112,14 @@ const MenuClient: React.FC<MenuClientProps> = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const activeCategory = selectedCategory || categories[0]?._id || "";
+  // Reset page when category or filters change
+  useEffect(() => {
+    const currentFilterKey = `${activeCategory}-${searchTerm}-${sortBy}`;
+    if (lastFilterKey !== currentFilterKey) {
+      setCurrentPage(1);
+      setLastFilterKey(currentFilterKey);
+    }
+  }, [activeCategory, searchTerm, sortBy, lastFilterKey]);
   const activeCategoryObj = Array.isArray(categories) 
     ? categories.find((cat) => cat._id === activeCategory)
     : undefined;
@@ -110,11 +131,25 @@ const MenuClient: React.FC<MenuClientProps> = ({
       : cat.name;
   };
 
+  const getDrinkName = (drink: Drink) => {
+    if (!i18n.isInitialized) return "";
+    return typeof drink.name === "object"
+      ? drink.name[i18n.language] ?? drink.name.sr ?? drink.name.en ?? ""
+      : drink.name;
+  };
+
   const filteredDrinks = drinks
     .filter((d) => d.category?._id === activeCategory)
-    .filter((d) => d.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    .filter((d) => {
+      const drinkName = getDrinkName(d);
+      return drinkName.toLowerCase().includes(searchTerm.toLowerCase());
+    })
     .sort((a, b) => {
-      if (sortBy === "name") return a.name.localeCompare(b.name);
+      if (sortBy === "name") {
+        const nameA = getDrinkName(a);
+        const nameB = getDrinkName(b);
+        return nameA.localeCompare(nameB);
+      }
       if (sortBy === "price-low") return a.price - b.price;
       if (sortBy === "price-high") return b.price - a.price;
       return 0;
@@ -127,36 +162,73 @@ const MenuClient: React.FC<MenuClientProps> = ({
     startIndex + itemsPerPage
   );
 
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+    // Scroll to top after state update
+    setTimeout(() => {
+      topRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 0);
+  };
+
+  const goToPrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      // Scroll to top after state update
+      setTimeout(() => {
+        topRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 0);
+    }
+  };
+
+  const goToNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+      // Scroll to top after state update
+      setTimeout(() => {
+        topRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 0);
+    }
+  };
+
   return (
-    <div className="drink-menu-layout">
+    <motion.div
+      className="menu-public-drink-menu-layout"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      ref={topRef}
+    >
       {!isMobile && (
-        <aside className={`sidebar ${collapsed ? "collapsed" : ""}`}>
-          <div className="sidebar-logo">
+        <aside className={`menu-public-sidebar ${collapsed ? "menu-public-collapsed" : ""}`}>
+          {/* Centered Logo */}
+          <div className="menu-public-sidebar-logo">
             <img
               src="/koneti-logo.png"
               alt="Koneti Logo"
-              className="logo-img"
+              className="menu-public-logo-img"
             />
           </div>
+
           <button
-            className="collapse-btn"
+            className="menu-public-collapse-btn"
             onClick={() => setCollapsed(!collapsed)}
           >
             <FontAwesomeIcon
               icon={collapsed ? faChevronRight : faChevronLeft}
             />
           </button>
-          <div className="sidebar-title">
+          <div className="menu-public-sidebar-title">
             {activeCategoryObj
               ? getCategoryName(activeCategoryObj)
               : t("menu.title")}
           </div>
-          <div className="category-list">
+
+          <div className="menu-public-category-list">
             {Array.isArray(categories) && categories.map((cat) => (
               <button
                 key={cat._id}
-                className={`category-btn ${
-                  activeCategory === cat._id ? "active" : ""
+                className={`menu-public-category-btn ${
+                  activeCategory === cat._id ? "menu-public-active" : ""
                 }`}
                 onClick={() => setSelectedCategory(cat._id)}
                 title={getCategoryName(cat)}
@@ -164,11 +236,11 @@ const MenuClient: React.FC<MenuClientProps> = ({
                 {cat.icon && (
                   <FontAwesomeIcon
                     icon={faIconsMap[cat.icon]}
-                    className="icon"
+                    className="menu-public-icon"
                   />
                 )}
                 <span>{getCategoryName(cat)}</span>
-                <span className="category-count">
+                <span className="menu-public-category-count">
                   {drinks.filter(d => d.category?._id === cat._id).length}
                 </span>
               </button>
@@ -179,37 +251,37 @@ const MenuClient: React.FC<MenuClientProps> = ({
 
       <motion.main
         key={activeCategory + currentPage}
-        className="drink-content"
+        className="menu-public-drink-content"
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         {isMobile && (
-          <div className="mobile-category-container">
-            <button 
-              className="category-dropdown-trigger"
+          <div className="menu-public-mobile-category-container">
+            <button
+              className="menu-public-category-dropdown-trigger"
               onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
             >
-              <span className="trigger-icon">
+              <span className="menu-public-trigger-icon">
                 {activeCategoryObj?.icon && (
                   <FontAwesomeIcon icon={faIconsMap[activeCategoryObj.icon]} />
                 )}
               </span>
-              <span className="trigger-text">
+              <span className="menu-public-trigger-text">
                 {activeCategoryObj ? getCategoryName(activeCategoryObj) : t("menu.title")}
               </span>
-              <FontAwesomeIcon 
-                icon={showCategoryDropdown ? faChevronRight : faChevronLeft} 
-                className="trigger-chevron"
+              <FontAwesomeIcon
+                icon={showCategoryDropdown ? faChevronRight : faChevronLeft}
+                className="menu-public-trigger-chevron"
               />
             </button>
-            
-            <div className={`mobile-category-grid ${showCategoryDropdown ? 'show' : ''}`}>
+
+            <div className={`menu-public-mobile-category-grid ${showCategoryDropdown ? 'menu-public-show' : ''}`}>
               {Array.isArray(categories) && categories.map((cat) => (
                 <button
                   key={cat._id}
-                  className={`mobile-category-btn ${
-                    activeCategory === cat._id ? "active" : ""
+                  className={`menu-public-mobile-category-btn ${
+                    activeCategory === cat._id ? "menu-public-active" : ""
                   }`}
                   onClick={() => {
                     setSelectedCategory(cat._id);
@@ -220,7 +292,7 @@ const MenuClient: React.FC<MenuClientProps> = ({
                   {cat.icon && (
                     <FontAwesomeIcon
                       icon={faIconsMap[cat.icon]}
-                      className="icon"
+                      className="menu-public-icon"
                     />
                   )}
                 </button>
@@ -229,33 +301,43 @@ const MenuClient: React.FC<MenuClientProps> = ({
           </div>
         )}
 
-        <h2 className="content-title">
-          <span className="highlight">
-            {activeCategoryObj
-              ? getCategoryName(activeCategoryObj)
-              : t("menu.title")}
-          </span>
-          {filteredDrinks.length > 0 && (
-            <span className="results-count">
-              ({filteredDrinks.length} {t("menu.itemsFound")})
+        <div className="menu-public-content-header">
+          <h2 className="menu-public-content-title">
+            <span className="menu-public-highlight">
+              {activeCategoryObj
+                ? getCategoryName(activeCategoryObj)
+                : t("menu.title")}
             </span>
+          </h2>
+          {filteredDrinks.length > 0 && (
+            <div className="menu-public-stats">
+              <div className="menu-public-stat-item">
+                <span className="menu-public-stat-number">{filteredDrinks.length}</span>
+                <span className="menu-public-stat-label">{t("menu.stats.total")} {activeCategoryObj ? getCategoryName(activeCategoryObj) : t("menu.title")}</span>
+              </div>
+              {totalPages > 1 && (
+                <span className="menu-public-stat">
+                  {t("admin.galleryManagement.page")}: <strong>{currentPage} {t("admin.galleryManagement.of")} {totalPages}</strong>
+                </span>
+              )}
+            </div>
           )}
-        </h2>
+        </div>
 
-        <div className="menu-controls">
-          <div className="search-filter-row">
-            <div className="search-container">
-              <FontAwesomeIcon icon={faSearch} className="search-icon" />
+        <div className="menu-public-menu-controls">
+          <div className="menu-public-search-filter-row">
+            <div className="menu-public-search-container">
+              <FontAwesomeIcon icon={faSearch} className="menu-public-search-icon" />
               <input
                 type="text"
-                className="search-input"
+                className="menu-public-search-input"
                 placeholder={t("menu.searchPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
               {searchTerm && (
-                <button 
-                  className="clear-search"
+                <button
+                  className="menu-public-clear-search"
                   onClick={() => setSearchTerm('')}
                 >
                   <FontAwesomeIcon icon={faTimes} />
@@ -263,10 +345,10 @@ const MenuClient: React.FC<MenuClientProps> = ({
               )}
             </div>
 
-            <div className="filter-container">
-              <FontAwesomeIcon icon={faSort} className="filter-icon" />
+            <div className="menu-public-filter-container">
+              <FontAwesomeIcon icon={faSort} className="menu-public-filter-icon" />
               <select
-                className="filter-dropdown"
+                className="menu-public-filter-dropdown"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
               >
@@ -278,17 +360,17 @@ const MenuClient: React.FC<MenuClientProps> = ({
               </select>
             </div>
           </div>
-          
-          <div className="pdf-menu-container">
-            <button 
-              className="pdf-menu-btn view-pdf"
+
+          <div className="menu-public-pdf-menu-container">
+            <button
+              className="menu-public-pdf-menu-btn menu-public-view-pdf"
               onClick={() => window.open('/Cenovnik.pdf', '_blank')}
             >
               <FontAwesomeIcon icon={faEye} />
               <span>{t("menu.viewPDF")}</span>
             </button>
-            <button 
-              className="pdf-menu-btn download-pdf"
+            <button
+              className="menu-public-pdf-menu-btn menu-public-download-pdf"
               onClick={() => {
                 const link = document.createElement('a');
                 link.href = '/Cenovnik.pdf';
@@ -303,17 +385,17 @@ const MenuClient: React.FC<MenuClientProps> = ({
         </div>
 
         {filteredDrinks.length === 0 ? (
-          <div className="no-results">
-            <div className="no-results-icon">🔍</div>
+          <div className="menu-public-no-results">
+            <div className="menu-public-no-results-icon">🔍</div>
             <h3>{t("menu.noResults")}</h3>
             <p>{t("menu.tryDifferent")}</p>
           </div>
         ) : (
-          <div className="drinks-grid">
+          <div className="menu-public-drinks-grid">
             {currentDrinks.map((drink, index) => (
             <motion.div
               key={drink._id}
-              className="drink-card"
+              className="menu-public-drink-card"
               initial={mounted ? { opacity: 0, y: 40, scale: 0.9 } : false}
               animate={mounted ? { opacity: 1, y: 0, scale: 1 } : {}}
               transition={{
@@ -326,42 +408,94 @@ const MenuClient: React.FC<MenuClientProps> = ({
                 scale: 1.03,
                 transition: { duration: 0.3 }
               }}
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  if (drink.image) {
+                    setSelectedImage({src: drink.image, name: getDrinkName(drink)});
+                    setShowImageModal(true);
+                  }
+                }
+              }}
+              style={{
+                outline: keyboardFocusIndex === index ? '2px solid var(--color-accent-light)' : 'none',
+                outlineOffset: '2px'
+              }}
             >
-              <div className="card-inner">
-                <div className="image-container">
-                  {drink.image ? (
+              <div className="menu-public-card-inner">
+                <div className="menu-public-image-container">
+                  {drink.image && !imageErrors.has(drink._id) ? (
                     <img
                       src={drink.image}
-                      alt={drink.name}
-                      className="drink-img"
+                      alt={`Koneti Cafe - ${getDrinkName(drink)} - ${getCategoryName(drink.category)}`}
+                      className="menu-public-drink-img"
                       loading="lazy"
+                      onError={() => {
+                        setImageErrors(prev => new Set(prev).add(drink._id));
+                      }}
                     />
                   ) : (
-                    <div className="placeholder-image">
+                    <div className="menu-public-placeholder-image">
                       <FontAwesomeIcon icon={faCoffee} />
                     </div>
                   )}
-                  <div className="card-overlay">
-                    <button 
-                      className="view-details"
+                  <div className="menu-public-card-overlay">
+                    <button
+                      className="menu-public-view-details"
                       onClick={() => {
                         if (drink.image) {
-                          setSelectedImage({src: drink.image, name: drink.name});
+                          setSelectedImage({src: drink.image, name: getDrinkName(drink)});
                           setShowImageModal(true);
                         }
                       }}
                     >
                       <FontAwesomeIcon icon={faEye} />
                     </button>
+                    <div className="menu-public-share-buttons">
+                      <button
+                        className="menu-public-share-btn menu-public-facebook"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const url = encodeURIComponent(window.location.href);
+                          const text = encodeURIComponent(`Check out ${getDrinkName(drink)} at Koneti Cafe!`);
+                          window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank');
+                        }}
+                        title="Share on Facebook"
+                      >
+                        <FontAwesomeIcon icon={faFacebook} />
+                      </button>
+                      <button
+                        className="menu-public-share-btn menu-public-instagram"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const url = encodeURIComponent(window.location.href);
+                          const text = encodeURIComponent(`Check out ${getDrinkName(drink)} at Koneti Cafe! ${url}`);
+                          window.open(`https://www.instagram.com/?url=${url}`, '_blank');
+                        }}
+                        title="Share on Instagram"
+                      >
+                        <FontAwesomeIcon icon={faInstagram} />
+                      </button>
+                      <button
+                        className="menu-public-share-btn menu-public-twitter"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const url = encodeURIComponent(window.location.href);
+                          const text = encodeURIComponent(`Check out ${getDrinkName(drink)} at Koneti Cafe!`);
+                          window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+                        }}
+                        title="Share on Twitter"
+                      >
+                        <FontAwesomeIcon icon={faTwitter} />
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <div className="card-content">
-                  <h3>{drink.name}</h3>
-                  <div className="price-container">
-                    <span className="price">
-                      {drink.price} {t("menu.currency")}
-                    </span>
-                  </div>
+                <div className="menu-public-drink-info">
+                  <h4>{getDrinkName(drink)}</h4>
+                  <p>{getCategoryName(drink.category)}</p>
+                  <span className="menu-public-price">{drink.price} RSD</span>
                 </div>
               </div>
             </motion.div>
@@ -370,34 +504,56 @@ const MenuClient: React.FC<MenuClientProps> = ({
         )}
 
         {filteredDrinks.length > itemsPerPage && (
-          <div className="pagination-controls">
-            <button onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}>
-              {t("menu.pagination.prev")}
-            </button>
-            <span>
-              {currentPage} / {totalPages}
-            </span>
-            <button
-              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-            >
-              {t("menu.pagination.next")}
-            </button>
-          </div>
+          <>
+            <div className="menu-public-page-info">
+              <span className="menu-public-page-label">{t("menu.pagination.pageLabel")}:</span>
+              <span className="menu-public-page-current">{currentPage}</span>
+              <span className="menu-public-page-separator">{t("menu.pagination.of")}</span>
+              <span className="menu-public-page-total">{totalPages}</span>
+            </div>
+            <div className="menu-public-pagination">
+              <button
+                className="menu-public-pagination-btn"
+                onClick={goToPrevious}
+                disabled={currentPage === 1}
+              >
+                <FontAwesomeIcon icon={faChevronLeft} />
+              </button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  className={`menu-public-pagination-btn ${currentPage === page ? 'menu-public-active' : ''}`}
+                  onClick={() => goToPage(page)}
+                >
+                  {page}
+                </button>
+              ))}
+
+              <button
+                className="menu-public-pagination-btn"
+                onClick={goToNext}
+                disabled={currentPage === totalPages}
+              >
+                <FontAwesomeIcon icon={faChevronRight} />
+              </button>
+            </div>
+          </>
         )}
       </motion.main>
       
       {showImageModal && selectedImage && (
-        <div className="image-modal-backdrop" onClick={() => setShowImageModal(false)}>
-          <div className="image-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setShowImageModal(false)}>
+        <div className="menu-public-image-modal-backdrop" onClick={() => setShowImageModal(false)}>
+          <div className="menu-public-image-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="menu-public-modal-close" onClick={() => setShowImageModal(false)}>
               <FontAwesomeIcon icon={faTimes} />
             </button>
             <img src={selectedImage.src} alt={selectedImage.name} />
-            <h3>{selectedImage.name}</h3>
+            <h3>{getDrinkName({ name: selectedImage.name } as Drink)}</h3>
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

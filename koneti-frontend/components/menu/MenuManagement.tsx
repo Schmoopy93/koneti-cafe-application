@@ -90,6 +90,7 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [pricePreset, setPricePreset] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [lastFilterKey, setLastFilterKey] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("name");
   const [showImagePreview, setShowImagePreview] = useState<boolean>(false);
@@ -105,6 +106,15 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
   useEffect(() => {
     setPriceRange([minPrice, maxPrice]);
   }, [minPrice, maxPrice]);
+
+  // Reset page when filters change
+  useEffect(() => {
+    const currentFilterKey = `${selectedCategories.join(',')}-${priceRange.join(',')}-${searchTerm}-${sortBy}`;
+    if (lastFilterKey !== currentFilterKey) {
+      setCurrentPage(1);
+      setLastFilterKey(currentFilterKey);
+    }
+  }, [selectedCategories, priceRange, searchTerm, sortBy, lastFilterKey]);
 
   // 🔹 ESC zatvara modal
   useEffect(() => {
@@ -124,6 +134,13 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
     return (
       cat.name[language] ?? cat.name["sr"] ?? Object.values(cat.name)[0] ?? ""
     );
+  };
+
+  const getDrinkName = (drink: Drink) => {
+    if (!i18n.isInitialized) return "";
+    return typeof drink.name === "object"
+      ? drink.name[language] ?? drink.name.sr ?? drink.name.en ?? ""
+      : drink.name;
   };
 
   const deleteDrink = async (id: string) => {
@@ -197,13 +214,18 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
 
       const priceMatch = drink.price >= priceRange[0] && drink.price <= priceRange[1];
 
-      const searchMatch = drink.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      const drinkName = getDrinkName(drink);
+      const searchMatch = drinkName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         getCategoryName(drink.category as Category).toLowerCase().includes(searchTerm.toLowerCase());
 
       return categoryMatch && priceMatch && searchMatch;
     })
     .sort((a, b) => {
-      if (sortBy === "name") return a.name.localeCompare(b.name);
+      if (sortBy === "name") {
+        const nameA = getDrinkName(a);
+        const nameB = getDrinkName(b);
+        return nameA.localeCompare(nameB);
+      }
       if (sortBy === "priceLow") return a.price - b.price;
       if (sortBy === "priceHigh") return b.price - a.price;
       return 0;
@@ -416,7 +438,7 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
                   <>
                     <img
                       src={drink.image}
-                      alt={drink.name}
+                      alt={getDrinkName(drink)}
                       className="drink-img"
                       loading="lazy"
                     />
@@ -432,7 +454,7 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
                 )}
               </div>
               <div className="drink-info">
-                <h4>{drink.name}</h4>
+                <h4>{getDrinkName(drink)}</h4>
                 <p>{getCategoryName(drink.category as Category)}</p>
                 <span className="price">{drink.price} RSD</span>
               </div>
@@ -492,7 +514,7 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
                 : t("admin.menuManagement.deleteConfirm.categoryMessage")
               }{" "}
               {showDeleteConfirm && 'price' in showDeleteConfirm
-                ? showDeleteConfirm.name
+                ? getDrinkName(showDeleteConfirm)
                 : showDeleteConfirm && getCategoryName(showDeleteConfirm as Category)
               }
             </p>

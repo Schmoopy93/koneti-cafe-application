@@ -4,9 +4,8 @@ import mongoose from "mongoose";
 const drinkSchema = new mongoose.Schema(
   {
     name: {
-      type: String,
-      required: true,
-      trim: true,
+      sr: { type: String, required: true, trim: true },
+      en: { type: String, trim: true },
     },
     price: {
       type: String,

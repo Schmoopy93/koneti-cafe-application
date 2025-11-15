@@ -123,6 +123,7 @@ $font-primary: "Poppins", sans-serif;
 // Transitions
 $transition-default: all 0.3s ease;
 $transition-fast: all 0.25s ease;
+$transition-normal: all 0.3s ease;
 $transition-slow: all 0.35s ease;
 $transition-cubic: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 $transition-slide: left 0.5s ease;
@@ -992,6 +993,85 @@ $z-index-overlay: 2000;
     }
   }
 
+  // ===== Styles for menu-public-category-btn in management =====
+  .menu-management .menu-public-category-btn {
+    padding: $spacing-md $spacing-lg;
+    border-radius: $radius-md;
+    border: 1px solid rgba($color-accent-1, 0.22);
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    color: $color-text-primary;
+    font-family: $font-primary;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    .menu-public-icon {
+      font-size: $font-size-xl;
+      color: $color-text-secondary;
+      transition: transform $transition-fast, color $transition-fast;
+    }
+
+    span {
+      transition: opacity $transition-normal, transform $transition-normal;
+    }
+
+    &:hover {
+      background: linear-gradient(135deg, rgba($color-accent-1, 0.14), rgba($color-accent-2, 0.09));
+      border-color: rgba($color-accent-1, 0.38);
+      transform: translateY(-2px);
+
+      .menu-public-icon {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  .menu-management .menu-public-category-btn.active {
+    background: linear-gradient(135deg, $color-accent-1, $color-accent-2, $color-accent-1);
+    box-shadow: 0 0 18px rgba($color-accent-1, 0.6);
+    color: white;
+    border-color: transparent;
+
+    .menu-public-icon {
+      color: white;
+    }
+
+    .menu-public-category-count {
+      background: rgba(255, 255, 255, 0.9);
+      color: $color-accent-1;
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  .menu-management .menu-public-category-count {
+    margin-left: auto;
+    min-width: 20px;
+    padding: 2px 8px;
+    text-align: center;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    background: rgba($color-accent-1, 0.15);
+    color: $color-text-secondary;
+    border-radius: 10px;
+    transition: background $transition-fast;
+
+    .menu-public-category-btn:hover & {
+      background: rgba($color-accent-1, 0.25);
+    }
+  }
+
+  // ===== Styles for price in management =====
+  .menu-management .price {
+    color: $color-accent-1;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+  }
+
   // ===== Responsive Categories Management =====
   @media (max-width: $breakpoint-tablet-portrait) {
     .categories-management {
@@ -1109,6 +1189,7 @@ $z-index-overlay: 2000;
       gap: $spacing-lg;
       position: relative;
       overflow: hidden;
+      min-height: 420px; // Ensures consistent card height
 
       &::before {
         content: "";
