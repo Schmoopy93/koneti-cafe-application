@@ -29,11 +29,7 @@ import {
   faTimes,
   faShareAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faFacebook,
-  faInstagram,
-  faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
+
 import { motion } from "framer-motion";
 import "./Menu.scss";
 
@@ -225,26 +221,31 @@ const MenuClient: React.FC<MenuClientProps> = ({
 
           <div className="menu-public-category-list">
             {Array.isArray(categories) && categories.map((cat) => (
-              <button
-                key={cat._id}
-                className={`menu-public-category-btn ${
-                  activeCategory === cat._id ? "menu-public-active" : ""
-                }`}
-                onClick={() => setSelectedCategory(cat._id)}
-                title={getCategoryName(cat)}
-              >
-                {cat.icon && (
-                  <FontAwesomeIcon
-                    icon={faIconsMap[cat.icon]}
-                    className="menu-public-icon"
-                  />
-                )}
-                <span>{getCategoryName(cat)}</span>
-                <span className="menu-public-category-count">
-                  {drinks.filter(d => d.category?._id === cat._id).length}
-                </span>
-              </button>
-            ))}
+                <motion.button
+                  key={cat._id}
+                  className={`menu-public-category-btn ${
+                    activeCategory === cat._id ? "menu-public-active" : ""
+                  }`}
+                  onClick={() => setSelectedCategory(cat._id)}
+                  title={getCategoryName(cat)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {cat.icon && (
+                    <FontAwesomeIcon
+                      icon={faIconsMap[cat.icon]}
+                      className="menu-public-icon"
+                    />
+                  )}
+                  {!collapsed && <span>{getCategoryName(cat)}</span>}
+                  {!collapsed && (
+                    <span className="menu-public-category-count">
+                      {drinks.filter(d => d.category?._id === cat._id).length}
+                    </span>
+                  )}
+                </motion.button>
+              ))}
           </div>
         </aside>
       )}
@@ -424,7 +425,15 @@ const MenuClient: React.FC<MenuClientProps> = ({
               }}
             >
               <div className="menu-public-card-inner">
-                <div className="menu-public-image-container">
+                <div
+                  className="menu-public-image-container"
+                  onClick={() => {
+                    if (drink.image) {
+                      setSelectedImage({src: drink.image, name: getDrinkName(drink)});
+                      setShowImageModal(true);
+                    }
+                  }}
+                >
                   {drink.image && !imageErrors.has(drink._id) ? (
                     <img
                       src={drink.image}
@@ -443,7 +452,8 @@ const MenuClient: React.FC<MenuClientProps> = ({
                   <div className="menu-public-card-overlay">
                     <button
                       className="menu-public-view-details"
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         if (drink.image) {
                           setSelectedImage({src: drink.image, name: getDrinkName(drink)});
                           setShowImageModal(true);
@@ -452,44 +462,6 @@ const MenuClient: React.FC<MenuClientProps> = ({
                     >
                       <FontAwesomeIcon icon={faEye} />
                     </button>
-                    <div className="menu-public-share-buttons">
-                      <button
-                        className="menu-public-share-btn menu-public-facebook"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          const url = encodeURIComponent(window.location.href);
-                          const text = encodeURIComponent(`Check out ${getDrinkName(drink)} at Koneti Cafe!`);
-                          window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank');
-                        }}
-                        title="Share on Facebook"
-                      >
-                        <FontAwesomeIcon icon={faFacebook} />
-                      </button>
-                      <button
-                        className="menu-public-share-btn menu-public-instagram"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          const url = encodeURIComponent(window.location.href);
-                          const text = encodeURIComponent(`Check out ${getDrinkName(drink)} at Koneti Cafe! ${url}`);
-                          window.open(`https://www.instagram.com/?url=${url}`, '_blank');
-                        }}
-                        title="Share on Instagram"
-                      >
-                        <FontAwesomeIcon icon={faInstagram} />
-                      </button>
-                      <button
-                        className="menu-public-share-btn menu-public-twitter"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          const url = encodeURIComponent(window.location.href);
-                          const text = encodeURIComponent(`Check out ${getDrinkName(drink)} at Koneti Cafe!`);
-                          window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
-                        }}
-                        title="Share on Twitter"
-                      >
-                        <FontAwesomeIcon icon={faTwitter} />
-                      </button>
-                    </div>
                   </div>
                 </div>
                 <div className="menu-public-drink-info">
