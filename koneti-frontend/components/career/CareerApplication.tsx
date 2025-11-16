@@ -216,10 +216,10 @@ const handleSubmit = async (e: React.FormEvent) => {
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       <div className="career-application-container">
-        <div className={`page-header ${isLoaded ? "loaded" : ""}`}>
-          <div className="header-content">
-            <h1 className="career-title">
-              <FontAwesomeIcon icon={faBriefcase} className="title-icon" />
+        <div className={`career-application-page-header ${isLoaded ? "loaded" : ""}`}>
+          <div className="career-application-header-content">
+            <h1 className="career-application-career-title">
+              <FontAwesomeIcon icon={faBriefcase} className="career-application-title-icon" />
               {(() => {
                 const text = t("career.joinTeam");
                 const parts = text.split("Koneti");
