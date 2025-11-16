@@ -205,7 +205,7 @@
 }
 
 // ==================== GLAVNI WRAPPER ====================
-.reservation-wrapper {
+.reservation-form-wrapper {
   font-family: "Poppins", sans-serif;
   padding: var(--spacing-xl) var(--spacing-md);
   background-color: var(--color-bg-primary);
@@ -235,7 +235,7 @@
 }
 
 // ==================== INTRO TEXT ====================
-.intro-text {
+.reservation-form-intro-text {
   margin-bottom: var(--spacing-lg);
   padding: var(--spacing-lg);
   background: linear-gradient(135deg, rgba(207, 166, 138, 0.08), rgba(212, 165, 116, 0.05));
@@ -254,7 +254,7 @@
       margin-bottom: 0;
     }
 
-    .highlight {
+    .reservation-form-highlight {
       background: var(--gradient-primary);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -265,7 +265,7 @@
 }
 
 // ==================== STEP SLIDER ====================
-.step-slider {
+.reservation-form-step-slider {
   margin: var(--spacing-xs) 0;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(253, 250, 246, 0.8));
   border-radius: var(--radius-xl);
@@ -274,7 +274,7 @@
   overflow: hidden;
 }
 
-.slider-indicators {
+.reservation-form-slider-indicators {
   @include flex-center;
   gap: clamp(1rem, 3vw, 2rem);
   padding: var(--spacing-md) var(--spacing-lg);
@@ -286,7 +286,7 @@
     padding: var(--spacing-sm) var(--spacing-md);
   }
 
-  .indicator {
+  .reservation-form-indicator {
     @include flex-center;
     flex-direction: column;
     cursor: default;
@@ -294,35 +294,35 @@
     opacity: 0.6;
     min-width: 60px;
 
-    &.active {
+    &.reservation-form-active {
       opacity: 1;
 
-      .step-number {
+      .reservation-form-step-number {
         background: var(--gradient-primary);
         color: var(--color-white);
         box-shadow: 0 3px 10px rgba(207, 166, 138, 0.3);
       }
 
-      .step-label {
+      .reservation-form-step-label {
         color: var(--color-text-primary);
       }
     }
 
-    &.clickable {
+    &.reservation-form-clickable {
       cursor: pointer;
 
       &:hover {
         opacity: 0.8;
         transform: translateY(-2px);
 
-        .step-number {
+        .reservation-form-step-number {
           background: linear-gradient(135deg, var(--color-primary-lighter), var(--color-primary-lightest));
           box-shadow: 0 2px 8px rgba(207, 166, 138, 0.2);
         }
       }
     }
 
-    .step-number {
+    .reservation-form-step-number {
       width: clamp(28px, 5vw, 32px);
       height: clamp(28px, 5vw, 32px);
       border-radius: var(--radius-full);
@@ -335,7 +335,7 @@
       transition: var(--transition-fast);
     }
 
-    .step-label {
+    .reservation-form-step-label {
       font-size: clamp(0.7rem, 1.2vw, 0.75rem);
       font-weight: 600;
       color: var(--color-text-secondary);
@@ -350,18 +350,18 @@
 }
 
 // ==================== SLIDER CONTAINER ====================
-.slider-container {
+.reservation-form-slider-container {
   width: 100%;
   overflow: hidden;
   position: relative;
   min-height: clamp(350px, 50vh, 400px);
 
-  .slider-content {
+  .reservation-form-slider-content {
     display: flex;
     width: 300%;
     transition: transform var(--transition-smooth);
 
-    .slide {
+    .reservation-form-slide {
       width: 33.333%;
       padding: 0 clamp(0.5rem, 2vw, 1rem);
       box-sizing: border-box;
@@ -371,7 +371,7 @@
 }
 
 // ==================== LABEL COMPONENTS ====================
-.section-label {
+.reservation-form-section-label {
   font-weight: 700;
   margin-bottom: var(--spacing-md);
   display: block;
@@ -394,7 +394,7 @@
   }
 }
 
-label {
+.reservation-form label {
   font-weight: 600;
   margin-bottom: 0.4rem;
   display: block;
@@ -403,9 +403,9 @@ label {
 }
 
 // ==================== FORM INPUTS ====================
-input,
-select,
-textarea {
+.reservation-form input,
+.reservation-form select,
+.reservation-form textarea {
   width: 100%;
   padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(0.8rem, 2vw, 1rem);
   font-size: clamp(0.85rem, 1.5vw, 0.95rem);
@@ -438,8 +438,8 @@ textarea {
 }
 
 // Specijalno za date i time inpute na iOS
-input[type="date"],
-input[type="time"] {
+.reservation-form input[type="date"],
+.reservation-form input[type="time"] {
   position: relative;
   display: block;
 
@@ -468,7 +468,7 @@ input[type="time"] {
   }
 }
 
-select {
+.reservation-form select {
   cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23cfa68a' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -476,14 +476,14 @@ select {
   padding-right: 2.5rem;
 }
 
-textarea {
+.reservation-form textarea {
   min-height: clamp(80px, 15vh, 120px);
   resize: vertical;
   line-height: 1.5;
 }
 
 // ==================== GRID LAYOUTS ====================
-.type-grid {
+.reservation-form-type-grid {
   @include grid-responsive(2);
 
   @media screen and (max-width: 480px) {
@@ -491,7 +491,7 @@ textarea {
   }
 }
 
-.type-grid-two {
+.reservation-form-type-grid-two {
   @include grid-responsive(2);
 
   @media screen and (max-width: 480px) {
@@ -499,7 +499,7 @@ textarea {
   }
 }
 
-.type-grid-three {
+.reservation-form-type-grid-three {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--spacing-md);
@@ -510,7 +510,7 @@ textarea {
     gap: var(--spacing-sm);
   }
 
-  .subtype-card {
+  .reservation-form-subtype-card {
     min-height: 180px;
     padding: var(--spacing-lg);
 
@@ -519,18 +519,18 @@ textarea {
       padding: var(--spacing-md);
     }
 
-    .card-content {
-      .card-title {
+    .reservation-form-card-content {
+      .reservation-form-card-title {
         font-size: clamp(0.95rem, 1.8vw, 1rem);
         margin-bottom: var(--spacing-sm);
       }
 
-      .card-description {
+      .reservation-form-card-description {
         font-size: clamp(0.75rem, 1.5vw, 0.8rem);
         margin-bottom: var(--spacing-md);
       }
 
-      .card-price {
+      .reservation-form-card-price {
         font-size: clamp(0.8rem, 1.5vw, 0.85rem);
         padding: var(--spacing-xs) var(--spacing-sm);
       }
@@ -539,8 +539,8 @@ textarea {
 }
 
 // ==================== CARDS ====================
-.type-card,
-.subtype-card {
+.reservation-form-type-card,
+.reservation-form-subtype-card {
   padding: var(--spacing-lg);
   border-radius: var(--radius-xl);
   background: var(--gradient-bg);
@@ -594,7 +594,7 @@ textarea {
     transform: scale(0.98);
   }
 
-  &.selected {
+  &.reservation-form-selected {
     background: var(--gradient-primary);
     box-shadow: var(--shadow-xl);
     transform: translateY(-4px);
@@ -608,41 +608,41 @@ textarea {
       background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
     }
 
-    .card-content {
+    .reservation-form-card-content {
 
-      .card-title,
-      .card-description {
+      .reservation-form-card-title,
+      .reservation-form-card-description {
         color: var(--color-white);
       }
 
-      .card-price {
+      .reservation-form-card-price {
         background: rgba(255, 255, 255, 0.2);
         color: var(--color-white);
       }
     }
 
-    .type-icon,
-    .info-icon {
+    .reservation-form-type-icon,
+    .reservation-form-info-icon {
       color: var(--color-white);
     }
   }
 
   // Varijante
-  &.silver.selected {
+  &.reservation-form-silver.reservation-form-selected {
     background: linear-gradient(145deg, #c0c0c0, #a8a8a8);
   }
 
-  &.gold.selected {
+  &.reservation-form-gold.reservation-form-selected {
     background: linear-gradient(145deg, #ffd700, #e6c200);
   }
 
-  &.vip.selected {
+  &.reservation-form-vip.reservation-form-selected {
     background: linear-gradient(145deg, #9b59b6, #8e44ad);
   }
 }
 
 // Card Content
-.card-header {
+.reservation-form-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -653,13 +653,13 @@ textarea {
   }
 }
 
-.card-content {
+.reservation-form-card-content {
   flex: 1;
   display: flex;
   flex-direction: column;
   text-align: center;
 
-  .card-title {
+  .reservation-form-card-title {
     font-size: clamp(1rem, 2vw, 1.1rem);
     font-weight: 700;
     color: var(--color-text-primary);
@@ -667,7 +667,7 @@ textarea {
     line-height: 1.3;
   }
 
-  .card-description {
+  .reservation-form-card-description {
     font-size: clamp(0.8rem, 1.5vw, 0.85rem);
     color: var(--color-text-secondary);
     margin: 0 0 0.8rem 0;
@@ -675,7 +675,7 @@ textarea {
     flex: 1;
   }
 
-  .card-price {
+  .reservation-form-card-price {
     font-size: clamp(0.85rem, 1.5vw, 0.9rem);
     font-weight: 700;
     color: var(--color-primary);
@@ -687,25 +687,25 @@ textarea {
 }
 
 // Icons
-.type-icon {
+.reservation-form-type-icon {
   font-size: clamp(1.4rem, 3vw, 1.8rem);
   color: var(--color-primary);
   transition: color var(--transition-fast);
 
-  &.silver {
+  &.reservation-form-silver {
     color: #c0c0c0;
   }
 
-  &.gold {
+  &.reservation-form-gold {
     color: #ffd700;
   }
 
-  &.vip {
+  &.reservation-form-vip {
     color: #9b59b6;
   }
 }
 
-.info-icon {
+.reservation-form-info-icon {
   color: var(--color-primary);
   cursor: pointer;
   font-size: clamp(1rem, 2vw, 1.1rem);
@@ -751,8 +751,8 @@ textarea {
   }
 }
 
-.type-card.selected .info-icon,
-.subtype-card.selected .info-icon {
+.reservation-form-type-card.reservation-form-selected .reservation-form-info-icon,
+.reservation-form-subtype-card.reservation-form-selected .reservation-form-info-icon {
   background: rgba(207, 166, 138, 0.2);
   border-color: rgba(207, 166, 138, 0.6);
 
@@ -763,14 +763,14 @@ textarea {
 }
 
 // ==================== EVENT FORM ====================
-.event-form {
+.reservation-form-event-form {
   display: flex;
   flex-direction: column;
   gap: clamp(0.8rem, 2vw, 1.2rem);
 }
 
 // ==================== ERROR HANDLING ====================
-.error {
+.reservation-form-error {
   color: var(--color-error);
   font-size: clamp(0.8rem, 1.5vw, 0.85rem);
   margin-top: var(--spacing-xs);
@@ -778,13 +778,13 @@ textarea {
   display: block;
 }
 
-.shake {
+.reservation-form-shake {
   animation: shake var(--transition-fast) ease-in-out;
   border-color: var(--color-error);
 }
 
 // ==================== SUBMIT BUTTON ====================
-.reservation-form .btn-submit {
+.reservation-form .reservation-form-btn-submit {
   padding: clamp(0.7rem, 1.5vw, 0.9rem) var(--spacing-xl);
   font-size: clamp(0.9rem, 1.8vw, 1rem);
   font-weight: 600;
@@ -874,7 +874,7 @@ textarea {
     background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-light) 25%, var(--color-primary-lighter) 50%, var(--color-primary-light) 75%, var(--color-primary) 100%);
   }
 
-  .close-btn {
+  .reservation-form-close-btn {
     position: absolute;
     top: 1.2rem;
     right: 1.2rem;
@@ -982,7 +982,7 @@ textarea {
     }
   }
 
-  .price {
+  .reservation-form-price {
     background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 30%, var(--color-primary-lighter) 70%, var(--color-primary-lightest) 100%);
     color: var(--color-white);
     padding: var(--spacing-xl) var(--spacing-xl);
@@ -1027,7 +1027,7 @@ textarea {
     max-width: 95%;
     padding: var(--spacing-lg);
 
-    .close-btn {
+    .reservation-form-close-btn {
       top: 0.8rem;
       right: 0.8rem;
       width: 30px;
@@ -1044,7 +1044,7 @@ textarea {
       font-size: 0.9rem;
     }
 
-    .price {
+    .reservation-form-price {
       font-size: clamp(1rem, 3vw, 1.3rem);
       padding: 0.8rem var(--spacing-md);
       margin: var(--spacing-xl) 0;
