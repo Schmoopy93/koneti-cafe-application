@@ -350,7 +350,7 @@ const AdminPage: React.FC = () => {
               <p>{t("adminPage.actions.jobApplicationsDesc")}</p>
             </motion.div>
 
-            {/* <motion.div
+            <motion.div
               className="action-card gallery-card"
               onClick={() => {
                 const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
@@ -365,7 +365,7 @@ const AdminPage: React.FC = () => {
               </div>
               <h3>{t("adminPage.actions.gallery")}</h3>
               <p>{t("adminPage.actions.galleryDesc")}</p>
-            </motion.div> */}
+            </motion.div>
           </motion.div>
 
 
