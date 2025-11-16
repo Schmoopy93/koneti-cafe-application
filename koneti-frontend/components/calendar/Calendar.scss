@@ -1,580 +1,591 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
-/* =========================================
-   🎨 VARIJABLE
-========================================= */
+//-----------------------------------------------------------------
+// Variables
+//-----------------------------------------------------------------
 $primary-color: #cfa68a;
 $secondary-color: #d4a574;
-$text-dark: #3d2f28;
-$text-muted: #7a6b63;
-$bg-light: rgba(255, 255, 255, 0.95);
-$shadow: rgba(61, 47, 40, 0.08);
-$border: rgba(207, 166, 138, 0.2);
+$accent-color: #b8935f;
+$text-primary: #3d2f28;
+$text-secondary: #5a3e36;
+$success-color: #27ae60;
+$warning-color: #f39c12;
+$danger-color: #e74c3c;
 
-/* =========================================
-   🎯 MIXINS
-========================================= */
+$transition-smooth: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+$transition-fast: 0.25s ease;
+$shadow-light: 0 4px 12px rgba(207, 166, 138, 0.15);
+$shadow-medium: 0 10px 30px rgba(207, 166, 138, 0.25);
+$shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
+
+//-----------------------------------------------------------------
+// Mixins
+//-----------------------------------------------------------------
 @mixin flex-center {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-@mixin chart-card-base {
-  background: linear-gradient(145deg, #ffffff 0%, #fdfaf6 30%, #f8f5f1 70%, #f0ebe4 100%);
-  border-radius: 25px;
-  border: 2px solid $border;
-  box-shadow: 0 15px 50px rgba(207, 166, 138, 0.15);
-  backdrop-filter: blur(20px);
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin button-base {
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: all $transition-fast;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Poppins', sans-serif;
   position: relative;
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-@mixin chart-card-hover {
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 60px rgba(207, 166, 138, 0.25);
-    border-color: rgba(207, 166, 138, 0.4);
-
-    &::before {
-      opacity: 1;
-    }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  
+  &:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-medium;
+  }
+  
+  &:not(:disabled):active {
+    transform: translateY(0);
   }
 }
 
+@mixin glass-effect {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(207, 166, 138, 0.2);
+}
+
+//-----------------------------------------------------------------
+// Animations
+//-----------------------------------------------------------------
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+//-----------------------------------------------------------------
+// Main Calendar Container
+//-----------------------------------------------------------------
 .calendar {
   min-height: 100vh;
-  background: linear-gradient(135deg, #fdfaf6 0%, #f8f5f1 50%, #f0ebe5 100%);
-  font-family: "Poppins", sans-serif;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="0.5" fill="%23cfa68a" opacity="0.1"/><circle cx="80" cy="40" r="0.3" fill="%23d4a574" opacity="0.08"/><circle cx="40" cy="80" r="0.4" fill="%23cfa68a" opacity="0.06"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  >* {
-    position: relative;
-    z-index: 2;
-  }
-
-  .calendar-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 2rem;
-    background: linear-gradient(145deg, #ffffff 0%, #fdfaf6 30%, #f8f5f1 70%, #f0ebe4 100%);
-    border-bottom: 2px solid rgba(207, 166, 138, 0.2);
-    box-shadow: 0 8px 30px rgba(207, 166, 138, 0.1);
-    backdrop-filter: blur(20px);
-
-    .back-button {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(253, 250, 246, 0.8));
-      border: 2px solid rgba(207, 166, 138, 0.3);
-      border-radius: 15px;
-      color: $text-dark;
-      font-family: "Poppins", sans-serif;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(207, 166, 138, 0.1);
-
-      &:hover {
-        background: linear-gradient(145deg, rgba(207, 166, 138, 0.1), rgba(212, 165, 116, 0.05));
-        border-color: $primary-color;
-        box-shadow: 0 6px 20px rgba(207, 166, 138, 0.2);
-        transform: translateY(-2px);
-      }
-
-      svg {
-        color: $primary-color;
-      }
-    }
-
-    .calendar-title {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      text-align: center;
-
-      svg {
-        font-size: 2rem;
-        color: $primary-color;
-        filter: drop-shadow(0 2px 4px rgba(207, 166, 138, 0.3));
-      }
-
-      h1 {
-        font-family: "Playfair Display", serif;
-        font-size: 2rem;
-        font-weight: 700;
-        color: $text-dark;
-        margin: 0;
-        text-shadow: 0 2px 4px rgba(207, 166, 138, 0.2);
-      }
-    }
-
-    .calendar-stats {
-      .stat-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 0.75rem 1.5rem;
-        background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(253, 250, 246, 0.8));
-        border: 2px solid rgba(207, 166, 138, 0.3);
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(207, 166, 138, 0.1);
-
-        .stat-number {
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: $primary-color;
-          font-family: "Playfair Display", serif;
-        }
-
-        .stat-label {
-          font-size: 0.85rem;
-          color: $text-muted;
-          font-weight: 600;
-          margin-top: 0.25rem;
-        }
-      }
-    }
-  }
-
-  .calendar-content {
-    flex: 1;
-    @include chart-card-base;
-    padding: 0;
-    margin: 2rem;
-    min-height: 0;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, $primary-color, $secondary-color, #e6c79a);
-      opacity: 0.8;
-    }
-
-    .calendar-wrapper {
-      position: relative;
-      z-index: 1;
-      height: 100%;
-      min-height: 600px;
-    }
-  }
-
-  // Modal styles
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 2rem;
-  }
-
-  .event-details-panel {
-    background: linear-gradient(145deg, #ffffff, #fdfaf6);
-    border-radius: 15px;
-    padding: 2rem;
-    max-width: 500px;
-    width: 100%;
-    max-height: 85vh;
-    overflow-y: auto;
-    position: relative;
-    box-shadow: 0 15px 50px rgba(207, 166, 138, 0.25);
-    border: 1px solid rgba(207, 166, 138, 0.3);
-    color: $text-dark;
-
-    &.basic-package {
-      border-top: 4px solid #cfa68a;
-    }
-
-    &.premium-package {
-      border-top: 4px solid #d4a574;
-    }
-
-    &.vip-package {
-      border-top: 4px solid #b8935f;
-    }
-
-    .event-header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid rgba(207, 166, 138, 0.2);
-
-      .event-icon {
-        font-size: 1.5rem;
-        color: $primary-color;
-      }
-
-      h4 {
-        font-family: "Playfair Display", serif;
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: $text-dark;
-        margin: 0;
-        flex: 1;
-      }
-
-      .close-event {
-        background: linear-gradient(135deg,
-            rgba(207, 166, 138, 0.15),
-            rgba(212, 165, 116, 0.1));
-        border: 2px solid rgba(207, 166, 138, 0.4);
-        color: var(--color-primary);
-        cursor: pointer;
-        font-size: 1.4rem;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        @include flex-center;
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
-        z-index: 9999;
-        pointer-events: all;
-
-        &:hover {
-          background: linear-gradient(135deg, #e7d0b3, #cfa68a); // ✨ nova boja
-          color: #fff;
-          transform: scale(1.1) rotate(90deg);
-          box-shadow: 0 8px 25px rgba(207, 166, 138, 0.4);
-        }
-      }
-
-    }
-
-    .event-body {
-      .event-info {
-        margin-bottom: 1.5rem;
-
-        p {
-          margin-bottom: 0.75rem;
-          font-family: "Poppins", sans-serif;
-          font-size: 0.95rem;
-          line-height: 1.5;
-          color: $text-dark;
-
-          strong {
-            color: $primary-color;
-            font-weight: 600;
-          }
-
-          &.event-status {
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
-            font-weight: 600;
-            text-align: center;
-
-            &.pending {
-              background: rgba(243, 156, 18, 0.1);
-              color: #f39c12;
-              border: 1px solid rgba(243, 156, 18, 0.3);
-            }
-
-            &.approved {
-              background: rgba(39, 174, 96, 0.1);
-              color: #27ae60;
-              border: 1px solid rgba(39, 174, 96, 0.3);
-            }
-
-            &.rejected {
-              background: rgba(231, 76, 60, 0.1);
-              color: #e74c3c;
-              border: 1px solid rgba(231, 76, 60, 0.3);
-            }
-          }
-        }
-      }
-
-      .event-actions {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-
-        button {
-          flex: 1;
-          min-width: 120px;
-          padding: 0.75rem 1rem;
-          border: none;
-          border-radius: 10px;
-          font-family: "Poppins", sans-serif;
-          font-weight: 600;
-          font-size: 0.9rem;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.5rem;
-
-          &:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-          }
-
-          // ✅ ZELENO dugme za potvrdu (ostaje isto)
-          &.btn-approve {
-            background: linear-gradient(145deg, #27ae60, #229954);
-            color: white;
-
-            &:hover:not(:disabled) {
-              background: linear-gradient(145deg, #229954, #1e8449);
-              transform: translateY(-2px);
-              box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
-            }
-          }
-
-          // ⚪ Bež / zlatno dugme za otkazivanje (više nije crveno)
-          &.btn-reject {
-            background: linear-gradient(145deg, #d7c0a3, #cfa68a);
-            color: #3d2b1f;
-
-            &:hover:not(:disabled) {
-              background: linear-gradient(145deg, #cfa68a, #b98d6c);
-              transform: translateY(-2px);
-              box-shadow: 0 4px 15px rgba(207, 166, 138, 0.4);
-            }
-          }
-
-          // 🟥 Crveno dugme za brisanje
-          &.btn-delete {
-            background: linear-gradient(145deg, #e74c3c, #c0392b);
-            color: white;
-
-            &:hover:not(:disabled) {
-              background: linear-gradient(145deg, #c0392b, #a93226);
-              transform: translateY(-2px);
-              box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-            }
-          }
-        }
-      }
-    }
-  }
-
-
-  .delete-confirm-popup {
-    background: linear-gradient(145deg, #ffffff 0%, #fdfaf6 100%);
-    border-radius: 15px;
-    padding: 2rem;
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 15px 50px rgba(207, 166, 138, 0.3);
-    border: 2px solid rgba(231, 76, 60, 0.3);
-
-    h3 {
-      font-family: "Playfair Display", serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: $text-dark;
-      margin-bottom: 1rem;
-    }
-
-    p {
-      font-family: "Poppins", sans-serif;
-      font-size: 0.95rem;
-      color: $text-muted;
-      margin-bottom: 1.5rem;
-      line-height: 1.5;
-    }
-
-    .confirm-actions {
-      display: flex;
-      gap: 1rem;
-
-      button {
-        flex: 1;
-        padding: 0.75rem 1rem;
-        border: none;
-        border-radius: 10px;
-        font-family: "Poppins", sans-serif;
-        font-weight: 600;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-
-        &.btn-cancel {
-          background: linear-gradient(145deg, #95a5a6, #7f8c8d);
-          color: white;
-
-          &:hover {
-            background: linear-gradient(145deg, #7f8c8d, #707b7c);
-            transform: translateY(-2px);
-          }
-        }
-
-        &.btn-confirm {
-          background: linear-gradient(145deg, #e74c3c, #c0392b);
-          color: white;
-
-          &:hover:not(:disabled) {
-            background: linear-gradient(145deg, #c0392b, #a93226);
-            transform: translateY(-2px);
-          }
-        }
-
-        &:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-      }
-    }
-  }
-
-  // Responsive design
-  @media (max-width: 1024px) {
-    .calendar-header {
-      flex-direction: column;
-      text-align: center;
-      gap: 1.5rem;
-      padding: 1.5rem;
-
-      .calendar-title {
-        h1 {
-          font-size: 1.8rem;
-        }
-
-        svg {
-          font-size: 1.5rem;
-        }
-      }
-
-      .back-button {
-        width: 100%;
-        justify-content: center;
-      }
-    }
-
-    .calendar-content {
-      margin: 1rem;
-    }
-  }
-
+  background: linear-gradient(145deg, #fdfaf6 0%, #f8f5f1 50%, #f0ebe4 100%);
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
+  
   @media (max-width: 768px) {
-    min-height: 100vh;
-    padding: 0;
+    padding: 1rem;
+  }
+}
 
-    .calendar-header {
+//-----------------------------------------------------------------
+// Calendar Header
+//-----------------------------------------------------------------
+.calendar-header {
+  @include flex-between;
+  margin-bottom: 2rem;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  // Back Button
+  .back-button {
+    @include button-base;
+    background: linear-gradient(135deg, $primary-color, $secondary-color);
+    color: white;
+    box-shadow: $shadow-light;
+    
+    svg {
+      transition: transform $transition-fast;
+    }
+    
+    &:hover:not(:disabled) svg {
+      transform: translateX(-4px);
+    }
+    
+    @media (max-width: 768px) {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  
+  // Calendar Title
+  .calendar-title {
+    @include flex-center;
+    gap: 1rem;
+    flex: 1;
+    
+    svg {
+      font-size: 2rem;
+      color: $primary-color;
+      filter: drop-shadow(0 2px 4px rgba(207, 166, 138, 0.3));
+    }
+    
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, $text-secondary, $primary-color);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+      
+      @media (max-width: 768px) {
+        font-size: 1.8rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      order: -1;
+      justify-content: center;
+    }
+  }
+  
+  // Calendar Stats
+  .calendar-stats {
+    @include glass-effect;
+    padding: 1rem 1.5rem;
+    border-radius: 15px;
+    box-shadow: $shadow-light;
+    
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      
+      .stat-number {
+        font-size: 2rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, $primary-color, $secondary-color);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1;
+      }
+      
+      .stat-label {
+        font-size: 0.85rem;
+        color: $text-secondary;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      width: 100%;
+      padding: 1.2rem;
+    }
+  }
+}
+
+//-----------------------------------------------------------------
+// Calendar Content
+//-----------------------------------------------------------------
+.calendar-content {
+  animation: slideUp 0.6s ease-out;
+  
+  // Minimal wrapper - samo kontejner bez stilova
+  // Svi vizuelni stilovi su u .fullcalendar-wrapper
+  .calendar-wrapper {
+    // Prazan wrapper - FullCalendarComponent ima sve stilove
+  }
+}
+
+//-----------------------------------------------------------------
+// Event Details Modal
+//-----------------------------------------------------------------
+.event-details-modal {
+  position: relative;
+  
+  // Package type variants
+  &.basic-package {
+    border-top: 4px solid $primary-color;
+    
+    .event-header svg {
+      color: $primary-color;
+    }
+  }
+  
+  &.premium-package {
+    border-top: 4px solid $secondary-color;
+    
+    .event-header svg {
+      color: $secondary-color;
+    }
+  }
+  
+  &.vip-package {
+    border-top: 4px solid $accent-color;
+    
+    .event-header svg {
+      color: $accent-color;
+    }
+  }
+  
+  // Event Header
+  .event-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid rgba(207, 166, 138, 0.15);
+    margin-bottom: 1.5rem;
+    
+    .event-icon {
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, rgba(207, 166, 138, 0.1), rgba(212, 165, 116, 0.1));
       padding: 1rem;
-
-      .calendar-title {
-        h1 {
-          font-size: 1.5rem;
-        }
-
-        svg {
-          font-size: 1.2rem;
-        }
-      }
-
-      .back-button {
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
-      }
-
-      .calendar-stats {
-        .stat-item {
-          padding: 0.6rem 1rem;
-
-          .stat-number {
-            font-size: 1.2rem;
-          }
-
-          .stat-label {
-            font-size: 0.8rem;
-          }
-        }
+      border-radius: 15px;
+      border: 1px solid rgba(207, 166, 138, 0.2);
+    }
+    
+    h4 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: $text-secondary;
+      margin: 0;
+      flex: 1;
+      
+      @media (max-width: 480px) {
+        font-size: 1.3rem;
       }
     }
-
-    .calendar-content {
-      margin: 0.5rem;
-      border-radius: 20px;
-    }
-
-    .modal-overlay {
-      padding: 1rem;
-    }
-
-    .event-details-panel {
-      margin: 1rem;
-      padding: 1.5rem;
-
-      .event-header {
-        h4 {
-          font-size: 1.2rem;
+  }
+  
+  // Event Body
+  .event-body {
+    .event-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      margin-bottom: 2rem;
+      
+      p {
+        display: flex;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+        color: $text-primary;
+        margin: 0;
+        padding: 0.8rem;
+        background: rgba(207, 166, 138, 0.05);
+        border-radius: 8px;
+        border-left: 3px solid $primary-color;
+        transition: all $transition-fast;
+        
+        &:hover {
+          background: rgba(207, 166, 138, 0.1);
+          transform: translateX(4px);
         }
-      }
-
-      .event-body {
-        .event-info {
-          p {
-            font-size: 0.9rem;
-          }
-        }
-
-        .event-actions {
-          flex-direction: column;
-
-          button {
+        
+        strong {
+          font-weight: 600;
+          color: $text-secondary;
+          min-width: 100px;
+          
+          @media (max-width: 480px) {
             min-width: auto;
           }
         }
+        
+        &.event-status {
+          font-weight: 600;
+          text-transform: capitalize;
+          border-left-width: 4px;
+          
+          &.pending {
+            border-left-color: $warning-color;
+            background: rgba(243, 156, 18, 0.08);
+            color: darken($warning-color, 10%);
+          }
+          
+          &.approved {
+            border-left-color: $success-color;
+            background: rgba(39, 174, 96, 0.08);
+            color: darken($success-color, 10%);
+          }
+          
+          &.rejected {
+            border-left-color: $danger-color;
+            background: rgba(231, 76, 60, 0.08);
+            color: darken($danger-color, 10%);
+          }
+        }
+      }
+    }
+    
+    // Event Actions
+    .event-actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      padding-top: 1.5rem;
+      border-top: 2px solid rgba(207, 166, 138, 0.15);
+      
+      button {
+        @include button-base;
+        flex: 1;
+        min-width: 120px;
+        justify-content: center;
+        
+        @media (max-width: 480px) {
+          flex: 1 1 100%;
+        }
+      }
+      
+      .btn-approve {
+        background: linear-gradient(135deg, $success-color, lighten($success-color, 10%));
+        color: white;
+        
+        &:hover:not(:disabled) {
+          box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+      }
+      
+      .btn-reject {
+        background: linear-gradient(135deg, $danger-color, lighten($danger-color, 10%));
+        color: white;
+        
+        &:hover:not(:disabled) {
+          box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+      }
+      
+      .btn-delete {
+        background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        color: white;
+        
+        &:hover:not(:disabled) {
+          background: linear-gradient(135deg, $danger-color, darken($danger-color, 5%));
+          box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
       }
     }
   }
+}
 
+//-----------------------------------------------------------------
+// Delete Confirmation Popup
+//-----------------------------------------------------------------
+.blur-backdrop {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.delete-confirm-popup {
+  @include glass-effect;
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+  box-shadow: $shadow-heavy;
+  border: 2px solid rgba(207, 166, 138, 0.3);
+  animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  h3 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: $text-secondary;
+    margin: 0 0 1rem 0;
+    background: linear-gradient(135deg, $text-secondary, $primary-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  p {
+    font-size: 1rem;
+    color: $text-primary;
+    margin: 0 0 2rem 0;
+    line-height: 1.6;
+  }
+  
+  .confirm-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    
+    button {
+      @include button-base;
+      min-width: 120px;
+      justify-content: center;
+    }
+    
+    .btn-cancel {
+      background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+      color: $text-secondary;
+      
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, #bdc3c7, #95a5a6);
+      }
+    }
+    
+    .btn-confirm {
+      background: linear-gradient(135deg, $danger-color, darken($danger-color, 8%));
+      color: white;
+      
+      &:hover:not(:disabled) {
+        box-shadow: 0 8px 25px rgba(231, 76, 60, 0.5);
+      }
+    }
+    
+    @media (max-width: 480px) {
+      flex-direction: column;
+      
+      button {
+        width: 100%;
+      }
+    }
+  }
+  
   @media (max-width: 480px) {
-    .calendar-header {
-      padding: 0.5rem;
+    padding: 2rem 1.5rem;
+    
+    h3 {
+      font-size: 1.4rem;
+    }
+    
+    p {
+      font-size: 0.9rem;
+    }
+  }
+}
 
-      .calendar-title {
-        h1 {
-          font-size: 1.3rem;
-        }
+//-----------------------------------------------------------------
+// Loading States
+//-----------------------------------------------------------------
+.calendar-loading {
+  @include flex-center;
+  min-height: 60vh;
+  
+  .spinner {
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+}
 
-        svg {
-          font-size: 1rem;
-        }
-      }
+//-----------------------------------------------------------------
+// Responsive Breakpoints
+//-----------------------------------------------------------------
+@media (max-width: 1200px) {
+  .calendar {
+    padding: 1.5rem;
+  }
+  
+  .calendar-header {
+    gap: 1rem;
+  }
+}
 
-      .back-button {
-        padding: 0.5rem 0.8rem;
-        font-size: 0.85rem;
+@media (max-width: 768px) {
+  .calendar-header {
+    .calendar-title h1 {
+      font-size: 1.6rem;
+    }
+    
+    .calendar-stats .stat-item {
+      .stat-number {
+        font-size: 1.6rem;
       }
     }
+  }
+}
 
-    .calendar-content {
-      margin: 0;
-      border-radius: 15px;
+@media (max-width: 480px) {
+  .calendar {
+    padding: 0.8rem;
+  }
+  
+  .calendar-header {
+    gap: 0.8rem;
+    
+    .back-button {
+      font-size: 0.9rem;
+      padding: 0.7rem 1.2rem;
     }
+    
+    .calendar-title {
+      svg {
+        font-size: 1.5rem;
+      }
+      
+      h1 {
+        font-size: 1.4rem;
+      }
+    }
+  }
+  
+  .event-details-modal {
+    .event-header {
+      .event-icon {
+        font-size: 2rem;
+        padding: 0.8rem;
+      }
+    }
+    
+    .event-body .event-info p {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.3rem;
+    }
+  }
+}
 
-    .event-details-panel {
-      padding: 1rem;
+//-----------------------------------------------------------------
+// Print Styles
+//-----------------------------------------------------------------
+@media print {
+  .calendar {
+    background: white;
+    
+    .back-button,
+    .calendar-stats,
+    .event-actions {
+      display: none;
     }
   }
 }

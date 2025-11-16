@@ -3,26 +3,41 @@
     "home": "Home",
     "menu": "Menu",
     "reservation": "Reservations",
-    "gallery": "Gallery",
+    "about": "About Us",
     "admin": "Administration",
     "career": "Career"
   },
   "gallery": {
-    "loading": "Loading gallery...",
-    "subtitle": "Explore our moments and memories",
-    "noImages": "No images",
-    "noImagesDesc": "Gallery is currently empty. Check back later for new photos.",
-    "view": "View",
-    "imageDeleted": "Image deleted successfully",
-    "deleteError": "Error deleting image",
-    "deleting": "Deleting...",
-    "imageDetails": "Image Details",
-    "description": "Description",
-    "noDescription": "No description",
-    "createdAt": "Created at",
-    "totalImages": "Total images",
-    "page": "Page",
-    "of": "of"
+    "title": "Gallery",
+    "subtitle": "A glimpse into the world of Koneti Cafe",
+    "loading": "Loading...",
+    "noImages": "No images available at the moment",
+    "about": {
+      "title": "About Us",
+      "subtitle": "Discover the story behind Caffe bar Koneti",
+      "sectionTitle": "Our Story",
+      "intro1": "If you are looking for a place where great atmosphere, the best fresh juices, and top-notch service come together, welcome to ",
+      "intro1_highlight": "Caffe bar Koneti.",
+      "intro2": " Our cafe opened in 2022 and since then we have become a recognizable gathering place for lovers of quality drinks and pleasant ambiance in Novi Sad.",
+      "intro3": "Koneti is a cafe where you will experience a blend of modern interior and the warmth of a homely atmosphere. That's why many recognize us as the ",
+      "intro3_highlight": "best caffe bar and cafe in Novi Sad,",
+      "intro3_rest": " where every detail – from drink selection to music – contributes to making you feel relaxed and satisfied.",
+      "mission": "Whether you come for morning coffee, afternoon refreshment, or evening gathering, quality and good mood always await you here.",
+      "features": {
+        "quality": {
+          "title": "Premium Quality",
+          "description": "The best fresh juices in town and a wide selection of hot and cold beverages."
+        },
+        "passion": {
+          "title": "Real Energy",
+          "description": "Good music and friendly staff create the perfect atmosphere for enjoyment."
+        },
+        "community": {
+          "title": "Your Favorite Place",
+          "description": "A place you'll gladly return to – because here you always get more than just an outing."
+        }
+      }
+    }
   },
   "home": {
     "reservation": {

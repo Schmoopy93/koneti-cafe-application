@@ -1,0 +1,1139 @@
+@use "sass:color";
+
+// =========================
+// VARIABLES
+// =========================
+$color-primary: #cfa68a;
+$color-primary-light: #d4a574;
+$color-primary-lighter: #e6c79a;
+$color-primary-lightest: #f2ddb8;
+$color-secondary: #d4a574;
+$color-accent: #e6c79a;
+$color-text-dark: #5a3e36;
+$color-text-secondary: #8b6355;
+$color-text-muted: #a08a7a;
+$color-white: #fff;
+$color-bg-light: #f5e6d3;
+$color-bg-lighter: #f8f0e6;
+$color-bg-primary: #fdfaf6;
+$color-bg-secondary: #f8f5f1;
+$color-bg-tertiary: #f0ebe4;
+$color-border: #e9d9c6;
+$color-error: #d9534f;
+$color-success: #28a745;
+$color-focus: #b89068;
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 12px;
+$spacing-lg: 16px;
+$spacing-xl: 24px;
+$spacing-2xl: 32px;
+$spacing-3xl: 48px;
+$spacing-4xl: 64px;
+$spacing-5xl: 80px;
+
+// Border radius
+$radius-sm: 6px;
+$radius-md: 8px;
+$radius-lg: 12px;
+$radius-xl: 16px;
+$radius-2xl: 20px;
+$radius-3xl: 24px;
+$radius-full: 50%;
+
+// Transitions
+$transition-fast: 0.2s ease;
+$transition-base: 0.3s ease;
+$transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// Shadows
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 12px rgba(90, 62, 54, 0.2);
+$shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.15);
+$shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
+$shadow-2xl: 0 20px 60px rgba(0, 0, 0, 0.3);
+$shadow-focus: 0 0 0 4px rgba(207, 166, 138, 0.25);
+$shadow-inset: inset 0 2px 8px rgba(90, 62, 54, 0.1);
+
+// Breakpoints
+$breakpoint-mobile-small: 576px;
+$breakpoint-tablet-portrait: 768px;
+$breakpoint-tablet-landscape: 1024px;
+$breakpoint-desktop: 1280px;
+$breakpoint-desktop-large: 1440px;
+
+// =========================
+// MIXINS
+// =========================
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin gradient-border-top($height: 4px) {
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $height;
+    background: linear-gradient(90deg, $color-primary, $color-primary-light, $color-primary);
+    border-radius: $radius-lg $radius-lg 0 0;
+  }
+}
+
+@mixin decorative-line {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -$spacing-md;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, $color-primary, transparent);
+  }
+}
+
+// =========================
+// ANIMATIONS
+// =========================
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+// =========================
+// MAIN CONTAINER
+// =========================
+.gallery-management {
+  min-height: 100vh;
+  background: linear-gradient(135deg, $color-bg-primary 0%, $color-bg-lighter 50%, $color-bg-primary 100%);
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  position: relative;
+  overflow-x: hidden;
+
+  // Decorative background pattern
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 400px;
+    background: 
+      radial-gradient(circle at 20% 50%, rgba($color-primary, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba($color-primary-light, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+.gallery-container {
+  @include flex-center;
+  min-height: 60vh;
+  padding: $spacing-5xl $spacing-xl;
+  position: relative;
+  z-index: 1;
+
+  @media screen and (max-width: $breakpoint-tablet-portrait) {
+    padding: $spacing-4xl $spacing-lg;
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    padding: $spacing-3xl $spacing-md;
+  }
+}
+
+// =========================
+// HEADER SECTION - MATCHING RESERVATIONFORM
+// =========================
+.gallery-header {
+  text-align: center;
+  margin-bottom: $spacing-5xl;
+  padding: $spacing-2xl $spacing-xl;
+  background: linear-gradient(135deg, rgba(207, 166, 138, 0.12), rgba(212, 165, 116, 0.08));
+  border-radius: $radius-lg;
+  border: 3px solid rgba(207, 166, 138, 0.35);
+  box-shadow: $shadow-md;
+  animation: slideUp 0.8s ease-out;
+  position: relative;
+  z-index: 1;
+
+  @media screen and (max-width: $breakpoint-tablet-portrait) {
+    margin-bottom: $spacing-4xl;
+    padding: $spacing-xl $spacing-lg;
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    margin-bottom: $spacing-3xl;
+    padding: $spacing-lg $spacing-md;
+  }
+}
+
+.gallery-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  margin: 0 0 $spacing-md 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-lg;
+  position: relative;
+  
+  background: linear-gradient(135deg, $color-text-dark 0%, $color-text-secondary 50%, $color-primary 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  svg {
+    color: $color-primary;
+    animation: pulse 3s infinite;
+    filter: drop-shadow(0 4px 8px rgba($color-primary, 0.3));
+    font-size: 0.9em;
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    gap: $spacing-md;
+  }
+}
+
+.gallery-subtitle {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  color: $color-text-dark;
+  line-height: 1.8;
+  max-width: 700px;
+  margin: 0 auto;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-align: center;
+}
+
+// =========================
+// O NAMA SEKCIJA - NOVA
+// =========================
+.about-section {
+  max-width: 1200px;
+  margin: 0 auto $spacing-5xl;
+  padding: $spacing-4xl;
+  background: $color-white;
+  border-radius: $radius-3xl;
+  box-shadow: $shadow-xl;
+  position: relative;
+  overflow: hidden;
+  animation: zoomIn 0.8s ease-out;
+  z-index: 1;
+
+  @include gradient-border-top(6px);
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -100px;
+    right: -100px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba($color-primary, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  @media screen and (max-width: $breakpoint-tablet-portrait) {
+    padding: $spacing-3xl $spacing-2xl;
+    margin-bottom: $spacing-4xl;
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    padding: $spacing-2xl $spacing-lg;
+    margin-bottom: $spacing-3xl;
+  }
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-4xl;
+  align-items: center;
+
+  @media screen and (max-width: $breakpoint-tablet-landscape) {
+    grid-template-columns: 1fr;
+    gap: $spacing-3xl;
+  }
+}
+
+.about-text {
+  animation: slideInLeft 0.8s ease-out 0.2s backwards;
+
+  h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: $color-text-dark;
+    margin-bottom: $spacing-xl;
+    position: relative;
+    display: inline-block;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -$spacing-sm;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, $color-primary, $color-primary-light);
+      border-radius: 2px;
+    }
+
+    @media screen and (max-width: $breakpoint-mobile-small) {
+      font-size: 2rem;
+    }
+  }
+
+  p {
+    font-size: 1.15rem;
+    color: $color-text-secondary;
+    line-height: 1.9;
+    margin-bottom: $spacing-xl;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    strong {
+      color: $color-primary;
+      font-weight: 600;
+    }
+
+    @media screen and (max-width: $breakpoint-mobile-small) {
+      font-size: 1.05rem;
+    }
+  }
+}
+
+.about-features {
+  display: grid;
+  gap: $spacing-lg;
+  margin-top: $spacing-2xl;
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    gap: $spacing-md;
+  }
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-lg;
+  padding: $spacing-lg;
+  background: linear-gradient(135deg, $color-bg-secondary, $color-bg-tertiary);
+  border-radius: $radius-lg;
+  border-left: 4px solid $color-primary;
+  transition: all $transition-base;
+
+  &:hover {
+    transform: translateX(8px);
+    box-shadow: $shadow-md;
+    background: linear-gradient(135deg, $color-primary-lightest, $color-bg-lighter);
+  }
+
+  svg {
+    font-size: 1.5rem;
+    color: $color-primary;
+    flex-shrink: 0;
+    margin-top: $spacing-xs;
+  }
+
+  .feature-text {
+    flex: 1;
+
+    h4 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: $color-text-dark;
+      margin-bottom: $spacing-xs;
+    }
+
+    p {
+      font-size: 1rem;
+      color: $color-text-secondary;
+      line-height: 1.6;
+      margin: 0;
+    }
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    padding: $spacing-md;
+    gap: $spacing-md;
+
+    svg {
+      font-size: 1.3rem;
+    }
+  }
+}
+
+// =========================
+// MAIN CONTENT
+// =========================
+.main-content-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 $spacing-xl;
+  position: relative;
+  z-index: 1;
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    padding: 0 $spacing-md;
+  }
+}
+
+// =========================
+// EMPTY STATE
+// =========================
+.empty-gallery {
+  @include flex-center;
+  flex-direction: column;
+  gap: $spacing-xl;
+  padding: $spacing-5xl $spacing-4xl;
+  background: $color-white;
+  border-radius: $radius-2xl;
+  box-shadow: $shadow-md;
+  text-align: center;
+
+  svg {
+    color: $color-primary-light;
+    opacity: 0.4;
+  }
+
+  h3 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: $color-text-dark;
+    margin: 0;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: $color-text-muted;
+    margin: 0;
+    max-width: 450px;
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    padding: $spacing-4xl $spacing-2xl;
+
+    h3 {
+      font-size: 1.6rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+  }
+}
+
+// =========================
+// GALLERY GRID - MASONRY STIL
+// =========================
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: $spacing-2xl;
+  margin-bottom: $spacing-5xl;
+
+  @media screen and (max-width: $breakpoint-desktop) {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: $spacing-xl;
+  }
+
+  @media screen and (max-width: $breakpoint-tablet-portrait) {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: $spacing-lg;
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    grid-template-columns: 1fr;
+    gap: $spacing-xl;
+  }
+}
+
+// =========================
+// GALLERY ITEM - PREMIUM DIZAJN
+// =========================
+.gallery-item {
+  background: $color-white;
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  box-shadow: $shadow-md;
+  cursor: pointer;
+  transition: all $transition-smooth;
+  animation: fadeIn 0.6s ease-out;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+    opacity: 0;
+    transition: opacity $transition-base;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: $shadow-2xl;
+
+    &::before {
+      opacity: 0.03;
+    }
+
+    .gallery-overlay {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .gallery-image {
+      transform: scale(1.15);
+    }
+
+    .gallery-content {
+      background: linear-gradient(135deg, $color-bg-lighter, $color-white);
+    }
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    &:hover {
+      transform: translateY(-6px);
+    }
+  }
+}
+
+.gallery-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  background: linear-gradient(135deg, $color-bg-secondary, $color-bg-tertiary);
+
+  @media screen and (max-width: $breakpoint-tablet-portrait) {
+    height: 350px;
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    height: 280px;
+  }
+}
+
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: brightness(0.95);
+}
+
+.gallery-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(207, 166, 138, 0.92),
+    rgba(212, 165, 116, 0.88)
+  );
+  @include flex-center;
+  flex-direction: column;
+  gap: $spacing-lg;
+  opacity: 0;
+  visibility: hidden;
+  transition: all $transition-smooth;
+  backdrop-filter: blur(2px);
+
+  svg {
+    font-size: 3rem;
+    color: $color-white;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    animation: pulse 2s infinite;
+  }
+
+  span {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: $color-white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    padding: $spacing-sm $spacing-xl;
+    background: rgba($color-white, 0.2);
+    border-radius: $radius-full;
+    backdrop-filter: blur(4px);
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    svg {
+      font-size: 2.5rem;
+    }
+
+    span {
+      font-size: 1rem;
+      padding: $spacing-xs $spacing-lg;
+    }
+  }
+}
+
+// =========================
+// GALLERY CONTENT - ELEGANTNO
+// =========================
+.gallery-content {
+  padding: $spacing-2xl;
+  background: $color-white;
+  transition: all $transition-base;
+  position: relative;
+  z-index: 1;
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    padding: $spacing-xl;
+  }
+}
+
+.gallery-item-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: $color-text-dark;
+  margin-bottom: $spacing-lg;
+  line-height: 1.4;
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -$spacing-xs;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: $color-primary;
+    border-radius: 2px;
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    font-size: 1.2rem;
+  }
+}
+
+.gallery-description-container {
+  margin-bottom: $spacing-lg;
+}
+
+.gallery-item-description {
+  font-size: 1.05rem;
+  color: $color-text-secondary;
+  line-height: 1.8;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    font-size: 1rem;
+    -webkit-line-clamp: 2;
+  }
+}
+
+.gallery-date {
+  font-size: 0.95rem;
+  color: $color-text-muted;
+  margin: 0;
+  padding-top: $spacing-md;
+  border-top: 2px solid $color-border;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-weight: 500;
+
+  &::before {
+    content: "📅";
+    font-size: 1rem;
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    font-size: 0.9rem;
+  }
+}
+
+// =========================
+// PAGINATION - MODERNIZOVANO
+// =========================
+.pagination {
+  @include flex-center;
+  gap: $spacing-lg;
+  margin-top: $spacing-4xl;
+  flex-wrap: wrap;
+  padding: $spacing-2xl;
+  background: $color-white;
+  border-radius: $radius-2xl;
+  box-shadow: $shadow-md;
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    gap: $spacing-sm;
+    padding: $spacing-xl $spacing-lg;
+  }
+}
+
+.pagination-btn {
+  @include flex-center;
+  min-width: 50px;
+  height: 50px;
+  padding: $spacing-md;
+  background: linear-gradient(135deg, $color-white, $color-bg-lighter);
+  color: $color-text-dark;
+  border: 2px solid $color-border;
+  border-radius: $radius-lg;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all $transition-base;
+  box-shadow: $shadow-sm;
+
+  svg {
+    font-size: 1.1rem;
+  }
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, $color-primary, $color-primary-light);
+    color: $color-white;
+    border-color: $color-primary;
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: $shadow-lg;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(-2px) scale(1);
+  }
+
+  &.active {
+    background: linear-gradient(135deg, $color-primary, $color-primary-light);
+    color: $color-white;
+    border-color: $color-primary;
+    box-shadow: $shadow-md;
+    transform: scale(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    min-width: 44px;
+    height: 44px;
+    font-size: 0.95rem;
+
+    svg {
+      font-size: 1rem;
+    }
+  }
+}
+
+// =========================
+// MODAL OVERLAY
+// =========================
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba($color-text-dark, 0.97);
+  backdrop-filter: blur(16px);
+  @include flex-center;
+  z-index: 9999;
+  animation: backdropFadeIn 0.2s ease-out;
+  padding: $spacing-xl;
+  cursor: pointer;
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    padding: $spacing-md;
+  }
+}
+
+.gallery-modal {
+  max-width: 95vw;
+  max-height: 95vh;
+  position: relative;
+  animation: modalFadeIn 0.3s ease-out;
+  cursor: default;
+}
+
+.gallery-modal-content {
+  position: relative;
+  background: $color-white;
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  box-shadow: $shadow-2xl;
+}
+
+.gallery-modal-image {
+  display: block;
+  max-width: 90vw;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: $radius-2xl;
+
+  @media screen and (max-width: $breakpoint-tablet-portrait) {
+    max-width: 95vw;
+    max-height: 85vh;
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: $spacing-xl;
+  right: $spacing-xl;
+  width: 55px;
+  height: 55px;
+  @include flex-center;
+  background: rgba($color-white, 0.98);
+  color: $color-text-dark;
+  border: none;
+  border-radius: $radius-full;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all $transition-base;
+  box-shadow: $shadow-xl;
+  z-index: 10;
+
+  &:hover {
+    background: linear-gradient(135deg, $color-primary, $color-primary-light);
+    color: $color-white;
+    transform: rotate(90deg) scale(1.15);
+    box-shadow: $shadow-2xl;
+  }
+
+  &:active {
+    transform: rotate(90deg) scale(0.95);
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    width: 48px;
+    height: 48px;
+    font-size: 1.6rem;
+    top: $spacing-lg;
+    right: $spacing-lg;
+  }
+}
+
+// =========================
+// ACCESSIBILITY & MISC
+// =========================
+
+// Smooth scrolling
+html {
+  scroll-behavior: smooth;
+}
+
+// Focus visible for accessibility
+*:focus-visible {
+  outline: 3px solid $color-primary;
+  outline-offset: 3px;
+  border-radius: $radius-sm;
+}
+
+// Prevent body scroll when modal is open
+body.modal-open {
+  overflow: hidden;
+}
+
+// Selection color
+::selection {
+  background: $color-primary-lighter;
+  color: $color-text-dark;
+}
+
+// =========================
+// SLIDER - UMESTO STATIČNE SLIKE
+// =========================
+.about-image {
+  position: relative;
+  animation: slideInRight 0.8s ease-out 0.2s backwards;
+
+  .image-slider {
+    position: relative;
+    border-radius: $radius-2xl;
+    overflow: hidden;
+    box-shadow: $shadow-xl;
+    height: 500px;
+
+    @media screen and (max-width: $breakpoint-tablet-landscape) {
+      height: 400px;
+    }
+
+    @media screen and (max-width: $breakpoint-mobile-small) {
+      height: 300px;
+    }
+  }
+
+  .slider-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .slider-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba($color-primary, 0.25),
+        rgba($color-primary-light, 0.15)
+      );
+      z-index: 1;
+      transition: opacity $transition-base;
+    }
+
+    &:hover::before {
+      opacity: 0;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform $transition-smooth;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+
+  // Slider Indicators (dots)
+  .slider-indicators {
+    position: absolute;
+    bottom: $spacing-xl;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: $spacing-md;
+    z-index: 2;
+
+    @media screen and (max-width: $breakpoint-mobile-small) {
+      bottom: $spacing-lg;
+      gap: $spacing-sm;
+    }
+  }
+
+  .slider-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: $radius-full;
+    background: rgba($color-white, 0.5);
+    border: 2px solid rgba($color-white, 0.8);
+    cursor: pointer;
+    transition: all $transition-base;
+    padding: 0;
+
+    &:hover {
+      background: rgba($color-white, 0.8);
+      transform: scale(1.2);
+    }
+
+    &.active {
+      background: $color-primary;
+      border-color: $color-white;
+      width: 32px;
+      border-radius: 6px;
+    }
+
+    @media screen and (max-width: $breakpoint-mobile-small) {
+      width: 10px;
+      height: 10px;
+
+      &.active {
+        width: 24px;
+      }
+    }
+  }
+
+  // Slider Navigation Arrows
+  .slider-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    @include flex-center;
+    background: rgba($color-white, 0.9);
+    color: $color-text-dark;
+    border: none;
+    border-radius: $radius-full;
+    cursor: pointer;
+    transition: all $transition-base;
+    box-shadow: $shadow-lg;
+    z-index: 2;
+    opacity: 0;
+
+    svg {
+      font-size: 1.2rem;
+    }
+
+    &:hover {
+      background: $color-primary;
+      color: $color-white;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    &.prev {
+      left: $spacing-lg;
+    }
+
+    &.next {
+      right: $spacing-lg;
+    }
+
+    @media screen and (max-width: $breakpoint-mobile-small) {
+      width: 40px;
+      height: 40px;
+
+      svg {
+        font-size: 1rem;
+      }
+
+      &.prev {
+        left: $spacing-md;
+      }
+
+      &.next {
+        right: $spacing-md;
+      }
+    }
+  }
+
+  // Show arrows on hover
+  .image-slider:hover .slider-nav {
+    opacity: 1;
+  }
+
+  // Decorative corner accent
+  &::after {
+    content: "";
+    position: absolute;
+    top: -$spacing-lg;
+    right: -$spacing-lg;
+    width: 150px;
+    height: 150px;
+    border: 4px solid $color-primary;
+    border-radius: $radius-2xl;
+    z-index: -1;
+
+    @media screen and (max-width: $breakpoint-mobile-small) {
+      display: none;
+    }
+  }
+}

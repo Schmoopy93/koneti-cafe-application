@@ -3,26 +3,41 @@
     "home": "Početna",
     "menu": "Meni",
     "reservation": "Rezervacije",
-    "gallery": "Galerija",
+    "about": "O Nama",
     "admin": "Administracija",
     "career": "Karijera"
   },
   "gallery": {
-    "loading": "Učitavanje galerije...",
-    "subtitle": "Istražite naše trenutke i uspomene",
-    "noImages": "Nema slika",
-    "noImagesDesc": "Galerija je trenutno prazna. Proverite kasnije za nove fotografije.",
-    "view": "Pogledaj",
-    "imageDeleted": "Slika uspešno obrisana",
-    "deleteError": "Greška pri brisanju slike",
-    "deleting": "Brisanje...",
-    "imageDetails": "Detalji slike",
-    "description": "Opis",
-    "noDescription": "Bez opisa",
-    "createdAt": "Kreirano",
-    "totalImages": "Ukupno slika",
-    "page": "Stranica",
-    "of": "od"
+    "title": "Galerija",
+    "subtitle": "Pogled u svet Koneti Cafe",
+    "loading": "Učitavanje...",
+    "noImages": "Trenutno nema dostupnih slika",
+    "about": {
+      "title": "O Nama",
+      "subtitle": "Upoznajte priču iza Caffe bar Koneti",
+      "sectionTitle": "Naša Priča",
+      "intro1": "Ako tražite mesto gde se spajaju odlična atmosfera, najbolji ceđeni sokovi i vrhunska usluga, dobrodošli u ",
+      "intro1_highlight": "Caffe bar Koneti.",
+      "intro2": " Naš kafić otvoren je 2022. godine i od tada smo postali prepoznatljivo mesto okupljanja ljubitelja kvalitetnog pića i prijatnog ambijenta u Novom Sadu.",
+      "intro3": "Koneti je kafić u kojem ćete doživeti spoj modernog enterijera i topline domaće atmosfere. Upravo zato nas mnogi prepoznaju kao ",
+      "intro3_highlight": "najbolji caffe bar i kafić u Novom Sadu,",
+      "intro3_rest": " gde svaki detalj – od izbora pića do muzike – doprinosi tome da se osećate opušteno i zadovoljno.",
+      "mission": "Bilo da dolazite na jutarnju kafu, popodnevno osveženje ili večernje druženje, kod nas vas uvek očekuje kvalitet i dobro raspoloženje.",
+      "features": {
+        "quality": {
+          "title": "Premijum Kvalitet",
+          "description": "Najbolji ceđeni sokovi u gradu i veliki izbor toplih i hladnih napitaka."
+        },
+        "passion": {
+          "title": "Prava Energija",
+          "description": "Dobra muzika i ljubazno osoblje stvaraju savršenu atmosferu za užitak."
+        },
+        "community": {
+          "title": "Vaše Omiljeno Mesto",
+          "description": "Mesto na koje ćete se rado vraćati – jer kod nas uvek dobijate više od običnog izlaska."
+        }
+      }
+    }
   },
   "home": {
     "reservation": {
