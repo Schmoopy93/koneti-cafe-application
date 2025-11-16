@@ -449,19 +449,9 @@ const MenuClient: React.FC<MenuClientProps> = ({
                       <FontAwesomeIcon icon={faCoffee} />
                     </div>
                   )}
-                  <div className="menu-public-card-overlay">
-                    <button
-                      className="menu-public-view-details"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (drink.image) {
-                          setSelectedImage({src: drink.image, name: getDrinkName(drink)});
-                          setShowImageModal(true);
-                        }
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faEye} />
-                    </button>
+                  <div className="menu-public-image-overlay">
+                    <FontAwesomeIcon icon={faEye} className="preview-icon" />
+                    {/* <span className="preview-text">{t('menu.preview')}</span> */}
                   </div>
                 </div>
                 <div className="menu-public-drink-info">

@@ -95,7 +95,7 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
   const [sortBy, setSortBy] = useState<string>("name");
   const [showImagePreview, setShowImagePreview] = useState<boolean>(false);
   const [previewImage, setPreviewImage] = useState<string>("");
-  const itemsPerPage = 10;
+  const itemsPerPage = 8;
   const topRef = useRef<HTMLDivElement>(null);
 
   // Calculate min and max prices
@@ -459,10 +459,10 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
                 <span className="price">{drink.price} RSD</span>
               </div>
               <div className="drink-actions">
-                <button onClick={() => onEditDrink?.(drink)} title={t("admin.menuManagement.tooltips.editDrink")}>
+                <button className="edit-btn" onClick={() => onEditDrink?.(drink)} title={t("admin.menuManagement.tooltips.editDrink")}>
                   <FontAwesomeIcon icon={faEdit} />
                 </button>
-                <button onClick={() => setShowDeleteConfirm(drink)} title={t("admin.menuManagement.tooltips.deleteDrink")}>
+                <button className="delete-btn" onClick={() => setShowDeleteConfirm(drink)} title={t("admin.menuManagement.tooltips.deleteDrink")}>
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
               </div>
