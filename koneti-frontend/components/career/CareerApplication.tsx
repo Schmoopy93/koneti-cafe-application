@@ -211,34 +211,21 @@ const handleSubmit = async (e: React.FormEvent) => {
   return (
     <motion.div
       className="career-application-page"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
     >
-      <div className="career-application-container">
-        <div className={`career-application-page-header ${isLoaded ? "loaded" : ""}`}>
-          <div className="career-application-header-content">
-            <h1 className="career-application-career-title">
-              <FontAwesomeIcon icon={faBriefcase} className="career-application-title-icon" />
-              {(() => {
-                const text = t("career.joinTeam");
-                const parts = text.split("Koneti");
-                return (
-                  <>
-                    <span className="dark-text">{parts[0]}</span>
-                    <span className="light-text">Koneti{parts[1]}</span>
-                  </>
-                );
-              })()}
-            </h1>
-            <div className="intro-text">
-              <p className="team-description">
-                <span className="highlight">{t("career.teamDescription")}</span>
-              </p>
-            </div>
-          </div>
-        </div>
+      <div className="career-header">
+        <h1 className="career-title">
+          <FontAwesomeIcon icon={faBriefcase} />
+          {t("career.joinTeam")}
+        </h1>
+        <p className="career-subtitle">
+          {t("career.teamDescription")}
+        </p>
+      </div>
 
+      <div className="career-application-container">
         <form
           onSubmit={handleSubmit}
           className={`application-form ${isLoaded ? "loaded" : ""}`}
