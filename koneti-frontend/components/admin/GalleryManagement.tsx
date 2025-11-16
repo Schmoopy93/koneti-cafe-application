@@ -343,7 +343,7 @@ const GalleryManagement: React.FC = () => {
 
       {/* Image Details Modal */}
       {selectedImage && !showAddModal && (
-        <div className="modal-overlay" onClick={() => setSelectedImage(null)}>
+        <div className="gallery-modal-overlay" onClick={() => setSelectedImage(null)}>
           <div className="gallery-modal" onClick={(e) => e.stopPropagation()}>
             <div className="gallery-modal-content">
               <button className="close-btn" onClick={() => setSelectedImage(null)}>
