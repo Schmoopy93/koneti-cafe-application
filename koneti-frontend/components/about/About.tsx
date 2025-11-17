@@ -37,7 +37,8 @@ const Gallery: React.FC = () => {
   const fetchGalleryImages = async () => {
     try {
       setLoading(true);
-      const response = await apiRequest("/gallery");
+      // Promeni endpoint da koristi /gallery/about umesto /gallery
+      const response = await apiRequest("/gallery/about");
       if (response.ok) {
         const data = await response.json();
         setImages(data);

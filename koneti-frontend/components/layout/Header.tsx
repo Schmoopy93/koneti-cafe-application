@@ -150,17 +150,17 @@ const Header: React.FC = () => {
           )}
 
           
-          {/* {!loading && !isAuthenticated && (
+          {!loading && !isAuthenticated && (
             <Link
-              href={getLocalizedPath("/gallery")}
+              href={getLocalizedPath("/about")}
               onClick={() => setIsOpen(false)}
-              title={t("header.gallery")}
+              title={t("header.about")}
               style={{ '--delay': 4 } as React.CSSProperties}
             >
               <FontAwesomeIcon icon={faImage} />{" "}
-              {t("header.gallery")}
+              {t("header.about")}
             </Link>
-          )} */}
+          )}
 
           {!loading && !isAuthenticated && (
             <Link

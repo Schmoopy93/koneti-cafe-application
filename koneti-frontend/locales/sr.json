@@ -399,7 +399,12 @@
       "update": "Ažuriraj",
       "uploadHint": "JPG, PNG, WEBP (max 5MB)",
       "uploadPlaceholder": "Kliknite da otpremite sliku",
-      "viewTooltip": "Pogledaj sliku"
+      "viewTooltip": "Pogledaj sliku",
+      "showOnAbout": "Prikaži na O Nama stranici",
+      "onAboutPage": "Na O Nama",
+      "markedForAbout": "Slika će se prikazivati na O Nama stranici",
+      "unmarkedForAbout": "Slika više neće biti prikazana na O Nama stranici",
+      "toggleError": "Greška pri promeni statusa slike"
     },
     "addDrink": {
       "title": "Dodaj novo piće",

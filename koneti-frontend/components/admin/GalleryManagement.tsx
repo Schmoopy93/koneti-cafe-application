@@ -37,6 +37,7 @@ interface GalleryImage {
   image: string;
   cloudinary_id: string;
   order: number;
+  showOnAbout: boolean;  // ← DODAJ
   createdAt: string;
 }
 
@@ -160,33 +161,59 @@ const GalleryManagement: React.FC = () => {
     }
   };
 
+  // Dodaj funkciju za toggle:
+  const toggleShowOnAbout = async (id: string, currentStatus: boolean) => {
+    try {
+      const response = await apiRequest(`/gallery/${id}/toggle-about`, {
+        method: "PATCH",
+        useToken: true,
+      });
+
+      if (response.ok) {
+        await fetchGalleryImages();
+        const newStatus = !currentStatus;
+        toast.success(
+          newStatus 
+            ? t("admin.galleryManagement.markedForAbout") 
+            : t("admin.galleryManagement.unmarkedForAbout")
+        );
+      } else {
+        const error = await response.json();
+        toast.error(error.message || t("admin.galleryManagement.toggleError"));
+      }
+    } catch (error) {
+      console.error("Error toggling showOnAbout:", error);
+      toast.error(t("admin.galleryManagement.toggleError"));
+    }
+  };
+
   if (loading) {
     return <Spinner size="lg" text={t("admin.galleryManagement.loading")} />;
   }
 
   return (
     <motion.div
-      className="gallery-management"
+      className="gallery-mgmt-container"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <div className="gallery-header">
-        <div className="header-actions">
+      <div className="gallery-mgmt-header">
+        <div className="gallery-mgmt-header-actions">
           <button
-            className="btn-add-image"
+            className="gallery-mgmt-btn-add"
             onClick={() => setShowAddModal(true)}
           >
             <FontAwesomeIcon icon={faPlus} />
             {t("admin.galleryManagement.addButton")}
           </button>
-          <div className="stats">
-            <div className="stat-item">
-              <span className="stat-number">{images.length}</span>
-              <span className="stat-label">{t("admin.galleryManagement.totalImages")}</span>
+          <div className="gallery-mgmt-stats">
+            <div className="gallery-mgmt-stat-item">
+              <span className="gallery-mgmt-stat-number">{images.length}</span>
+              <span className="gallery-mgmt-stat-label">{t("admin.galleryManagement.totalImages")}</span>
             </div>
             {totalPages > 1 && (
-              <span className="stat">
+              <span className="gallery-mgmt-stat">
                 {t("admin.galleryManagement.page")}: <strong>{currentPage} {t("admin.galleryManagement.of")} {totalPages}</strong>
               </span>
             )}
@@ -194,32 +221,32 @@ const GalleryManagement: React.FC = () => {
         </div>
       </div>
 
-      <div className="main-content-container" ref={galleryRef}>
-        <div className="gallery-controls">
-          <div className="search-filter-row">
-            <div className="search-container">
-              <FontAwesomeIcon icon={faSearch} className="search-icon" />
+      <div className="gallery-mgmt-content" ref={galleryRef}>
+        <div className="gallery-mgmt-controls">
+          <div className="gallery-mgmt-search-filter-row">
+            <div className="gallery-mgmt-search-container">
+              <FontAwesomeIcon icon={faSearch} className="gallery-mgmt-search-icon" />
               <input
                 type="text"
-                className="search-input"
+                className="gallery-mgmt-search-input"
                 placeholder={t("admin.galleryManagement.searchPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
               {searchTerm && (
                 <button
-                  className="clear-search"
+                  className="gallery-mgmt-clear-search"
                   onClick={() => setSearchTerm('')}
                 >
-                  ×
+                  <FontAwesomeIcon icon={faTimes} />
                 </button>
               )}
             </div>
 
-            <div className="filter-container">
-              <FontAwesomeIcon icon={faSort} className="filter-icon" />
+            <div className="gallery-mgmt-filter-container">
+              <FontAwesomeIcon icon={faSort} className="gallery-mgmt-filter-icon" />
               <select
-                className="filter-dropdown"
+                className="gallery-mgmt-filter-dropdown"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
               >
@@ -231,32 +258,32 @@ const GalleryManagement: React.FC = () => {
           </div>
         </div>
 
-        <div className="gallery-grid-container">
+        <div className="gallery-mgmt-grid-wrapper">
           {currentImages.length === 0 ? (
-            <div className="empty-gallery">
+            <div className="gallery-mgmt-empty">
               <FontAwesomeIcon icon={faImage} size="3x" />
               <h3>{t("admin.galleryManagement.noImages")}</h3>
               <p>{t("admin.galleryManagement.noImagesDesc")}</p>
             </div>
           ) : (
-            <div className="gallery-grid">
+            <div className="gallery-mgmt-grid">
               {currentImages.map((image, index) => (
                 <motion.div
                   key={image._id}
-                  className="gallery-item"
+                  className="gallery-mgmt-item"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <div className="gallery-image-wrapper">
+                  <div className="gallery-mgmt-image-wrapper">
                     <img
                       src={image.image}
                       alt={getLocalizedText(image.title)}
-                      className="gallery-image"
+                      className="gallery-mgmt-image"
                     />
-                    <div className="gallery-overlay">
+                    <div className="gallery-mgmt-overlay">
                       <button
-                        className="btn-view"
+                        className="gallery-mgmt-btn-view"
                         onClick={() => setSelectedImage(image)}
                         title={t("admin.galleryManagement.viewTooltip")}
                       >
@@ -264,23 +291,47 @@ const GalleryManagement: React.FC = () => {
                       </button>
                     </div>
                   </div>
-                  <div className="gallery-content">
-                    <h4 className="gallery-title">{getLocalizedText(image.title)}</h4>
-                    <div className="gallery-description-container">
-                      <p className="gallery-description">
+                  <div className="gallery-mgmt-info">
+                    <div className="gallery-mgmt-title-row">
+                      <h4 className="gallery-mgmt-title">{getLocalizedText(image.title)}</h4>
+                      {image.showOnAbout && (
+                        <span className="gallery-mgmt-badge-about">
+                          {t("admin.galleryManagement.onAboutPage")}
+                        </span>
+                      )}
+                    </div>
+                    <div className="gallery-mgmt-desc-container">
+                      <p className="gallery-mgmt-description">
                         {getLocalizedText(image.description) || t("admin.galleryManagement.noDescription")}
                       </p>
                     </div>
-                    <p className="gallery-date">
+                    <p className="gallery-mgmt-date">
                       {new Date(image.createdAt).toLocaleDateString('sr-RS', {
                         day: '2-digit',
                         month: '2-digit',
                         year: 'numeric'
                       })}
                     </p>
-                    <div className="gallery-actions">
+                    
+                    {/* Checkbox za About stranicu */}
+                    <div className="gallery-mgmt-about-toggle">
+                      <label className="gallery-mgmt-checkbox-label">
+                        <input
+                          type="checkbox"
+                          checked={image.showOnAbout}
+                          onChange={() => toggleShowOnAbout(image._id, image.showOnAbout)}
+                          className="gallery-mgmt-checkbox-input"
+                        />
+                        <span className="gallery-mgmt-checkbox-custom"></span>
+                        <span className="gallery-mgmt-checkbox-text">
+                          {t("admin.galleryManagement.showOnAbout")}
+                        </span>
+                      </label>
+                    </div>
+
+                    <div className="gallery-mgmt-actions">
                       <button
-                        className="btn-edit"
+                        className="gallery-mgmt-btn-edit"
                         onClick={() => {
                           setSelectedImage(image);
                           setShowAddModal(true);
@@ -290,7 +341,7 @@ const GalleryManagement: React.FC = () => {
                         <FontAwesomeIcon icon={faEdit} />
                       </button>
                       <button
-                        className="btn-delete"
+                        className="gallery-mgmt-btn-delete"
                         onClick={() => setShowDeleteConfirm(image)}
                         disabled={updatingStatus === image._id}
                         title={t("admin.galleryManagement.deleteTooltip")}
@@ -311,9 +362,9 @@ const GalleryManagement: React.FC = () => {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="pagination">
+          <div className="gallery-mgmt-pagination">
             <button
-              className="pagination-btn"
+              className="gallery-mgmt-pagination-btn"
               onClick={goToPrevious}
               disabled={currentPage === 1}
             >
@@ -323,7 +374,7 @@ const GalleryManagement: React.FC = () => {
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}
-                className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+                className={`gallery-mgmt-pagination-btn ${currentPage === page ? 'gallery-mgmt-active' : ''}`}
                 onClick={() => goToPage(page)}
               >
                 {page}
@@ -331,7 +382,7 @@ const GalleryManagement: React.FC = () => {
             ))}
 
             <button
-              className="pagination-btn"
+              className="gallery-mgmt-pagination-btn"
               onClick={goToNext}
               disabled={currentPage === totalPages}
             >
@@ -343,16 +394,16 @@ const GalleryManagement: React.FC = () => {
 
       {/* Image Details Modal */}
       {selectedImage && !showAddModal && (
-        <div className="gallery-modal-overlay" onClick={() => setSelectedImage(null)}>
-          <div className="gallery-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="gallery-modal-content">
-              <button className="close-btn" onClick={() => setSelectedImage(null)}>
+        <div className="gallery-mgmt-modal-overlay" onClick={() => setSelectedImage(null)}>
+          <div className="gallery-mgmt-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="gallery-mgmt-modal-content">
+              <button className="gallery-mgmt-modal-close" onClick={() => setSelectedImage(null)}>
                 <FontAwesomeIcon icon={faTimes} />
               </button>
               <img
                 src={selectedImage.image}
                 alt={getLocalizedText(selectedImage.title)}
-                className="gallery-modal-image"
+                className="gallery-mgmt-modal-image"
               />
             </div>
           </div>
@@ -384,20 +435,20 @@ const GalleryManagement: React.FC = () => {
 
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
-        <div className="modal-overlay" onClick={() => setShowDeleteConfirm(null)}>
-          <div className="delete-confirm-popup" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => setShowDeleteConfirm(null)}>×</button>
+        <div className="gallery-mgmt-delete-overlay" onClick={() => setShowDeleteConfirm(null)}>
+          <div className="gallery-mgmt-delete-popup" onClick={(e) => e.stopPropagation()}>
+            <button className="gallery-mgmt-delete-close" onClick={() => setShowDeleteConfirm(null)}>×</button>
             <h3>{t("admin.galleryManagement.deleteConfirm.title")}</h3>
             <p>{t("admin.galleryManagement.deleteConfirm.message")}</p>
-            <div className="confirm-actions">
+            <div className="gallery-mgmt-delete-actions">
               <button
-                className="btn-cancel"
+                className="gallery-mgmt-btn-cancel"
                 onClick={() => setShowDeleteConfirm(null)}
               >
                 {t("admin.galleryManagement.deleteConfirm.cancel")}
               </button>
               <button
-                className="btn-confirm"
+                className="gallery-mgmt-btn-confirm"
                 onClick={() => deleteImage(showDeleteConfirm._id)}
                 disabled={updatingStatus === showDeleteConfirm._id}
               >

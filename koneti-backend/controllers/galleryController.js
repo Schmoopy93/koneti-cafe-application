@@ -176,3 +176,46 @@ export const deleteGalleryImage = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+/* Toggle showOnAbout status */
+export const toggleShowOnAbout = async (req, res) => {
+  try {
+    const image = await Gallery.findById(req.params.id);
+    if (!image) {
+      return res.status(404).json({ message: "Gallery image not found." });
+    }
+
+    // Check if enabling showOnAbout
+    if (!image.showOnAbout) {
+      // Count how many images are already marked as showOnAbout
+      const count = await Gallery.countDocuments({ showOnAbout: true });
+      if (count >= 10) {
+        return res.status(400).json({ 
+          message: "Maximum 10 images can be shown on About page. Please unmark another image first." 
+        });
+      }
+    }
+
+    // Toggle the status
+    image.showOnAbout = !image.showOnAbout;
+    await image.save();
+
+    res.json(image);
+  } catch (err) {
+    console.error("Error toggling showOnAbout:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+/* Get images for About page (only showOnAbout: true, max 10) */
+export const getAboutPageImages = async (req, res) => {
+  try {
+    const images = await Gallery.find({ showOnAbout: true })
+      .sort({ order: 1, createdAt: -1 })
+      .limit(10);
+    res.json(images);
+  } catch (err) {
+    console.error("Error fetching about page images:", err);
+    res.status(500).json({ message: err.message });
+  }
+};

@@ -36,7 +36,7 @@ export default function Offer() {
       text: t('home.offer.services.coffee.description'),
       features: getFeatures('home.offer.services.coffee.features'),
       icon: "☕",
-      img: "/espresso.jpg", // Putanja relativna na 'public' folder
+      img: "/koneti_kafa.png",
       link: "/menu",
       linkText: t('home.offer.services.coffee.linkText'),
       color: "#8B4513"
@@ -47,7 +47,7 @@ export default function Offer() {
       text: t('home.offer.services.business.description'),
       features: getFeatures('home.offer.services.business.features'),
       icon: "💼",
-      img: "/business-meeting.jpg",
+      img: "/biznis.webp",
       link: "/reservation?type=business",
       linkText: t('home.offer.services.business.linkText'),
       color: "#2C3E50"
@@ -58,7 +58,7 @@ export default function Offer() {
       text: t('home.offer.services.party.description'),
       features: getFeatures('home.offer.services.party.features'),
       icon: "🎉",
-      img: "/party.jpg",
+      img: "/koneti_party.png",
       link: "/reservation?type=experience",
       linkText: t('home.offer.services.party.linkText'),
       color: "#E74C3C"

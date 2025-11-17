@@ -391,7 +391,12 @@
       "update": "Update",
       "uploadHint": "JPG, PNG, WEBP (max 5MB)",
       "uploadPlaceholder": "Click to upload image",
-      "viewTooltip": "View image"
+      "viewTooltip": "View image",
+      "showOnAbout": "Show on About page",
+      "onAboutPage": "On About",
+      "markedForAbout": "Image will be shown on About page",
+      "unmarkedForAbout": "Image will no longer be shown on About page",
+      "toggleError": "Error changing image status"
     },
     "addDrink": {
       "title": "Add New Drink",

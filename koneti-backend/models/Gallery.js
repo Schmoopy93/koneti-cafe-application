@@ -1,3 +1,5 @@
+// d:\Projekti\koneti-cafe-application\koneti-backend\models\Gallery.js
+
 import mongoose from "mongoose";
 
 const gallerySchema = new mongoose.Schema(
@@ -22,6 +24,10 @@ const gallerySchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    showOnAbout: {
+      type: Boolean,
+      default: false, // Po default-u slike nisu prikazane na About stranici
+    },
   },
   { timestamps: true }
 );
@@ -30,6 +36,7 @@ const gallerySchema = new mongoose.Schema(
 gallerySchema.index({ order: 1 });
 gallerySchema.index({ "title.sr": 1 });
 gallerySchema.index({ "title.en": 1 });
+gallerySchema.index({ showOnAbout: 1 }); // Index za brže filtriranje
 
 const Gallery = mongoose.model("Gallery", gallerySchema);
 
