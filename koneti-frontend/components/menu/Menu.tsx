@@ -510,7 +510,13 @@ const MenuClient: React.FC<MenuClientProps> = ({
             <button className="menu-public-modal-close" onClick={() => setShowImageModal(false)}>
               <FontAwesomeIcon icon={faTimes} />
             </button>
-            <img src={selectedImage.src} alt={selectedImage.name} />
+            <div className="menu-public-image-container">
+              <img 
+                src={selectedImage.src} 
+                alt={selectedImage.name}
+                className="menu-public-modal-image"
+              />
+            </div>
             <h3>{getDrinkName({ name: selectedImage.name } as Drink)}</h3>
           </div>
         </div>

@@ -2720,7 +2720,8 @@
 
 .menu-public-image-modal img {
   width: 100%;
-  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
   display: block;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(207, 166, 138, 0.2),
