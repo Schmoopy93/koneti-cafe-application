@@ -4,6 +4,8 @@ import { logger } from "../utils/logger.js";
 import Category from "../models/Category.js";
 import Drink from "../models/Drink.js";
 import Reservation from "../models/Reservation.js";
+import crypto from "crypto";
+import { sendAdminActivationEmail } from "../utils/nodemailer.js";
 
 // Create a new admin user
 export const createAdmin = async (req, res) => {
@@ -51,21 +53,29 @@ export const createAdmin = async (req, res) => {
     }
 
     // Kreiraj admin-a
-    const admin = await Admin.create({ 
+    const activationToken = crypto.randomBytes(32).toString("hex");
+    const newAdmin = new Admin({ 
       name: name.trim(), 
       email: email.toLowerCase(), 
       password, 
-      role: "admin" 
+      role: "admin",
+      isActive: false,
+      activationToken,
     });
+    await newAdmin.save();
+
+    // Pošalji email
+    const activationLink = `${process.env.SERVER_URL}/api/admin/activate/${activationToken}`;
+    await sendAdminActivationEmail(newAdmin, activationLink);
 
     logger.info(`Novi admin kreiran: ${email}`);
     return res.status(201).json({ 
       success: true,
-      message: "Admin uspešno kreiran", 
+      message: "Admin uspešno kreiran. Aktivacioni link je poslat na email.", 
       admin: {
-        id: admin._id,
-        name: admin.name,
-        email: admin.email
+        id: newAdmin._id,
+        name: newAdmin.name,
+        email: newAdmin.email
       }
     });
   } catch (err) {
@@ -250,4 +260,17 @@ export const getDashboardData = async (req, res) => {
       message: "Greška pri učitavanju podataka"
     });
   }
+};
+
+// Activate admin account
+export const activateAdmin = async (req, res) => {
+  const { token } = req.params;
+  const admin = await Admin.findOne({ activationToken: token });
+  if (!admin) return res.status(400).json({ message: "Nevažeći token" });
+
+  admin.isActive = true;
+  admin.activationToken = undefined;
+  await admin.save();
+
+  res.json({ message: "Nalog je uspešno aktiviran!" });
 };

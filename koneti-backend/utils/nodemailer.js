@@ -626,3 +626,37 @@ export const sendCareerStatusEmail = async (application, status) => {
     throw e;
   }
 };
+
+export const sendAdminActivationEmail = async (admin, activationLink) => {
+  if (!admin || !admin.email) {
+    logger.warn('Skipping admin activation email: missing admin data or email.');
+    return;
+  }
+  try {
+    const html = `
+      <div style="${baseStyle}">
+        <div style="${cardStyle}">
+          ${logoTemplate}
+          <h2 style="color:#5a3e36; text-align:center;">Aktivacija admin naloga</h2>
+          <p style="font-size:18px;">Zdravo <strong>${DOMPurify.sanitize(admin.name || admin.email)}</strong>,</p>
+          <p>Za aktivaciju Vašeg admin naloga kliknite na sledeći link:</p>
+          <div style="text-align:center; margin:30px 0;">
+            <a href="${activationLink}" style="${buttonStyle}; text-decoration:none;">Aktiviraj nalog</a>
+          </div>
+          <p style="color:#888; font-size:14px;">Ako niste tražili ovaj nalog, slobodno ignorišite ovaj email.</p>
+        </div>
+      </div>
+    `;
+
+    await sendEmailWithRetry({
+      from: `Koneti Café <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
+      to: admin.email,
+      subject: 'Aktivacija admin naloga - Koneti Café',
+      html,
+    });
+    logger.info(`Admin activation email sent to ${admin.email}`);
+  } catch (e) {
+    logger.error('Failed to send admin activation email:', e);
+    throw e;
+  }
+};

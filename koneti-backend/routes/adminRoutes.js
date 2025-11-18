@@ -1,5 +1,5 @@
 import express from "express";
-import { createAdmin, loginAdmin, getAdmins, deleteAdmin, verifyToken, getDashboardData } from "../controllers/adminController.js";
+import { createAdmin, loginAdmin, getAdmins, deleteAdmin, verifyToken, getDashboardData, activateAdmin } from "../controllers/adminController.js";
 import { protectAdmin } from "../middleware/adminMiddleware.js";
 import Admin from "../models/Admin.js";
 import { csrfProtection, getCSRFToken } from "../middleware/csrfProtection.js";
@@ -45,5 +45,8 @@ router.get("/", protectAdmin, adminLimiter, getAdmins);
 
 // Delete admin by ID (protected route)
 router.delete("/:id", protectAdmin, adminLimiter, validateObjectId, csrfProtection, deleteAdmin);
+
+// Activate admin account using token
+router.get("/activate/:token", activateAdmin);
 
 export default router;
