@@ -52,10 +52,12 @@ const GalleryManagement: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("newest");
+  const [mounted, setMounted] = useState(false); // ADD THIS
   const itemsPerPage = 10;
   const galleryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setMounted(true); // ADD THIS
     fetchGalleryImages();
   }, []);
 
