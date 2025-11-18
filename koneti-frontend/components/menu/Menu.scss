@@ -2622,15 +2622,13 @@
 /* =====================================================================
    MODAL — BEAUTIFUL IMAGE VIEWER
    ===================================================================== */
-.menu-public-image-modal-backdrop {
+.menu-modal-overlay {
   position: fixed;
   inset: 0;
-  background: linear-gradient(
-    135deg,
+  background: linear-gradient(135deg,
     rgba(0, 0, 0, 0.8) 0%,
     rgba(90, 62, 54, 0.9) 50%,
-    rgba(0, 0, 0, 0.8) 100%
-  );
+    rgba(0, 0, 0, 0.8) 100%);
   backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
@@ -2639,55 +2637,77 @@
   animation: modalBackdropFadeIn 0.3s ease-out;
 }
 
-@keyframes modalBackdropFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.menu-public-image-modal {
-  background: linear-gradient(
-    145deg,
+.menu-modal-content {
+  background: linear-gradient(145deg,
     rgba(255, 255, 255, 0.95) 0%,
     rgba(248, 244, 240, 0.9) 50%,
-    rgba(241, 235, 225, 0.85) 100%
-  );
+    rgba(241, 235, 225, 0.85) 100%);
   border-radius: 20px;
   padding: 24px;
   max-width: min(90%, 800px);
   max-height: 90%;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 25px 50px rgba(207, 166, 138, 0.3),
-    0 15px 30px rgba(90, 62, 54, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow:
+    0 25px 50px rgba(207, 166, 138, 0.3),
+    0 15px 30px rgba(90, 62, 54, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
   border: 2px solid rgba(207, 166, 138, 0.2);
   backdrop-filter: blur(12px);
   animation: modalSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  &.image-preview-modal {
+    .image-preview-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-height: 80vh;
+      overflow: hidden;
+
+      .preview-image {
+        width: 100%;
+        height: 100%;
+        max-height: 80vh;
+        object-fit: contain;
+        display: block;
+        border-radius: 12px;
+        box-shadow:
+          0 8px 24px rgba(207, 166, 138, 0.2),
+          0 4px 12px rgba(90, 62, 54, 0.15);
+        border: 1px solid rgba(207, 166, 138, 0.15);
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.02);
+        }
+      }
+    }
+    h3 {
+      margin: 16px 0 0 0;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--mp-color-accent);
+      text-align: center;
+      background: linear-gradient(
+        135deg,
+        var(--mp-color-accent),
+        var(--mp-color-accent-2)
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 2px 4px rgba(207, 166, 138, 0.3);
+    }
+  }
 }
 
-@keyframes modalSlideIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9) translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.menu-public-modal-close {
+.menu-modal-close {
   position: absolute;
   top: 16px;
   right: 16px;
-  background: linear-gradient(
-    135deg,
+  background: linear-gradient(135deg,
     rgba(255, 255, 255, 0.9),
-    rgba(248, 244, 240, 0.8)
-  );
+    rgba(248, 244, 240, 0.8));
   border: 2px solid rgba(207, 166, 138, 0.2);
   border-radius: 12px;
   width: 40px;
@@ -2703,11 +2723,9 @@
   z-index: 10;
 
   &:hover {
-    background: linear-gradient(
-      135deg,
+    background: linear-gradient(135deg,
       rgba(207, 166, 138, 0.1),
-      rgba(212, 165, 116, 0.08)
-    );
+      rgba(212, 165, 116, 0.08));
     color: var(--mp-color-accent);
     transform: scale(1.1) rotate(90deg);
     box-shadow: 0 6px 20px rgba(207, 166, 138, 0.25);
@@ -2718,67 +2736,49 @@
   }
 }
 
-.menu-public-image-modal img {
-  width: 100%;
-  max-height: 80vh;
-  object-fit: contain;
-  display: block;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(207, 166, 138, 0.2),
-    0 4px 12px rgba(90, 62, 54, 0.15);
-  border: 1px solid rgba(207, 166, 138, 0.15);
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: scale(1.02);
-  }
+/* =====================================================================
+   MODAL ANIMATIONS
+   ===================================================================== */
+@keyframes modalBackdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.menu-public-image-modal h3 {
-  margin: 16px 0 0 0;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--mp-color-accent);
-  text-align: center;
-  background: linear-gradient(
-    135deg,
-    var(--mp-color-accent),
-    var(--mp-color-accent-2)
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 2px 4px rgba(207, 166, 138, 0.3);
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 /* =====================================================================
    RESPONSIVE MODAL
    ===================================================================== */
 @media (max-width: 768px) {
-  .menu-public-image-modal {
+  .menu-modal-content {
     padding: 16px;
     max-width: 95%;
     max-height: 95%;
   }
 
-  .menu-public-modal-close {
+  .menu-modal-close {
     width: 36px;
     height: 36px;
     font-size: 1.1rem;
   }
-
-  .menu-public-image-modal h3 {
-    font-size: 1.2rem;
-  }
 }
 
 @media (max-width: 480px) {
-  .menu-public-image-modal {
+  .menu-modal-content {
     padding: 12px;
     border-radius: 16px;
   }
 
-  .menu-public-modal-close {
+  .menu-modal-close {
     width: 32px;
     height: 32px;
     font-size: 1rem;
@@ -2786,13 +2786,8 @@
     right: 12px;
   }
 
-  .menu-public-image-modal img {
+  .menu-modal-content.image-preview-modal .image-preview-container .preview-image {
     border-radius: 8px;
-  }
-
-  .menu-public-image-modal h3 {
-    font-size: 1.1rem;
-    margin-top: 12px;
   }
 }
 

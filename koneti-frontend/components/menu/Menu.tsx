@@ -505,16 +505,16 @@ const MenuClient: React.FC<MenuClientProps> = ({
       </motion.main>
       
       {showImageModal && selectedImage && (
-        <div className="menu-public-image-modal-backdrop" onClick={() => setShowImageModal(false)}>
-          <div className="menu-public-image-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="menu-public-modal-close" onClick={() => setShowImageModal(false)}>
+        <div className="menu-modal-overlay" onClick={() => setShowImageModal(false)}>
+          <div className="menu-modal-content image-preview-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="menu-modal-close" onClick={() => setShowImageModal(false)}>
               <FontAwesomeIcon icon={faTimes} />
             </button>
-            <div className="menu-public-image-container">
+            <div className="image-preview-container">
               <img 
                 src={selectedImage.src} 
                 alt={selectedImage.name}
-                className="menu-public-modal-image"
+                className="preview-image"
               />
             </div>
             <h3>{getDrinkName({ name: selectedImage.name } as Drink)}</h3>
