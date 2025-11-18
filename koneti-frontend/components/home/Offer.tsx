@@ -47,7 +47,7 @@ export default function Offer() {
       text: t('home.offer.services.business.description'),
       features: getFeatures('home.offer.services.business.features'),
       icon: "💼",
-      img: "/biznis.webp",
+      img: "/biznis_prostor.jpg",
       link: "/reservation?type=business",
       linkText: t('home.offer.services.business.linkText'),
       color: "#2C3E50"
