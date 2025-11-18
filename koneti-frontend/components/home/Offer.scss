@@ -113,7 +113,7 @@ $breakpoint-tablet: 768px;
 
 // ===== Main Component =====
 .offer {
-  background: $color-bg-main;
+  background: linear-gradient(145deg, #ffffff 0%, #fdfaf6 30%, #f8f5f1 70%, #f0ebe4 100%);
   padding: $spacing-5xl $spacing-2xl;
   position: relative;
 
