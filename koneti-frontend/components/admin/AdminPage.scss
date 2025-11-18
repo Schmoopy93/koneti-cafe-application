@@ -1,6 +1,7 @@
 //=================================================================
 // AdminPage.scss - Premium Admin Dashboard
 //=================================================================
+@use "sass:color";
 @use '../../styles/main.scss' as *;
 
 // =====================================================================
@@ -273,7 +274,7 @@ $breakpoint-desktop: 1440px;
 
       .pending-count {
         background: $color-pending-bg;
-        color: darken($color-pending, 20%);
+        color: color.adjust($color-pending, $lightness: -20%);
       }
 
       .rejected-count {
