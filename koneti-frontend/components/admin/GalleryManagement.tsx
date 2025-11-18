@@ -52,12 +52,10 @@ const GalleryManagement: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("newest");
-  const [mounted, setMounted] = useState(false); // ADD THIS
   const itemsPerPage = 10;
   const galleryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMounted(true); // ADD THIS
     fetchGalleryImages();
   }, []);
 
@@ -194,12 +192,7 @@ const GalleryManagement: React.FC = () => {
   }
 
   return (
-    <motion.div
-      className="gallery-mgmt-container"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-    >
+    <div className="gallery-mgmt-container">
       <div className="gallery-mgmt-header">
         <div className="gallery-mgmt-header-actions">
           <button
@@ -270,18 +263,13 @@ const GalleryManagement: React.FC = () => {
           ) : (
             <div className="gallery-mgmt-grid">
               {currentImages.map((image, index) => (
-                <motion.div
-                  key={image._id}
-                  className="gallery-mgmt-item"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
+                <div key={image._id} className="gallery-mgmt-item">
                   <div className="gallery-mgmt-image-wrapper">
                     <img
                       src={image.image}
                       alt={getLocalizedText(image.title)}
                       className="gallery-mgmt-image"
+                      loading="lazy"
                     />
                     <div className="gallery-mgmt-overlay">
                       <button
@@ -356,7 +344,7 @@ const GalleryManagement: React.FC = () => {
                       </button>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           )}
@@ -460,7 +448,7 @@ const GalleryManagement: React.FC = () => {
           </div>
         </div>
       )}
-    </motion.div>
+    </div>
   );
 };
 
