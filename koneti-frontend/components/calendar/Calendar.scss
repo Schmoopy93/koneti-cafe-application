@@ -1,3 +1,4 @@
+@use "sass:color";
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 //-----------------------------------------------------------------
@@ -340,19 +341,19 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
           &.pending {
             border-left-color: $warning-color;
             background: rgba(243, 156, 18, 0.08);
-            color: darken($warning-color, 10%);
+            color: color.scale($warning-color, $lightness: -10%);
           }
           
           &.approved {
             border-left-color: $success-color;
             background: rgba(39, 174, 96, 0.08);
-            color: darken($success-color, 10%);
+            color: color.scale($success-color, $lightness: -10%);
           }
           
           &.rejected {
             border-left-color: $danger-color;
             background: rgba(231, 76, 60, 0.08);
-            color: darken($danger-color, 10%);
+            color: color.scale($danger-color, $lightness: -10%);
           }
         }
       }
@@ -378,7 +379,7 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
       }
       
       .btn-approve {
-        background: linear-gradient(135deg, $success-color, lighten($success-color, 10%));
+        background: linear-gradient(135deg, $success-color, color.scale($success-color, $lightness: 10%));
         color: white;
         
         &:hover:not(:disabled) {
@@ -387,7 +388,7 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
       }
       
       .btn-reject {
-        background: linear-gradient(135deg, $danger-color, lighten($danger-color, 10%));
+        background: linear-gradient(135deg, $danger-color, color.scale($danger-color, $lightness: 10%));
         color: white;
         
         &:hover:not(:disabled) {
@@ -400,7 +401,7 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
         color: white;
         
         &:hover:not(:disabled) {
-          background: linear-gradient(135deg, $danger-color, darken($danger-color, 5%));
+          background: linear-gradient(135deg, $danger-color, color.scale($danger-color, $lightness: -5%));
           box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
         }
       }
@@ -466,7 +467,7 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
     }
     
     .btn-confirm {
-      background: linear-gradient(135deg, $danger-color, darken($danger-color, 8%));
+      background: linear-gradient(135deg, $danger-color, color.scale($danger-color, $lightness: -8%));
       color: white;
       
       &:hover:not(:disabled) {

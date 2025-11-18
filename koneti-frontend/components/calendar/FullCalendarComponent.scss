@@ -1,3 +1,4 @@
+@use "sass:color";
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 //-----------------------------------------------------------------
@@ -225,7 +226,7 @@ $shadow-xl: 0 12px 32px rgba(207, 166, 138, 0.25);
     font-family: 'Poppins', sans-serif;
     
     &:hover:not(:disabled) {
-      background: linear-gradient(135deg, darken($primary-color, 5%), darken($secondary-color, 5%));
+      background: linear-gradient(135deg, color.scale($primary-color, $lightness: -5%), color.scale($secondary-color, $lightness: -5%));
       transform: translateY(-2px);
       box-shadow: $shadow-md;
     }
@@ -238,7 +239,7 @@ $shadow-xl: 0 12px 32px rgba(207, 166, 138, 0.25);
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
-      background: linear-gradient(135deg, lighten($primary-color, 15%), lighten($secondary-color, 15%));
+      background: linear-gradient(135deg, color.scale($primary-color, $lightness: 15%), color.scale($secondary-color, $lightness: 15%));
     }
     
     &:focus {
@@ -284,14 +285,14 @@ $shadow-xl: 0 12px 32px rgba(207, 166, 138, 0.25);
   
   // Today button
   .fc-today-button {
-    background: linear-gradient(135deg, $accent-color, darken($accent-color, 10%));
+    background: linear-gradient(135deg, $accent-color, color.scale($accent-color, $lightness: -10%));
     
     &:hover:not(:disabled) {
-      background: linear-gradient(135deg, darken($accent-color, 5%), darken($accent-color, 15%));
+      background: linear-gradient(135deg, color.scale($accent-color, $lightness: -5%), color.scale($accent-color, $lightness: -15%));
     }
     
     &:disabled {
-      background: linear-gradient(135deg, lighten($accent-color, 20%), lighten($accent-color, 10%));
+      background: linear-gradient(135deg, color.scale($accent-color, $lightness: 20%), color.scale($accent-color, $lightness: 10%));
     }
   }
 }
@@ -390,7 +391,7 @@ $shadow-xl: 0 12px 32px rgba(207, 166, 138, 0.25);
       background: rgba(0, 0, 0, 0.02);
       
       .fc-daygrid-day-number {
-        color: lighten($text-primary, 40%);
+        color: color.scale($text-primary, $lightness: 40%);
       }
     }
     
@@ -697,7 +698,7 @@ $shadow-xl: 0 12px 32px rgba(207, 166, 138, 0.25);
     border-radius: 4px;
     
     &:hover {
-      background: linear-gradient(135deg, darken($primary-color, 5%), darken($secondary-color, 5%));
+      background: linear-gradient(135deg, color.scale($primary-color, $lightness: -5%), color.scale($secondary-color, $lightness: -5%));
     }
   }
   
