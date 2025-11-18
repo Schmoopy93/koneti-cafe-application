@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -47,47 +47,54 @@ const Calendar: React.FC = () => {
   const [updatingReservation, setUpdatingReservation] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<Reservation | null>(null);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    fetchReservations();
-  }, []);
+  const renderCountRef = useRef(0);
+  renderCountRef.current++;
 
-  const fetchReservations = async (): Promise<void> => {
+  const isFetchingRef = useRef(false);
+  const isFirstLoadRef = useRef(true);
+
+  const fetchReservations = useCallback(async (opts: { showSpinner?: boolean } = {}): Promise<void> => {
+    const showSpinner = opts.showSpinner ?? isFirstLoadRef.current;
+
+    if (isFetchingRef.current) {
+      return;
+    }
+    isFetchingRef.current = true;
+
+    if (showSpinner && isFirstLoadRef.current && !loading) setLoading(true);
+
     try {
-      if (reservations.length === 0) setLoading(true);
       const response = await apiRequest(`/admin/dashboard`);
-
-      if (!response?.ok) {
-        throw new Error("Failed to fetch reservations");
-      }
-
+      if (!response?.ok) throw new Error("Failed to fetch reservations");
       const data = await response.json();
       const reservationsData = data.reservations as Reservation[];
       setReservations(reservationsData);
     } catch (error) {
-      console.error("Greška pri učitavanju rezervacija:", error);
+      // Optionally handle error
     } finally {
       setLoading(false);
+      isFetchingRef.current = false;
+      isFirstLoadRef.current = false;
     }
-  };
+  }, []);
 
-  const handleReservationAction = async (
-    reservationId: string,
-    action: string
-  ): Promise<void> => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    fetchReservations({ showSpinner: true });
+  }, [fetchReservations]);
+
+  const handleReservationAction = useCallback(async (reservationId: string, action: string): Promise<void> => {
     setUpdatingReservation(reservationId);
 
-    // Optimistic update
-    const updatedReservations = reservations.map(reservation =>
-      reservation._id === reservationId
-        ? { ...reservation, status: action }
-        : reservation
+    setReservations(prev =>
+      prev.map(reservation =>
+        reservation._id === reservationId
+          ? { ...reservation, status: action }
+          : reservation
+      )
     );
-    setReservations(updatedReservations);
 
-    if (selectedEvent && selectedEvent._id === reservationId) {
-      setSelectedEvent({ ...selectedEvent, status: action });
-    }
+    setSelectedEvent(prev => (prev && prev._id === reservationId ? { ...prev, status: action } : prev));
 
     try {
       const response = await apiRequest(`/reservations/${reservationId}`, {
@@ -96,19 +103,15 @@ const Calendar: React.FC = () => {
         useToken: true
       });
 
-      if (response.ok) {
-        await fetchReservations();
-      } else {
-        await fetchReservations();
-      }
+      await fetchReservations({ showSpinner: false });
     } catch (error) {
       await fetchReservations();
     } finally {
       setUpdatingReservation(null);
     }
-  };
+  }, [fetchReservations]);
 
-  const handleDeleteReservation = async (reservationId: string): Promise<void> => {
+  const handleDeleteReservation = useCallback(async (reservationId: string): Promise<void> => {
     setUpdatingReservation(reservationId);
     try {
       const response = await apiRequest(`/reservations/${reservationId}`, {
@@ -117,26 +120,33 @@ const Calendar: React.FC = () => {
       });
 
       if (response.ok) {
-        await fetchReservations();
+        await fetchReservations({ showSpinner: false });
         setSelectedEvent(null);
         setShowDeleteConfirm(null);
-      } else {
-        console.error('Failed to delete reservation');
       }
     } catch (error) {
-      console.error("Error deleting reservation:", error);
+      // Optionally handle error
     } finally {
       setUpdatingReservation(null);
     }
-  };
+  }, [fetchReservations]);
 
-  const handleBackToAdmin = () => {
-    // Get current language from pathname or default to 'sr'
-    const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
+  const handleBackToAdmin = useCallback(() => {
+    const currentLang = typeof window !== 'undefined' && window.location.pathname.startsWith('/en') ? 'en' : 'sr';
     router.push(`/${currentLang}/admin`);
-  };
+  }, [router]);
 
-  if (loading) {
+  const memoizedReservations = useMemo(() => reservations, [reservations]);
+
+  const onEventClick = useCallback((reservation: Reservation) => {
+    setSelectedEvent(reservation);
+  }, []);
+
+  const onStatusUpdate = useCallback((id: string, status: string) => {
+    handleReservationAction(id, status);
+  }, [handleReservationAction]);
+
+  if (loading && reservations.length === 0) {
     return <Spinner size="lg" text={t("adminPage.loading")} />;
   }
 
@@ -185,14 +195,13 @@ const Calendar: React.FC = () => {
       >
         <div className="calendar-wrapper">
           <FullCalendarComponent
-            reservations={reservations}
-            onEventClick={(reservation) => setSelectedEvent(reservation)}
-            onStatusUpdate={handleReservationAction}
+            reservations={memoizedReservations}
+            onEventClick={onEventClick}
+            onStatusUpdate={onStatusUpdate}
           />
         </div>
       </motion.div>
 
-      {/* Event Details Modal */}
       {selectedEvent && (
         <Modal
           show={!!selectedEvent}
@@ -303,7 +312,6 @@ const Calendar: React.FC = () => {
         </Modal>
       )}
 
-      {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
         <div
           className="modal-overlay blur-backdrop"

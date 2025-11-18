@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -30,23 +30,41 @@ interface FullCalendarComponentProps {
   onStatusUpdate: (id: string, status: string) => void;
 }
 
-export default function FullCalendarComponent({
+function FullCalendarComponent({
   reservations,
   onEventClick,
   onStatusUpdate,
 }: FullCalendarComponentProps) {
   const { t } = useTranslation();
-  const [events, setEvents] = useState<any[]>([]);
 
+  // Mount/unmount logs removed
   useEffect(() => {
-    const validReservations = reservations.filter(reservation => reservation && typeof reservation.date === 'string' && reservation.date);
-    const calendarEvents = validReservations.map((reservation) => {
-      // Fix date format - extract just the date part
-      const dateOnly = reservation.date.split('T')[0];
-      const startDateTime = `${dateOnly}T${reservation.time}`;
+    return () => {};
+  }, []);
 
-      // Sanitize data for logging
-      const sanitizedName = reservation.name?.replace(/[^a-zA-Z0-9\s]/g, '') || 'Unknown';
+  // Re-render log removed
+
+  function getStatusColor(status: string) {
+    switch (status) {
+      case "pending":
+        return "#f39c12";
+      case "approved":
+        return "#27ae60";
+      case "rejected":
+        return "#e74c3c";
+      default:
+        return "#95a5a6";
+    }
+  }
+
+  const events = useMemo(() => {
+    const validReservations = reservations.filter(
+      (reservation) => reservation && typeof reservation.date === "string" && reservation.date
+    );
+
+    const calendarEvents = validReservations.map((reservation) => {
+      const dateOnly = reservation.date.split("T")[0];
+      const startDateTime = `${dateOnly}T${reservation.time}`;
 
       return {
         id: reservation._id,
@@ -60,27 +78,16 @@ export default function FullCalendarComponent({
         },
       };
     });
-    setEvents(calendarEvents);
+
+    // calendarEvents log removed
+
+    return calendarEvents;
   }, [reservations]);
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "pending":
-        return "#f39c12";
-      case "approved":
-        return "#27ae60";
-      case "rejected":
-        return "#e74c3c";
-      default:
-        return "#95a5a6";
-    }
-  };
-
-
 
   const handleEventClick = (clickInfo: any) => {
     const reservation = clickInfo.event.extendedProps.reservation;
     if (reservation) {
+      // event clicked log removed
       onEventClick(reservation);
     }
   };
@@ -123,3 +130,5 @@ export default function FullCalendarComponent({
     </div>
   );
 }
+
+export default React.memo(FullCalendarComponent);

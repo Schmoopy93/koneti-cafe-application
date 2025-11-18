@@ -1,5 +1,5 @@
 @use "sass:color";
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 //-----------------------------------------------------------------
 // Variables
@@ -41,7 +41,6 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
   font-size: 0.95rem;
   border: none;
   cursor: pointer;
-  transition: all $transition-fast;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -56,12 +55,7 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
   }
   
   &:not(:disabled):hover {
-    transform: translateY(-2px);
     box-shadow: $shadow-medium;
-  }
-  
-  &:not(:disabled):active {
-    transform: translateY(0);
   }
 }
 
@@ -70,38 +64,6 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(207, 166, 138, 0.2);
-}
-
-//-----------------------------------------------------------------
-// Animations
-//-----------------------------------------------------------------
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
 }
 
 //-----------------------------------------------------------------
@@ -132,7 +94,6 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
     align-items: stretch;
   }
   
-  // Back Button
   .back-button {
     @include button-base;
     background: linear-gradient(135deg, $primary-color, $secondary-color);
@@ -140,11 +101,11 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
     box-shadow: $shadow-light;
     
     svg {
-      transition: transform $transition-fast;
+      // No transition
     }
     
     &:hover:not(:disabled) svg {
-      transform: translateX(-4px);
+      // No transform
     }
     
     @media (max-width: 768px) {
@@ -153,7 +114,6 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
     }
   }
   
-  // Calendar Title
   .calendar-title {
     @include flex-center;
     gap: 1rem;
@@ -185,7 +145,6 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
     }
   }
   
-  // Calendar Stats
   .calendar-stats {
     @include glass-effect;
     padding: 1rem 1.5rem;
@@ -228,10 +187,7 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
 // Calendar Content
 //-----------------------------------------------------------------
 .calendar-content {
-  animation: slideUp 0.6s ease-out;
-  
-  // Minimal wrapper - samo kontejner bez stilova
-  // Svi vizuelni stilovi su u .fullcalendar-wrapper
+  // No animation
   .calendar-wrapper {
     // Prazan wrapper - FullCalendarComponent ima sve stilove
   }
@@ -243,10 +199,8 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
 .event-details-modal {
   position: relative;
   
-  // Package type variants
   &.basic-package {
     border-top: 4px solid $primary-color;
-    
     .event-header svg {
       color: $primary-color;
     }
@@ -254,7 +208,6 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
   
   &.premium-package {
     border-top: 4px solid $secondary-color;
-    
     .event-header svg {
       color: $secondary-color;
     }
@@ -262,13 +215,11 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
   
   &.vip-package {
     border-top: 4px solid $accent-color;
-    
     .event-header svg {
       color: $accent-color;
     }
   }
   
-  // Event Header
   .event-header {
     display: flex;
     align-items: center;
@@ -298,7 +249,6 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
     }
   }
   
-  // Event Body
   .event-body {
     .event-info {
       display: flex;
@@ -316,11 +266,9 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
         background: rgba(207, 166, 138, 0.05);
         border-radius: 8px;
         border-left: 3px solid $primary-color;
-        transition: all $transition-fast;
         
         &:hover {
           background: rgba(207, 166, 138, 0.1);
-          transform: translateX(4px);
         }
         
         strong {
@@ -359,7 +307,6 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
       }
     }
     
-    // Event Actions
     .event-actions {
       display: flex;
       gap: 0.8rem;
@@ -381,19 +328,11 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
       .btn-approve {
         background: linear-gradient(135deg, $success-color, color.scale($success-color, $lightness: 10%));
         color: white;
-        
-        &:hover:not(:disabled) {
-          box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
-        }
       }
       
       .btn-reject {
         background: linear-gradient(135deg, $danger-color, color.scale($danger-color, $lightness: 10%));
         color: white;
-        
-        &:hover:not(:disabled) {
-          box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
-        }
       }
       
       .btn-delete {
@@ -426,7 +365,6 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
   text-align: center;
   box-shadow: $shadow-heavy;
   border: 2px solid rgba(207, 166, 138, 0.3);
-  animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   
   h3 {
     font-size: 1.6rem;
@@ -460,10 +398,6 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
     .btn-cancel {
       background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
       color: $text-secondary;
-      
-      &:hover:not(:disabled) {
-        background: linear-gradient(135deg, #bdc3c7, #95a5a6);
-      }
     }
     
     .btn-confirm {
@@ -505,7 +439,7 @@ $shadow-heavy: 0 20px 60px rgba(207, 166, 138, 0.4);
   min-height: 60vh;
   
   .spinner {
-    animation: pulse 1.5s ease-in-out infinite;
+    // No animation
   }
 }
 
