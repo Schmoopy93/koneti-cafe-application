@@ -26,6 +26,9 @@ import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import toast, { Toaster } from "react-hot-toast";
 
+// =========================
+// TYPES & INTERFACES
+// =========================
 interface FormData {
   type: string;
   subType: string;
@@ -48,29 +51,157 @@ interface PopupData {
 }
 
 type FormErrors = Partial<Record<keyof FormData, string>>;
-type ShakeFields = Partial<
-  Record<keyof FormData | "type" | "subType", boolean>
->;
+type ShakeFields = Partial<Record<keyof FormData | "type" | "subType", boolean>>;
 
+interface PackageConfig {
+  id: string;
+  label: string;
+  icon: any;
+  colorClass: string;
+  translationKey: string;
+  daysRequired: number;
+}
+
+interface TypeConfig {
+  id: string;
+  label: string;
+  icon: any;
+  translationKey: string;
+}
+
+// =========================
+// CONSTANTS & CONFIGURATION
+// =========================
+const INITIAL_FORM_STATE: FormData = {
+  type: "",
+  subType: "",
+  name: "",
+  email: "",
+  phone: "",
+  date: "",
+  time: "",
+  guests: 0,
+  message: "",
+  duration: 2,
+};
+
+const PACKAGE_CONFIG: Record<string, PackageConfig[]> = {
+  business: [
+    {
+      id: "business_basic",
+      label: "basic",
+      icon: faMedal,
+      colorClass: "silver",
+      translationKey: "business_basic",
+      daysRequired: 2,
+    },
+    {
+      id: "business_high",
+      label: "premium",
+      icon: faStar,
+      colorClass: "gold",
+      translationKey: "business_premium",
+      daysRequired: 2,
+    },
+    {
+      id: "business_corporate",
+      label: "corporate_day",
+      icon: faCrown,
+      colorClass: "vip",
+      translationKey: "business_corporate",
+      daysRequired: 4,
+    },
+  ],
+  experience: [
+    {
+      id: "experience_start",
+      label: "experience_basic",
+      icon: faMedal,
+      colorClass: "silver",
+      translationKey: "experience_basic",
+      daysRequired: 2,
+    },
+    {
+      id: "experience_classic",
+      label: "experience_premium",
+      icon: faStar,
+      colorClass: "gold",
+      translationKey: "experience_premium",
+      daysRequired: 2,
+    },
+    {
+      id: "experience_celebration",
+      label: "experience_vip",
+      icon: faCrown,
+      colorClass: "vip",
+      translationKey: "experience_vip",
+      daysRequired: 7,
+    },
+  ],
+};
+
+const TYPE_CONFIG: TypeConfig[] = [
+  {
+    id: "business",
+    label: "business",
+    icon: faLaptop,
+    translationKey: "biznis",
+  },
+  {
+    id: "experience",
+    label: "experience",
+    icon: faChampagneGlasses,
+    translationKey: "koneti",
+  },
+];
+
+// =========================
+// HELPER FUNCTIONS
+// =========================
+const getPackageBySubType = (subType: string): PackageConfig | undefined => {
+  for (const packages of Object.values(PACKAGE_CONFIG)) {
+    const found = packages.find((pkg) => pkg.id === subType);
+    if (found) return found;
+  }
+  return undefined;
+};
+
+const getTranslationKey = (id: string): string => {
+  // For main types
+  if (id === "business" || id === "experience") return id;
+  
+  // For packages
+  const pkg = getPackageBySubType(id);
+  return pkg?.translationKey || id;
+};
+
+const calculateMinDate = (daysRequired: number): Date => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const minDate = new Date(today);
+  minDate.setDate(today.getDate() + daysRequired);
+  return minDate;
+};
+
+const getDateErrorKey = (daysRequired: number): string => {
+  const errorKeys: Record<number, string> = {
+    2: "dateMinimum2Days",
+    4: "dateMinimum4Days",
+    7: "dateMinimum7Days",
+  };
+  return errorKeys[daysRequired] || "date";
+};
+
+// =========================
+// MAIN COMPONENT
+// =========================
 export default function ReservationForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t } = useTranslation();
   const formRef = useRef<HTMLDivElement>(null);
 
-  const [formData, setFormData] = useState<FormData>({
-    type: "",
-    subType: "",
-    name: "",
-    email: "",
-    phone: "",
-    date: "",
-    time: "",
-    guests: 0,
-    message: "",
-    duration: 2,
-  });
-
+  const [formData, setFormData] = useState<FormData>(INITIAL_FORM_STATE);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [showEventForm, setShowEventForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -79,6 +210,9 @@ export default function ReservationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
 
+  // =========================
+  // EFFECTS
+  // =========================
   useEffect(() => {
     const typeParam = searchParams.get("type");
     if (typeParam && (typeParam === "business" || typeParam === "experience")) {
@@ -86,65 +220,9 @@ export default function ReservationForm() {
     }
   }, [searchParams]);
 
-  const types = [
-    {
-      id: "business",
-      label: t("home.reservation.types.business"),
-      icon: faLaptop,
-    },
-    {
-      id: "experience",
-      label: t("home.reservation.types.experience"),
-      icon: faChampagneGlasses,
-    },
-  ];
-
-  const subCategories: Record<
-    string,
-    { id: string; label: string; icon: any; colorClass: string }[]
-  > = {
-    business: [
-      {
-        id: "business_basic",
-        label: t("home.reservation.packages.basic"),
-        icon: faMedal,
-        colorClass: "silver",
-      },
-      {
-        id: "business_high",
-        label: t("home.reservation.packages.premium"),
-        icon: faStar,
-        colorClass: "gold",
-      },
-      {
-        id: "business_corporate",
-        label: t("home.reservation.packages.corporate_day"),
-        icon: faCrown,
-        colorClass: "vip",
-      },
-    ],
-    experience: [
-      {
-        id: "experience_start",
-        label: t("home.reservation.packages.experience_basic"),
-        icon: faMedal,
-        colorClass: "silver",
-      },
-      {
-        id: "experience_classic",
-        label: t("home.reservation.packages.experience_premium"),
-        icon: faStar,
-        colorClass: "gold",
-      },
-      {
-        id: "experience_celebration",
-        label: t("home.reservation.packages.experience_vip"),
-        icon: faCrown,
-        colorClass: "vip",
-      },
-    ],
-  };
-
+  // =========================
+  // HANDLERS
+  // =========================
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -165,15 +243,8 @@ export default function ReservationForm() {
 
   const handleTypeSelect = (type: string) => {
     setFormData({
+      ...INITIAL_FORM_STATE,
       type,
-      subType: "",
-      name: "",
-      email: "",
-      phone: "",
-      date: "",
-      time: "",
-      guests: 0,
-      message: "",
       duration: type === "business" ? 2 : 3,
     });
     setFormErrors({});
@@ -190,17 +261,7 @@ export default function ReservationForm() {
 
   const openInfo = (type: string, e: MouseEvent) => {
     e.stopPropagation();
-    const typeToKey: Record<string, string> = {
-      business: "business",
-      experience: "experience",
-      business_basic: "basic",
-      business_high: "premium",
-      business_corporate: "corporate_day",
-      experience_start: "experience_basic",
-      experience_classic: "experience_premium",
-      experience_celebration: "experience_vip",
-    };
-    const key = typeToKey[type] || type;
+    const key = getTranslationKey(type);
     const data: PopupData = {
       title: t(`home.reservation.popups.${key}.title`),
       description: t(`home.reservation.popups.${key}.description`),
@@ -218,57 +279,47 @@ export default function ReservationForm() {
 
   const validateForm = (): FormErrors => {
     const errors: FormErrors = {};
+
+    // Required fields validation
     if (!formData.type) errors.type = t("home.reservation.errors.type");
-    if (!formData.subType)
-      errors.subType = t("home.reservation.errors.subType");
+    if (!formData.subType) errors.subType = t("home.reservation.errors.subType");
     if (!formData.name) errors.name = t("home.reservation.errors.name");
     if (!formData.email) errors.email = t("home.reservation.errors.email");
     if (!formData.phone) errors.phone = t("home.reservation.errors.phone");
-    if (!formData.date) {
-      errors.date = t("home.reservation.errors.date");
-    } else {
-      const selectedDate = new Date(formData.date);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      let daysRequired = 0;
-      if (
-        formData.subType === "business_basic" ||
-        formData.subType === "business_high" ||
-        formData.subType === "experience_start" ||
-        formData.subType === "experience_classic"
-      ) {
-        daysRequired = 2; // ovi paketi se moraju rezervisati barem 2 dana ranije
-      } else if (formData.subType === "business_corporate") {
-        daysRequired = 4; // corporate dan treba rezervisati 4 dana unapred
-      } else if (formData.subType === "experience_celebration") {
-        daysRequired = 7; // VIP iskustvo mora 7 dana ranije
-      }
-
-      if (daysRequired > 0) {
-        const minDate = new Date(today);
-        minDate.setDate(today.getDate() + daysRequired);
-
-        if (selectedDate < minDate) {
-          if (daysRequired === 2) {
-            errors.date = t("home.reservation.errors.dateMinimum2Days");
-          } else if (daysRequired === 4) {
-            errors.date = t("home.reservation.errors.dateMinimum4Days");
-          } else if (daysRequired === 7) {
-            errors.date = t("home.reservation.errors.dateMinimum7Days");
-          }
-        }
-      }
-    }
     if (!formData.time) errors.time = t("home.reservation.errors.time");
     if (!formData.guests || formData.guests < 1)
       errors.guests = t("home.reservation.errors.guests");
+
+    // Date validation with package-specific requirements
+    if (!formData.date) {
+      errors.date = t("home.reservation.errors.date");
+    } else {
+      const pkg = getPackageBySubType(formData.subType);
+      if (pkg && pkg.daysRequired > 0) {
+        const selectedDate = new Date(formData.date);
+        const minDate = calculateMinDate(pkg.daysRequired);
+
+        if (selectedDate < minDate) {
+          const errorKey = getDateErrorKey(pkg.daysRequired);
+          errors.date = t(`home.reservation.errors.${errorKey}`);
+        }
+      }
+    }
+
     return errors;
+  };
+
+  const resetForm = () => {
+    setFormData(INITIAL_FORM_STATE);
+    setFormErrors({});
+    setShowEventForm(false);
+    setCurrentStep(1);
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const errors = validateForm();
+
     if (Object.keys(errors).length) {
       setFormErrors(errors);
       triggerShake(Object.keys(errors));
@@ -288,22 +339,7 @@ export default function ReservationForm() {
         throw new Error(errorData.message || "Greška pri slanju rezervacije!");
       }
 
-      setFormData({
-        type: "",
-        subType: "",
-        name: "",
-        email: "",
-        phone: "",
-        date: "",
-        time: "",
-        guests: 1,
-        message: "",
-        duration: 2,
-      });
-      setFormErrors({});
-      setShowEventForm(false);
-      setCurrentStep(1);
-
+      resetForm();
       toast.success(t("home.reservation.success.toast"));
 
       setPopupData({
@@ -320,16 +356,158 @@ export default function ReservationForm() {
     }
   };
 
+  const handleStepClick = (step: number) => {
+    if (step < currentStep) {
+      setCurrentStep(step);
+    }
+  };
+
+  // =========================
+  // RENDER HELPERS
+  // =========================
+  const renderTypeCard = ({ id, label, icon, translationKey }: TypeConfig) => (
+    <div
+      key={id}
+      className={`reservation-form-type-card ${
+        formData.type === id ? "reservation-form-selected" : ""
+      } ${shakeFields.type ? "reservation-form-shake" : ""}`}
+      onClick={() => handleTypeSelect(id)}
+    >
+      <div className="reservation-form-card-header">
+        <FontAwesomeIcon icon={icon} className="reservation-form-type-icon" />
+        <FontAwesomeIcon
+          icon={faInfoCircle}
+          className="reservation-form-info-icon"
+          data-tooltip-id="reservation-tooltip"
+          data-tooltip-content={t("home.reservation.tooltip")}
+          data-tooltip-hidden={showPopup}
+          onClick={(e) => openInfo(id, e)}
+        />
+      </div>
+      <div className="reservation-form-card-content">
+        <h3 className="reservation-form-card-title">
+          {t(`home.reservation.types.${label}`)}
+        </h3>
+        <p className="reservation-form-card-description">
+          {t(`home.reservation.descriptions.${translationKey}`)}
+        </p>
+      </div>
+    </div>
+  );
+
+  const renderPackageCard = ({
+    id,
+    label,
+    icon,
+    colorClass,
+    translationKey,
+  }: PackageConfig) => (
+    <div
+      key={id}
+      className={`reservation-form-subtype-card ${
+        formData.subType === id ? "reservation-form-selected" : ""
+      } ${shakeFields.subType ? "reservation-form-shake" : ""} reservation-form-${colorClass}`}
+      onClick={() => handleSubTypeSelect(id)}
+    >
+      <div className="reservation-form-card-header">
+        <FontAwesomeIcon
+          icon={icon}
+          className={`reservation-form-type-icon reservation-form-${colorClass}`}
+        />
+        <FontAwesomeIcon
+          icon={faInfoCircle}
+          className="reservation-form-info-icon"
+          data-tooltip-id="reservation-tooltip"
+          data-tooltip-content={t("home.reservation.tooltip")}
+          data-tooltip-hidden={showPopup}
+          onClick={(e) => openInfo(id, e)}
+        />
+      </div>
+      <div className="reservation-form-card-content">
+        <h3 className="reservation-form-card-title">
+          {t(`home.reservation.packages.${label}`)}
+        </h3>
+        <p className="reservation-form-card-description">
+          {t(`home.reservation.packageDescriptions.${translationKey}`)}
+        </p>
+        <div className="reservation-form-card-price">
+          {t(`home.reservation.packagePrices.${translationKey}`)}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderFormField = (field: string) => {
+    const fieldConfig: Record<string, { type: string; min?: number }> = {
+      email: { type: "email" },
+      phone: { type: "tel" },
+      date: { type: "date" },
+      time: { type: "time" },
+      guests: { type: "number", min: 1 },
+      name: { type: "text" },
+    };
+
+    const config = fieldConfig[field] || { type: "text" };
+
+    return (
+      <div key={field}>
+        <input
+          name={field}
+          type={config.type}
+          min={config.min}
+          value={
+            field === "guests"
+              ? formData.guests === 0
+                ? ""
+                : formData.guests
+              : (formData as any)[field]
+          }
+          onChange={handleChange}
+          placeholder={t(`home.reservation.form.${field}`)}
+          className={
+            shakeFields[field as keyof ShakeFields]
+              ? "reservation-form-shake"
+              : ""
+          }
+        />
+        {formErrors[field as keyof FormErrors] && (
+          <span className="reservation-form-error">
+            {formErrors[field as keyof FormErrors]}
+          </span>
+        )}
+      </div>
+    );
+  };
+
+  const renderStepIndicator = (step: number) => {
+    const stepLabels = ["type", "package", "details"];
+    return (
+      <div
+        key={step}
+        className={`reservation-form-indicator ${
+          currentStep === step ? "reservation-form-active" : ""
+        } ${step < currentStep ? "reservation-form-clickable" : ""}`}
+        onClick={() => handleStepClick(step)}
+      >
+        <span className="reservation-form-step-number">{step}</span>
+        <span className="reservation-form-step-label">
+          {t(`home.reservation.steps.${stepLabels[step - 1]}`)}
+        </span>
+      </div>
+    );
+  };
+
+  // =========================
+  // RENDER
+  // =========================
+  const sliderTransform = `translateX(-${(currentStep - 1) * 33.333}%)`;
+
   return (
     <div className="reservation-form-wrapper" ref={formRef}>
       <Toaster position="top-right" reverseOrder={false} />
 
-      {/* <h2 className="reservation-form-section-title">
-        {t("home.reservation.title1")}{" "}
-        <span className="reservation-form-highlight">{t("home.reservation.title2")}</span>
-      </h2> */}
-
       <form className="reservation-form" onSubmit={handleSubmit}>
+        {/* Intro Text */}
         <div className="reservation-form-intro-text">
           <p>
             <span className="reservation-form-highlight">
@@ -345,161 +523,56 @@ export default function ReservationForm() {
           </p>
         </div>
 
+        {/* Step Indicators */}
         <div className="reservation-form-step-slider">
           <div className="reservation-form-slider-indicators">
-            {[1, 2, 3].map((step) => (
-              <div
-                key={step}
-                className={`reservation-form-indicator ${currentStep === step ? "reservation-form-active" : ""} ${
-                  step < currentStep ? "reservation-form-clickable" : ""
-                }`}
-                onClick={() => step < currentStep && setCurrentStep(step)}
-              >
-                <span className="reservation-form-step-number">{step}</span>
-                <span className="reservation-form-step-label">
-                  {t(
-                    `home.reservation.steps.${
-                      step === 1 ? "type" : step === 2 ? "package" : "details"
-                    }`
-                  )}
-                </span>
-              </div>
-            ))}
+            {[1, 2, 3].map(renderStepIndicator)}
           </div>
         </div>
 
+        {/* Slider Container */}
         <div className="reservation-form-slider-container">
           <div
             className="reservation-form-slider-content"
-            style={{ transform: `translateX(-${(currentStep - 1) * 33.333}%)` }}
+            style={{ transform: sliderTransform }}
           >
+            {/* Step 1: Type Selection */}
             <div className="reservation-form-slide">
               <label className="reservation-form-section-label">
                 {t("home.reservation.typeLabel")}
               </label>
               <div className="reservation-form-type-grid">
-                {types.map(({ id, label, icon }) => (
-                  <div
-                    key={id}
-                    className={`reservation-form-type-card ${
-                      formData.type === id ? "reservation-form-selected" : ""
-                    } ${shakeFields.type ? "reservation-form-shake" : ""}`}
-                    onClick={() => handleTypeSelect(id)}
-                  >
-                    <div className="reservation-form-card-header">
-                      <FontAwesomeIcon icon={icon} className="reservation-form-type-icon" />
-                      <FontAwesomeIcon
-                        icon={faInfoCircle}
-                        className="reservation-form-info-icon"
-                        data-tooltip-id={`tooltip-${id}`}
-                        data-tooltip-content={t("home.reservation.tooltip")}
-                        data-tooltip-hidden={showPopup}
-                        onClick={(e) => openInfo(id, e)}
-                      />
-                    </div>
-                    <div className="reservation-form-card-content">
-                      <h3 className="reservation-form-card-title">{label}</h3>
-                      <p className="reservation-form-card-description">
-                        {t(
-                          `home.reservation.descriptions.${
-                            id === "business" ? "biznis" : "koneti"
-                          }`
-                        )}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                {TYPE_CONFIG.map(renderTypeCard)}
               </div>
               {formErrors.type && (
                 <span className="reservation-form-error">{formErrors.type}</span>
               )}
             </div>
 
+            {/* Step 2: Package Selection */}
             <div className="reservation-form-slide">
               <label className="reservation-form-section-label">
                 {t("home.reservation.packageLabel")}
               </label>
               {formData.type && (
                 <div
-                  key={formData.type}
                   className={
-                    subCategories[formData.type].length === 3
+                    PACKAGE_CONFIG[formData.type].length === 3
                       ? "reservation-form-type-grid-three"
                       : "reservation-form-type-grid-two"
                   }
                 >
-                  {subCategories[formData.type].map(
-                    ({ id, label, icon, colorClass }) => (
-                      <div
-                        key={id}
-                        className={`reservation-form-subtype-card ${
-                          formData.subType === id ? "reservation-form-selected" : ""
-                        } ${shakeFields.subType ? "reservation-form-shake" : ""} reservation-form-${colorClass}`}
-                        onClick={() => handleSubTypeSelect(id)}
-                      >
-                        <div className="reservation-form-card-header">
-                          <FontAwesomeIcon
-                            icon={icon}
-                            className={`reservation-form-type-icon reservation-form-${colorClass}`}
-                          />
-                          <FontAwesomeIcon
-                            icon={faInfoCircle}
-                            className="reservation-form-info-icon"
-                            data-tooltip-id={`tooltip-${id}`}
-                            data-tooltip-content={t("home.reservation.tooltip")}
-                            data-tooltip-hidden={showPopup}
-                            onClick={(e) => openInfo(id, e)}
-                          />
-                        </div>
-                        <div className="reservation-form-card-content">
-                          <h3 className="reservation-form-card-title">{label}</h3>
-
-                          <p className="reservation-form-card-description">
-                            {t(
-                              `home.reservation.packageDescriptions.${
-                                id.includes("business")
-                                  ? id.includes("basic")
-                                    ? "business_basic"
-                                    : id.includes("high")
-                                    ? "business_premium"
-                                    : "business_corporate"
-                                  : id.includes("start")
-                                  ? "experience_basic"
-                                  : id.includes("classic")
-                                  ? "experience_premium"
-                                  : "experience_vip"
-                              }`
-                            )}
-                          </p>
-
-                          <div className="reservation-form-card-price">
-                            {t(
-                              `home.reservation.packagePrices.${
-                                id.includes("business")
-                                  ? id.includes("basic")
-                                    ? "business_basic"
-                                    : id.includes("high")
-                                    ? "business_premium"
-                                    : "business_corporate"
-                                  : id.includes("start")
-                                  ? "experience_basic"
-                                  : id.includes("classic")
-                                  ? "experience_premium"
-                                  : "experience_vip"
-                              }`
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  )}
+                  {PACKAGE_CONFIG[formData.type].map(renderPackageCard)}
                 </div>
               )}
               {formErrors.subType && (
-                <span className="reservation-form-error">{formErrors.subType}</span>
+                <span className="reservation-form-error">
+                  {formErrors.subType}
+                </span>
               )}
             </div>
 
+            {/* Step 3: Details Form */}
             <div className="reservation-form-slide">
               <label className="reservation-form-section-label">
                 {t("home.reservation.steps.details")}
@@ -507,57 +580,21 @@ export default function ReservationForm() {
               {showEventForm && (
                 <div className="reservation-form-event-form">
                   {["name", "email", "phone", "date", "time", "guests"].map(
-                    (field) => (
-                      <div key={field}>
-                        <input
-                          name={field}
-                          type={
-                            field === "email"
-                              ? "email"
-                              : field === "phone"
-                              ? "tel"
-                              : field === "date"
-                              ? "date"
-                              : field === "time"
-                              ? "time"
-                              : field === "guests"
-                              ? "number"
-                              : "text"
-                          }
-                          min={field === "guests" ? 1 : undefined}
-                          value={
-                            field === "guests"
-                              ? formData.guests === 0
-                                ? ""
-                                : formData.guests
-                              : (formData as any)[field]
-                          }
-                          onChange={handleChange}
-                          placeholder={t(`home.reservation.form.${field}`)}
-                          className={
-                            shakeFields[field as keyof ShakeFields]
-                              ? "reservation-form-shake"
-                              : ""
-                          }
-                        />
-                        {formErrors[field as keyof FormErrors] && (
-                          <span className="reservation-form-error">
-                            {formErrors[field as keyof FormErrors]}
-                          </span>
-                        )}
-                      </div>
-                    )
+                    renderFormField
                   )}
-
                   <textarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     placeholder={t("home.reservation.form.message")}
-                    className={shakeFields.message ? "reservation-form-shake" : ""}
+                    className={
+                      shakeFields.message ? "reservation-form-shake" : ""
+                    }
                   />
                   {formErrors.message && (
-                    <span className="reservation-form-error">{formErrors.message}</span>
+                    <span className="reservation-form-error">
+                      {formErrors.message}
+                    </span>
                   )}
                 </div>
               )}
@@ -565,8 +602,13 @@ export default function ReservationForm() {
           </div>
         </div>
 
+        {/* Submit Button */}
         {formData.subType && (
-          <button type="submit" className="reservation-form-btn-submit" disabled={isSubmitting}>
+          <button
+            type="submit"
+            className="reservation-form-btn-submit"
+            disabled={isSubmitting}
+          >
             {isSubmitting ? (
               <Spinner size="sm" text={t("home.reservation.submitting")} />
             ) : (
@@ -576,14 +618,10 @@ export default function ReservationForm() {
         )}
       </form>
 
-
-
+      {/* Popup Modal */}
       {showPopup && (
         <div className="reservation-popup-backdrop" onClick={closePopup}>
-          <div
-            className="reservation-popup"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="reservation-popup" onClick={(e) => e.stopPropagation()}>
             <button className="reservation-form-close-btn" onClick={closePopup}>
               ×
             </button>
@@ -599,20 +637,16 @@ export default function ReservationForm() {
                 ))}
               </ul>
             )}
-            {popupData.price && <p className="reservation-form-price">{popupData.price}</p>}
+            {popupData.price && (
+              <p className="reservation-form-price">{popupData.price}</p>
+            )}
             {popupData.extraInfo && <p>{popupData.extraInfo}</p>}
           </div>
         </div>
       )}
 
-      <Tooltip id="tooltip-business" place="top" offset={15} />
-      <Tooltip id="tooltip-experience" place="top" offset={15} />
-      <Tooltip id="tooltip-business_basic" place="top" offset={15} />
-      <Tooltip id="tooltip-business_high" place="top" offset={15} />
-      <Tooltip id="tooltip-business_corporate" place="top" offset={15} />
-      <Tooltip id="tooltip-experience_start" place="top" offset={15} />
-      <Tooltip id="tooltip-experience_classic" place="top" offset={15} />
-      <Tooltip id="tooltip-experience_celebration" place="top" offset={15} />
+      {/* Single Tooltip for all info icons */}
+      <Tooltip id="reservation-tooltip" place="top" offset={15} />
     </div>
   );
 }
