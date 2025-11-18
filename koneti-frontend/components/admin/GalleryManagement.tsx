@@ -15,12 +15,11 @@ import {
   faChevronRight,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
-import { motion } from "framer-motion";
 import Spinner from "../ui/Spinner";
 import Modal from "../ui/Modal";
 import AddGalleryImage from "../forms/AddGalleryImage";
-import { apiRequest, API_URL } from "@/utils/api";
-import toast from "react-hot-toast";
+import { apiRequest } from "@/utils/api";
+import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import "./GalleryManagement.scss";
 
@@ -37,7 +36,7 @@ interface GalleryImage {
   image: string;
   cloudinary_id: string;
   order: number;
-  showOnAbout: boolean;  // ← DODAJ
+  showOnAbout: boolean;
   createdAt: string;
 }
 
@@ -105,7 +104,6 @@ const GalleryManagement: React.FC = () => {
 
   const goToPage = (page: number) => {
     setCurrentPage(page);
-    // Scroll to top after state update
     setTimeout(() => {
       if (galleryRef.current) {
         galleryRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -116,7 +114,6 @@ const GalleryManagement: React.FC = () => {
   const goToPrevious = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
-      // Scroll to top after state update
       setTimeout(() => {
         if (galleryRef.current) {
           galleryRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -128,7 +125,6 @@ const GalleryManagement: React.FC = () => {
   const goToNext = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
-      // Scroll to top after state update
       setTimeout(() => {
         if (galleryRef.current) {
           galleryRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -161,9 +157,17 @@ const GalleryManagement: React.FC = () => {
     }
   };
 
-  // Dodaj funkciju za toggle:
   const toggleShowOnAbout = async (id: string, currentStatus: boolean) => {
     try {
+      if (!currentStatus) {
+        const imagesOnAbout = images.filter(img => img.showOnAbout).length;
+        
+        if (imagesOnAbout >= 10) {
+          toast.error(t("admin.galleryManagement.maxImagesError"));
+          return;
+        }
+      }
+
       const response = await apiRequest(`/gallery/${id}/toggle-about`, {
         method: "PATCH",
         useToken: true,
@@ -178,8 +182,11 @@ const GalleryManagement: React.FC = () => {
             : t("admin.galleryManagement.unmarkedForAbout")
         );
       } else {
-        const error = await response.json();
-        toast.error(error.message || t("admin.galleryManagement.toggleError"));
+        if (response.status === 400) {
+          toast.error(t("admin.galleryManagement.maxImagesError"));
+        } else {
+          toast.error(t("admin.galleryManagement.toggleError"));
+        }
       }
     } catch (error) {
       console.error("Error toggling showOnAbout:", error);
@@ -262,7 +269,7 @@ const GalleryManagement: React.FC = () => {
             </div>
           ) : (
             <div className="gallery-mgmt-grid">
-              {currentImages.map((image, index) => (
+              {currentImages.map((image) => (
                 <div key={image._id} className="gallery-mgmt-item">
                   <div className="gallery-mgmt-image-wrapper">
                     <img
@@ -414,7 +421,7 @@ const GalleryManagement: React.FC = () => {
             setShowAddModal(false);
             setSelectedImage(null);
           }}
-          onSuccess={(image) => {
+          onSuccess={() => {
             fetchGalleryImages();
             setShowAddModal(false);
             setSelectedImage(null);
@@ -448,6 +455,9 @@ const GalleryManagement: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Toast Notifications */}
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };

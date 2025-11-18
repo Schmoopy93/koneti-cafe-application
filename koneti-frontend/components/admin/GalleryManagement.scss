@@ -756,6 +756,69 @@ $breakpoint-desktop: 1400px;
 }
 
 /* =====================================================================
+   PAGINATION
+   ===================================================================== */
+.gallery-mgmt-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: $spacing-2xl;
+  margin-bottom: $spacing-xl;
+}
+
+.gallery-mgmt-pagination-btn {
+  background: linear-gradient(145deg, 
+    rgba(255, 255, 255, 0.95),
+    rgba(248, 244, 240, 0.9));
+  border: 2px solid rgba(207, 166, 138, 0.25);
+  color: $color-text-primary;
+  padding: 10px 16px;
+  min-width: 44px;
+  border-radius: $radius-md;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 2px 8px rgba(207, 166, 138, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.gallery-mgmt-active {
+    background: linear-gradient(135deg, $color-accent-1, $color-accent-2);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(207, 166, 138, 0.3);
+    transform: translateY(-2px);
+  }
+
+  &:hover:not(:disabled):not(.gallery-mgmt-active) {
+    background: linear-gradient(135deg,
+      rgba(207, 166, 138, 0.15),
+      rgba(212, 165, 116, 0.1));
+    border-color: $color-accent-1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(207, 166, 138, 0.2);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: rgba(248, 244, 240, 0.5);
+    border-color: rgba(207, 166, 138, 0.1);
+  }
+
+  svg {
+    font-size: 0.9rem;
+  }
+}
+
+/* =====================================================================
    RESPONSIVE — TABLET & MOBILE
    ===================================================================== */
 @media (max-width: $breakpoint-tablet) {
@@ -1175,7 +1238,6 @@ $breakpoint-desktop: 1400px;
   }
 }
 
-// Dodaj u d:\Projekti\koneti-cafe-application\koneti-frontend\components\admin\GalleryManagement.scss
 
 .gallery-mgmt-title-row {
   display: flex;
@@ -1223,19 +1285,27 @@ $breakpoint-desktop: 1400px;
 }
 
 /* =====================================================================
-   ABOUT PAGE TOGGLE CHECKBOX
+   ABOUT PAGE TOGGLE CHECKBOX - POBOLJŠAN DIZAJN
    ===================================================================== */
 .gallery-mgmt-about-toggle {
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 12px;
+  margin-bottom: 12px;
   position: relative;
   z-index: 2;
+  padding: 10px;
+  background: rgba(207, 166, 138, 0.05);
+  border-radius: $radius-md;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(207, 166, 138, 0.1);
+  }
 }
 
 .gallery-mgmt-checkbox-label {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
   user-select: none;
   transition: all 0.3s ease;
@@ -1243,7 +1313,8 @@ $breakpoint-desktop: 1400px;
   &:hover {
     .gallery-mgmt-checkbox-custom {
       border-color: $color-accent-1;
-      box-shadow: 0 2px 8px rgba(207, 166, 138, 0.2);
+      box-shadow: 0 0 0 3px rgba(207, 166, 138, 0.15);
+      transform: scale(1.05);
     }
   }
 }
@@ -1258,6 +1329,7 @@ $breakpoint-desktop: 1400px;
   &:checked ~ .gallery-mgmt-checkbox-custom {
     background: linear-gradient(135deg, #4CAF50, #66BB6A);
     border-color: #4CAF50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
 
     &::after {
       display: block;
@@ -1267,36 +1339,42 @@ $breakpoint-desktop: 1400px;
 
 .gallery-mgmt-checkbox-custom {
   position: relative;
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(207, 166, 138, 0.3);
-  border-radius: 4px;
-  background: linear-gradient(135deg,
-    rgba(255, 255, 255, 0.9),
-    rgba(248, 244, 240, 0.8));
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(207, 166, 138, 0.4);
+  border-radius: 6px;
+  background: linear-gradient(145deg,
+    rgba(255, 255, 255, 1),
+    rgba(248, 244, 240, 0.95));
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   flex-shrink: 0;
+  box-shadow: 
+    0 2px 4px rgba(207, 166, 138, 0.1),
+    inset 0 1px 2px rgba(0, 0, 0, 0.05);
 
   /* Checkmark */
   &::after {
     content: "";
     position: absolute;
     display: none;
-    left: 5px;
-    top: 1px;
-    width: 6px;
-    height: 11px;
+    left: 6px;
+    top: 2px;
+    width: 7px;
+    height: 13px;
     border: solid white;
-    border-width: 0 2px 2px 0;
+    border-width: 0 3px 3px 0;
     transform: rotate(45deg);
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
   }
 }
 
 .gallery-mgmt-checkbox-text {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: $color-text-secondary;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: $color-text-primary;
   transition: color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 
   .gallery-mgmt-checkbox-input:checked ~ & {
     color: #4CAF50;

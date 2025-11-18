@@ -379,6 +379,9 @@
       "noDescription": "Bez opisa",
       "noImages": "Nema slika",
       "noImagesDesc": "Još uvek nema slika u galeriji. Dodajte prvu sliku da započnete.",
+      "maxImagesError": "Maksimalno možete označiti 10 slika za About stranicu!",
+      
+
       "of": "od",
       "order": "Redosled",
       "page": "Stranica",

@@ -371,6 +371,7 @@
       "noDescription": "No description",
       "noImages": "No images",
       "noImagesDesc": "There are no images in the gallery yet. Add the first image to get started.",
+      "maxImagesError": "You can mark a maximum of 10 images for the About page!",
       "of": "of",
       "order": "Order",
       "page": "Page",
