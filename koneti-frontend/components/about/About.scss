@@ -1137,3 +1137,149 @@ body.modal-open {
     }
   }
 }
+
+// =========================
+// NOVA SEKCIJA - O NAMA
+// =========================
+.about-welcome-section {
+  max-width: 1200px;
+  margin: 0 auto $spacing-4xl;
+  padding: $spacing-3xl $spacing-3xl $spacing-2xl;
+  background: linear-gradient(135deg, $color-white 0%, $color-bg-lighter 55%, $color-white 100%);
+  border: 3px solid rgba($color-primary, 0.25);
+  border-radius: $radius-3xl;
+  box-shadow: $shadow-lg;
+  position: relative;
+  overflow: hidden;
+  animation: slideUp 0.75s ease;
+  @include gradient-border-top(5px);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 85% 15%, rgba($color-primary-light,0.12), transparent 70%);
+    pointer-events: none;
+  }
+
+  @media (max-width: $breakpoint-tablet-portrait) {
+    padding: $spacing-2xl $spacing-xl;
+    margin-bottom: $spacing-3xl;
+  }
+
+  @media (max-width: $breakpoint-mobile-small) {
+    padding: $spacing-xl $spacing-lg;
+    margin-bottom: $spacing-2xl;
+  }
+}
+
+.welcome-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.welcome-intro {
+  font-size: 1.25rem;
+  line-height: 1.9;
+  font-weight: 600;
+  color: $color-text-secondary;
+  margin: 0 0 $spacing-2xl;
+  background: linear-gradient(90deg, $color-text-dark, $color-primary 70%, $color-text-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  @media (max-width: $breakpoint-mobile-small) {
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+}
+
+.welcome-offers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: $spacing-xl;
+  margin-bottom: $spacing-2xl;
+
+  @media (max-width: $breakpoint-mobile-small) {
+    gap: $spacing-lg;
+  }
+}
+
+.offer-card {
+  position: relative;
+  padding: $spacing-xl $spacing-xl $spacing-lg;
+  background: linear-gradient(135deg, $color-bg-secondary 0%, $color-bg-tertiary 100%);
+  border-radius: $radius-2xl;
+  border: 2px solid rgba($color-primary, 0.35);
+  box-shadow: $shadow-md;
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-lg;
+  transition: transform $transition-base, box-shadow $transition-base, background $transition-smooth;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: $shadow-xl;
+    background: linear-gradient(135deg, $color-primary-lightest, $color-bg-lighter);
+  }
+
+  @media (max-width: $breakpoint-mobile-small) {
+    padding: $spacing-lg;
+    gap: $spacing-md;
+  }
+}
+
+.offer-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: $radius-full;
+  background: linear-gradient(135deg, $color-primary, $color-primary-light);
+  @include flex-center;
+  color: $color-white;
+  font-size: 1.4rem;
+  box-shadow: $shadow-sm;
+  flex-shrink: 0;
+  transition: background $transition-base;
+
+  .offer-card:hover & {
+    background: linear-gradient(135deg, $color-primary-light, $color-primary);
+  }
+
+  @media (max-width: $breakpoint-mobile-small) {
+    width: 46px;
+    height: 46px;
+    font-size: 1.2rem;
+  }
+}
+
+.offer-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: $color-text-secondary;
+  line-height: 1.6;
+  margin: $spacing-xs 0 0;
+
+  @media (max-width: $breakpoint-mobile-small) {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+}
+
+.welcome-cta {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: $color-text-dark;
+  margin: 0;
+  padding: $spacing-lg $spacing-xl;
+  background: linear-gradient(90deg, rgba($color-primary,0.15), rgba($color-primary-light,0.08));
+  border: 2px solid rgba($color-primary,0.25);
+  border-radius: $radius-2xl;
+  box-shadow: $shadow-sm;
+  display: inline-block;
+
+  @media (max-width: $breakpoint-mobile-small) {
+    font-size: 1.05rem;
+    padding: $spacing-md $spacing-lg;
+  }
+}

@@ -163,6 +163,15 @@ const TYPE_CONFIG: TypeConfig[] = [
   },
 ];
 
+const POPUP_KEY_MAP: Record<string, string> = {
+  business_basic: "basic",
+  business_high: "premium",
+  business_corporate: "corporate_day",
+  experience_start: "experience_basic",
+  experience_classic: "experience_premium",
+  experience_celebration: "experience_vip",
+};
+
 // =========================
 // HELPER FUNCTIONS
 // =========================
@@ -353,17 +362,48 @@ export default function ReservationForm() {
 
   const openInfo = (type: string, e: MouseEvent) => {
     e.stopPropagation();
-    const key = getTranslationKey(type);
-    const data: PopupData = {
-      title: t(`home.reservation.popups.${key}.title`),
-      description: t(`home.reservation.popups.${key}.description`),
-      details: t(`home.reservation.popups.${key}.details`, {
-        returnObjects: true,
-      }) as string[],
-      price: t(`home.reservation.popups.${key}.price`),
-      extraInfo: t(`home.reservation.popups.${key}.extraInfo`),
-    };
-    setPopupData(data);
+
+    // Determine the correct translation key for the popup
+    let key = POPUP_KEY_MAP[type] || type;
+    if (
+      key !== "business" &&
+      key !== "experience" &&
+      !Object.keys(POPUP_KEY_MAP).includes(type)
+    ) {
+      key = getTranslationKey(type);
+    }
+
+    // Fetch translations
+    const title = t(`home.reservation.popups.${key}.title`);
+    const description = t(`home.reservation.popups.${key}.description`);
+    const price = t(`home.reservation.popups.${key}.price`);
+    const extraInfo = t(`home.reservation.popups.${key}.extraInfo`);
+    const rawDetails: unknown = t(`home.reservation.popups.${key}.details`, {
+      returnObjects: true,
+    });
+
+    let detailsArr: string[] = [];
+    if (Array.isArray(rawDetails)) {
+      detailsArr = rawDetails.filter((d) => typeof d === "string");
+    } else if (typeof rawDetails === "string") {
+      detailsArr = rawDetails
+        .split(/\n{2,}|\n/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+    } else if (rawDetails && typeof rawDetails === "object") {
+      detailsArr = Object.values(rawDetails as object)
+        .filter((v) => typeof v === "string")
+        .map((v) => v.trim())
+        .filter(Boolean);
+    }
+
+    setPopupData({
+      title: typeof title === "string" ? title : "",
+      description: typeof description === "string" ? description : "",
+      details: detailsArr,
+      price: typeof price === "string" ? price : "",
+      extraInfo: typeof extraInfo === "string" ? extraInfo : "",
+    });
     setShowPopup(true);
   };
 
@@ -910,11 +950,12 @@ export default function ReservationForm() {
               ×
             </button>
             <h2>{popupData.title}</h2>
-            {popupData.description &&
+            {typeof popupData.description === "string" &&
               popupData.description
-                .split("\n\n")
+                .split(/\n{2,}|\n/)
+                .filter(Boolean)
                 .map((paragraph, index) => <p key={index}>{paragraph}</p>)}
-            {popupData.details && (
+            {Array.isArray(popupData.details) && popupData.details.length > 0 && (
               <ul>
                 {popupData.details.map((d, i) => (
                   <li key={i}>{d}</li>

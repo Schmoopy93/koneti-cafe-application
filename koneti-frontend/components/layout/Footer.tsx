@@ -74,7 +74,7 @@ const Footer: React.FC = () => {
               <FontAwesomeIcon icon={faEnvelope} />
               <div>
                 <strong>{t("home.footer.email")}</strong>
-                <span>koneticafe@info.rs</span>
+                <span>konetibulevar@gmail.com</span>
               </div>
             </div>
           </div>

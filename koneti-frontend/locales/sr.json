@@ -36,6 +36,14 @@
           "title": "Vaše Omiljeno Mesto",
           "description": "Mesto na koje ćete se rado vraćati – jer kod nas uvek dobijate više od običnog izlaska."
         }
+      },
+      "aboutPage": {
+        "welcome": "✨ Koneti je mesto gde svaki trenutak postaje poseban – bilo da planirate poslovni sastanak, proslavu ili opušteno druženje.",
+        "offer": {
+          "business": "Poslovne rezervacije: Paketi za sve potrebe – od brzih sastanaka do celodnevnih događaja.",
+          "koneti": "Koneti rezervacije: Savršeno za proslave i okupljanja, uz opcije koje uključuju i VIP tretman."
+        },
+        "cta": "Rezervišite svoj termin i dozvolite nam da vaše trenutke učinimo nezaboravnim!"
       }
     }
   },

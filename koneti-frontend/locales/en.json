@@ -36,6 +36,15 @@
           "title": "Your Favorite Place",
           "description": "A place you'll gladly return to – because here you always get more than just an outing."
         }
+      },
+
+      "aboutPage": {
+        "welcome": "✨ Koneti is the place where every moment becomes special – whether you're planning a business meeting, a celebration, or a relaxed gathering.",
+        "offer": {
+          "business": "Business reservations: Packages for all needs – from quick meetings to full-day events.",
+          "koneti": "Koneti reservations: Perfect for celebrations and gatherings, with options including VIP treatment."
+        },
+        "cta": "Book your spot and let us make your moments unforgettable!"
       }
     }
   },

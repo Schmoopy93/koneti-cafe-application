@@ -37,39 +37,31 @@ const Gallery: React.FC = () => {
   const fetchGalleryImages = async () => {
     try {
       setLoading(true);
-      // Promeni endpoint da koristi /gallery/about umesto /gallery
       const response = await apiRequest("/gallery/about");
       if (response.ok) {
         const data = await response.json();
         setImages(data);
       } else {
-        console.error('Greška pri učitavanju galerije:', response.status);
+        console.error("Error loading gallery:", response.status);
       }
     } catch (error) {
-      console.error("Greška pri učitavanju galerije:", error);
+      console.error("Error loading gallery:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  // Auto-play slider
   useEffect(() => {
     if (images.length > 0) {
       const interval = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % images.length);
       }, 4000);
-
       return () => clearInterval(interval);
     }
   }, [images.length]);
 
-  const goToPrevious = () => {
-    setCurrentSlide((prev) => (prev - 1 + images.length) % images.length);
-  };
-
-  const goToNext = () => {
-    setCurrentSlide((prev) => (prev + 1) % images.length);
-  };
+  const goToPrevious = () => setCurrentSlide((prev) => (prev - 1 + images.length) % images.length);
+  const goToNext = () => setCurrentSlide((prev) => (prev + 1) % images.length);
 
   if (loading) {
     return (
@@ -86,17 +78,35 @@ const Gallery: React.FC = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="gallery-header">
+      {/* <div className="gallery-header">
         <h1 className="gallery-title">
           <FontAwesomeIcon icon={faCoffee} />
           {t("gallery.about.title")}
         </h1>
-        <p className="gallery-subtitle">
-          {t("gallery.about.subtitle")}
-        </p>
-      </div>
+        <p className="gallery-subtitle">{t("gallery.about.subtitle")}</p>
+      </div> */}
 
-      {/* O NAMA SEKCIJA SA SLIDEROM */}
+      <section className="about-welcome-section">
+        <div className="welcome-content">
+          <p className="welcome-intro">{t("gallery.about.aboutPage.welcome")}</p>
+          <div className="welcome-offers">
+            <div className="offer-card">
+              <div className="offer-icon">
+                <FontAwesomeIcon icon={faCoffee} />
+              </div>
+              <h4 className="offer-text">{t("gallery.about.aboutPage.offer.business")}</h4>
+            </div>
+            <div className="offer-card">
+              <div className="offer-icon">
+                <FontAwesomeIcon icon={faHeart} />
+              </div>
+              <h4 className="offer-text">{t("gallery.about.aboutPage.offer.koneti")}</h4>
+            </div>
+          </div>
+          <p className="welcome-cta">{t("gallery.about.aboutPage.cta")}</p>
+        </div>
+      </section>
+
       <section className="about-section">
         <div className="about-content">
           <div className="about-text">
@@ -111,9 +121,7 @@ const Gallery: React.FC = () => {
               <strong>{t("gallery.about.intro3_highlight")}</strong>
               {t("gallery.about.intro3_rest")}
             </p>
-            <p>
-              {t("gallery.about.mission")}
-            </p>
+            <p>{t("gallery.about.mission")}</p>
             <div className="about-features">
               <div className="feature-item">
                 <FontAwesomeIcon icon={faCoffee} />
@@ -138,8 +146,7 @@ const Gallery: React.FC = () => {
               </div>
             </div>
           </div>
-          
-          {/* SLIDER SA SLIKAMA IZ GALERIJE */}
+
           <div className="about-image">
             {images.length === 0 ? (
               <div className="empty-slider">
@@ -148,31 +155,34 @@ const Gallery: React.FC = () => {
               </div>
             ) : (
               <div className="image-slider">
-                <div className="slider-wrapper" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+                <div
+                  className="slider-wrapper"
+                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                >
                   {images.map((image) => (
                     <div key={image._id} className="slider-slide">
                       <img
                         src={image.image}
-                        alt={i18n.language === "en" && image.title.en ? image.title.en : image.title.sr}
+                        alt={
+                          i18n.language === "en" && image.title.en
+                            ? image.title.en
+                            : image.title.sr
+                        }
                         loading="lazy"
                       />
                     </div>
                   ))}
                 </div>
-                
-                {/* Slider Indicators */}
                 <div className="slider-indicators">
                   {images.map((_, index) => (
                     <button
                       key={index}
-                      className={`slider-indicator ${currentSlide === index ? 'active' : ''}`}
+                      className={`slider-indicator ${currentSlide === index ? "active" : ""}`}
                       onClick={() => setCurrentSlide(index)}
                       aria-label={`Go to slide ${index + 1}`}
                     />
                   ))}
                 </div>
-
-                {/* Slider Navigation */}
                 <button
                   className="slider-nav prev"
                   onClick={goToPrevious}
