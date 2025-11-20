@@ -95,8 +95,9 @@
         "name": "Full name",
         "email": "Email",
         "phone": "Phone",
-        "date": "Date",
-        "time": "Time",
+        "date": "Date (mm/dd/yyyy)",
+        "time": "Start time",
+        "endTime": "End time",
         "guests": "Number of guests",
         "message": "Message"
       },

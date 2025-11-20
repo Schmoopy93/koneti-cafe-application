@@ -95,8 +95,9 @@
         "name": "Ime i prezime",
         "email": "Email",
         "phone": "Telefon",
-        "date": "Datum",
-        "time": "Vreme",
+        "date": "Datum (dd.mm.yyyy)",
+        "time": "Početno vreme",
+        "endTime": "Završno vreme",
         "guests": "Broj gostiju",
         "message": "Poruka"
       },

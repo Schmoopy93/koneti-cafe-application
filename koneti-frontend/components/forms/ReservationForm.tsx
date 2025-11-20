@@ -670,6 +670,16 @@ export default function ReservationForm() {
               ? "reservation-form-shake"
               : ""
           }
+          onFocus={(e) => {
+            if (field === 'date' || field === 'time' || field === 'endTime') {
+              e.target.type = config.type;
+            }
+          }}
+          onBlur={(e) => {
+            if ((field === 'date' || field === 'time' || field === 'endTime') && !e.target.value) {
+              e.target.type = 'text';
+            }
+          }}
         />
         {formErrors[field as keyof FormErrors] && (
           <span className="reservation-form-error">
@@ -813,7 +823,7 @@ export default function ReservationForm() {
         </div>
 
         {/* Submit Button */}
-        {formData.subType && (
+        {formData.subType && currentStep === 3 && (
           <button
             type="submit"
             className="reservation-form-btn-submit"

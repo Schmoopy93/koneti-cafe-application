@@ -441,30 +441,41 @@
 .reservation-form input[type="date"],
 .reservation-form input[type="time"] {
   position: relative;
-  display: block;
-
-  // iOS specifično
-  &::-webkit-date-and-time-value {
-    text-align: left;
-    padding: 0;
+  
+  &::-webkit-datetime-edit-text,
+  &::-webkit-datetime-edit-month-field,
+  &::-webkit-datetime-edit-day-field,
+  &::-webkit-datetime-edit-year-field,
+  &::-webkit-datetime-edit-hour-field,
+  &::-webkit-datetime-edit-minute-field {
+    color: transparent;
   }
-
-  &::-webkit-datetime-edit-fields-wrapper {
-    padding: 0;
+  
+  &:focus::-webkit-datetime-edit-text,
+  &:focus::-webkit-datetime-edit-month-field,
+  &:focus::-webkit-datetime-edit-day-field,
+  &:focus::-webkit-datetime-edit-year-field,
+  &:focus::-webkit-datetime-edit-hour-field,
+  &:focus::-webkit-datetime-edit-minute-field,
+  &:valid::-webkit-datetime-edit-text,
+  &:valid::-webkit-datetime-edit-month-field,
+  &:valid::-webkit-datetime-edit-day-field,
+  &:valid::-webkit-datetime-edit-year-field,
+  &:valid::-webkit-datetime-edit-hour-field,
+  &:valid::-webkit-datetime-edit-minute-field {
+    color: inherit;
   }
-
-  &::-webkit-calendar-picker-indicator {
+  
+  &::before {
+    content: attr(placeholder);
+    color: #999;
     position: absolute;
-    right: clamp(0.5rem, 2vw, 1rem);
-    opacity: 0.6;
-    cursor: pointer;
+    left: 15px;
   }
-
-  @media screen and (max-width: 768px) {
-    padding-right: 2.5rem; // Prostor za iOS kalendar ikonu
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  
+  &:focus::before,
+  &:valid::before {
+    content: none;
   }
 }
 
