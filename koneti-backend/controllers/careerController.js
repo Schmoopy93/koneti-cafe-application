@@ -1,12 +1,9 @@
-/**
- * Career Controller - Kontroler za prijave za posao
- * Career Controller - Job applications controller
- */
 import Career from "../models/Career.js";
 import { logger } from "../utils/logger.js";
 import { sendCareerApplicationEmail, sendCareerConfirmationEmail, sendCareerStatusEmail } from "../utils/nodemailer.js";
 import path from "path";
 import fs from "fs";
+import cloudinary from "../middleware/cloudinary.js";
 
 export const createCareerApplication = async (req, res) => {
   try {
@@ -15,21 +12,19 @@ export const createCareerApplication = async (req, res) => {
     let cvPath = "";
     let cvUrl = "";
 
-    // Save CV locally ako postoji
+    // Upload CV na Cloudinary ako postoji
     if (req.file) {
-      const careerDir = path.join(process.cwd(), 'uploads', 'career');
-      if (!fs.existsSync(careerDir)) {
-        fs.mkdirSync(careerDir, { recursive: true });
-      }
-
-      const filename = `cv_${Date.now()}_${req.file.originalname}`;
-      const filePath = path.join(careerDir, filename);
-
-      // Move file from temp to career directory
-      fs.renameSync(req.file.path, filePath);
-
-      cvPath = path.relative(process.cwd(), filePath);
-      cvUrl = `/uploads/career/${filename}`;
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "career-cv",
+        resource_type: "raw",
+        type: "upload", // bitno!
+        access_mode: "public", // bitno!
+      });
+      cvUrl = result.secure_url;
+      cvPath = result.public_id;
+      fs.unlink(req.file.path, (err) => {
+        if (err) console.warn('Warning: failed to delete local file', err);
+      });
     }
 
     const application = new Career({
@@ -46,14 +41,12 @@ export const createCareerApplication = async (req, res) => {
 
     await application.save();
 
-    // Pošalji response odmah
     res.status(201).json({
       success: true,
       message: "Prijava je uspešno poslata. Kontaktiraćemo Vas uskoro.",
       data: application
     });
 
-    // Pošalji email-ove u pozadini
     Promise.all([
       sendCareerConfirmationEmail(application).catch((err) =>
         logger.error("Career confirmation email failed to send but proceeding.", err)
@@ -119,7 +112,6 @@ export const updateCareerApplicationStatus = async (req, res) => {
       });
     }
 
-    // Pošalji email korisniku o promeni statusa
     if (status === "contacted") {
       sendCareerStatusEmail(application, status).catch((err) =>
         logger.error(`Failed to send status email for application ${id}`, err)
@@ -150,12 +142,9 @@ export const deleteCareerApplication = async (req, res) => {
       });
     }
 
-    // Obriši lokalni CV fajl ako postoji
+    // Obriši CV sa Cloudinary-ja ako postoji
     if (application.cvPath) {
-      const filePath = path.join(process.cwd(), application.cvPath);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
+      await cloudinary.uploader.destroy(application.cvPath, { resource_type: "raw" });
     }
 
     await Career.findByIdAndDelete(id);
@@ -184,32 +173,15 @@ export const downloadCV = async (req, res) => {
       });
     }
 
-    if (!application.cvPath) {
+    if (!application.cvUrl) {
       return res.status(404).json({
         success: false,
         message: "CV fajl nije pronađen."
       });
     }
 
-    // Serve the local file
-    const filePath = path.join(process.cwd(), application.cvPath);
-    if (!fs.existsSync(filePath)) {
-      return res.status(404).json({
-        success: false,
-        message: "CV fajl nije pronađen."
-      });
-    }
-
-    logger.info(`CV download initiated for application ${id}: ${filePath}`);
-
-    // Set headers for download
-    const filename = `CV_${application.firstName}_${application.lastName}.pdf`;
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-
-    // Stream the file
-    const fileStream = fs.createReadStream(filePath);
-    fileStream.pipe(res);
+    // Redirektuj na Cloudinary URL
+    return res.redirect(application.cvUrl);
 
   } catch (error) {
     logger.error("Error downloading CV:", error);
