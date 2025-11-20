@@ -165,13 +165,13 @@ export default function AddCategory({ onClose, onSuccess, editData }: AddCategor
   };
 
   return (
-    <div className="add-category-form">
+    <div className="add-category__form">
       <Toaster position="top-right" reverseOrder={false} />
       <h3>{editData ? t("admin.addCategory.editTitle") : t("admin.addCategory.title")}</h3>
 
       <form onSubmit={handleSubmit}>
         {/* Naziv kategorije */}
-        <div className="form-group">
+        <div className="add-category__group">
           <label>{t("admin.addCategory.name")}:</label>
           <input
             type="text"
@@ -179,37 +179,37 @@ export default function AddCategory({ onClose, onSuccess, editData }: AddCategor
             value={formData.name}
             onChange={handleChange}
             placeholder={t("admin.addCategory.namePlaceholder")}
-            className={shakeFields.name ? "shake" : ""}
+            className={shakeFields.name ? "add-category__shake" : ""}
           />
-          {errors.name && <span className="error">{errors.name}</span>}
+          {errors.name && <span className="add-category__error">{errors.name}</span>}
         </div>
 
         {/* Izbor ikone */}
-        <div className="form-group">
+        <div className="add-category__group">
           <label>{t("admin.addCategory.icon")}:</label>
-          <div className={`icon-picker ${shakeFields.icon ? "shake" : ""}`}>
+          <div className={`add-category__icon-picker${shakeFields.icon ? " add-category__shake" : ""}`}>
             {iconOptions.map((option) => {
               const lang = i18n.language?.startsWith("en") ? "en" : "sr";
               const labelText = option.label?.[lang] || option.label?.sr || "";
               return (
-                <div key={option.name} className="icon-wrap">
+                <div key={option.name} className="add-category__icon-wrap">
                   <button
                     type="button"
                     aria-label={labelText}
-                    className={`icon-btn ${formData.icon === option.name ? "selected" : ""}`}
+                    className={`add-category__icon-btn${formData.icon === option.name ? " selected" : ""}`}
                     onClick={() => handleIconSelect(option.name)}
                   >
                     <FontAwesomeIcon icon={option.icon} />
                   </button>
-                  <div className="icon-tooltip koneti-tooltip">{labelText}</div>
+                  <div className="add-category__icon-tooltip koneti-tooltip">{labelText}</div>
                 </div>
               );
             })}
           </div>
-          {errors.icon && <span className="error">{errors.icon}</span>}
+          {errors.icon && <span className="add-category__error">{errors.icon}</span>}
         </div>
 
-        <button type="submit" className="gradient-btn" disabled={isSubmitting}>
+        <button type="submit" className="add-category__submit" disabled={isSubmitting}>
           {isSubmitting ? (
             <Spinner size="sm" text={editData ? t("admin.addCategory.savingChanges") : t("admin.addCategory.saving")} />
           ) : (

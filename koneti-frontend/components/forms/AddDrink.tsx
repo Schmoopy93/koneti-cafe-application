@@ -203,13 +203,13 @@ const AddDrink: React.FC<AddDrinkProps> = ({
   };
 
   return (
-    <div className="add-drink-form">
+    <div className="add-drink__form">
       <Toaster position="top-right" />
       <h2>{editData ? t("admin.addDrink.editTitle") : t("admin.addDrink.title")}</h2>
 
       <form onSubmit={handleSubmit}>
         {/* Naziv */}
-        <div className="form-group">
+        <div className="add-drink__group">
           <label>{t("admin.addDrink.name")}:</label>
           <input
             type="text"
@@ -217,13 +217,13 @@ const AddDrink: React.FC<AddDrinkProps> = ({
             value={formData.name.sr}
             onChange={handleChange}
             placeholder={t("admin.addDrink.namePlaceholder")}
-            className={shakeFields.name ? "shake" : ""}
+            className={shakeFields.name ? "add-drink__shake" : ""}
           />
-          {errors.name && <span className="error">{errors.name}</span>}
+          {errors.name && <span className="add-drink__error">{errors.name}</span>}
         </div>
 
         {/* Cena */}
-        <div className="form-group">
+        <div className="add-drink__group">
           <label>{t("admin.addDrink.price")}:</label>
           <input
             type="number"
@@ -231,19 +231,19 @@ const AddDrink: React.FC<AddDrinkProps> = ({
             value={formData.price}
             onChange={handleChange}
             placeholder={t("admin.addDrink.pricePlaceholder")}
-            className={shakeFields.price ? "shake" : ""}
+            className={shakeFields.price ? "add-drink__shake" : ""}
           />
-          {errors.price && <span className="error">{errors.price}</span>}
+          {errors.price && <span className="add-drink__error">{errors.price}</span>}
         </div>
 
         {/* Kategorija */}
-        <div className="form-group">
+        <div className="add-drink__group">
           <label>{t("admin.addDrink.category")}:</label>
           <select
             name="categoryId"
             value={String(formData.categoryId)}
             onChange={handleChange}
-            className={shakeFields.categoryId ? "shake" : ""}
+            className={shakeFields.categoryId ? "add-drink__shake" : ""}
           >
             <option value="">{t("admin.addDrink.category")}</option>
             {categories.map((cat) => {
@@ -261,31 +261,30 @@ const AddDrink: React.FC<AddDrinkProps> = ({
             })}
           </select>
           {errors.categoryId && (
-            <span className="error">{errors.categoryId}</span>
+            <span className="add-drink__error">{errors.categoryId}</span>
           )}
         </div>
 
         {/* Slika */}
-        <div className="form-group">
+        <div className="add-drink__group">
           <label>{t("admin.addDrink.image")}:</label>
           <input
             type="file"
             accept="image/png, image/jpeg"
             onChange={handleFileChange}
             ref={fileInputRef}
-            className={shakeFields.image ? "shake" : ""}
+            className={shakeFields.image ? "add-drink__shake" : ""}
           />
-          {errors.image && <span className="error">{errors.image}</span>}
-
+          {errors.image && <span className="add-drink__error">{errors.image}</span>}
           {imagePreview && !showCropper && (
-            <img src={imagePreview} alt="Preview" className="image-preview" />
+            <img src={imagePreview} alt="Preview" className="add-drink__preview" />
           )}
         </div>
 
         {/* Cropper */}
         {showCropper && (
-          <div className="cropper-container">
-            <div className="cropper-wrapper">
+          <div className="add-drink__cropper-container">
+            <div className="add-drink__cropper-wrapper">
               <Cropper
                 image={imagePreview || ""}
                 crop={crop}
@@ -297,8 +296,8 @@ const AddDrink: React.FC<AddDrinkProps> = ({
               />
             </div>
 
-            <div className="cropper-controls">
-              <div className="aspect-ratio-selector">
+            <div className="add-drink__cropper-controls">
+              <div className="add-drink__aspect-ratio-selector">
                 <label>{t("admin.addDrink.aspectRatio")}:</label>
                 <select
                   value={aspectRatio}
@@ -317,7 +316,7 @@ const AddDrink: React.FC<AddDrinkProps> = ({
                 </select>
               </div>
 
-              <div className="zoom-control">
+              <div className="add-drink__zoom-control">
                 <label>Zoom:</label>
                 <input
                   type="range"
@@ -329,19 +328,17 @@ const AddDrink: React.FC<AddDrinkProps> = ({
                 />
               </div>
 
-
-
-              <div className="cropper-buttons">
+              <div className="add-drink__cropper-buttons">
                 <button
                   type="button"
-                  className="btn-confirm-crop"
+                  className="add-drink__btn-confirm-crop"
                   onClick={saveCroppedImage}
                 >
                   {t("admin.addDrink.confirmCrop")}
                 </button>
                 <button
                   type="button"
-                  className="btn-cancel-crop"
+                  className="add-drink__btn-cancel-crop"
                   onClick={() => {
                     setShowCropper(false);
                     setImagePreview(null);
@@ -356,7 +353,7 @@ const AddDrink: React.FC<AddDrinkProps> = ({
           </div>
         )}
 
-        <button type="submit" className="submit-btn" disabled={isSubmitting}>
+        <button type="submit" className="add-drink__submit" disabled={isSubmitting}>
           {isSubmitting ? (
             <Spinner size="sm" text={editData ? t("admin.addDrink.savingChanges") : t("admin.addDrink.saving")} />
           ) : (

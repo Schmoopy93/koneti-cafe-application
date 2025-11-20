@@ -171,7 +171,7 @@ $breakpoint-desktop-large: 1440px;
 // =========================
 // MAIN CONTAINER
 // =========================
-.career-application-page {
+.careerapp-application-page {
   min-height: 100vh;
   background: linear-gradient(135deg, $color-bg-primary 0%, $color-bg-lighter 50%, $color-bg-primary 100%);
   font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -194,7 +194,7 @@ $breakpoint-desktop-large: 1440px;
   }
 }
 
-.career-application-container {
+.careerapp-application-container {
   max-width: 900px;
   margin: 0 auto;
   position: relative;
@@ -213,7 +213,7 @@ $breakpoint-desktop-large: 1440px;
 // =========================
 // HEADER SECTION - FULL WIDTH
 // =========================
-.career-header {
+.careerapp-header {
   text-align: center;
   margin-bottom: $spacing-5xl;
   padding: $spacing-2xl $spacing-xl;
@@ -236,7 +236,7 @@ $breakpoint-desktop-large: 1440px;
   }
 }
 
-.career-title {
+.careerapp-title {
   font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 800;
   margin: 0 0 $spacing-md 0;
@@ -265,7 +265,7 @@ $breakpoint-desktop-large: 1440px;
   }
 }
 
-.career-subtitle {
+.careerapp-subtitle {
   font-size: clamp(1.05rem, 2vw, 1.25rem);
   color: $color-text-dark;
   line-height: 1.8;
@@ -276,32 +276,7 @@ $breakpoint-desktop-large: 1440px;
   text-align: center;
 }
 
-// Pulse animation
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
-
-// Slide up animation
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-// =========================
-// FORM SECTION
-// =========================
-.application-form {
+.careerapp-application-form {
   background: $color-white;
   padding: $spacing-3xl;
   border-radius: $radius-2xl;
@@ -310,7 +285,7 @@ $breakpoint-desktop-large: 1440px;
   transform: translateY(20px);
   transition: all 0.6s $transition-smooth 0.2s;
 
-  &.loaded {
+  &.careerapp-loaded {
     opacity: 1;
     transform: translateY(0);
   }
@@ -324,7 +299,7 @@ $breakpoint-desktop-large: 1440px;
   }
 }
 
-.form-group {
+.careerapp-form-group {
   margin-bottom: $spacing-2xl;
 
   label {
@@ -363,7 +338,7 @@ $breakpoint-desktop-large: 1440px;
       @include input-focus;
     }
 
-    &.error {
+    &.careerapp-error {
       border-color: $color-error;
       background-color: rgba($color-error, 0.05);
       animation: shake 0.5s;
@@ -394,7 +369,7 @@ $breakpoint-desktop-large: 1440px;
     }
   }
 
-  .error-text {
+  .careerapp-error-text {
     display: block;
     margin-top: $spacing-sm;
     font-size: 0.875rem;
@@ -403,7 +378,7 @@ $breakpoint-desktop-large: 1440px;
   }
 }
 
-.form-row {
+.careerapp-form-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: $spacing-xl;
@@ -414,16 +389,13 @@ $breakpoint-desktop-large: 1440px;
   }
 }
 
-// =========================
-// CV UPLOAD SECTION
-// =========================
-.cv-upload {
-  .upload-area {
+.careerapp-cv-upload {
+  .careerapp-upload-area {
     position: relative;
     overflow: hidden;
   }
 
-  .upload-label {
+  .careerapp-upload-label {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -482,7 +454,7 @@ $breakpoint-desktop-large: 1440px;
     }
   }
 
-  .file-preview {
+  .careerapp-file-preview {
     display: flex;
     align-items: center;
     gap: $spacing-lg;
@@ -548,14 +520,11 @@ $breakpoint-desktop-large: 1440px;
   }
 }
 
-// =========================
-// FORM ACTIONS
-// =========================
-.form-actions {
+.careerapp-form-actions {
   margin-top: $spacing-3xl;
   @include flex-center;
 
-  .btn-submit {
+  .careerapp-btn-submit {
     padding: $spacing-lg $spacing-3xl;
     font-size: 1.05rem;
     font-weight: 700;
@@ -612,10 +581,7 @@ $breakpoint-desktop-large: 1440px;
   }
 }
 
-// =========================
-// SUCCESS POPUP
-// =========================
-.career-popup-backdrop {
+.careerapp-popup-backdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -629,7 +595,7 @@ $breakpoint-desktop-large: 1440px;
   padding: $spacing-xl;
 }
 
-.career-popup {
+.careerapp-popup {
   background: $color-white;
   padding: $spacing-3xl;
   border-radius: $radius-2xl;
@@ -642,7 +608,7 @@ $breakpoint-desktop-large: 1440px;
 
   @include gradient-border-top(6px);
 
-  .close-btn {
+  .careerapp-close-btn {
     position: absolute;
     top: $spacing-lg;
     right: $spacing-lg;

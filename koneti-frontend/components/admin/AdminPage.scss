@@ -98,7 +98,7 @@ $breakpoint-desktop: 1440px;
   }
 }
 
-.admin-main {
+.admin-dashboard__main {
   padding: $spacing-2xl $spacing-3xl;
   max-width: 1600px;
   margin: 0 auto;
@@ -112,7 +112,7 @@ $breakpoint-desktop: 1440px;
   }
 }
 
-.dashboard-content {
+.admin-dashboard__content {
   display: flex;
   flex-direction: column;
   gap: $spacing-3xl;
@@ -121,7 +121,7 @@ $breakpoint-desktop: 1440px;
 // =====================================================================
 // STATS GRID
 // =====================================================================
-.stats-grid {
+.admin-dashboard__stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: $spacing-xl;
@@ -133,7 +133,7 @@ $breakpoint-desktop: 1440px;
   }
 }
 
-.stat-card {
+.admin-dashboard__stat-card {
   background: linear-gradient(145deg,
     rgba(255, 255, 255, 0.95) 0%,
     rgba(248, 244, 240, 0.9) 100%);
@@ -170,12 +170,12 @@ $breakpoint-desktop: 1440px;
       opacity: 1;
     }
 
-    .stat-icon {
+    .admin-dashboard__stat-icon {
       transform: scale(1.1) rotate(5deg);
     }
   }
 
-  .stat-icon {
+  .admin-dashboard__stat-icon {
     width: 64px;
     height: 64px;
     display: flex;
@@ -197,22 +197,22 @@ $breakpoint-desktop: 1440px;
     }
   }
 
-  .drinks-icon {
+  .admin-dashboard__stat-icon--drinks {
     background: linear-gradient(135deg, #ffc107, #ff9800);
     color: white;
   }
 
-  .categories-icon {
+  .admin-dashboard__stat-icon--categories {
     background: linear-gradient(135deg, #2196f3, #1976d2);
     color: white;
   }
 
-  .reservations-icon {
+  .admin-dashboard__stat-icon--reservations {
     background: linear-gradient(135deg, #9c27b0, #7b1fa2);
     color: white;
   }
 
-  .stat-info {
+  .admin-dashboard__stat-info {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -239,7 +239,7 @@ $breakpoint-desktop: 1440px;
       font-weight: $font-weight-semibold;
     }
 
-    .stat-breakdown {
+    .admin-dashboard__stat-breakdown {
       display: flex;
       gap: $spacing-md;
       margin-top: $spacing-sm;
@@ -254,12 +254,12 @@ $breakpoint-desktop: 1440px;
         border-radius: $radius-sm;
         font-size: 0.75rem;
 
-        .count-number {
+        .admin-dashboard__count-number {
           font-weight: $font-weight-bold;
           font-size: $font-size-lg;
         }
 
-        .count-label {
+        .admin-dashboard__count-label {
           font-size: 0.65rem;
           text-transform: uppercase;
           letter-spacing: 0.3px;
@@ -267,17 +267,17 @@ $breakpoint-desktop: 1440px;
         }
       }
 
-      .approved-count {
+      .admin-dashboard__stat-count--approved {
         background: $color-approved-bg;
         color: $color-approved;
       }
 
-      .pending-count {
+      .admin-dashboard__stat-count--pending {
         background: $color-pending-bg;
         color: color.adjust($color-pending, $lightness: -20%);
       }
 
-      .rejected-count {
+      .admin-dashboard__stat-count--rejected {
         background: $color-rejected-bg;
         color: $color-rejected;
       }
@@ -288,7 +288,7 @@ $breakpoint-desktop: 1440px;
 // =====================================================================
 // ACTION CARDS (Enhanced with Gradient & Wrapper)
 // =====================================================================
-.action-cards {
+.admin-dashboard__action-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: $spacing-xl;
@@ -299,7 +299,7 @@ $breakpoint-desktop: 1440px;
   }
 }
 
-.action-card {
+.admin-dashboard__action-card {
   background: linear-gradient(145deg,
     rgba(255, 255, 255, 0.98) 0%,
     rgba(253, 250, 246, 0.95) 50%,
@@ -369,13 +369,13 @@ $breakpoint-desktop: 1440px;
       height: 500px;
     }
 
-    .card-icon-wrapper {
+    .admin-dashboard__card-icon-wrapper {
       svg {
         transform: scale(1.2) rotate(8deg);
         filter: drop-shadow(0 8px 16px rgba(207, 166, 138, 0.5));
       }
 
-      .icon-glow {
+      .admin-dashboard__icon-glow {
         opacity: 1;
         transform: scale(2);
       }
@@ -403,7 +403,7 @@ $breakpoint-desktop: 1440px;
     transform: translateY(-6px) scale(1.01);
   }
 
-  .card-icon-wrapper {
+  .admin-dashboard__card-icon-wrapper {
     position: relative;
     width: 90px;
     height: 90px;
@@ -436,7 +436,7 @@ $breakpoint-desktop: 1440px;
       z-index: 2;
     }
 
-    .icon-glow {
+    .admin-dashboard__icon-glow {
       position: absolute;
       inset: 0;
       background: radial-gradient(circle, rgba($color-accent-1, 0.25), transparent 60%);
@@ -447,7 +447,7 @@ $breakpoint-desktop: 1440px;
     }
   }
 
-  &:hover .card-icon-wrapper::before {
+  &:hover .admin-dashboard__card-icon-wrapper::before {
     animation-play-state: running;
   }
 
@@ -544,8 +544,8 @@ $breakpoint-desktop: 1440px;
 }
 
 // Specific card color variations with enhanced gradients
-.menu-card {
-  .card-icon-wrapper {
+.admin-dashboard__action-card--menu {
+  .admin-dashboard__card-icon-wrapper {
     svg {
       color: #ffc107;
     }
@@ -558,7 +558,7 @@ $breakpoint-desktop: 1440px;
         #ffc107 100%);
     }
 
-    .icon-glow {
+    .admin-dashboard__icon-glow {
       background: radial-gradient(circle, rgba(#ffc107, 0.3), transparent 60%);
     }
   }
@@ -568,8 +568,8 @@ $breakpoint-desktop: 1440px;
   }
 }
 
-.calendar-card {
-  .card-icon-wrapper {
+.admin-dashboard__action-card--calendar {
+  .admin-dashboard__card-icon-wrapper {
     svg {
       color: #9c27b0;
     }
@@ -582,7 +582,7 @@ $breakpoint-desktop: 1440px;
         #9c27b0 100%);
     }
 
-    .icon-glow {
+    .admin-dashboard__icon-glow {
       background: radial-gradient(circle, rgba(#9c27b0, 0.3), transparent 60%);
     }
   }
@@ -592,8 +592,8 @@ $breakpoint-desktop: 1440px;
   }
 }
 
-.statistics-card {
-  .card-icon-wrapper {
+.admin-dashboard__action-card--statistics {
+  .admin-dashboard__card-icon-wrapper {
     svg {
       color: #2196f3;
     }
@@ -606,7 +606,7 @@ $breakpoint-desktop: 1440px;
         #2196f3 100%);
     }
 
-    .icon-glow {
+    .admin-dashboard__icon-glow {
       background: radial-gradient(circle, rgba(#2196f3, 0.3), transparent 60%);
     }
   }
@@ -616,8 +616,8 @@ $breakpoint-desktop: 1440px;
   }
 }
 
-.career-card {
-  .card-icon-wrapper {
+.admin-dashboard__action-card--career {
+  .admin-dashboard__card-icon-wrapper {
     svg {
       color: #ff5722;
     }
@@ -630,7 +630,7 @@ $breakpoint-desktop: 1440px;
         #ff5722 100%);
     }
 
-    .icon-glow {
+    .admin-dashboard__icon-glow {
       background: radial-gradient(circle, rgba(#ff5722, 0.3), transparent 60%);
     }
   }
@@ -640,8 +640,8 @@ $breakpoint-desktop: 1440px;
   }
 }
 
-.gallery-card {
-  .card-icon-wrapper {
+.admin-dashboard__action-card--gallery {
+  .admin-dashboard__card-icon-wrapper {
     svg {
       color: #28a745;
     }
@@ -654,7 +654,7 @@ $breakpoint-desktop: 1440px;
         #28a745 100%);
     }
 
-    .icon-glow {
+    .admin-dashboard__icon-glow {
       background: radial-gradient(circle, rgba(#28a745, 0.3), transparent 60%);
     }
   }
@@ -664,7 +664,7 @@ $breakpoint-desktop: 1440px;
   }
 }
 
-.logout-card {
+.admin-dashboard__action-card--logout {
   > svg {
     color: #dc3545;
   }
@@ -698,7 +698,7 @@ $breakpoint-desktop: 1440px;
 // =====================================================================
 // MODAL STYLES
 // =====================================================================
-.modal-overlay {
+.admin-dashboard__modal-overlay {
   position: fixed;
   inset: 0;
   background: linear-gradient(135deg,
@@ -711,7 +711,7 @@ $breakpoint-desktop: 1440px;
   z-index: 9999;
   animation: modalBackdropFadeIn 0.3s ease-out;
 
-  &.blur-backdrop {
+  &.admin-dashboard__modal-overlay--blur {
     backdrop-filter: blur(8px);
   }
 
@@ -721,7 +721,7 @@ $breakpoint-desktop: 1440px;
   }
 }
 
-.modal-content {
+.admin-dashboard__modal-content {
   background: linear-gradient(145deg,
     rgba(255, 255, 255, 0.95) 0%,
     rgba(248, 244, 240, 0.9) 100%);
@@ -738,7 +738,7 @@ $breakpoint-desktop: 1440px;
   backdrop-filter: blur(12px);
   animation: modalSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
-  &.fullscreen-modal {
+  &.admin-dashboard__modal-content--fullscreen {
     max-width: 95%;
     max-height: 95vh;
   }
@@ -755,7 +755,7 @@ $breakpoint-desktop: 1440px;
   }
 }
 
-.modal-header {
+.admin-dashboard__modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -773,7 +773,7 @@ $breakpoint-desktop: 1440px;
     gap: $spacing-sm;
   }
 
-  .modal-close-btn {
+  .admin-dashboard__modal-close-btn {
     background: linear-gradient(135deg,
       rgba(255, 255, 255, 0.9),
       rgba(248, 244, 240, 0.8));
@@ -805,7 +805,7 @@ $breakpoint-desktop: 1440px;
   }
 }
 
-.modal-body {
+.admin-dashboard__modal-body {
   overflow-y: auto;
   max-height: calc(90vh - 120px);
 }
@@ -814,39 +814,39 @@ $breakpoint-desktop: 1440px;
 // RESPONSIVE ADJUSTMENTS
 // =====================================================================
 @media (max-width: $breakpoint-tablet) {
-  .stats-grid {
+  .admin-dashboard__stats-grid {
     grid-template-columns: 1fr;
   }
 
-  .action-cards {
+  .admin-dashboard__action-cards {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
 }
 
 @media (max-width: $breakpoint-mobile) {
-  .stat-card {
+  .admin-dashboard__stat-card {
     flex-direction: column;
     text-align: center;
 
-    .stat-icon {
+    .admin-dashboard__stat-icon {
       width: 56px;
       height: 56px;
       font-size: $font-size-2xl;
     }
 
-    .stat-info h3 {
+    .admin-dashboard__stat-info h3 {
       font-size: $font-size-3xl;
     }
 
-    .stat-breakdown {
+    .admin-dashboard__stat-breakdown {
       justify-content: center;
     }
   }
 
-  .action-card {
+  .admin-dashboard__action-card {
     padding: $spacing-xl;
 
-    .card-icon-wrapper {
+    .admin-dashboard__card-icon-wrapper {
       width: 64px;
       height: 64px;
 
@@ -864,17 +864,17 @@ $breakpoint-desktop: 1440px;
     }
   }
 
-  .modal-content {
+  .admin-dashboard__modal-content {
     padding: $spacing-lg;
     max-width: 95%;
   }
 
-  .modal-header {
+  .admin-dashboard__modal-header {
     h3 {
       font-size: $font-size-xl;
     }
 
-    .modal-close-btn {
+    .admin-dashboard__modal-close-btn {
       width: 36px;
       height: 36px;
       font-size: $font-size-regular;

@@ -26,7 +26,6 @@ const StaffLogin: React.FC = () => {
 
   useEffect(() => {
     if (mounted && !authLoading && isAuthenticated) {
-      // Get current language from pathname or default to 'sr'
       const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
       router.replace(`/${currentLang}/admin`);
     }
@@ -56,8 +55,8 @@ const StaffLogin: React.FC = () => {
 
   if (!mounted || authLoading) {
     return (
-      <div className="staff-login-section">
-        <div className="staff-container">
+      <div className="stafflogin-section">
+        <div className="stafflogin-container">
           <Spinner size="lg" text={t("staffLogin.loading")} />
         </div>
       </div>
@@ -65,17 +64,17 @@ const StaffLogin: React.FC = () => {
   }
 
   return (
-    <div className="staff-login-section">
-      <div className="staff-header">
-        <h2 className="section-title">{t("staffLogin.title")}</h2>
-        <p className="section-subtitle">{t("staffLogin.subtitle")}</p>
+    <div className="stafflogin-section">
+      <div className="stafflogin-header">
+        <h2 className="stafflogin-title">{t("staffLogin.title")}</h2>
+        <p className="stafflogin-subtitle">{t("staffLogin.subtitle")}</p>
       </div>
 
-      <div className="staff-container">
-        <form className="staff-form" onSubmit={handleSubmit}>
-          {error && <p className="error" role="alert">{error}</p>}
+      <div className="stafflogin-container">
+        <form className="stafflogin-form" onSubmit={handleSubmit}>
+          {error && <p className="stafflogin-error" role="alert">{error}</p>}
 
-          <div className="form-group">
+          <div className="stafflogin-form-group">
             <label htmlFor="email">{t("staffLogin.emailLabel")}</label>
             <input
               type="email"
@@ -89,7 +88,7 @@ const StaffLogin: React.FC = () => {
             />
           </div>
 
-          <div className="form-group">
+          <div className="stafflogin-form-group">
             <label htmlFor="password">{t("staffLogin.passwordLabel")}</label>
             <input
               type="password"
@@ -103,10 +102,10 @@ const StaffLogin: React.FC = () => {
             />
           </div>
 
-          <div className="form-actions">
+          <div className="stafflogin-form-actions">
             <button
               type="submit"
-              className={`btn-submit ${loading ? "submitting" : ""}`}
+              className={`stafflogin-btn-submit${loading ? " stafflogin-submitting" : ""}`}
               disabled={loading}
             >
               {loading ? (

@@ -153,9 +153,9 @@ const Calendar: React.FC = () => {
 
   return (
     <div className="calendar">
-      <div className="calendar-header">
+      <div className="calendar__header">
         <motion.button
-          className="back-button"
+          className="calendar__back-button"
           onClick={handleBackToAdmin}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -166,7 +166,7 @@ const Calendar: React.FC = () => {
         </motion.button>
 
         <motion.div
-          className="calendar-title"
+          className="calendar__title"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
@@ -176,25 +176,25 @@ const Calendar: React.FC = () => {
         </motion.div>
 
         <motion.div
-          className="calendar-stats"
+          className="calendar__stats"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3, delay: 0.2 }}
         >
-          <div className="stat-item">
-            <span className="stat-number">{reservations.length}</span>
-            <span className="stat-label">{t("calendarPage.totalEvents")}</span>
+          <div className="calendar__stat-item">
+            <span className="calendar__stat-number">{reservations.length}</span>
+            <span className="calendar__stat-label">{t("calendarPage.totalEvents")}</span>
           </div>
         </motion.div>
       </div>
 
       <motion.div
-        className="calendar-content"
+        className="calendar__content"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
       >
-        <div className="calendar-wrapper">
+        <div className="calendar__wrapper">
           <FullCalendarComponent
             reservations={memoizedReservations}
             onEventClick={onEventClick}
@@ -207,24 +207,24 @@ const Calendar: React.FC = () => {
         <Modal
           show={!!selectedEvent}
           onClose={() => setSelectedEvent(null)}
-          className={`event-details-modal ${
+          className={`calendar__event-details-modal ${
             selectedEvent.type === "koneti"
-              ? `${selectedEvent.subType || "basic"}-package`
+              ? `calendar__event-details-modal--${selectedEvent.subType || "basic"}`
               : ""
           }`}
         >
-          <div className="event-header">
+          <div className="calendar__event-header">
             <FontAwesomeIcon
               icon={
                 selectedEvent.type === "business" ? faBriefcase : faGlassCheers
               }
-              className="event-icon"
+              className="calendar__event-icon"
             />
             <h4>{selectedEvent.name}</h4>
           </div>
-          <div className="event-body">
-            <div className="event-info">
-              <p className={`event-status ${selectedEvent.status}`}>
+          <div className="calendar__event-body">
+            <div className="calendar__event-info">
+              <p className={`calendar__event-status calendar__event-status--${selectedEvent.status}`}>
                 <strong>{t("adminPage.event.status")}</strong>{" "}
                 {selectedEvent.status === "pending"
                   ? t("adminPage.status.pending")
@@ -277,11 +277,11 @@ const Calendar: React.FC = () => {
                 </p>
               )}
             </div>
-            <div className="event-actions">
+            <div className="calendar__event-actions">
               {selectedEvent.status === "pending" && (
                 <>
                   <button
-                    className="btn-approve"
+                    className="calendar__btn-approve"
                     onClick={() =>
                       handleReservationAction(selectedEvent._id, "approved")
                     }
@@ -291,7 +291,7 @@ const Calendar: React.FC = () => {
                     {updatingReservation === selectedEvent._id ? t("adminPage.actions.updating") : t("adminPage.event.confirm")}
                   </button>
                   <button
-                    className="btn-reject"
+                    className="calendar__btn-reject"
                     onClick={() =>
                       handleReservationAction(selectedEvent._id, "rejected")
                     }
@@ -303,7 +303,7 @@ const Calendar: React.FC = () => {
                 </>
               )}
               <button
-                className="btn-delete"
+                className="calendar__btn-delete"
                 onClick={() => setShowDeleteConfirm(selectedEvent)}
                 disabled={updatingReservation === selectedEvent._id}
               >
@@ -317,24 +317,24 @@ const Calendar: React.FC = () => {
 
       {showDeleteConfirm && (
         <div
-          className="modal-overlay blur-backdrop"
+          className="calendar__modal-overlay calendar__modal-overlay--blur"
           onClick={() => setShowDeleteConfirm(null)}
         >
           <div
-            className="delete-confirm-popup"
+            className="calendar__delete-confirm-popup"
             onClick={(e) => e.stopPropagation()}
           >
             <h3>{t("adminPage.event.deleteConfirm.title")}</h3>
             <p>{t("adminPage.event.deleteConfirm.message")}</p>
-            <div className="confirm-actions">
+            <div className="calendar__confirm-actions">
               <button
-                className="btn-cancel"
+                className="calendar__btn-cancel"
                 onClick={() => setShowDeleteConfirm(null)}
               >
                 {t("adminPage.event.deleteConfirm.cancel")}
               </button>
               <button
-                className="btn-confirm"
+                className="calendar__btn-confirm"
                 onClick={() => handleDeleteReservation(showDeleteConfirm._id)}
                 disabled={updatingReservation === showDeleteConfirm._id}
               >

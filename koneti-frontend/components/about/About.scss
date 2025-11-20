@@ -196,7 +196,7 @@ $breakpoint-desktop-large: 1440px;
 // =========================
 // MAIN CONTAINER
 // =========================
-.gallery-management {
+.about__management {
   min-height: 100vh;
   background: linear-gradient(135deg, $color-bg-primary 0%, $color-bg-lighter 50%, $color-bg-primary 100%);
   font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -219,7 +219,7 @@ $breakpoint-desktop-large: 1440px;
   }
 }
 
-.gallery-container {
+.about__container {
   @include flex-center;
   min-height: 60vh;
   padding: $spacing-5xl $spacing-xl;
@@ -238,7 +238,7 @@ $breakpoint-desktop-large: 1440px;
 // =========================
 // HEADER SECTION - MATCHING RESERVATIONFORM
 // =========================
-.gallery-header {
+.about__header {
   text-align: center;
   margin-bottom: $spacing-5xl;
   padding: $spacing-2xl $spacing-xl;
@@ -261,7 +261,7 @@ $breakpoint-desktop-large: 1440px;
   }
 }
 
-.gallery-title {
+.about__title {
   font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 800;
   margin: 0 0 $spacing-md 0;
@@ -288,7 +288,7 @@ $breakpoint-desktop-large: 1440px;
   }
 }
 
-.gallery-subtitle {
+.about__subtitle {
   font-size: clamp(1.05rem, 2vw, 1.25rem);
   color: $color-text-dark;
   line-height: 1.8;
@@ -302,7 +302,7 @@ $breakpoint-desktop-large: 1440px;
 // =========================
 // O NAMA SEKCIJA - NOVA
 // =========================
-.about-section {
+.about__section {
   max-width: 1200px;
   margin: 0 auto $spacing-5xl;
   padding: $spacing-4xl;
@@ -338,7 +338,7 @@ $breakpoint-desktop-large: 1440px;
   }
 }
 
-.about-content {
+.about__content {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: $spacing-4xl;
@@ -350,7 +350,7 @@ $breakpoint-desktop-large: 1440px;
   }
 }
 
-.about-text {
+.about__text {
   animation: slideInLeft 0.8s ease-out 0.2s backwards;
 
   h2 {
@@ -398,7 +398,7 @@ $breakpoint-desktop-large: 1440px;
   }
 }
 
-.about-features {
+.about__features {
   display: grid;
   gap: $spacing-lg;
   margin-top: $spacing-2xl;
@@ -408,7 +408,7 @@ $breakpoint-desktop-large: 1440px;
   }
 }
 
-.feature-item {
+.about__feature-item {
   display: flex;
   align-items: flex-start;
   gap: $spacing-lg;
@@ -431,7 +431,7 @@ $breakpoint-desktop-large: 1440px;
     margin-top: $spacing-xs;
   }
 
-  .feature-text {
+  .about__feature-text {
     flex: 1;
 
     h4 {
@@ -951,11 +951,11 @@ body.modal-open {
 // =========================
 // SLIDER - UMESTO STATIČNE SLIKE
 // =========================
-.about-image {
+.about__image {
   position: relative;
   animation: slideInRight 0.8s ease-out 0.2s backwards;
 
-  .image-slider {
+  .about__image-slider {
     position: relative;
     border-radius: $radius-2xl;
     overflow: hidden;
@@ -971,14 +971,14 @@ body.modal-open {
     }
   }
 
-  .slider-wrapper {
+  .about__slider-wrapper {
     display: flex;
     width: 100%;
     height: 100%;
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .slider-slide {
+  .about__slider-slide {
     min-width: 100%;
     height: 100%;
     position: relative;
@@ -1014,7 +1014,7 @@ body.modal-open {
   }
 
   // Slider Indicators (dots)
-  .slider-indicators {
+  .about__slider-indicators {
     position: absolute;
     bottom: $spacing-xl;
     left: 50%;
@@ -1029,7 +1029,7 @@ body.modal-open {
     }
   }
 
-  .slider-indicator {
+  .about__slider-indicator {
     width: 12px;
     height: 12px;
     border-radius: $radius-full;
@@ -1044,7 +1044,7 @@ body.modal-open {
       transform: scale(1.2);
     }
 
-    &.active {
+    &.about__slider-indicator--active {
       background: $color-primary;
       border-color: $color-white;
       width: 32px;
@@ -1055,14 +1055,14 @@ body.modal-open {
       width: 10px;
       height: 10px;
 
-      &.active {
+      &.about__slider-indicator--active {
         width: 24px;
       }
     }
   }
 
   // Slider Navigation Arrows
-  .slider-nav {
+  .about__slider-nav {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -1089,11 +1089,11 @@ body.modal-open {
       transform: translateY(-50%) scale(1.1);
     }
 
-    &.prev {
+    &.about__slider-nav--prev {
       left: $spacing-lg;
     }
 
-    &.next {
+    &.about__slider-nav--next {
       right: $spacing-lg;
     }
 
@@ -1105,18 +1105,18 @@ body.modal-open {
         font-size: 1rem;
       }
 
-      &.prev {
+      &.about__slider-nav--prev {
         left: $spacing-md;
       }
 
-      &.next {
+      &.about__slider-nav--next {
         right: $spacing-md;
       }
     }
   }
 
   // Show arrows on hover
-  .image-slider:hover .slider-nav {
+  .about__image-slider:hover .about__slider-nav {
     opacity: 1;
   }
 
@@ -1141,7 +1141,7 @@ body.modal-open {
 // =========================
 // NOVA SEKCIJA - O NAMA
 // =========================
-.about-welcome-section {
+.about__welcome-section {
   max-width: 1200px;
   margin: 0 auto $spacing-4xl;
   padding: $spacing-3xl $spacing-3xl $spacing-2xl;
@@ -1173,13 +1173,13 @@ body.modal-open {
   }
 }
 
-.welcome-content {
+.about__welcome-content {
   max-width: 1000px;
   margin: 0 auto;
   text-align: center;
 }
 
-.welcome-intro {
+.about__welcome-intro {
   font-size: 1.25rem;
   line-height: 1.9;
   font-weight: 600;
@@ -1195,7 +1195,7 @@ body.modal-open {
   }
 }
 
-.welcome-offers {
+.about__welcome-offers {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: $spacing-xl;
@@ -1206,7 +1206,7 @@ body.modal-open {
   }
 }
 
-.offer-card {
+.about__offer-card {
   position: relative;
   padding: $spacing-xl $spacing-xl $spacing-lg;
   background: linear-gradient(135deg, $color-bg-secondary 0%, $color-bg-tertiary 100%);
@@ -1230,7 +1230,7 @@ body.modal-open {
   }
 }
 
-.offer-icon {
+.about__offer-icon {
   width: 54px;
   height: 54px;
   border-radius: $radius-full;
@@ -1242,7 +1242,7 @@ body.modal-open {
   flex-shrink: 0;
   transition: background $transition-base;
 
-  .offer-card:hover & {
+  .about__offer-card:hover & {
     background: linear-gradient(135deg, $color-primary-light, $color-primary);
   }
 
@@ -1253,7 +1253,7 @@ body.modal-open {
   }
 }
 
-.offer-text {
+.about__offer-text {
   font-size: 1.05rem;
   font-weight: 600;
   color: $color-text-secondary;
@@ -1266,7 +1266,7 @@ body.modal-open {
   }
 }
 
-.welcome-cta {
+.about__welcome-cta {
   font-size: 1.2rem;
   font-weight: 700;
   color: $color-text-dark;
@@ -1281,5 +1281,39 @@ body.modal-open {
   @media (max-width: $breakpoint-mobile-small) {
     font-size: 1.05rem;
     padding: $spacing-md $spacing-lg;
+  }
+}
+
+// =========================
+// EMPTY SLIDER
+// =========================
+.about__empty-slider {
+  @include flex-center;
+  flex-direction: column;
+  gap: $spacing-xl;
+  padding: $spacing-5xl $spacing-4xl;
+  background: $color-white;
+  border-radius: $radius-2xl;
+  box-shadow: $shadow-md;
+  text-align: center;
+
+  svg {
+    color: $color-primary-light;
+    opacity: 0.4;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: $color-text-muted;
+    margin: 0;
+    max-width: 450px;
+  }
+
+  @media screen and (max-width: $breakpoint-mobile-small) {
+    padding: $spacing-4xl $spacing-2xl;
+
+    p {
+      font-size: 1rem;
+    }
   }
 }

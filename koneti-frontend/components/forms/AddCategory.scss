@@ -1,7 +1,7 @@
-.add-category-form {
+.add-category__form {
   /* ===== CSS VARIJABLE ===== */
   --font-primary: "Poppins", sans-serif;
-  
+
   /* Boje */
   --color-primary: #5a3e36;
   --color-secondary: #cfa68a;
@@ -13,7 +13,7 @@
   --color-error-light: rgba(231, 76, 60, 0.1);
   --color-error-border: rgba(231, 76, 60, 0.2);
   --color-placeholder: #999;
-  
+
   /* Border i shadow efekti */
   --border-radius-sm: 0.5rem;
   --border-radius-md: 10px;
@@ -24,7 +24,7 @@
   --shadow-lg: 0 8px 25px rgba(207, 166, 138, 0.4);
   --shadow-focus: 0 0 0 3px rgba(207, 166, 138, 0.2);
   --shadow-selected: 0 0 10px rgba(146, 100, 71, 0.4);
-  
+
   /* Dimenzije i spacing */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.3rem;
@@ -34,14 +34,14 @@
   --spacing-xxl: 1rem;
   --spacing-xxxl: 1.2rem;
   --spacing-jumbo: 1.5rem;
-  
+
   /* Font sizes */
   --text-xs: 0.75rem;
   --text-sm: 0.85rem;
   --text-md: 0.95rem;
   --text-lg: 1rem;
   --text-xl: 1.2rem;
-  
+
   /* Animacije */
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
@@ -49,11 +49,10 @@
   --animation-fadeIn: fadeIn 0.4s ease-in-out;
   --animation-formFadeIn: formFadeIn 0.4s ease-in-out;
   --animation-shake: shake 0.3s ease;
-  
+
   /* Z-index */
   --z-sticky: 10;
 
-  /* ===== GLAVNI STILOVI ===== */
   font-family: var(--font-primary);
   display: flex;
   flex-direction: column;
@@ -66,68 +65,74 @@
   border-radius: 0;
   animation: var(--animation-formFadeIn);
 
-  /* ===== HEADING STYLES ===== */
   h2, h3 {
     display: none;
   }
 
-  /* ===== FORM LAYOUT ===== */
   form {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xxxl);
 
-    /* ===== LABEL STYLES ===== */
-    label {
-      font-weight: 600;
-      color: var(--color-primary);
-      display: block;
-      margin-bottom: var(--spacing-sm);
-    }
+    .add-category__group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
 
-    /* ===== INPUT STYLES ===== */
-    input {
-      width: 100%;
-      padding: var(--spacing-xl) var(--spacing-xxl);
-      border-radius: var(--border-radius-md);
-      border: 2px solid var(--border-color);
-      font-size: var(--text-md);
-      font-family: var(--font-primary);
-      background: rgba(255, 255, 255, 0.9);
-      transition: all var(--transition-bounce);
-      box-sizing: border-box;
-      color: var(--color-primary);
-
-      &:focus {
-        border-color: var(--color-secondary);
-        box-shadow: var(--shadow-focus);
-        outline: none;
-        background: var(--color-white);
-        transform: translateY(-2px);
+      label {
+        font-weight: 600;
+        color: var(--color-primary);
+        display: block;
+        margin-bottom: var(--spacing-sm);
       }
 
-      &::placeholder {
-        color: var(--color-placeholder);
-        font-style: italic;
+      input {
+        width: 100%;
+        padding: var(--spacing-xl) var(--spacing-xxl);
+        border-radius: var(--border-radius-md);
+        border: 2px solid var(--border-color);
+        font-size: var(--text-md);
+        font-family: var(--font-primary);
+        background: rgba(255, 255, 255, 0.9);
+        transition: all var(--transition-bounce);
+        box-sizing: border-box;
+        color: var(--color-primary);
+
+        &:focus {
+          border-color: var(--color-secondary);
+          box-shadow: var(--shadow-focus);
+          outline: none;
+          background: var(--color-white);
+          transform: translateY(-2px);
+        }
+
+        &::placeholder {
+          color: var(--color-placeholder);
+          font-style: italic;
+        }
       }
     }
 
-    /* ===== ICON PICKER SECTION ===== */
-    .icon-picker {
+    .add-category__icon-picker {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
       gap: var(--spacing-lg);
       margin-top: var(--spacing-md);
       animation: var(--animation-fadeIn);
 
-      .icon-wrap {
+      &.add-category__shake {
+        animation: var(--animation-shake);
+        border-color: #d9534f !important;
+      }
+
+      .add-category__icon-wrap {
         position: relative;
         display: inline-flex;
         justify-content: center;
         align-items: center;
       }
 
-      .icon-btn {
+      .add-category__icon-btn {
         background: var(--color-secondary);
         border: 2px solid transparent;
         border-radius: var(--border-radius-sm);
@@ -154,7 +159,7 @@
         }
       }
 
-      .icon-tooltip.koneti-tooltip {
+      .add-category__icon-tooltip.koneti-tooltip {
         position: absolute;
         bottom: calc(100% + var(--spacing-md));
         left: 50%;
@@ -173,14 +178,13 @@
         box-shadow: var(--shadow-sm);
       }
 
-      .icon-wrap:hover .icon-tooltip.koneti-tooltip {
+      .add-category__icon-wrap:hover .add-category__icon-tooltip.koneti-tooltip {
         opacity: 1;
         transform: translateX(-50%) translateY(-2px);
       }
     }
 
-    /* ===== SUBMIT BUTTON ===== */
-    button[type="submit"] {
+    .add-category__submit {
       width: 100%;
       padding: var(--spacing-xxl) var(--spacing-jumbo);
       background: linear-gradient(135deg, var(--color-secondary), var(--color-secondary-light));
@@ -205,8 +209,7 @@
     }
   }
 
-  /* ===== ERROR STATES ===== */
-  .error {
+  .add-category__error {
     color: var(--color-error);
     font-size: var(--text-sm);
     margin-top: var(--spacing-md);
@@ -219,7 +222,11 @@
     border: 1px solid var(--color-error-border);
   }
 
-  /* ===== ANIMATIONS ===== */
+  .add-category__shake {
+    animation: var(--animation-shake);
+    border-color: #d9534f !important;
+  }
+
   @keyframes formFadeIn {
     0% {
       opacity: 0;
@@ -249,10 +256,5 @@
     60% { transform: translateX(-5px); }
     80% { transform: translateX(5px); }
     100% { transform: translateX(0); }
-  }
-
-  .shake {
-    animation: var(--animation-shake);
-    border-color: #d9534f !important;
   }
 }

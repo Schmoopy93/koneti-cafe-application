@@ -11,7 +11,7 @@ $bg-light: rgba(255, 255, 255, 0.95);
 $shadow: rgba(61, 47, 40, 0.08);
 $border: rgba(207, 166, 138, 0.2);
 
-.staff-login-section {
+.stafflogin-section {
   min-height: 100vh;
   background: linear-gradient(135deg, #fdfaf6 0%, #f8f5f1 50%, #f0ebe5 100%);
   font-family: "Poppins", sans-serif;
@@ -33,7 +33,7 @@ $border: rgba(207, 166, 138, 0.2);
     z-index: 1;
   }
 
-  .staff-container {
+  .stafflogin-container {
     max-width: 450px;
     width: 100%;
     position: relative;
@@ -42,11 +42,11 @@ $border: rgba(207, 166, 138, 0.2);
     animation: fadeIn 0.6s ease-out 0.4s forwards;
   }
 
-  .staff-header {
+  .stafflogin-header {
     text-align: center;
     margin-bottom: 3rem;
 
-    .section-title {
+    .stafflogin-title {
       font-family: "Playfair Display", serif;
       font-weight: 700;
       font-size: 2.8rem;
@@ -69,7 +69,7 @@ $border: rgba(207, 166, 138, 0.2);
       }
     }
 
-    .section-subtitle {
+    .stafflogin-subtitle {
       font-size: 1.2rem;
       color: $text-muted;
       font-weight: 500;
@@ -79,7 +79,7 @@ $border: rgba(207, 166, 138, 0.2);
     }
   }
 
-  .staff-form {
+  .stafflogin-form {
     background: linear-gradient(145deg, #ffffff 0%, #fdfaf6 30%, #f8f5f1 70%, #f0ebe4 100%);
     border-radius: 25px;
     padding: 3rem;
@@ -99,7 +99,7 @@ $border: rgba(207, 166, 138, 0.2);
       background: linear-gradient(90deg, $primary-color, $secondary-color, #e6c79a);
     }
 
-    .form-group {
+    .stafflogin-form-group {
       margin-bottom: 2rem;
 
       label {
@@ -141,10 +141,10 @@ $border: rgba(207, 166, 138, 0.2);
       }
     }
 
-    .form-actions {
+    .stafflogin-form-actions {
       margin-top: 2.5rem;
 
-      .btn-submit {
+      .stafflogin-btn-submit {
         width: 100%;
         padding: 1.2rem 2rem;
         background: linear-gradient(135deg, $primary-color 0%, $secondary-color 50%, #e6c79a 100%);
@@ -193,7 +193,7 @@ $border: rgba(207, 166, 138, 0.2);
           transform: none;
         }
 
-        &.submitting {
+        &.stafflogin-submitting {
           background: linear-gradient(135deg, #b8956f, #c4a373);
         }
 
@@ -214,7 +214,7 @@ $border: rgba(207, 166, 138, 0.2);
     }
   }
 
-  .error {
+  .stafflogin-error {
     color: #e74c3c;
     font-size: 0.9rem;
     margin-bottom: 1.5rem;
@@ -264,22 +264,22 @@ $border: rgba(207, 166, 138, 0.2);
   @media (max-width: 768px) {
     padding: 1.5rem;
 
-    .staff-header {
+    .stafflogin-header {
       margin-bottom: 2rem;
 
-      .section-title {
+      .stafflogin-title {
         font-size: 2.2rem;
       }
 
-      .section-subtitle {
+      .stafflogin-subtitle {
         font-size: 1rem;
       }
     }
 
-    .staff-form {
+    .stafflogin-form {
       padding: 2rem;
 
-      .form-group {
+      .stafflogin-form-group {
         margin-bottom: 1.5rem;
 
         input {
@@ -288,8 +288,8 @@ $border: rgba(207, 166, 138, 0.2);
         }
       }
 
-      .form-actions {
-        .btn-submit {
+      .stafflogin-form-actions {
+        .stafflogin-btn-submit {
           padding: 1rem 1.5rem;
           font-size: 1rem;
         }
@@ -300,25 +300,25 @@ $border: rgba(207, 166, 138, 0.2);
   @media (max-width: 480px) {
     padding: 1rem;
 
-    .staff-header {
-      .section-title {
+    .stafflogin-header {
+      .stafflogin-title {
         font-size: 1.8rem;
       }
     }
 
-    .staff-form {
+    .stafflogin-form {
       padding: 1.5rem;
       border-radius: 20px;
 
-      .form-group {
+      .stafflogin-form-group {
         input {
           padding: 0.9rem 1rem;
           border-radius: 15px;
         }
       }
 
-      .form-actions {
-        .btn-submit {
+      .stafflogin-form-actions {
+        .stafflogin-btn-submit {
           padding: 0.9rem 1.2rem;
           border-radius: 20px;
         }

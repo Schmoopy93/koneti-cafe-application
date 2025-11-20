@@ -182,74 +182,66 @@ const AdminPage: React.FC = () => {
 
   return (
     <div className="admin-dashboard">
-      <main className="admin-main">
+      <main className="admin-dashboard__main">
         <motion.div
-          className="dashboard-content"
+          className="admin-dashboard__content"
           initial="hidden"
           animate="visible"
           variants={containerVariants}
         >
           {/* Enhanced Stats grid */}
-          <motion.div className="stats-grid" variants={containerVariants}>
+          <motion.div className="admin-dashboard__stats-grid" variants={containerVariants}>
             <motion.div
-              className="stat-card drinks-card"
+              className="admin-dashboard__stat-card admin-dashboard__stat-card--drinks"
               variants={cardVariants}
               whileHover="hover"
             >
-              <div className="stat-icon drinks-icon">
+              <div className="admin-dashboard__stat-icon admin-dashboard__stat-icon--drinks">
                 <FontAwesomeIcon icon={faGlassMartiniAlt} />
               </div>
-              <div className="stat-info">
+              <div className="admin-dashboard__stat-info">
                 <h3>{stats.totalDrinks}</h3>
                 <p>{t("adminPage.stats.totalDrinks")}</p>
-                {/* <div className="stat-trend">
-                  <span className="trend-number">📈</span>
-                  <span className="trend-label">{t("adminPage.stats.trend.up")}</span>
-                </div> */}
               </div>
             </motion.div>
 
             <motion.div
-              className="stat-card categories-card"
+              className="admin-dashboard__stat-card admin-dashboard__stat-card--categories"
               variants={cardVariants}
               whileHover="hover"
             >
-              <div className="stat-icon categories-icon">
+              <div className="admin-dashboard__stat-icon admin-dashboard__stat-icon--categories">
                 <FontAwesomeIcon icon={faList} />
               </div>
-              <div className="stat-info">
+              <div className="admin-dashboard__stat-info">
                 <h3>{stats.totalCategories}</h3>
                 <p>{t("adminPage.stats.totalCategories")}</p>
-                {/* <div className="stat-trend">
-                  <span className="trend-number">📊</span>
-                  <span className="trend-label">{t("adminPage.stats.trend.stable")}</span>
-                </div> */}
               </div>
             </motion.div>
 
             <motion.div
-              className="stat-card reservations-card"
+              className="admin-dashboard__stat-card admin-dashboard__stat-card--reservations"
               variants={cardVariants}
               whileHover="hover"
             >
-              <div className="stat-icon reservations-icon">
+              <div className="admin-dashboard__stat-icon admin-dashboard__stat-icon--reservations">
                 <FontAwesomeIcon icon={faCalendarAlt} />
               </div>
-              <div className="stat-info">
+              <div className="admin-dashboard__stat-info">
                 <h3>{stats.totalReservations}</h3>
                 <p>{t("adminPage.stats.totalReservations")}</p>
-                <div className="stat-breakdown">
-                  <span className="approved-count">
-                    <span className="count-number">{statusCounters.approved}</span>
-                    <span className="count-label">{t("adminPage.stats.approved")}</span>
+                <div className="admin-dashboard__stat-breakdown">
+                  <span className="admin-dashboard__stat-count admin-dashboard__stat-count--approved">
+                    <span className="admin-dashboard__count-number">{statusCounters.approved}</span>
+                    <span className="admin-dashboard__count-label">{t("adminPage.stats.approved")}</span>
                   </span>
-                  <span className="pending-count">
-                    <span className="count-number">{statusCounters.pending}</span>
-                    <span className="count-label">{t("adminPage.stats.pending")}</span>
+                  <span className="admin-dashboard__stat-count admin-dashboard__stat-count--pending">
+                    <span className="admin-dashboard__count-number">{statusCounters.pending}</span>
+                    <span className="admin-dashboard__count-label">{t("adminPage.stats.pending")}</span>
                   </span>
-                  <span className="rejected-count">
-                    <span className="count-number">{statusCounters.rejected}</span>
-                    <span className="count-label">{t("adminPage.stats.rejected")}</span>
+                  <span className="admin-dashboard__stat-count admin-dashboard__stat-count--rejected">
+                    <span className="admin-dashboard__count-number">{statusCounters.rejected}</span>
+                    <span className="admin-dashboard__count-label">{t("adminPage.stats.rejected")}</span>
                   </span>
                 </div>
               </div>
@@ -257,10 +249,9 @@ const AdminPage: React.FC = () => {
           </motion.div>
 
           {/* Action cards */}
-          {/* Action cards (prvi red) */}
-          <motion.div className="action-cards" variants={containerVariants}>
+          <motion.div className="admin-dashboard__action-cards" variants={containerVariants}>
             <motion.div
-              className="action-card menu-card"
+              className="admin-dashboard__action-card admin-dashboard__action-card--menu"
               onClick={() => {
                 const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
                 router.push(`/${currentLang}/menu-management`);
@@ -268,16 +259,16 @@ const AdminPage: React.FC = () => {
               variants={cardVariants}
               whileHover="hover"
             >
-              <div className="card-icon-wrapper">
+              <div className="admin-dashboard__card-icon-wrapper">
                 <FontAwesomeIcon icon={faGlassMartiniAlt} style={{ color: '#ffc107' }} />
-                <div className="icon-glow"></div>
+                <div className="admin-dashboard__icon-glow"></div>
               </div>
               <h3>{t("adminPage.actions.manageMenu")}</h3>
               <p>{t("adminPage.actions.manageMenuDesc")}</p>
             </motion.div>
 
             <motion.div
-              className="action-card calendar-card"
+              className="admin-dashboard__action-card admin-dashboard__action-card--calendar"
               onClick={() => {
                 const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
                 router.push(`/${currentLang}/calendar`);
@@ -285,16 +276,16 @@ const AdminPage: React.FC = () => {
               variants={cardVariants}
               whileHover="hover"
             >
-              <div className="card-icon-wrapper">
+              <div className="admin-dashboard__card-icon-wrapper">
                 <FontAwesomeIcon icon={faCalendarAlt} />
-                <div className="icon-glow"></div>
+                <div className="admin-dashboard__icon-glow"></div>
               </div>
               <h3>{t("adminPage.actions.calendar")}</h3>
               <p>{t("adminPage.actions.calendarDesc")}</p>
             </motion.div>
 
             <motion.div
-              className="action-card logout-card"
+              className="admin-dashboard__action-card admin-dashboard__action-card--logout"
               onClick={handleLogout}
               variants={cardVariants}
               whileHover="hover"
@@ -307,13 +298,13 @@ const AdminPage: React.FC = () => {
 
           {/* Drugi red — Statistics i Career */}
           <motion.div
-            className="action-cards"
+            className="admin-dashboard__action-cards"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
             <motion.div
-              className="action-card statistics-card"
+              className="admin-dashboard__action-card admin-dashboard__action-card--statistics"
               onClick={() => {
                 const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
                 router.push(`/${currentLang}/statistics`);
@@ -321,20 +312,16 @@ const AdminPage: React.FC = () => {
               variants={cardVariants}
               whileHover="hover"
             >
-              <div className="card-icon-wrapper">
+              <div className="admin-dashboard__card-icon-wrapper">
                 <FontAwesomeIcon icon={faChartLine} />
-                <div className="icon-glow"></div>
+                <div className="admin-dashboard__icon-glow"></div>
               </div>
               <h3>{t("adminPage.actions.statistics")}</h3>
               <p>{t("adminPage.actions.statisticsDesc")}</p>
-              {/* <div className="card-stats-preview">
-                <span>📊 {t("adminPage.stats.detailedReports")}</span>
-                <span>📈 {t("adminPage.stats.analytics")}</span>
-              </div> */}
             </motion.div>
 
             <motion.div
-              className="action-card career-card"
+              className="admin-dashboard__action-card admin-dashboard__action-card--career"
               onClick={() => {
                 const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
                 router.push(`/${currentLang}/admin/career`);
@@ -342,16 +329,16 @@ const AdminPage: React.FC = () => {
               variants={cardVariants}
               whileHover="hover"
             >
-              <div className="card-icon-wrapper">
+              <div className="admin-dashboard__card-icon-wrapper">
                 <FontAwesomeIcon icon={faBriefcase} />
-                <div className="icon-glow"></div>
+                <div className="admin-dashboard__icon-glow"></div>
               </div>
               <h3>{t("adminPage.actions.jobApplications")}</h3>
               <p>{t("adminPage.actions.jobApplicationsDesc")}</p>
             </motion.div>
 
             <motion.div
-              className="action-card gallery-card"
+              className="admin-dashboard__action-card admin-dashboard__action-card--gallery"
               onClick={() => {
                 const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
                 router.push(`/${currentLang}/admin/gallery`);
@@ -359,36 +346,34 @@ const AdminPage: React.FC = () => {
               variants={cardVariants}
               whileHover="hover"
             >
-              <div className="card-icon-wrapper">
+              <div className="admin-dashboard__card-icon-wrapper">
                 <FontAwesomeIcon icon={faImage} style={{ color: '#28a745' }} />
-                <div className="icon-glow"></div>
+                <div className="admin-dashboard__icon-glow"></div>
               </div>
               <h3>{t("adminPage.actions.gallery")}</h3>
               <p>{t("adminPage.actions.galleryDesc")}</p>
             </motion.div>
           </motion.div>
-
-
         </motion.div>
       </main>
 
       {/* Career Management Modal */}
       {showModal === "career" && (
         <div
-          className="modal-overlay fullscreen blur-backdrop"
+          className="admin-dashboard__modal-overlay admin-dashboard__modal-overlay--fullscreen admin-dashboard__modal-overlay--blur"
           onClick={() => setShowModal(null)}
         >
           <div
-            className="modal-content fullscreen-modal career-modal"
+            className="admin-dashboard__modal-content admin-dashboard__modal-content--fullscreen admin-dashboard__modal-content--career"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="modal-header">
+            <div className="admin-dashboard__modal-header">
               <h3>💼 {t("adminPage.actions.jobApplications")}</h3>
-              <button className="modal-close-btn" onClick={() => setShowModal(null)}>
+              <button className="admin-dashboard__modal-close-btn" onClick={() => setShowModal(null)}>
                 <FontAwesomeIcon icon={faTimes} />
               </button>
             </div>
-            <div className="modal-body">
+            <div className="admin-dashboard__modal-body">
               <CareerManagement />
             </div>
           </div>

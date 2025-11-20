@@ -43,10 +43,7 @@ interface CareerApplicationProps {
 
 const CareerApplication: React.FC<CareerApplicationProps> = ({ onSubmit }) => {
   const { t, i18n } = useTranslation();
-  const [availablePositions, setAvailablePositions] = useState<JobPosition[]>(
-    []
-  );
-
+  const [availablePositions, setAvailablePositions] = useState<JobPosition[]>([]);
   const [formData, setFormData] = useState<ApplicationData>({
     firstName: "",
     lastName: "",
@@ -55,14 +52,13 @@ const CareerApplication: React.FC<CareerApplicationProps> = ({ onSubmit }) => {
     position: "",
     coverLetter: "",
   });
-
   const [errors, setErrors] = useState<Partial<ApplicationData>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => setIsLoaded(true), 100);
     fetchPositions();
     return () => clearTimeout(timer);
@@ -137,7 +133,7 @@ const CareerApplication: React.FC<CareerApplicationProps> = ({ onSubmit }) => {
     }
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
@@ -195,8 +191,6 @@ const handleSubmit = async (e: React.FormEvent) => {
       });
       setCvFile(null);
       setErrors({});
-
-      // Show success popup
       setShowPopup(true);
     } catch (error) {
       console.error("Error submitting application:", error);
@@ -210,27 +204,27 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   return (
     <motion.div
-      className="career-application-page"
+      className="careerapp-application-page"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="career-header">
-        <h1 className="career-title">
+      <div className="careerapp-header">
+        <h1 className="careerapp-title">
           <FontAwesomeIcon icon={faBriefcase} />
           {t("career.joinTeam")}
         </h1>
-        <p className="career-subtitle">
+        <p className="careerapp-subtitle">
           {t("career.teamDescription")}
         </p>
       </div>
 
-      <div className="career-application-container">
+      <div className="careerapp-application-container">
         <form
           onSubmit={handleSubmit}
-          className={`application-form ${isLoaded ? "loaded" : ""}`}
+          className={`careerapp-application-form${isLoaded ? " careerapp-loaded" : ""}`}
         >
-          <div className="form-group">
+          <div className="careerapp-form-group">
             <label>
               <FontAwesomeIcon icon={faBriefcase} />
               {t("career.form.position")}
@@ -239,7 +233,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               name="position"
               value={formData.position}
               onChange={handleInputChange}
-              className={errors.position ? "error" : ""}
+              className={errors.position ? "careerapp-error" : ""}
             >
               <option value="">{t("career.form.selectPosition")}</option>
               {availablePositions.map((pos) => (
@@ -251,11 +245,11 @@ const handleSubmit = async (e: React.FormEvent) => {
               ))}
             </select>
             {errors.position && (
-              <span className="error-text">{errors.position}</span>
+              <span className="careerapp-error-text">{errors.position}</span>
             )}
           </div>
-          <div className="form-row">
-            <div className="form-group">
+          <div className="careerapp-form-row">
+            <div className="careerapp-form-group">
               <label>
                 <FontAwesomeIcon icon={faUser} />
                 {t("career.form.firstName")}
@@ -265,15 +259,15 @@ const handleSubmit = async (e: React.FormEvent) => {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleInputChange}
-                className={errors.firstName ? "error" : ""}
+                className={errors.firstName ? "careerapp-error" : ""}
                 placeholder={t("career.placeholders.firstName")}
               />
               {errors.firstName && (
-                <span className="error-text">{errors.firstName}</span>
+                <span className="careerapp-error-text">{errors.firstName}</span>
               )}
             </div>
 
-            <div className="form-group">
+            <div className="careerapp-form-group">
               <label>
                 <FontAwesomeIcon icon={faUser} />
                 {t("career.form.lastName")}
@@ -283,17 +277,17 @@ const handleSubmit = async (e: React.FormEvent) => {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleInputChange}
-                className={errors.lastName ? "error" : ""}
+                className={errors.lastName ? "careerapp-error" : ""}
                 placeholder={t("career.placeholders.lastName")}
               />
               {errors.lastName && (
-                <span className="error-text">{errors.lastName}</span>
+                <span className="careerapp-error-text">{errors.lastName}</span>
               )}
             </div>
           </div>
 
-          <div className="form-row">
-            <div className="form-group">
+          <div className="careerapp-form-row">
+            <div className="careerapp-form-group">
               <label>
                 <FontAwesomeIcon icon={faEnvelope} />
                 {t("career.form.email")}
@@ -303,15 +297,15 @@ const handleSubmit = async (e: React.FormEvent) => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={errors.email ? "error" : ""}
+                className={errors.email ? "careerapp-error" : ""}
                 placeholder={t("career.placeholders.email")}
               />
               {errors.email && (
-                <span className="error-text">{errors.email}</span>
+                <span className="careerapp-error-text">{errors.email}</span>
               )}
             </div>
 
-            <div className="form-group">
+            <div className="careerapp-form-group">
               <label>
                 <FontAwesomeIcon icon={faPhone} />
                 {t("career.form.phone")}
@@ -321,16 +315,16 @@ const handleSubmit = async (e: React.FormEvent) => {
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
-                className={errors.phone ? "error" : ""}
+                className={errors.phone ? "careerapp-error" : ""}
                 placeholder={t("career.placeholders.phone")}
               />
               {errors.phone && (
-                <span className="error-text">{errors.phone}</span>
+                <span className="careerapp-error-text">{errors.phone}</span>
               )}
             </div>
           </div>
 
-        <div className="form-group">
+          <div className="careerapp-form-group">
             <label>
               <FontAwesomeIcon icon={faFileAlt} />
               {t("career.form.coverLetter")}
@@ -339,23 +333,23 @@ const handleSubmit = async (e: React.FormEvent) => {
               name="coverLetter"
               value={formData.coverLetter}
               onChange={handleInputChange}
-              className={errors.coverLetter ? "error" : ""}
+              className={errors.coverLetter ? "careerapp-error" : ""}
               placeholder={t("career.placeholders.coverLetter")}
               rows={6}
             />
             {errors.coverLetter && (
-              <span className="error-text">{errors.coverLetter}</span>
+              <span className="careerapp-error-text">{errors.coverLetter}</span>
             )}
           </div>
 
-          <div className="form-group cv-upload">
+          <div className="careerapp-form-group careerapp-cv-upload">
             <label>
               <FontAwesomeIcon icon={faUpload} />
               {t("career.form.cv")}
             </label>
-            <div className="upload-area">
+            <div className="careerapp-upload-area">
               {!cvFile ? (
-                <label className="upload-label">
+                <label className="careerapp-upload-label">
                   <input
                     type="file"
                     accept=".pdf,.doc,.docx"
@@ -367,7 +361,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   <small>{t("career.upload.fileFormats")}</small>
                 </label>
               ) : (
-                <div className="file-preview">
+                <div className="careerapp-file-preview">
                   <FontAwesomeIcon icon={faFileAlt} />
                   <span>{cvFile.name}</span>
                   <button type="button" onClick={() => setCvFile(null)}>
@@ -378,10 +372,10 @@ const handleSubmit = async (e: React.FormEvent) => {
             </div>
           </div>
 
-          <div className="form-actions">
+          <div className="careerapp-form-actions">
             <button
               type="submit"
-              className="btn-submit"
+              className="careerapp-btn-submit"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -399,11 +393,11 @@ const handleSubmit = async (e: React.FormEvent) => {
 
       {showPopup && (
         <div
-          className="career-popup-backdrop"
+          className="careerapp-popup-backdrop"
           onClick={() => setShowPopup(false)}
         >
-          <div className="career-popup" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => setShowPopup(false)}>
+          <div className="careerapp-popup" onClick={(e) => e.stopPropagation()}>
+            <button className="careerapp-close-btn" onClick={() => setShowPopup(false)}>
               ×
             </button>
             <h2>{t("career.success.title")}</h2>

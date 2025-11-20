@@ -254,34 +254,33 @@ const CareerManagement: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <div className="career-header">
-
-        <div className="header-actions">
+      <div className="career-management__header">
+        <div className="career-management__header-actions">
           <button
-            className="btn-add-position"
+            className="career-management__btn-add-position"
             onClick={() => setShowAddPositionPopup(true)}
           >
             <FontAwesomeIcon icon={faPlus} />
             {t("adminPage.career.addPosition")}
           </button>
-          <div className="stats">
-            <div className="stat-item">
+          <div className="career-management__stats">
+            <div className="career-management__stat-item">
               <span className="stat-number">{applications.length}</span>
               <span className="stat-label">{t("adminPage.career.total")}</span>
             </div>
-            <div className="stat-item">
+            <div className="career-management__stat-item">
               <span className="stat-number">{applications.filter(a => a.status === "pending").length}</span>
               <span className="stat-label">{t("adminPage.career.pending")}</span>
             </div>
-            <div className="stat-item">
+            <div className="career-management__stat-item">
               <span className="stat-number">{applications.filter(a => a.status === "reviewed").length}</span>
               <span className="stat-label">{t("adminPage.career.status.reviewed")}</span>
             </div>
-            <div className="stat-item">
+            <div className="career-management__stat-item">
               <span className="stat-number">{applications.filter(a => a.status === "contacted").length}</span>
               <span className="stat-label">{t("adminPage.career.status.contacted")}</span>
             </div>
-            <div className="stat-item">
+            <div className="career-management__stat-item">
               <span className="stat-number">{applications.filter(a => a.status === "rejected").length}</span>
               <span className="stat-label">{t("adminPage.career.status.rejected")}</span>
             </div>
@@ -296,8 +295,8 @@ const CareerManagement: React.FC = () => {
 
       {/* Add Position Form */}
       {showAddPosition && (
-        <div className="add-position-form">
-          <div className="form-row">
+        <div className="career-management__add-position-form">
+          <div className="career-management__form-row">
             <input
               type="text"
               placeholder={t("adminPage.career.positionPlaceholder")}
@@ -307,12 +306,12 @@ const CareerManagement: React.FC = () => {
                 if (positionError) setPositionError('');
               }}
               onKeyPress={(e) => e.key === 'Enter' && handleAddPosition()}
-              className={positionError ? 'error' : ''}
+              className={positionError ? 'career-management__error' : ''}
             />
-            <button className="btn-submit-position" onClick={handleAddPosition}>
+            <button className="career-management__btn-submit-position" onClick={handleAddPosition}>
               ✓
             </button>
-            <button className="btn-cancel" onClick={() => {
+            <button className="career-management__btn-cancel" onClick={() => {
               setShowAddPosition(false);
               setPositionError('');
               setNewPosition({ title: '' });
@@ -320,25 +319,25 @@ const CareerManagement: React.FC = () => {
               ×
             </button>
           </div>
-          {positionError && <span className="error-text">{positionError}</span>}
+          {positionError && <span className="career-management__error-text">{positionError}</span>}
         </div>
       )}
 
-      <div className="main-content-container">
-        <div className="menu-controls">
-          <div className="search-filter-row">
-            <div className="search-container">
-              <FontAwesomeIcon icon={faSearch} className="search-icon" />
+      <div className="career-management__main-content">
+        <div className="career-management__menu-controls">
+          <div className="career-management__search-filter-row">
+            <div className="career-management__search-container">
+              <FontAwesomeIcon icon={faSearch} className="career-management__search-icon" />
               <input
                 type="text"
-                className="search-input"
+                className="career-management__search-input"
                 placeholder={t("adminPage.career.searchPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
               {searchTerm && (
                 <button
-                  className="clear-search"
+                  className="career-management__clear-search"
                   onClick={() => setSearchTerm('')}
                 >
                   <FontAwesomeIcon icon={faTimes} />
@@ -346,10 +345,10 @@ const CareerManagement: React.FC = () => {
               )}
             </div>
 
-            <div className="filter-container">
-              <FontAwesomeIcon icon={faSort} className="filter-icon" />
+            <div className="career-management__filter-container">
+              <FontAwesomeIcon icon={faSort} className="career-management__filter-icon" />
               <select
-                className="filter-dropdown"
+                className="career-management__filter-dropdown"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
               >
@@ -361,8 +360,8 @@ const CareerManagement: React.FC = () => {
         </div>
 
         {/* Desktop Table Layout */}
-        <div className="applications-table-container">
-          <table className="applications-table">
+        <div className="career-management__applications-table-container">
+          <table className="career-management__applications-table">
             <thead>
               <tr>
                 <th>{t("adminPage.career.name")}</th>
@@ -377,27 +376,27 @@ const CareerManagement: React.FC = () => {
             <tbody>
               {currentApplications.map((app) => (
                 <tr key={app._id}>
-                  <td className="applicant-name">
+                  <td className="career-management__applicant-name">
                     {app.firstName} {app.lastName}
                   </td>
-                  <td className="position">{getPositionDisplayName(app.position)}</td>
-                  <td className="email">{app.email}</td>
-                  <td className="phone">{app.phone}</td>
+                  <td className="career-management__position">{getPositionDisplayName(app.position)}</td>
+                  <td className="career-management__email">{app.email}</td>
+                  <td className="career-management__phone">{app.phone}</td>
                   <td>
                     <span
-                      className="status-badge"
+                      className="career-management__status-badge"
                       style={{ backgroundColor: getStatusColor(app.status) }}
                     >
                       {getStatusText(app.status)}
                     </span>
                   </td>
-                  <td className="date">
+                  <td className="career-management__date">
                     {new Date(app.createdAt).toLocaleDateString("sr-RS")}
                   </td>
-                  <td className="actions">
-                    <div className="action-buttons">
+                  <td className="career-management__actions">
+                    <div className="career-management__action-buttons">
                       <button
-                        className="btn-view"
+                        className="career-management__btn-view"
                         onClick={() => setSelectedApplication(app)}
                         title={t("adminPage.career.viewTooltip")}
                       >
@@ -409,7 +408,7 @@ const CareerManagement: React.FC = () => {
                           href={`${API_URL}/career/${app._id}/download-cv`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="btn-download"
+                          className="career-management__btn-download"
                           title={t("adminPage.career.downloadTooltip")}
                         >
                           <FontAwesomeIcon icon={faDownload} />
@@ -419,7 +418,7 @@ const CareerManagement: React.FC = () => {
                       {app.status === "pending" && (
                         <>
                           <button
-                            className="btn-approve"
+                            className="career-management__btn-approve"
                             onClick={() => updateApplicationStatus(app._id, "reviewed")}
                             disabled={updatingStatus === app._id}
                             title={t("adminPage.career.approveTooltip")}
@@ -427,7 +426,7 @@ const CareerManagement: React.FC = () => {
                             <FontAwesomeIcon icon={faCheck} />
                           </button>
                           <button
-                            className="btn-reject"
+                            className="career-management__btn-reject"
                             onClick={() => updateApplicationStatus(app._id, "rejected")}
                             disabled={updatingStatus === app._id}
                             title={t("adminPage.career.rejectTooltip")}
@@ -438,7 +437,7 @@ const CareerManagement: React.FC = () => {
                       )}
 
                       <button
-                        className="btn-delete"
+                        className="career-management__btn-delete"
                         onClick={() => setShowDeleteConfirm(app)}
                         disabled={updatingStatus === app._id}
                         title={t("adminPage.career.deleteTooltip")}
@@ -454,43 +453,43 @@ const CareerManagement: React.FC = () => {
         </div>
 
         {/* Mobile Card Layout */}
-        <div className="applications-cards">
+        <div className="career-management__applications-cards">
           {currentApplications.map((app) => (
-            <div key={app._id} className="application-card">
-              <div className="card-header">
-                <div className="applicant-name">
+            <div key={app._id} className="career-management__application-card">
+              <div className="career-management__card-header">
+                <div className="career-management__applicant-name">
                   {app.firstName} {app.lastName}
                 </div>
                 <span
-                  className="status-badge"
+                  className="career-management__status-badge"
                   style={{ backgroundColor: getStatusColor(app.status) }}
                 >
                   {getStatusText(app.status)}
                 </span>
               </div>
 
-              <div className="card-details">
-                <div className="detail-item">
-                  <div className="detail-label">{t("adminPage.career.position")}</div>
-                  <div className="detail-value">{getPositionDisplayName(app.position)}</div>
+              <div className="career-management__card-details">
+                <div className="career-management__detail-item">
+                  <div className="career-management__detail-label">{t("adminPage.career.position")}</div>
+                  <div className="career-management__detail-value">{getPositionDisplayName(app.position)}</div>
                 </div>
-                <div className="detail-item">
-                  <div className="detail-label">{t("adminPage.career.email")}</div>
-                  <div className="detail-value">{app.email}</div>
+                <div className="career-management__detail-item">
+                  <div className="career-management__detail-label">{t("adminPage.career.email")}</div>
+                  <div className="career-management__detail-value">{app.email}</div>
                 </div>
-                <div className="detail-item">
-                  <div className="detail-label">{t("adminPage.career.phone")}</div>
-                  <div className="detail-value">{app.phone}</div>
+                <div className="career-management__detail-item">
+                  <div className="career-management__detail-label">{t("adminPage.career.phone")}</div>
+                  <div className="career-management__detail-value">{app.phone}</div>
                 </div>
-                <div className="detail-item">
-                  <div className="detail-label">{t("adminPage.career.date")}</div>
-                  <div className="detail-value">{new Date(app.createdAt).toLocaleDateString("sr-RS")}</div>
+                <div className="career-management__detail-item">
+                  <div className="career-management__detail-label">{t("adminPage.career.date")}</div>
+                  <div className="career-management__detail-value">{new Date(app.createdAt).toLocaleDateString("sr-RS")}</div>
                 </div>
               </div>
 
-              <div className="card-actions">
+              <div className="career-management__card-actions">
                 <button
-                  className="btn-view"
+                  className="career-management__btn-view"
                   onClick={() => setSelectedApplication(app)}
                   title={t("adminPage.career.viewTooltip")}
                 >
@@ -503,7 +502,7 @@ const CareerManagement: React.FC = () => {
                     href={`${API_URL}/career/${app._id}/download-cv`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-download"
+                    className="career-management__btn-download"
                     title={t("adminPage.career.downloadTooltip")}
                   >
                     <FontAwesomeIcon icon={faDownload} />
@@ -514,7 +513,7 @@ const CareerManagement: React.FC = () => {
                 {app.status === "pending" && (
                   <>
                     <button
-                      className="btn-approve"
+                      className="career-management__btn-approve"
                       onClick={() => updateApplicationStatus(app._id, "reviewed")}
                       disabled={updatingStatus === app._id}
                       title={t("adminPage.career.approveTooltip")}
@@ -523,7 +522,7 @@ const CareerManagement: React.FC = () => {
                       {t("adminPage.career.approve")}
                     </button>
                     <button
-                      className="btn-reject"
+                      className="career-management__btn-reject"
                       onClick={() => updateApplicationStatus(app._id, "rejected")}
                       disabled={updatingStatus === app._id}
                       title={t("adminPage.career.rejectTooltip")}
@@ -535,7 +534,7 @@ const CareerManagement: React.FC = () => {
                 )}
 
                 <button
-                  className="btn-delete"
+                  className="career-management__btn-delete"
                   onClick={() => setShowDeleteConfirm(app)}
                   disabled={updatingStatus === app._id}
                   title={t("adminPage.career.deleteTooltip")}
@@ -549,15 +548,15 @@ const CareerManagement: React.FC = () => {
         </div>
 
         {filteredApplications.length === 0 && applications.length > 0 && (
-          <div className="no-results">
-            <div className="no-results-icon">🔍</div>
+          <div className="career-management__no-results">
+            <div className="career-management__no-results-icon">🔍</div>
             <h3>{t("menu.noResults")}</h3>
             <p>{t("menu.tryDifferent")}</p>
           </div>
         )}
 
         {applications.length === 0 && (
-          <div className="empty-state">
+          <div className="career-management__empty-state">
             <FontAwesomeIcon icon={faBriefcase} size="3x" />
             <h3>{t("adminPage.career.noApplications")}</h3>
             <p>{t("adminPage.career.noApplicationsDesc")}</p>
@@ -566,9 +565,9 @@ const CareerManagement: React.FC = () => {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="pagination">
+          <div className="career-management__pagination">
             <button
-              className="pagination-btn"
+              className="career-management__pagination-btn"
               onClick={goToPrevious}
               disabled={currentPage === 1}
             >
@@ -578,7 +577,7 @@ const CareerManagement: React.FC = () => {
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}
-                className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+                className={`career-management__pagination-btn${currentPage === page ? ' career-management__pagination-btn--active' : ''}`}
                 onClick={() => goToPage(page)}
               >
                 {page}
@@ -586,7 +585,7 @@ const CareerManagement: React.FC = () => {
             ))}
 
             <button
-              className="pagination-btn"
+              className="career-management__pagination-btn"
               onClick={goToNext}
               disabled={currentPage === totalPages}
             >
@@ -604,39 +603,39 @@ const CareerManagement: React.FC = () => {
       >
         {selectedApplication && (
           <>
-            <div className="applicant-details">
-              <div className="detail-row">
+            <div className="career-management__applicant-details">
+              <div className="career-management__detail-row">
                 <FontAwesomeIcon icon={faUser} />
                 <span><strong>{t("adminPage.career.name")}:</strong> {selectedApplication.firstName} {selectedApplication.lastName}</span>
               </div>
-              <div className="detail-row">
+              <div className="career-management__detail-row">
                 <FontAwesomeIcon icon={faBriefcase} />
                 <span><strong>{t("adminPage.career.position")}:</strong> {getPositionDisplayName(selectedApplication.position)}</span>
               </div>
-              <div className="detail-row">
+              <div className="career-management__detail-row">
                 <FontAwesomeIcon icon={faEnvelope} />
                 <span><strong>{t("adminPage.career.email")}:</strong> {selectedApplication.email}</span>
               </div>
-              <div className="detail-row">
+              <div className="career-management__detail-row">
                 <FontAwesomeIcon icon={faPhone} />
                 <span><strong>{t("adminPage.career.phone")}:</strong> {selectedApplication.phone}</span>
               </div>
             </div>
 
             {selectedApplication.coverLetter && (
-              <div className="cover-letter">
+              <div className="career-management__cover-letter">
                 <h4><FontAwesomeIcon icon={faFileAlt} /> {t("adminPage.career.coverLetter")}</h4>
-                <div className="letter-content">
+                <div className="career-management__letter-content">
                   {selectedApplication.coverLetter}
                 </div>
               </div>
             )}
 
-            <div className="status-section">
+            <div className="career-management__status-section">
               <h4>{t("adminPage.career.updateStatus")}</h4>
-              <div className="status-buttons">
+              <div className="career-management__status-buttons">
                 <button
-                  className={`status-btn ${selectedApplication.status === "reviewed" ? "active" : ""}`}
+                  className={`career-management__status-btn${selectedApplication.status === "reviewed" ? " career-management__status-btn--active" : ""}`}
                   onClick={() => updateApplicationStatus(selectedApplication._id, "reviewed")}
                   disabled={updatingStatus === selectedApplication._id}
                   title={t("adminPage.career.status.reviewed")}
@@ -648,7 +647,7 @@ const CareerManagement: React.FC = () => {
                   )}
                 </button>
                 <button
-                  className={`status-btn ${selectedApplication.status === "contacted" ? "active" : ""}`}
+                  className={`career-management__status-btn${selectedApplication.status === "contacted" ? " career-management__status-btn--active" : ""}`}
                   onClick={() => updateApplicationStatus(selectedApplication._id, "contacted")}
                   disabled={updatingStatus === selectedApplication._id}
                   title={t("adminPage.career.status.contacted")}
@@ -660,7 +659,7 @@ const CareerManagement: React.FC = () => {
                   )}
                 </button>
                 <button
-                  className={`status-btn ${selectedApplication.status === "rejected" ? "active" : ""}`}
+                  className={`career-management__status-btn${selectedApplication.status === "rejected" ? " career-management__status-btn--active" : ""}`}
                   onClick={() => updateApplicationStatus(selectedApplication._id, "rejected")}
                   disabled={updatingStatus === selectedApplication._id}
                   title={t("adminPage.career.status.rejected")}
@@ -672,7 +671,7 @@ const CareerManagement: React.FC = () => {
                   )}
                 </button>
                 <button
-                  className="btn-delete-modal"
+                  className="career-management__btn-delete-modal"
                   onClick={() => setShowDeleteConfirm(selectedApplication)}
                   disabled={updatingStatus === selectedApplication._id}
                   title={t("adminPage.career.deleteApplication")}
@@ -687,20 +686,20 @@ const CareerManagement: React.FC = () => {
 
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
-        <div className="modal-overlay" onClick={() => setShowDeleteConfirm(null)}>
-          <div className="delete-confirm-popup" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => setShowDeleteConfirm(null)}>×</button>
+        <div className="career-management__modal-overlay" onClick={() => setShowDeleteConfirm(null)}>
+          <div className="career-management__delete-confirm-popup" onClick={(e) => e.stopPropagation()}>
+            <button className="career-management__close-btn" onClick={() => setShowDeleteConfirm(null)}>×</button>
             <h3>{t("adminPage.career.deleteConfirm.title")}</h3>
             <p>{t("adminPage.career.deleteConfirm.message")}</p>
-            <div className="confirm-actions">
+            <div className="career-management__confirm-actions">
               <button
-                className="btn-cancel"
+                className="career-management__btn-cancel"
                 onClick={() => setShowDeleteConfirm(null)}
               >
                 {t("adminPage.career.deleteConfirm.cancel")}
               </button>
               <button
-                className="btn-confirm"
+                className="career-management__btn-confirm"
                 onClick={() => deleteApplication(showDeleteConfirm._id)}
                 disabled={updatingStatus === showDeleteConfirm._id}
               >
@@ -717,12 +716,12 @@ const CareerManagement: React.FC = () => {
         onClose={() => setShowAddPositionPopup(false)}
         title={t("adminPage.career.addPosition")}
       >
-        <div className="add-position-form">
+        <div className="career-management__add-position-form">
           <form onSubmit={(e) => {
             e.preventDefault();
             handleAddPosition();
           }}>
-            <div className="form-group">
+            <div className="career-management__group">
               <label>{t("adminPage.career.positionPlaceholder")}:</label>
               <input
                 type="text"
@@ -733,12 +732,12 @@ const CareerManagement: React.FC = () => {
                   if (positionError) setPositionError('');
                 }}
                 onKeyPress={(e) => e.key === 'Enter' && handleAddPosition()}
-                className={positionError ? 'error' : ''}
+                className={positionError ? 'career-management__error' : ''}
               />
-              {positionError && <span className="error">{positionError}</span>}
+              {positionError && <span className="career-management__error">{positionError}</span>}
             </div>
 
-            <button type="submit" className="gradient-btn" disabled={isSubmitting}>
+            <button type="submit" className="career-management__submit" disabled={isSubmitting}>
               {isSubmitting ? (
                 <Spinner size="sm" text={t("adminPage.career.savePosition")} />
               ) : (

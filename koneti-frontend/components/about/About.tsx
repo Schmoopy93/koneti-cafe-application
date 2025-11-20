@@ -65,7 +65,7 @@ const Gallery: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="gallery-container">
+      <div className="about__container">
         <Spinner size="lg" text={t("gallery.loading")} />
       </div>
     );
@@ -73,43 +73,43 @@ const Gallery: React.FC = () => {
 
   return (
     <motion.div
-      className="gallery-management"
+      className="about__management"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      {/* <div className="gallery-header">
-        <h1 className="gallery-title">
+      {/* <div className="about__header">
+        <h1 className="about__title">
           <FontAwesomeIcon icon={faCoffee} />
           {t("gallery.about.title")}
         </h1>
-        <p className="gallery-subtitle">{t("gallery.about.subtitle")}</p>
+        <p className="about__subtitle">{t("gallery.about.subtitle")}</p>
       </div> */}
 
-      <section className="about-welcome-section">
-        <div className="welcome-content">
-          <p className="welcome-intro">{t("gallery.about.aboutPage.welcome")}</p>
-          <div className="welcome-offers">
-            <div className="offer-card">
-              <div className="offer-icon">
+      <section className="about__welcome-section">
+        <div className="about__welcome-content">
+          <p className="about__welcome-intro">{t("gallery.about.aboutPage.welcome")}</p>
+          <div className="about__welcome-offers">
+            <div className="about__offer-card">
+              <div className="about__offer-icon">
                 <FontAwesomeIcon icon={faCoffee} />
               </div>
-              <h4 className="offer-text">{t("gallery.about.aboutPage.offer.business")}</h4>
+              <h4 className="about__offer-text">{t("gallery.about.aboutPage.offer.business")}</h4>
             </div>
-            <div className="offer-card">
-              <div className="offer-icon">
+            <div className="about__offer-card">
+              <div className="about__offer-icon">
                 <FontAwesomeIcon icon={faHeart} />
               </div>
-              <h4 className="offer-text">{t("gallery.about.aboutPage.offer.koneti")}</h4>
+              <h4 className="about__offer-text">{t("gallery.about.aboutPage.offer.koneti")}</h4>
             </div>
           </div>
-          <p className="welcome-cta">{t("gallery.about.aboutPage.cta")}</p>
+          <p className="about__welcome-cta">{t("gallery.about.aboutPage.cta")}</p>
         </div>
       </section>
 
-      <section className="about-section">
-        <div className="about-content">
-          <div className="about-text">
+      <section className="about__section">
+        <div className="about__content">
+          <div className="about__text">
             <h2>{t("gallery.about.sectionTitle")}</h2>
             <p>
               {t("gallery.about.intro1")}
@@ -122,24 +122,24 @@ const Gallery: React.FC = () => {
               {t("gallery.about.intro3_rest")}
             </p>
             <p>{t("gallery.about.mission")}</p>
-            <div className="about-features">
-              <div className="feature-item">
+            <div className="about__features">
+              <div className="about__feature-item">
                 <FontAwesomeIcon icon={faCoffee} />
-                <div className="feature-text">
+                <div className="about__feature-text">
                   <h4>{t("gallery.about.features.quality.title")}</h4>
                   <p>{t("gallery.about.features.quality.description")}</p>
                 </div>
               </div>
-              <div className="feature-item">
+              <div className="about__feature-item">
                 <FontAwesomeIcon icon={faHeart} />
-                <div className="feature-text">
+                <div className="about__feature-text">
                   <h4>{t("gallery.about.features.passion.title")}</h4>
                   <p>{t("gallery.about.features.passion.description")}</p>
                 </div>
               </div>
-              <div className="feature-item">
+              <div className="about__feature-item">
                 <FontAwesomeIcon icon={faUsers} />
-                <div className="feature-text">
+                <div className="about__feature-text">
                   <h4>{t("gallery.about.features.community.title")}</h4>
                   <p>{t("gallery.about.features.community.description")}</p>
                 </div>
@@ -147,20 +147,20 @@ const Gallery: React.FC = () => {
             </div>
           </div>
 
-          <div className="about-image">
+          <div className="about__image">
             {images.length === 0 ? (
-              <div className="empty-slider">
+              <div className="about__empty-slider">
                 <FontAwesomeIcon icon={faImage} size="3x" />
                 <p>{t("gallery.noImages")}</p>
               </div>
             ) : (
-              <div className="image-slider">
+              <div className="about__image-slider">
                 <div
-                  className="slider-wrapper"
+                  className="about__slider-wrapper"
                   style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                 >
                   {images.map((image) => (
-                    <div key={image._id} className="slider-slide">
+                    <div key={image._id} className="about__slider-slide">
                       <img
                         src={image.image}
                         alt={
@@ -173,25 +173,25 @@ const Gallery: React.FC = () => {
                     </div>
                   ))}
                 </div>
-                <div className="slider-indicators">
+                <div className="about__slider-indicators">
                   {images.map((_, index) => (
                     <button
                       key={index}
-                      className={`slider-indicator ${currentSlide === index ? "active" : ""}`}
+                      className={`about__slider-indicator ${currentSlide === index ? "about__slider-indicator--active" : ""}`}
                       onClick={() => setCurrentSlide(index)}
                       aria-label={`Go to slide ${index + 1}`}
                     />
                   ))}
                 </div>
                 <button
-                  className="slider-nav prev"
+                  className="about__slider-nav about__slider-nav--prev"
                   onClick={goToPrevious}
                   aria-label="Previous slide"
                 >
                   <FontAwesomeIcon icon={faChevronLeft} />
                 </button>
                 <button
-                  className="slider-nav next"
+                  className="about__slider-nav about__slider-nav--next"
                   onClick={goToNext}
                   aria-label="Next slide"
                 >

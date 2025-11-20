@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, ChangeEvent, FormEvent } from "react";
+import React, { useState, useEffect, useRef, ChangeEvent, FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import toast, { Toaster } from "react-hot-toast";
 import { apiRequest } from "@/utils/api";
@@ -130,23 +130,23 @@ const AddGalleryImage: React.FC<AddGalleryImageProps> = ({
   };
 
   return (
-    <div className="add-gallery-image-form">
+    <div className="add-gallery-image__form">
       <Toaster position="top-right" />
       <h2>{editData ? t("admin.addGalleryImage.editTitle") : t("admin.addGalleryImage.title")}</h2>
 
       <form onSubmit={handleSubmit}>
         {/* Title */}
-        <div className="form-group">
+        <div className="add-gallery-image__group">
           <label>{t("admin.addGalleryImage.titleSr")}</label>
           <input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleChange}
-            className={shakeFields.title ? "shake" : ""}
+            className={shakeFields.title ? "add-gallery-image__shake" : ""}
             placeholder={t("admin.addGalleryImage.titleSrPlaceholder")}
           />
-          {errors.title && <span className="error">{errors.title}</span>}
+          {errors.title && <span className="add-gallery-image__error">{errors.title}</span>}
         </div>
 
         {/* Description */}
@@ -162,23 +162,23 @@ const AddGalleryImage: React.FC<AddGalleryImageProps> = ({
         </div>
 
         {/* Image */}
-        <div className="form-group">
+        <div className="add-gallery-image__group">
           <label>{t("admin.addGalleryImage.image")}</label>
           <input
             type="file"
             accept="image/png, image/jpeg, image/webp"
             onChange={handleFileChange}
             ref={fileInputRef}
-            className={shakeFields.image ? "shake" : ""}
+            className={shakeFields.image ? "add-gallery-image__shake" : ""}
           />
-          {errors.image && <span className="error">{errors.image}</span>}
+          {errors.image && <span className="add-gallery-image__error">{errors.image}</span>}
 
           {imagePreview && (
-            <img src={imagePreview} alt="Preview" className="image-preview" />
+            <img src={imagePreview} alt="Preview" className="add-gallery-image__preview" />
           )}
         </div>
 
-        <button type="submit" className="submit-btn" disabled={isSubmitting}>
+        <button type="submit" className="add-gallery-image__submit" disabled={isSubmitting}>
           {isSubmitting ? (
             <Spinner size="sm" text={editData ? t("admin.addGalleryImage.savingChanges") : t("admin.addGalleryImage.saving")} />
           ) : (
