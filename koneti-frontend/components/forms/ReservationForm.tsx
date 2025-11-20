@@ -236,6 +236,62 @@ export default function ReservationForm() {
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    const checkAvailability = async () => {
+      // Only check if we have all required fields for the check
+      if (!formData.date || !formData.time) return;
+      
+      // For business type, also need endTime
+      if (formData.type === 'business' && !formData.endTime) return;
+      
+      // Skip if there are already errors in these fields
+      if (formErrors.date || formErrors.time || formErrors.endTime) return;
+      
+      // Additional validation for business type - check if endTime is valid
+      if (formData.type === 'business' && formData.endTime) {
+        const [startHour, startMin] = formData.time.split(':').map(Number);
+        const [endHour, endMin] = formData.endTime.split(':').map(Number);
+        
+        const startTotalMinutes = startHour * 60 + startMin;
+        const endTotalMinutes = endHour * 60 + endMin;
+        
+        // Don't check availability if endTime is invalid
+        if (endTotalMinutes <= startTotalMinutes) return;
+      }
+
+      const endTime = formData.type === 'business' ? formData.endTime : null;
+      const result = await checkTimeAvailability(
+        formData.date,
+        formData.time,
+        endTime,
+        formData.type
+      );
+
+      if (!result.available) {
+        setFormErrors(prev => ({
+          ...prev,
+          time: result.message || String(t("home.reservation.errors.timeNotAvailable"))
+        }));
+      } else {
+        // Clear time error if it was set due to availability
+        setFormErrors(prev => {
+          const newErrors = { ...prev };
+          const timeNotAvailableMsg = String(t("home.reservation.errors.timeNotAvailable"));
+          if (newErrors.time?.includes(timeNotAvailableMsg) || 
+              newErrors.time?.includes("već rezervisan") || 
+              newErrors.time?.includes("already reserved")) {
+            delete newErrors.time;
+          }
+          return newErrors;
+        });
+      }
+    };
+
+    // Debounce the check to avoid too many requests
+    const timeoutId = setTimeout(checkAvailability, 800);
+    return () => clearTimeout(timeoutId);
+  }, [formData.date, formData.time, formData.endTime, formData.type, t, formErrors.date, formErrors.time, formErrors.endTime]);
+
   // =========================
   // HANDLERS
   // =========================
@@ -293,7 +349,55 @@ export default function ReservationForm() {
 
   const closePopup = () => setShowPopup(false);
 
-  const validateForm = (): FormErrors => {
+  const checkTimeAvailability = async (
+    date: string,
+    time: string,
+    endTime: string | null,
+    type: string
+  ): Promise<{ available: boolean; message?: string }> => {
+    try {
+      const params = new URLSearchParams({
+        date,
+        time,
+        type,
+      });
+      
+      if (type === 'business' && endTime) {
+        params.append('endTime', endTime);
+      }
+
+      const res = await apiRequest(`/reservations/check-availability?${params.toString()}`);
+      const data = await res.json();
+
+      if (!res.ok || !data.available) {
+        // Translate the error key from backend
+        let translatedMessage: string;
+        
+        if (data.errorKey && data.params) {
+          const translated = t(`home.reservation.errors.${data.errorKey}`, data.params);
+          translatedMessage = typeof translated === 'string' ? translated : String(translated);
+        } else if (data.errorKey) {
+          const translated = t(`home.reservation.errors.${data.errorKey}`);
+          translatedMessage = typeof translated === 'string' ? translated : String(translated);
+        } else {
+          const translated = t("home.reservation.errors.timeNotAvailable");
+          translatedMessage = typeof translated === 'string' ? translated : String(translated);
+        }
+          
+        return {
+          available: false,
+          message: translatedMessage,
+        };
+      }
+
+      return { available: true };
+    } catch (error) {
+      console.error("Error checking availability:", error);
+      return { available: true }; // Allow submission on error, let backend handle it
+    }
+  };
+
+  const validateForm = async (): Promise<FormErrors> => {
     const errors: FormErrors = {};
 
     // Required fields validation
@@ -303,8 +407,6 @@ export default function ReservationForm() {
     if (!formData.email) errors.email = t("home.reservation.errors.email");
     if (!formData.phone) errors.phone = t("home.reservation.errors.phone");
     if (!formData.time) errors.time = t("home.reservation.errors.time");
-    // if (!formData.guests || formData.guests < 1)
-    //   errors.guests = t("home.reservation.errors.guests");
 
     // Date validation with package-specific requirements
     if (!formData.date) {
@@ -326,12 +428,20 @@ export default function ReservationForm() {
     if (formData.type === 'business') {
       if (!formData.endTime) {
         errors.endTime = t("home.reservation.errors.endTime");
-      } else if (formData.time) {
-        const durationMinutes = calculateDurationMinutes(formData.time, formData.endTime);
+      } else if (formData.time && formData.endTime) {
+        // Parse times properly
+        const [startHour, startMin] = formData.time.split(':').map(Number);
+        const [endHour, endMin] = formData.endTime.split(':').map(Number);
         
+        const startTotalMinutes = startHour * 60 + startMin;
+        const endTotalMinutes = endHour * 60 + endMin;
+        const durationMinutes = endTotalMinutes - startTotalMinutes;
+        
+        // Check if endTime is before or equal to startTime
         if (durationMinutes <= 0) {
           errors.endTime = t("home.reservation.errors.endTimeBeforeStart");
         } else {
+          // Check minimum duration based on package
           const pkg = getPackageBySubType(formData.subType);
           if (pkg && pkg.minDurationHours) {
             const minMinutes = pkg.minDurationHours * 60;
@@ -341,6 +451,25 @@ export default function ReservationForm() {
               });
             }
           }
+        }
+      }
+    }
+
+    // Check time availability if date and time are provided
+    if (formData.date && formData.time && !errors.date && !errors.time && !errors.endTime) {
+      const endTime = formData.type === 'business' ? formData.endTime : null;
+      
+      // Only check if business type has endTime or if it's experience type
+      if (formData.type === 'experience' || (formData.type === 'business' && endTime)) {
+        const availabilityCheck = await checkTimeAvailability(
+          formData.date,
+          formData.time,
+          endTime,
+          formData.type
+        );
+
+        if (!availabilityCheck.available) {
+          errors.time = availabilityCheck.message || String(t("home.reservation.errors.timeNotAvailable"));
         }
       }
     }
@@ -357,7 +486,7 @@ export default function ReservationForm() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const errors = validateForm();
+    const errors = await validateForm();
 
     if (Object.keys(errors).length) {
       setFormErrors(errors);
@@ -380,7 +509,34 @@ export default function ReservationForm() {
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.message || "Greška pri slanju rezervacije!");
+        
+        // Handle conflict error (409) specifically
+        if (res.status === 409) {
+          let errorMessage: string;
+          
+          if (errorData.errorKey && errorData.params) {
+            const translated = t(`home.reservation.errors.${errorData.errorKey}`, errorData.params);
+            errorMessage = typeof translated === 'string' ? translated : String(translated);
+          } else if (errorData.errorKey) {
+            const translated = t(`home.reservation.errors.${errorData.errorKey}`);
+            errorMessage = typeof translated === 'string' ? translated : String(translated);
+          } else {
+            const translated = t("home.reservation.errors.timeNotAvailable");
+            errorMessage = typeof translated === 'string' ? translated : String(translated);
+          }
+            
+          setFormErrors({ time: errorMessage });
+          triggerShake(['time']);
+          toast.error(errorMessage);
+          setIsSubmitting(false);
+          return;
+        }
+        
+        // Handle other errors with errorKey
+        const errorMessage = errorData.errorKey 
+          ? String(t(`home.reservation.errors.${errorData.errorKey}`))
+          : "Greška pri slanju rezervacije!";
+        throw new Error(errorMessage);
       }
 
       resetForm();

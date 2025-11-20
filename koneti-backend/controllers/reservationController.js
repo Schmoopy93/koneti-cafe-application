@@ -22,6 +22,40 @@ const calculateDurationMinutes = (startTime, endTime) => {
 };
 
 /**
+ * Helper function to check if two time ranges overlap
+ */
+const doTimeRangesOverlap = (start1, end1, start2, end2) => {
+  const toMinutes = (time) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    return hours * 60 + minutes;
+  };
+  
+  const start1Min = toMinutes(start1);
+  const end1Min = toMinutes(end1);
+  const start2Min = toMinutes(start2);
+  const end2Min = toMinutes(end2);
+  
+  // Two ranges overlap if one starts before the other ends
+  return start1Min < end2Min && start2Min < end1Min;
+};
+
+/**
+ * Helper function to get end time for a reservation
+ * For business type, it uses endTime field
+ * For experience type, it assumes 3 hours duration
+ */
+const getReservationEndTime = (reservation) => {
+  if (reservation.type === 'business' && reservation.endTime) {
+    return reservation.endTime;
+  }
+  
+  // For experience type, assume 3 hours duration
+  const [hours, minutes] = reservation.time.split(':').map(Number);
+  const endHours = hours + 3;
+  return `${endHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+};
+
+/**
  * Kreira novu rezervaciju.
  * Šalje potvrdu korisniku i obaveštenje administratoru.
  */
@@ -40,7 +74,7 @@ export const createReservation = async (req, res) => {
       if (selectedDate < minDate) {
         return res.status(400).json({
           success: false,
-          message: 'Koneti Experience rezervacija mora biti minimum 2 dana unapred'
+          errorKey: 'experienceMinimum2Days',
         });
       }
     }
@@ -49,14 +83,14 @@ export const createReservation = async (req, res) => {
     if (type === 'business' && !['business_basic', 'business_high', 'business_corporate'].includes(subType)) {
       return res.status(400).json({
         success: false,
-        message: 'Biznis događaji mogu biti samo business_basic, business_high ili business_corporate'
+        errorKey: 'invalidBusinessSubType',
       });
     }
     
     if (type === 'experience' && !['experience_start', 'experience_classic', 'experience_celebration'].includes(subType)) {
       return res.status(400).json({
         success: false,
-        message: 'Koneti događaji mogu biti experience_start, experience_classic ili experience_celebration'
+        errorKey: 'invalidExperienceSubType',
       });
     }
 
@@ -65,7 +99,7 @@ export const createReservation = async (req, res) => {
       if (!endTime) {
         return res.status(400).json({
           success: false,
-          message: 'Vreme završetka je obavezno za biznis rezervacije'
+          errorKey: 'endTimeRequired',
         });
       }
 
@@ -76,14 +110,14 @@ export const createReservation = async (req, res) => {
         if (durationMinutes < 60) {
           return res.status(400).json({
             success: false,
-            message: 'Minimalno trajanje rezervacije za ovaj paket je 1 sat'
+            errorKey: 'minDuration1Hour',
           });
         }
       } else if (subType === 'business_corporate') {
         if (durationMinutes < 360) {
           return res.status(400).json({
             success: false,
-            message: 'Minimalno trajanje rezervacije za Corporate Day paket je 6 sati'
+            errorKey: 'minDuration6Hours',
           });
         }
       }
@@ -92,7 +126,43 @@ export const createReservation = async (req, res) => {
       if (durationMinutes <= 0) {
         return res.status(400).json({
           success: false,
-          message: 'Vreme završetka mora biti posle vremena početka'
+          errorKey: 'endTimeBeforeStart',
+        });
+      }
+    }
+
+    // CHECK FOR TIME OVERLAP WITH EXISTING RESERVATIONS
+    const requestedDate = new Date(date);
+    requestedDate.setHours(0, 0, 0, 0);
+    
+    // Find all approved or pending reservations on the same date
+    const existingReservations = await Reservation.find({
+      date: {
+        $gte: requestedDate,
+        $lt: new Date(requestedDate.getTime() + 24 * 60 * 60 * 1000)
+      },
+      status: { $in: ['pending', 'approved'] }
+    });
+
+    // Calculate end time for the new reservation
+    const newEndTime = type === 'business' ? endTime : (() => {
+      const [hours, minutes] = time.split(':').map(Number);
+      const endHours = hours + 3; // Experience events are assumed to be 3 hours
+      return `${endHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    })();
+
+    // Check for overlap with existing reservations
+    for (const existing of existingReservations) {
+      const existingEndTime = getReservationEndTime(existing);
+      
+      if (doTimeRangesOverlap(time, newEndTime, existing.time, existingEndTime)) {
+        return res.status(409).json({
+          success: false,
+          errorKey: 'timeSlotAlreadyReserved',
+          params: {
+            startTime: existing.time,
+            endTime: existingEndTime
+          }
         });
       }
     }
@@ -135,13 +205,13 @@ export const createReservation = async (req, res) => {
     if (error.name === "ValidationError") {
       return res.status(400).json({
         success: false,
-        message: "Podaci za rezervaciju nisu validni.",
+        errorKey: 'validationError',
         errors: error.errors,
       });
     }
     res
       .status(500)
-      .json({ success: false, message: "Došlo je do greške na serveru." });
+      .json({ success: false, errorKey: 'serverError' });
   }
 };
 
@@ -259,12 +329,12 @@ export const deleteReservation = async (req, res) => {
 
 export const checkAvailability = async (req, res) => {
   try {
-    const { date } = req.query;
+    const { date, time, endTime, type } = req.query;
     
     if (!date) {
       return res.status(400).json({
         success: false,
-        message: "Datum je obavezan"
+        errorKey: 'dateRequired',
       });
     }
 
@@ -273,32 +343,57 @@ export const checkAvailability = async (req, res) => {
     if (isNaN(sanitizedDate.getTime())) {
       return res.status(400).json({
         success: false,
-        message: "Nevažeći format datuma"
+        errorKey: 'invalidDateFormat',
       });
     }
 
-    const existingReservation = await Reservation.findOne({
-      date: sanitizedDate.toISOString().split('T')[0],
-      guests: { $gt: 15 },
-      status: "approved"
-    });
-
-    if (existingReservation) {
-      return res.status(409).json({
-        success: false,
-        message: "Objekat nije raspoloživ za iznajmljivanje tog dana"
+    // If time is provided, check for time conflicts
+    if (time) {
+      const requestedDate = new Date(sanitizedDate);
+      requestedDate.setHours(0, 0, 0, 0);
+      
+      const existingReservations = await Reservation.find({
+        date: {
+          $gte: requestedDate,
+          $lt: new Date(requestedDate.getTime() + 24 * 60 * 60 * 1000)
+        },
+        status: { $in: ['pending', 'approved'] }
       });
+
+      // Calculate end time for the requested reservation
+      const requestedEndTime = type === 'business' && endTime ? endTime : (() => {
+        const [hours, minutes] = time.split(':').map(Number);
+        const endHours = hours + 3;
+        return `${endHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+      })();
+
+      // Check for overlap
+      for (const existing of existingReservations) {
+        const existingEndTime = getReservationEndTime(existing);
+        
+        if (doTimeRangesOverlap(time, requestedEndTime, existing.time, existingEndTime)) {
+          return res.status(409).json({
+            success: false,
+            available: false,
+            errorKey: 'timeSlotAlreadyReserved',
+            params: {
+              startTime: existing.time,
+              endTime: existingEndTime
+            }
+          });
+        }
+      }
     }
 
     res.json({
       success: true,
-      message: "Prostor je dostupan"
+      available: true,
     });
   } catch (error) {
     logger.error("Error checking availability:", error);
     res.status(500).json({
       success: false,
-      message: "Greška prilikom provere dostupnosti"
+      errorKey: 'serverError',
     });
   }
 };
