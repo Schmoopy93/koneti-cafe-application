@@ -52,7 +52,9 @@ interface PopupData {
 }
 
 type FormErrors = Partial<Record<keyof FormData, string>>;
-type ShakeFields = Partial<Record<keyof FormData | "type" | "subType", boolean>>;
+type ShakeFields = Partial<
+  Record<keyof FormData | "type" | "subType", boolean>
+>;
 
 interface PackageConfig {
   id: string;
@@ -175,7 +177,7 @@ const getPackageBySubType = (subType: string): PackageConfig | undefined => {
 const getTranslationKey = (id: string): string => {
   // For main types
   if (id === "business" || id === "experience") return id;
-  
+
   // For packages
   const pkg = getPackageBySubType(id);
   return pkg?.translationKey || id;
@@ -198,13 +200,16 @@ const getDateErrorKey = (daysRequired: number): string => {
   return errorKeys[daysRequired] || "date";
 };
 
-const calculateDurationMinutes = (startTime: string, endTime: string): number => {
-  const [startHour, startMin] = startTime.split(':').map(Number);
-  const [endHour, endMin] = endTime.split(':').map(Number);
-  
+const calculateDurationMinutes = (
+  startTime: string,
+  endTime: string
+): number => {
+  const [startHour, startMin] = startTime.split(":").map(Number);
+  const [endHour, endMin] = endTime.split(":").map(Number);
+
   const startMinutes = startHour * 60 + startMin;
   const endMinutes = endHour * 60 + endMin;
-  
+
   return endMinutes - startMinutes;
 };
 
@@ -240,26 +245,26 @@ export default function ReservationForm() {
     const checkAvailability = async () => {
       // Only check if we have all required fields for the check
       if (!formData.date || !formData.time) return;
-      
+
       // For business type, also need endTime
-      if (formData.type === 'business' && !formData.endTime) return;
-      
+      if (formData.type === "business" && !formData.endTime) return;
+
       // Skip if there are already errors in these fields
       if (formErrors.date || formErrors.time || formErrors.endTime) return;
-      
+
       // Additional validation for business type - check if endTime is valid
-      if (formData.type === 'business' && formData.endTime) {
-        const [startHour, startMin] = formData.time.split(':').map(Number);
-        const [endHour, endMin] = formData.endTime.split(':').map(Number);
-        
+      if (formData.type === "business" && formData.endTime) {
+        const [startHour, startMin] = formData.time.split(":").map(Number);
+        const [endHour, endMin] = formData.endTime.split(":").map(Number);
+
         const startTotalMinutes = startHour * 60 + startMin;
         const endTotalMinutes = endHour * 60 + endMin;
-        
+
         // Don't check availability if endTime is invalid
         if (endTotalMinutes <= startTotalMinutes) return;
       }
 
-      const endTime = formData.type === 'business' ? formData.endTime : null;
+      const endTime = formData.type === "business" ? formData.endTime : null;
       const result = await checkTimeAvailability(
         formData.date,
         formData.time,
@@ -268,18 +273,24 @@ export default function ReservationForm() {
       );
 
       if (!result.available) {
-        setFormErrors(prev => ({
+        setFormErrors((prev) => ({
           ...prev,
-          time: result.message || String(t("home.reservation.errors.timeNotAvailable"))
+          time:
+            result.message ||
+            String(t("home.reservation.errors.timeNotAvailable")),
         }));
       } else {
         // Clear time error if it was set due to availability
-        setFormErrors(prev => {
+        setFormErrors((prev) => {
           const newErrors = { ...prev };
-          const timeNotAvailableMsg = String(t("home.reservation.errors.timeNotAvailable"));
-          if (newErrors.time?.includes(timeNotAvailableMsg) || 
-              newErrors.time?.includes("već rezervisan") || 
-              newErrors.time?.includes("already reserved")) {
+          const timeNotAvailableMsg = String(
+            t("home.reservation.errors.timeNotAvailable")
+          );
+          if (
+            newErrors.time?.includes(timeNotAvailableMsg) ||
+            newErrors.time?.includes("već rezervisan") ||
+            newErrors.time?.includes("already reserved")
+          ) {
             delete newErrors.time;
           }
           return newErrors;
@@ -290,7 +301,16 @@ export default function ReservationForm() {
     // Debounce the check to avoid too many requests
     const timeoutId = setTimeout(checkAvailability, 800);
     return () => clearTimeout(timeoutId);
-  }, [formData.date, formData.time, formData.endTime, formData.type, t, formErrors.date, formErrors.time, formErrors.endTime]);
+  }, [
+    formData.date,
+    formData.time,
+    formData.endTime,
+    formData.type,
+    t,
+    formErrors.date,
+    formErrors.time,
+    formErrors.endTime,
+  ]);
 
   // =========================
   // HANDLERS
@@ -361,29 +381,37 @@ export default function ReservationForm() {
         time,
         type,
       });
-      
-      if (type === 'business' && endTime) {
-        params.append('endTime', endTime);
+
+      if (type === "business" && endTime) {
+        params.append("endTime", endTime);
       }
 
-      const res = await apiRequest(`/reservations/check-availability?${params.toString()}`);
+      const res = await apiRequest(
+        `/reservations/check-availability?${params.toString()}`
+      );
       const data = await res.json();
 
       if (!res.ok || !data.available) {
         // Translate the error key from backend
         let translatedMessage: string;
-        
+
         if (data.errorKey && data.params) {
-          const translated = t(`home.reservation.errors.${data.errorKey}`, data.params);
-          translatedMessage = typeof translated === 'string' ? translated : String(translated);
+          const translated = t(
+            `home.reservation.errors.${data.errorKey}`,
+            data.params
+          );
+          translatedMessage =
+            typeof translated === "string" ? translated : String(translated);
         } else if (data.errorKey) {
           const translated = t(`home.reservation.errors.${data.errorKey}`);
-          translatedMessage = typeof translated === 'string' ? translated : String(translated);
+          translatedMessage =
+            typeof translated === "string" ? translated : String(translated);
         } else {
           const translated = t("home.reservation.errors.timeNotAvailable");
-          translatedMessage = typeof translated === 'string' ? translated : String(translated);
+          translatedMessage =
+            typeof translated === "string" ? translated : String(translated);
         }
-          
+
         return {
           available: false,
           message: translatedMessage,
@@ -402,7 +430,8 @@ export default function ReservationForm() {
 
     // Required fields validation
     if (!formData.type) errors.type = t("home.reservation.errors.type");
-    if (!formData.subType) errors.subType = t("home.reservation.errors.subType");
+    if (!formData.subType)
+      errors.subType = t("home.reservation.errors.subType");
     if (!formData.name) errors.name = t("home.reservation.errors.name");
     if (!formData.email) errors.email = t("home.reservation.errors.email");
     if (!formData.phone) errors.phone = t("home.reservation.errors.phone");
@@ -425,18 +454,18 @@ export default function ReservationForm() {
     }
 
     // EndTime validation for business type
-    if (formData.type === 'business') {
+    if (formData.type === "business") {
       if (!formData.endTime) {
         errors.endTime = t("home.reservation.errors.endTime");
       } else if (formData.time && formData.endTime) {
         // Parse times properly
-        const [startHour, startMin] = formData.time.split(':').map(Number);
-        const [endHour, endMin] = formData.endTime.split(':').map(Number);
-        
+        const [startHour, startMin] = formData.time.split(":").map(Number);
+        const [endHour, endMin] = formData.endTime.split(":").map(Number);
+
         const startTotalMinutes = startHour * 60 + startMin;
         const endTotalMinutes = endHour * 60 + endMin;
         const durationMinutes = endTotalMinutes - startTotalMinutes;
-        
+
         // Check if endTime is before or equal to startTime
         if (durationMinutes <= 0) {
           errors.endTime = t("home.reservation.errors.endTimeBeforeStart");
@@ -447,7 +476,7 @@ export default function ReservationForm() {
             const minMinutes = pkg.minDurationHours * 60;
             if (durationMinutes < minMinutes) {
               errors.endTime = t("home.reservation.errors.minDuration", {
-                hours: pkg.minDurationHours
+                hours: pkg.minDurationHours,
               });
             }
           }
@@ -456,11 +485,20 @@ export default function ReservationForm() {
     }
 
     // Check time availability if date and time are provided
-    if (formData.date && formData.time && !errors.date && !errors.time && !errors.endTime) {
-      const endTime = formData.type === 'business' ? formData.endTime : null;
-      
+    if (
+      formData.date &&
+      formData.time &&
+      !errors.date &&
+      !errors.time &&
+      !errors.endTime
+    ) {
+      const endTime = formData.type === "business" ? formData.endTime : null;
+
       // Only check if business type has endTime or if it's experience type
-      if (formData.type === 'experience' || (formData.type === 'business' && endTime)) {
+      if (
+        formData.type === "experience" ||
+        (formData.type === "business" && endTime)
+      ) {
         const availabilityCheck = await checkTimeAvailability(
           formData.date,
           formData.time,
@@ -469,7 +507,9 @@ export default function ReservationForm() {
         );
 
         if (!availabilityCheck.available) {
-          errors.time = availabilityCheck.message || String(t("home.reservation.errors.timeNotAvailable"));
+          errors.time =
+            availabilityCheck.message ||
+            String(t("home.reservation.errors.timeNotAvailable"));
         }
       }
     }
@@ -498,9 +538,10 @@ export default function ReservationForm() {
     setIsSubmitting(true);
     try {
       // Prepare data - exclude endTime for experience type
-      const submitData = formData.type === 'experience' 
-        ? { ...formData, endTime: undefined }
-        : formData;
+      const submitData =
+        formData.type === "experience"
+          ? { ...formData, endTime: undefined }
+          : formData;
 
       const res = await apiRequest("/reservations", {
         method: "POST",
@@ -509,31 +550,39 @@ export default function ReservationForm() {
 
       if (!res.ok) {
         const errorData = await res.json();
-        
+
         // Handle conflict error (409) specifically
         if (res.status === 409) {
           let errorMessage: string;
-          
+
           if (errorData.errorKey && errorData.params) {
-            const translated = t(`home.reservation.errors.${errorData.errorKey}`, errorData.params);
-            errorMessage = typeof translated === 'string' ? translated : String(translated);
+            const translated = t(
+              `home.reservation.errors.${errorData.errorKey}`,
+              errorData.params
+            );
+            errorMessage =
+              typeof translated === "string" ? translated : String(translated);
           } else if (errorData.errorKey) {
-            const translated = t(`home.reservation.errors.${errorData.errorKey}`);
-            errorMessage = typeof translated === 'string' ? translated : String(translated);
+            const translated = t(
+              `home.reservation.errors.${errorData.errorKey}`
+            );
+            errorMessage =
+              typeof translated === "string" ? translated : String(translated);
           } else {
             const translated = t("home.reservation.errors.timeNotAvailable");
-            errorMessage = typeof translated === 'string' ? translated : String(translated);
+            errorMessage =
+              typeof translated === "string" ? translated : String(translated);
           }
-            
+
           setFormErrors({ time: errorMessage });
-          triggerShake(['time']);
+          triggerShake(["time"]);
           toast.error(errorMessage);
           setIsSubmitting(false);
           return;
         }
-        
+
         // Handle other errors with errorKey
-        const errorMessage = errorData.errorKey 
+        const errorMessage = errorData.errorKey
           ? String(t(`home.reservation.errors.${errorData.errorKey}`))
           : "Greška pri slanju rezervacije!";
         throw new Error(errorMessage);
@@ -606,7 +655,9 @@ export default function ReservationForm() {
       key={id}
       className={`reservation-form-subtype-card ${
         formData.subType === id ? "reservation-form-selected" : ""
-      } ${shakeFields.subType ? "reservation-form-shake" : ""} reservation-form-${colorClass}`}
+      } ${
+        shakeFields.subType ? "reservation-form-shake" : ""
+      } reservation-form-${colorClass}`}
       onClick={() => handleSubTypeSelect(id)}
     >
       <div className="reservation-form-card-header">
@@ -671,13 +722,16 @@ export default function ReservationForm() {
               : ""
           }
           onFocus={(e) => {
-            if (field === 'date' || field === 'time' || field === 'endTime') {
+            if (field === "date" || field === "time" || field === "endTime") {
               e.target.type = config.type;
             }
           }}
           onBlur={(e) => {
-            if ((field === 'date' || field === 'time' || field === 'endTime') && !e.target.value) {
-              e.target.type = 'text';
+            if (
+              (field === "date" || field === "time" || field === "endTime") &&
+              !e.target.value
+            ) {
+              e.target.type = "text";
             }
           }}
         />
@@ -711,8 +765,8 @@ export default function ReservationForm() {
   // Determine which fields to show based on type
   const getFormFields = () => {
     const baseFields = ["name", "email", "phone", "date"];
-    
-    if (formData.type === 'business') {
+
+    if (formData.type === "business") {
       return [...baseFields, "time", "endTime", "guests"];
     } else {
       return [...baseFields, "time", "guests"];
@@ -752,6 +806,11 @@ export default function ReservationForm() {
           </div>
         </div>
 
+        <div className={"reservation-form-type-info"}>
+          <FontAwesomeIcon icon={faInfoCircle} />
+          {t("home.reservation.infoIconText")}
+        </div>
+
         {/* Slider Container */}
         <div className="reservation-form-slider-container">
           <div
@@ -767,7 +826,9 @@ export default function ReservationForm() {
                 {TYPE_CONFIG.map(renderTypeCard)}
               </div>
               {formErrors.type && (
-                <span className="reservation-form-error">{formErrors.type}</span>
+                <span className="reservation-form-error">
+                  {formErrors.type}
+                </span>
               )}
             </div>
 
@@ -841,7 +902,10 @@ export default function ReservationForm() {
       {/* Popup Modal */}
       {showPopup && (
         <div className="reservation-popup-backdrop" onClick={closePopup}>
-          <div className="reservation-popup" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="reservation-popup"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button className="reservation-form-close-btn" onClick={closePopup}>
               ×
             </button>

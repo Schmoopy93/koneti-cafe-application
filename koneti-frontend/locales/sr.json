@@ -51,6 +51,7 @@
       "typeLabel": "Tip rezervacije:",
       "packageLabel": "Izaberite paket:",
       "tooltip": "Kliknite za više informacija",
+      "infoIconText": "Više informacija o svakom paketu pronađite klikom na ikonu informacija.",
       "steps": {
         "type": "Izaberite Događaj",
         "package": "Odaberite Paket",

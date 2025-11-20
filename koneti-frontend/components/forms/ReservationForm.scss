@@ -1063,3 +1063,27 @@
     }
   }
 }
+
+.reservation-form-type-info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0.5rem 0;
+  padding: 0.35rem 1rem 0.35rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: 0 1px 4px rgba(207, 166, 138, 0.06);
+  border: 1.5px solid var(--color-border);
+  transition: background 0.2s, color 0.2s;
+
+  svg {
+    color: var(--color-primary);
+    font-size: 1.1em;
+    flex-shrink: 0;
+    margin-right: 0.3rem;
+  }
+}

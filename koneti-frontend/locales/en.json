@@ -51,6 +51,8 @@
       "typeLabel": "Reservation type:",
       "packageLabel": "Choose package:",
       "tooltip": "Click for more information",
+      "infoIconText": "Find more details about each package by clicking the info icon.",
+
       "steps": {
         "type": "Choose Event",
         "package": "Select Package",
