@@ -87,9 +87,9 @@ export const validateReservation = [
   body('time')
     .matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)
     .withMessage('Neispravan format vremena'),
-  body('guests')
-    .isInt({ min: 1, max: 20 })
-    .withMessage('Broj gostiju mora biti između 1 i 20'),
+  // body('guests')
+  //   .isInt({ min: 1, max: 20 })
+  //   .withMessage('Broj gostiju mora biti između 1 i 20'),
   body('message')
     .optional()
     .isLength({ max: 500 })

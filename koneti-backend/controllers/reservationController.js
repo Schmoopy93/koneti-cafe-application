@@ -9,12 +9,25 @@ import {
 } from "../utils/nodemailer.js";
 
 /**
+ * Helper function to calculate duration in minutes between two times
+ */
+const calculateDurationMinutes = (startTime, endTime) => {
+  const [startHour, startMin] = startTime.split(':').map(Number);
+  const [endHour, endMin] = endTime.split(':').map(Number);
+  
+  const startMinutes = startHour * 60 + startMin;
+  const endMinutes = endHour * 60 + endMin;
+  
+  return endMinutes - startMinutes;
+};
+
+/**
  * Kreira novu rezervaciju.
  * Šalje potvrdu korisniku i obaveštenje administratoru.
  */
 export const createReservation = async (req, res) => {
   try {
-    const { type, subType, date } = req.body;
+    const { type, subType, date, time, endTime } = req.body;
     
     // Validate date - minimum 2 days in advance only for Koneti Experience events
     if (date && type === 'experience') {
@@ -33,19 +46,55 @@ export const createReservation = async (req, res) => {
     }
     
     // Validate subType based on type
-    if (type === 'biznis' && !['basic', 'vip', 'corporate_day'].includes(subType)) {
+    if (type === 'business' && !['business_basic', 'business_high', 'business_corporate'].includes(subType)) {
       return res.status(400).json({
         success: false,
-        message: 'Biznis događaji mogu biti samo basic, vip ili corporate_day'
+        message: 'Biznis događaji mogu biti samo business_basic, business_high ili business_corporate'
+      });
+    }
+    
+    if (type === 'experience' && !['experience_start', 'experience_classic', 'experience_celebration'].includes(subType)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Koneti događaji mogu biti experience_start, experience_classic ili experience_celebration'
       });
     }
 
-    
-    if (type === 'koneti' && !['basic', 'premium', 'vip'].includes(subType)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Koneti događaji mogu biti basic, premium ili vip'
-      });
+    // Validate endTime for business reservations
+    if (type === 'business') {
+      if (!endTime) {
+        return res.status(400).json({
+          success: false,
+          message: 'Vreme završetka je obavezno za biznis rezervacije'
+        });
+      }
+
+      const durationMinutes = calculateDurationMinutes(time, endTime);
+
+      // Check minimum duration based on subType
+      if (subType === 'business_basic' || subType === 'business_high') {
+        if (durationMinutes < 60) {
+          return res.status(400).json({
+            success: false,
+            message: 'Minimalno trajanje rezervacije za ovaj paket je 1 sat'
+          });
+        }
+      } else if (subType === 'business_corporate') {
+        if (durationMinutes < 360) {
+          return res.status(400).json({
+            success: false,
+            message: 'Minimalno trajanje rezervacije za Corporate Day paket je 6 sati'
+          });
+        }
+      }
+
+      // Ensure endTime is after startTime
+      if (durationMinutes <= 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'Vreme završetka mora biti posle vremena početka'
+        });
+      }
     }
 
     const newReservation = new Reservation({

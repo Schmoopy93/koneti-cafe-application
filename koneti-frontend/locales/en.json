@@ -110,9 +110,12 @@
         "date": "Select date",
         "datePast": "Date cannot be in the past",
         "dateMinimum2Days": "Reservation must be at least 2 days in advance",
-        "dateMinimum4Days": "Reservation must be at least 4 days in advance.",
-        "dateMinimum7Days": "Reservation must be at least 7 days in advance.",
+        "dateMinimum4Days": "Reservation must be at least 4 days in advance",
+        "dateMinimum7Days": "Reservation must be at least 7 days in advance",
         "time": "Select time",
+        "endTime": "Select end time",
+        "endTimeBeforeStart": "End time must be after start time",
+        "minDuration": "Minimum reservation duration is {{hours}} hour(s)",
         "timePast": "Time cannot be in the past",
         "guests": "Enter number of guests",
         "submit": "An error occurred while sending the reservation. Please try again.",
@@ -470,13 +473,13 @@
       "allCategories": "All categories",
       "allDrinks": "All drinks",
       "sortLabel": "Sort by:",
-    "sortOptions": {
-      "name": "A-Z",
-      "priceLow": "Cheapest",
-      "priceHigh": "Most expensive",
-      "dateDesc": "Newest",
-      "dateAsc": "Oldest"
-    },
+      "sortOptions": {
+        "name": "A-Z",
+        "priceLow": "Cheapest",
+        "priceHigh": "Most expensive",
+        "dateDesc": "Newest",
+        "dateAsc": "Oldest"
+      },
       "pagination": {
         "prev": "Previous",
         "next": "Next"

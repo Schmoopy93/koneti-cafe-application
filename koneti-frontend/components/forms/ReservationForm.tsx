@@ -37,6 +37,7 @@ interface FormData {
   phone: string;
   date: string;
   time: string;
+  endTime: string;
   guests: number;
   message: string;
   duration: number;
@@ -60,6 +61,7 @@ interface PackageConfig {
   colorClass: string;
   translationKey: string;
   daysRequired: number;
+  minDurationHours?: number;
 }
 
 interface TypeConfig {
@@ -80,6 +82,7 @@ const INITIAL_FORM_STATE: FormData = {
   phone: "",
   date: "",
   time: "",
+  endTime: "",
   guests: 0,
   message: "",
   duration: 2,
@@ -94,6 +97,7 @@ const PACKAGE_CONFIG: Record<string, PackageConfig[]> = {
       colorClass: "silver",
       translationKey: "business_basic",
       daysRequired: 2,
+      minDurationHours: 1,
     },
     {
       id: "business_high",
@@ -102,6 +106,7 @@ const PACKAGE_CONFIG: Record<string, PackageConfig[]> = {
       colorClass: "gold",
       translationKey: "business_premium",
       daysRequired: 2,
+      minDurationHours: 1,
     },
     {
       id: "business_corporate",
@@ -110,6 +115,7 @@ const PACKAGE_CONFIG: Record<string, PackageConfig[]> = {
       colorClass: "vip",
       translationKey: "business_corporate",
       daysRequired: 4,
+      minDurationHours: 6,
     },
   ],
   experience: [
@@ -192,6 +198,16 @@ const getDateErrorKey = (daysRequired: number): string => {
   return errorKeys[daysRequired] || "date";
 };
 
+const calculateDurationMinutes = (startTime: string, endTime: string): number => {
+  const [startHour, startMin] = startTime.split(':').map(Number);
+  const [endHour, endMin] = endTime.split(':').map(Number);
+  
+  const startMinutes = startHour * 60 + startMin;
+  const endMinutes = endHour * 60 + endMin;
+  
+  return endMinutes - startMinutes;
+};
+
 // =========================
 // MAIN COMPONENT
 // =========================
@@ -253,7 +269,7 @@ export default function ReservationForm() {
   };
 
   const handleSubTypeSelect = (subType: string) => {
-    setFormData((prev) => ({ ...prev, subType }));
+    setFormData((prev) => ({ ...prev, subType, endTime: "" }));
     setFormErrors({});
     setShowEventForm(true);
     setCurrentStep(3);
@@ -287,8 +303,8 @@ export default function ReservationForm() {
     if (!formData.email) errors.email = t("home.reservation.errors.email");
     if (!formData.phone) errors.phone = t("home.reservation.errors.phone");
     if (!formData.time) errors.time = t("home.reservation.errors.time");
-    if (!formData.guests || formData.guests < 1)
-      errors.guests = t("home.reservation.errors.guests");
+    // if (!formData.guests || formData.guests < 1)
+    //   errors.guests = t("home.reservation.errors.guests");
 
     // Date validation with package-specific requirements
     if (!formData.date) {
@@ -302,6 +318,29 @@ export default function ReservationForm() {
         if (selectedDate < minDate) {
           const errorKey = getDateErrorKey(pkg.daysRequired);
           errors.date = t(`home.reservation.errors.${errorKey}`);
+        }
+      }
+    }
+
+    // EndTime validation for business type
+    if (formData.type === 'business') {
+      if (!formData.endTime) {
+        errors.endTime = t("home.reservation.errors.endTime");
+      } else if (formData.time) {
+        const durationMinutes = calculateDurationMinutes(formData.time, formData.endTime);
+        
+        if (durationMinutes <= 0) {
+          errors.endTime = t("home.reservation.errors.endTimeBeforeStart");
+        } else {
+          const pkg = getPackageBySubType(formData.subType);
+          if (pkg && pkg.minDurationHours) {
+            const minMinutes = pkg.minDurationHours * 60;
+            if (durationMinutes < minMinutes) {
+              errors.endTime = t("home.reservation.errors.minDuration", {
+                hours: pkg.minDurationHours
+              });
+            }
+          }
         }
       }
     }
@@ -329,9 +368,14 @@ export default function ReservationForm() {
 
     setIsSubmitting(true);
     try {
+      // Prepare data - exclude endTime for experience type
+      const submitData = formData.type === 'experience' 
+        ? { ...formData, endTime: undefined }
+        : formData;
+
       const res = await apiRequest("/reservations", {
         method: "POST",
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submitData),
       });
 
       if (!res.ok) {
@@ -443,6 +487,7 @@ export default function ReservationForm() {
       phone: { type: "tel" },
       date: { type: "date" },
       time: { type: "time" },
+      endTime: { type: "time" },
       guests: { type: "number", min: 1 },
       name: { type: "text" },
     };
@@ -495,6 +540,17 @@ export default function ReservationForm() {
         </span>
       </div>
     );
+  };
+
+  // Determine which fields to show based on type
+  const getFormFields = () => {
+    const baseFields = ["name", "email", "phone", "date"];
+    
+    if (formData.type === 'business') {
+      return [...baseFields, "time", "endTime", "guests"];
+    } else {
+      return [...baseFields, "time", "guests"];
+    }
   };
 
   // =========================
@@ -579,9 +635,7 @@ export default function ReservationForm() {
               </label>
               {showEventForm && (
                 <div className="reservation-form-event-form">
-                  {["name", "email", "phone", "date", "time", "guests"].map(
-                    renderFormField
-                  )}
+                  {getFormFields().map(renderFormField)}
                   <textarea
                     name="message"
                     value={formData.message}

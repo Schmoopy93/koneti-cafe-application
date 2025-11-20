@@ -28,6 +28,7 @@ interface Reservation {
   phone: string;
   date: string;
   time: string;
+  endTime?: string;  // Add this line
   guests: number;
   type: string;
   subType?: string;
@@ -255,7 +256,9 @@ const Calendar: React.FC = () => {
               </p>
               <p>
                 <strong>{t("adminPage.event.time")}</strong>{" "}
-                {selectedEvent.time}
+                {selectedEvent.type === "business" && selectedEvent.endTime 
+                  ? `${selectedEvent.time} - ${selectedEvent.endTime}`
+                  : selectedEvent.time}
               </p>
               <p>
                 <strong>{t("adminPage.event.guests")}</strong>{" "}

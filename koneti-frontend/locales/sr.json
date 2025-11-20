@@ -110,9 +110,12 @@
         "date": "Odaberite datum",
         "datePast": "Datum ne može biti u prošlosti",
         "dateMinimum2Days": "Rezervacija mora biti minimum 2 dana unapred",
-        "dateMinimum4Days": "Rezervacija mora biti minimum 4 dana unapred.",
-        "dateMinimum7Days": "Rezervacija mora biti minimum 7 dana unapred.",
+        "dateMinimum4Days": "Rezervacija mora biti minimum 4 dana unapred",
+        "dateMinimum7Days": "Rezervacija mora biti minimum 7 dana unapred",
         "time": "Odaberite vreme",
+        "endTime": "Odaberite završno vreme",
+        "endTimeBeforeStart": "Završno vreme mora biti posle početnog vremena",
+        "minDuration": "Minimalno trajanje rezervacije je {{hours}} sat(a)",
         "timePast": "Vreme ne može biti u prošlosti",
         "guests": "Unesite broj gostiju",
         "submit": "Došlo je do greške prilikom slanja rezervacije. Pokušajte ponovo.",
@@ -380,7 +383,6 @@
       "noImages": "Nema slika",
       "noImagesDesc": "Još uvek nema slika u galeriji. Dodajte prvu sliku da započnete.",
       "maxImagesError": "Maksimalno možete označiti 10 slika za About stranicu!",
-      
 
       "of": "od",
       "order": "Redosled",
@@ -480,13 +482,13 @@
       "allCategories": "Sve kategorije",
       "allDrinks": "Sva pića",
       "sortLabel": "Sortiraj po:",
-    "sortOptions": {
-      "name": "A-Z",
-      "priceLow": "Najjeftiniji",
-      "priceHigh": "Najskuplji",
-      "dateDesc": "Najnoviji",
-      "dateAsc": "Najstariji"
-    },
+      "sortOptions": {
+        "name": "A-Z",
+        "priceLow": "Najjeftiniji",
+        "priceHigh": "Najskuplji",
+        "dateDesc": "Najnoviji",
+        "dateAsc": "Najstariji"
+      },
       "pagination": {
         "prev": "Prethodna",
         "next": "Sledeća"
@@ -816,7 +818,7 @@
     "backToAdmin": "Nazad na Admin",
     "totalEvents": "Ukupno događaja"
   },
-    "testimonials": {
+  "testimonials": {
     "title": "Šta kažu naši klijenti",
     "subtitle": "Pročitajte recenzije naših zadovoljnih klijenata",
     "noReviews": "Još nema recenzija. Budite prvi koji će ostaviti recenziju!",

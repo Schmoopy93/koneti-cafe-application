@@ -80,8 +80,9 @@ const getUserConfirmationHTML = (reservation) => {
   const safeName = DOMPurify.sanitize(reservation.name || '');
   const safeDate = new Date(reservation.date).toLocaleDateString('sr-RS');
   const safeTime = DOMPurify.sanitize(reservation.time || '');
+  const safeEndTime = reservation.endTime ? DOMPurify.sanitize(reservation.endTime) : null;
   const safeGuests = parseInt(reservation.guests) || 0;
-  const safeType = reservation.type === 'koneti' ? 'Koneti Experience' : 'Biznis Sastanak';
+  const safeType = reservation.type === 'experience' ? 'Koneti Experience' : 'Biznis Sastanak';
   
   return `
     <div style="${baseStyle}">
@@ -109,9 +110,15 @@ const getUserConfirmationHTML = (reservation) => {
               <span style="${badgeStyle}">${safeDate}</span>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(90,62,54,0.1);">
-              <span style="font-weight:600; color:#5a3e36;">⏰ Vreme:</span>
+              <span style="font-weight:600; color:#5a3e36;">⏰ ${safeEndTime ? 'Početak' : 'Vreme'}:</span>
               <span style="${badgeStyle}">${safeTime}</span>
             </div>
+            ${safeEndTime ? `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(90,62,54,0.1);">
+              <span style="font-weight:600; color:#5a3e36;">⏰ Završetak:</span>
+              <span style="${badgeStyle}">${safeEndTime}</span>
+            </div>
+            ` : ''}
             <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(90,62,54,0.1);">
               <span style="font-weight:600; color:#5a3e36;">👥 Gosti:</span>
               <span style="${badgeStyle}">${safeGuests}</span>
@@ -143,8 +150,9 @@ const getAdminNotificationHTML = (reservation) => {
   const safePhone = DOMPurify.sanitize(reservation.phone || '');
   const safeDate = new Date(reservation.date).toLocaleDateString('sr-RS');
   const safeTime = DOMPurify.sanitize(reservation.time || '');
+  const safeEndTime = reservation.endTime ? DOMPurify.sanitize(reservation.endTime) : null;
   const safeGuests = parseInt(reservation.guests) || 0;
-  const safeType = reservation.type === 'koneti' ? 'Koneti Experience' : 'Biznis Sastanak';
+  const safeType = reservation.type === 'experience' ? 'Koneti Experience' : 'Biznis Sastanak';
   const safeSubType = reservation.subType ? reservation.subType.charAt(0).toUpperCase() + reservation.subType.slice(1) : 'Basic';
   
   return `
@@ -186,9 +194,15 @@ const getAdminNotificationHTML = (reservation) => {
                 <span style="${badgeStyle}">${safeDate}</span>
               </div>
               <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #eee;">
-                <span style="font-weight:600; color:#1565c0;">⏰ Vreme:</span>
+                <span style="font-weight:600; color:#1565c0;">⏰ ${safeEndTime ? 'Početak' : 'Vreme'}:</span>
                 <span style="${badgeStyle}">${safeTime}</span>
               </div>
+              ${safeEndTime ? `
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #eee;">
+                <span style="font-weight:600; color:#1565c0;">⏰ Završetak:</span>
+                <span style="${badgeStyle}">${safeEndTime}</span>
+              </div>
+              ` : ''}
               <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #eee;">
                 <span style="font-weight:600; color:#1565c0;">👥 Gosti:</span>
                 <span style="${badgeStyle}">${safeGuests}</span>
@@ -219,6 +233,7 @@ const getApprovedEmailHTML = (reservation) => {
   const safeName = DOMPurify.sanitize(reservation.name || '');
   const safeDate = new Date(reservation.date).toLocaleDateString('sr-RS');
   const safeTime = DOMPurify.sanitize(reservation.time || '');
+  const safeEndTime = reservation.endTime ? DOMPurify.sanitize(reservation.endTime) : null;
   
   return `
     <div style="${baseStyle}">
@@ -227,7 +242,7 @@ const getApprovedEmailHTML = (reservation) => {
         <h2 style="color:#28a745; text-align:center;">✅ Vaša Rezervacija je Prihvaćena!</h2>
         <p>Poštovani/a <strong>${safeName}</strong>,</p>
         <p>Sa zadovoljstvom Vas obaveštavamo da je Vaša rezervacija za 
-          <strong>${safeDate} u ${safeTime}</strong> prihvaćena.</p>
+          <strong>${safeDate} ${safeEndTime ? `od ${safeTime} do ${safeEndTime}` : `u ${safeTime}`}</strong> prihvaćena.</p>
 
         <div style="text-align:center; margin:20px 0;">
           <span style="${badgeStyle}; background-color:#c3f7c7; color:#155724;">
@@ -246,6 +261,7 @@ const getRejectedEmailHTML = (reservation) => {
   const safeName = DOMPurify.sanitize(reservation.name || '');
   const safeDate = new Date(reservation.date).toLocaleDateString('sr-RS');
   const safeTime = DOMPurify.sanitize(reservation.time || '');
+  const safeEndTime = reservation.endTime ? DOMPurify.sanitize(reservation.endTime) : null;
   
   return `
     <div style="${baseStyle}">
@@ -254,7 +270,7 @@ const getRejectedEmailHTML = (reservation) => {
         <h2 style="color:#dc3545; text-align:center;">❌ Vaša Rezervacija je Odbijena</h2>
         <p>Poštovani/a <strong>${safeName}</strong>,</p>
         <p>Nažalost, Vaša rezervacija za 
-          <strong>${safeDate} u ${safeTime}</strong> nije moguća i odbijena je.</p>
+          <strong>${safeDate} ${safeEndTime ? `od ${safeTime} do ${safeEndTime}` : `u ${safeTime}`}</strong> nije moguća i odbijena je.</p>
 
         <div style="text-align:center; margin:20px 0;">
           <span style="${badgeStyle}; background-color:#f8d7da; color:#721c24;">
