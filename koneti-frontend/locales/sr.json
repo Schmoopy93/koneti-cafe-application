@@ -534,6 +534,11 @@
       }
     },
     "addGalleryImage": {
+            "errors": {
+              "titleSr": "Naslov je obavezan.",
+              "image": "Slika je obavezna.",
+              "checkFormErrors": "Proverite formu za greške."
+            },
       "title": "Dodaj novu sliku galerije",
       "editTitle": "Uredi sliku galerije",
       "titleSr": "Naziv",
