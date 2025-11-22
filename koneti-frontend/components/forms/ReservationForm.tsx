@@ -846,10 +846,12 @@ export default function ReservationForm() {
           </div>
         </div>
 
-        <div className={"reservation-form-type-info"}>
-          <FontAwesomeIcon icon={faInfoCircle} />
-          {t("home.reservation.infoIconText")}
-        </div>
+        {(currentStep === 1 || currentStep === 2) && (
+          <div className={"reservation-form-type-info"}>
+            <FontAwesomeIcon icon={faInfoCircle} />
+            {t("home.reservation.infoIconText")}
+          </div>
+        )}
 
         {/* Slider Container */}
         <div className="reservation-form-slider-container">
