@@ -141,8 +141,13 @@ const CareerManagement: React.FC = () => {
       });
 
       if (response.ok) {
-        await fetchApplications();
         toast.success(t("adminPage.career.statusUpdated"));
+        // Ažuriraj samo tu aplikaciju u listi
+        setApplications(applications =>
+          applications.map(app =>
+            app._id === id ? { ...app, status: status as CareerApplication["status"] } : app
+          )
+        );
         if (selectedApplication && selectedApplication._id === id) {
           setSelectedApplication({ ...selectedApplication, status: status as any });
         }
@@ -635,7 +640,8 @@ const CareerManagement: React.FC = () => {
               <h4>{t("adminPage.career.updateStatus")}</h4>
               <div className="career-management__status-buttons">
                 <button
-                  className={`career-management__status-btn${selectedApplication.status === "reviewed" ? " career-management__status-btn--active" : ""}`}
+                  type="button"
+                  className={`career-management__status-btn${selectedApplication.status === "reviewed" ? " career-management__status-btn--active reviewed" : ""}`}
                   onClick={() => updateApplicationStatus(selectedApplication._id, "reviewed")}
                   disabled={updatingStatus === selectedApplication._id}
                   title={t("adminPage.career.status.reviewed")}
@@ -647,7 +653,8 @@ const CareerManagement: React.FC = () => {
                   )}
                 </button>
                 <button
-                  className={`career-management__status-btn${selectedApplication.status === "contacted" ? " career-management__status-btn--active" : ""}`}
+                  type="button"
+                  className={`career-management__status-btn${selectedApplication.status === "contacted" ? " career-management__status-btn--active contacted" : ""}`}
                   onClick={() => updateApplicationStatus(selectedApplication._id, "contacted")}
                   disabled={updatingStatus === selectedApplication._id}
                   title={t("adminPage.career.status.contacted")}
@@ -659,7 +666,8 @@ const CareerManagement: React.FC = () => {
                   )}
                 </button>
                 <button
-                  className={`career-management__status-btn${selectedApplication.status === "rejected" ? " career-management__status-btn--active" : ""}`}
+                  type="button"
+                  className={`career-management__status-btn${selectedApplication.status === "rejected" ? " career-management__status-btn--active rejected" : ""}`}
                   onClick={() => updateApplicationStatus(selectedApplication._id, "rejected")}
                   disabled={updatingStatus === selectedApplication._id}
                   title={t("adminPage.career.status.rejected")}
@@ -671,6 +679,7 @@ const CareerManagement: React.FC = () => {
                   )}
                 </button>
                 <button
+                  type="button"
                   className="career-management__btn-delete-modal"
                   onClick={() => setShowDeleteConfirm(selectedApplication)}
                   disabled={updatingStatus === selectedApplication._id}
@@ -683,32 +692,6 @@ const CareerManagement: React.FC = () => {
           </>
         )}
       </Modal>
-
-      {/* Delete Confirmation Modal */}
-      {showDeleteConfirm && (
-        <div className="career-management__modal-overlay" onClick={() => setShowDeleteConfirm(null)}>
-          <div className="career-management__delete-confirm-popup" onClick={(e) => e.stopPropagation()}>
-            <button className="career-management__close-btn" onClick={() => setShowDeleteConfirm(null)}>×</button>
-            <h3>{t("adminPage.career.deleteConfirm.title")}</h3>
-            <p>{t("adminPage.career.deleteConfirm.message")}</p>
-            <div className="career-management__confirm-actions">
-              <button
-                className="career-management__btn-cancel"
-                onClick={() => setShowDeleteConfirm(null)}
-              >
-                {t("adminPage.career.deleteConfirm.cancel")}
-              </button>
-              <button
-                className="career-management__btn-confirm"
-                onClick={() => deleteApplication(showDeleteConfirm._id)}
-                disabled={updatingStatus === showDeleteConfirm._id}
-              >
-                {updatingStatus === showDeleteConfirm._id ? t("adminPage.actions.updating") : t("adminPage.career.deleteConfirm.delete")}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Add Position Modal */}
       <Modal
@@ -747,6 +730,32 @@ const CareerManagement: React.FC = () => {
           </form>
         </div>
       </Modal>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="career-management__modal-overlay" onClick={() => setShowDeleteConfirm(null)}>
+          <div className="career-management__delete-confirm-popup" onClick={(e) => e.stopPropagation()}>
+            <button className="career-management__close-btn" onClick={() => setShowDeleteConfirm(null)}>×</button>
+            <h3>{t("adminPage.career.deleteConfirm.title")}</h3>
+            <p>{t("adminPage.career.deleteConfirm.message")}</p>
+            <div className="career-management__confirm-actions">
+              <button
+                className="career-management__btn-cancel"
+                onClick={() => setShowDeleteConfirm(null)}
+              >
+                {t("adminPage.career.deleteConfirm.cancel")}
+              </button>
+              <button
+                className="career-management__btn-confirm"
+                onClick={() => deleteApplication(showDeleteConfirm._id)}
+                disabled={updatingStatus === showDeleteConfirm._id}
+              >
+                {updatingStatus === showDeleteConfirm._id ? t("adminPage.actions.updating") : t("adminPage.career.deleteConfirm.delete")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 };
