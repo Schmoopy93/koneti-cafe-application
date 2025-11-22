@@ -527,6 +527,11 @@
       }
     },
     "addGalleryImage": {
+            "errors": {
+              "titleSr": "Title is required.",
+              "image": "Image is required.",
+              "checkFormErrors": "Please check the form for errors."
+            },
       "title": "Add New Gallery Image",
       "editTitle": "Edit Gallery Image",
       "titleSr": "Title",

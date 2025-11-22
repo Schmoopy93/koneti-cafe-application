@@ -9,8 +9,13 @@ import "./AddGalleryImage.scss";
 
 interface AddGalleryImageProps {
   onClose: () => void;
-  onSuccess?: (image: any) => void;
-  editData?: any;
+  onSuccess?: (image: unknown) => void;
+  editData?: {
+    _id?: string;
+    title?: { sr?: string };
+    description?: { sr?: string };
+    image?: string;
+  };
 }
 
 const AddGalleryImage: React.FC<AddGalleryImageProps> = ({
