@@ -15,7 +15,7 @@ interface AddGalleryImageProps {
     title?: { sr?: string };
     description?: { sr?: string };
     image?: string;
-  };
+  } | null;
 }
 
 const AddGalleryImage: React.FC<AddGalleryImageProps> = ({
