@@ -1,14 +1,17 @@
-"use client";
+import type { Metadata } from 'next'
+import CalendarPageWrapper from "@/components/calendar/CalendarPageWrapper"
 
-import Calendar from "../../../components/calendar/Calendar";
-import { ProtectedRoute } from "../../../contexts/ProtectedRoute";
+type Props = { params: Promise<{ lang: 'sr' | 'en' }> }
 
-const CalendarPage = () => {
-  return (
-    <ProtectedRoute>
-      <Calendar />
-    </ProtectedRoute>
-  );
-};
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { lang } = await params
+  return {
+    title: lang === 'sr' ? 'Kalendar | Admin' : 'Calendar | Admin',
+    robots: { index: false, follow: false },
+    alternates: { canonical: `https://koneti.com/${lang}/calendar` }
+  }
+}
 
-export default CalendarPage;
+export default function CalendarPage() {
+  return <CalendarPageWrapper />
+}

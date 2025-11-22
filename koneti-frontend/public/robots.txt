@@ -1,6 +1,16 @@
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /sr/admin
+Disallow: /en/admin
+Disallow: /sr/menu-management
+Disallow: /en/menu-management
+Disallow: /sr/statistics
+Disallow: /en/statistics
+Disallow: /sr/calendar
+Disallow: /en/calendar
+Disallow: /sr/login
+Disallow: /en/login
 Disallow: /_next/
 Disallow: /api/
 

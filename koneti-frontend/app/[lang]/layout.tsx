@@ -34,6 +34,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         "specialty coffee", "brunch", "ketering"
       ],
       authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
+      creator: "Koneti Café",
+      publisher: "Koneti Café",
       category: "Restaurant",
       applicationName: "Koneti Café",
       other: {
@@ -69,6 +71,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         description: "Uživajte u najboljoj kafi u prijatnom ambijentu.",
         images: ["/koneti-logo.png"],
         creator: "@koneticafe",
+        site: "@koneticafe",
       },
       robots: {
         index: true,
@@ -107,6 +110,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         "specialty coffee", "brunch", "catering"
       ],
       authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
+      creator: "Koneti Café",
+      publisher: "Koneti Café",
       category: "Restaurant",
       applicationName: "Koneti Café",
       other: {
@@ -142,6 +147,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         description: "Enjoy the best coffee in a pleasant atmosphere.",
         images: ["/koneti-logo.png"],
         creator: "@koneticafe",
+        site: "@koneticafe",
       },
       robots: {
         index: true,
@@ -179,20 +185,22 @@ export async function generateStaticParams() {
 export default async function LangLayout({ children, params }: Props) {
   const { lang } = await params;
   
-  const jsonLd = {
+  const restaurantJsonLd = {
     "@context": "https://schema.org",
     "@type": "Restaurant",
     "name": "Koneti Café",
+    "@id": "https://koneti.com",
     "description": lang === 'en' 
       ? "Enjoy the best coffee in a pleasant atmosphere. Reserve tables for business meetings or celebrations."
       : "Uživajte u najboljoj kafi u prijatnom ambijentu. Rezervišite stolove za poslovne sastanke ili proslave.",
     "url": `https://koneti.com/${lang}`,
     "telephone": "+381-XX-XXX-XXXX",
+    "email": "info@koneti.com",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Bulevar Oslobođenja 97",
       "addressLocality": "Novi Sad",
-      "addressRegion": "Srbija",
+      "addressRegion": "Vojvodina",
       "postalCode": "21000",
       "addressCountry": "RS"
     },
@@ -201,18 +209,45 @@ export default async function LangLayout({ children, params }: Props) {
       "latitude": 44.7866,
       "longitude": 20.4489
     },
-    "openingHours": [
-      "Mo-Fr 07:30-23:00",
-      "Sa 07:30-24:00",
-      "Su 08:00-21:00"
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "07:30",
+        "closes": "23:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "07:30",
+        "closes": "24:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Sunday",
+        "opens": "08:00",
+        "closes": "21:00"
+      }
     ],
     "servesCuisine": ["Coffee", "Juice", "Business Meetings", "Celebrations"],
-    "priceRange": "$",
+    "priceRange": "$$",
     "image": "https://koneti.com/koneti-logo.png",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://koneti.com/koneti-logo.png",
+      "width": 250,
+      "height": 60
+    },
+    "sameAs": [
+      "https://www.facebook.com/KonetiCafe",
+      "https://www.instagram.com/KonetiCafe"
+    ],
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.8",
-      "reviewCount": "150"
+      "reviewCount": "150",
+      "bestRating": "5",
+      "worstRating": "1"
     },
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
@@ -242,6 +277,19 @@ export default async function LangLayout({ children, params }: Props) {
     }
   };
 
+  const webSiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "url": "https://koneti.com",
+    "name": "Koneti Café",
+    "inLanguage": lang === 'sr' ? 'sr-RS' : 'en-US',
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": `https://koneti.com/${lang}/search?q={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
     <html lang={lang} className={inter.variable} suppressHydrationWarning>
       <head>
@@ -258,10 +306,18 @@ export default async function LangLayout({ children, params }: Props) {
       </head>
       <body className={inter.className} suppressHydrationWarning>
         <Script
-          id="json-ld"
+          id="restaurant-jsonld"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(jsonLd),
+            __html: JSON.stringify(restaurantJsonLd),
+          }}
+          strategy="afterInteractive"
+        />
+        <Script
+          id="website-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(webSiteJsonLd),
           }}
           strategy="afterInteractive"
         />

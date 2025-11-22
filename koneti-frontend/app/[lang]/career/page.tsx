@@ -1,124 +1,165 @@
-import type { Metadata } from "next";
-import CareerApplication from "@/components/career/CareerApplication";
-import Script from 'next/script';
+import type { Metadata } from "next"
+import CareerApplication from "@/components/career/CareerApplication"
+import Script from 'next/script'
 
-export const metadata: Metadata = {
-  title: "Karijera | Pridruži se Koneti Café Timu | Poslovi u Novom Sadu",
-  description: "Traži se timski igrač! Otkri mogućnosti za rad u Koneti Café-u. Podnesi prijavu i postani deo našeg dinamičnog tima.",
-  keywords: [
-    "poslovi",
-    "karijera",
-    "zaposlenje",
-    "koneti café",
-    "kafić Novi Sad",
-    "barista",
-    "konobar",
-    "kuhinja",
-    "menadžer",
-    "rad u kaficu",
-    "sezonski poslovi",
-    "stalni poslovi",
-    "timski rad",
-    "mogućnosti zaposlenja",
-    "prijava za posao",
-    "razvoj karijere",
-    "dinamično radno okruženje"
-  ],
-  authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
-  creator: "Koneti Café",
-  openGraph: {
-    title: "Karijera | Koneti Café",
-    description: "Pridruži se našem timu i budi deo Koneti Café porodice",
-    url: "https://koneti.com/career",
-    type: "website",
-    locale: "sr_RS",
-    siteName: "Koneti Café",
-    images: [
-      {
-        url: "/career-og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Koneti Café Karijera",
-        type: "image/jpeg",
+type Props = { params: Promise<{ lang: 'sr' | 'en' }> }
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { lang } = await params
+
+  const titles = {
+    sr: "Karijera | Pridruži se Koneti Café Timu - Poslovi u Novom Sadu",
+    en: "Careers | Join the Koneti Café Team - Jobs in Novi Sad"
+  }
+
+  const descriptions = {
+    sr: "Otvoren za baristase, konobara, kuvarsku ekipu i menadžere. Dinamičan tim, fleksibilan raspored, profesionalni razvoj. Podnesi prijavu sada!",
+    en: "Hiring baristas, servers, kitchen staff and managers. Dynamic team, flexible schedule, professional growth. Apply now!"
+  }
+
+  return {
+    title: titles[lang],
+    description: descriptions[lang],
+    keywords: lang === 'sr'
+      ? ["poslovi", "karijera", "barista", "konobar", "zaposlenje", "Novi Sad", "kafić", "rad", "tim", "fleksibilan raspored"]
+      : ["jobs", "careers", "barista", "server", "employment", "Novi Sad", "cafe", "work", "team", "flexible schedule"],
+    authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
+    creator: "Koneti Café",
+    alternates: {
+      canonical: `https://koneti.com/${lang}/career`,
+      languages: {
+        sr: "https://koneti.com/sr/career",
+        en: "https://koneti.com/en/career",
       },
-      {
-        url: "/team-koneti.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Koneti Café Tim",
-        type: "image/jpeg",
-      }
-    ],
-  },
-  alternates: {
-    canonical: 'https://koneti.com/career',
-    languages: {
-      'sr-RS': 'https://koneti.com/career',
-      'en-US': 'https://koneti.com/en/career',
-    }
-  },
-  robots: {
-    index: true,
-    follow: true,
-    nocache: true,
-    googleBot: {
+    },
+    openGraph: {
+      title: titles[lang],
+      description: descriptions[lang],
+      url: `https://koneti.com/${lang}/career`,
+      type: "website",
+      locale: lang === 'sr' ? "sr_RS" : "en_US",
+      siteName: "Koneti Café",
+      images: [
+        {
+          url: "https://koneti.com/career-og-image.jpg",
+          width: 1200,
+          height: 630,
+          alt: titles[lang],
+        }
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: titles[lang],
+      description: descriptions[lang],
+      images: ["https://koneti.com/career-og-image.jpg"],
+      creator: "@KonetiCafe",
+      site: "@KonetiCafe",
+    },
+    robots: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
-  },
-  verification: {
-    google: "your-google-verification-code",
-    yandex: "your-yandex-verification-code",
-    other: {
-      "facebook-domain-verification": "your-facebook-verification"
-    }
-  },
-  category: "Career",
-  applicationName: "Koneti Café Career Portal",
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Karijera | Koneti Café',
-    description: 'Pronađi svoj idealan posao u Koneti Café-u',
-    site: '@KonetiCafe',
-    creator: '@KonetiCafe',
-    images: ['/career-twitter.jpg'],
-  },
-};
+    verification: {
+      google: "your-google-verification-code",
+    },
+    category: "Careers",
+    applicationName: "Koneti Café Careers Portal",
+  }
+}
 
-const breadcrumbJsonLd = {
+const getBreadcrumb = (lang: string) => ({
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
     {
       "@type": "ListItem",
       "position": 1,
-      "name": "Početna",
+      "name": lang === 'sr' ? "Početna" : "Home",
       "item": "https://koneti.com"
     },
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Karijera",
-      "item": "https://koneti.com/career"
+      "name": lang === 'sr' ? "Karijera" : "Careers",
+      "item": `https://koneti.com/${lang}/career`
     }
   ]
-};
+})
 
-const organizationJsonLd = {
+const getJobPostingJsonLd = (lang: string) => ({
+  "@context": "https://schema.org",
+  "@type": "JobPosting",
+  "@id": `https://koneti.com/${lang}/career`,
+  "title": lang === 'sr' ? "Različite pozicije - Koneti Café" : "Various Positions - Koneti Café",
+  "description": lang === 'sr'
+    ? "Koneti Café traži motivirane kandidate za različite pozicije. Dinamičan tim, fleksibilan raspored, mogućnost napredovanja."
+    : "Koneti Café is seeking motivated candidates for various positions. Dynamic team, flexible schedule, advancement opportunities.",
+  "datePosted": new Date().toISOString(),
+  "validThrough": new Date(Date.now() + 120 * 24 * 60 * 60 * 1000).toISOString(),
+  "employmentType": ["FULL_TIME", "PART_TIME", "TEMPORARY"],
+  "hiringOrganization": {
+    "@type": "Organization",
+    "name": "Koneti Café",
+    "@id": "https://koneti.com",
+    "sameAs": [
+      "https://www.facebook.com/KonetiCafe",
+      "https://www.instagram.com/KonetiCafe"
+    ],
+    "logo": "https://koneti.com/koneti-logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Human Resources",
+      "telephone": "+381-XX-XXX-XXXX",
+      "email": "careers@koneti.com",
+      "url": `https://koneti.com/${lang}/career`
+    }
+  },
+  "jobLocation": [
+    {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Bulevar Oslobođenja 97",
+        "addressLocality": "Novi Sad",
+        "addressRegion": "Vojvodina",
+        "postalCode": "21000",
+        "addressCountry": "RS"
+      }
+    }
+  ],
+  "baseSalary": {
+    "@type": "PriceSpecification",
+    "priceCurrency": "RSD",
+    "price": lang === 'sr' ? "Prema dogovoru" : "Negotiable"
+  },
+  "applicantLocationRequirements": {
+    "@type": "Country",
+    "name": "RS"
+  }
+})
+
+const getOrganizationJsonLd = (lang: string) => ({
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": "https://koneti.com",
   "name": "Koneti Café",
   "url": "https://koneti.com",
-  "@id": "https://koneti.com",
-  "logo": "https://koneti.com/logo.png",
+  "logo": "https://koneti.com/koneti-logo.png",
   "image": "https://koneti.com/koneti-cafe.jpg",
-  "description": "Moderan kafić u Novom Sadu sa bogatom ponudom kafe, poslastica i prostora za poslovne sastanke",
+  "description": lang === 'sr'
+    ? "Moderan kafić u Novom Sadu sa bogatom ponudom kafe, poslastica i usluga"
+    : "Modern café in Novi Sad with diverse coffee, pastry and service offerings",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Your Street Address",
+    "streetAddress": "Bulevar Oslobođenja 97",
     "addressLocality": "Novi Sad",
     "addressRegion": "Vojvodina",
     "postalCode": "21000",
@@ -126,17 +167,16 @@ const organizationJsonLd = {
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": 45.2551338,
-    "longitude": 19.8451756
+    "latitude": 44.7866,
+    "longitude": 20.4489
   },
-  "telephone": "+381XXXXXXXXX",
+  "telephone": "+381-XX-XXX-XXXX",
   "email": "info@koneti.com",
   "sameAs": [
     "https://www.facebook.com/KonetiCafe",
     "https://www.instagram.com/KonetiCafe",
     "https://www.linkedin.com/company/koneti-cafe"
   ],
-  "foundingDate": "2020",
   "areaServed": {
     "@type": "City",
     "name": "Novi Sad"
@@ -144,151 +184,91 @@ const organizationJsonLd = {
   "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "Human Resources",
-    "telephone": "+381XXXXXXXXX",
+    "telephone": "+381-XX-XXX-XXXX",
     "email": "careers@koneti.com",
-    "url": "https://koneti.com/career"
+    "url": `https://koneti.com/${lang}/career`
   }
-};
+})
 
-const jobPostingJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "JobPosting",
-  "title": "Različite pozicije - Koneti Café",
-  "description": "Koneti Café traži motivirane kandidate za različite pozicije. Podnesi prijavu i postani deo našeg tima!",
-  "datePosted": new Date().toISOString().split('T')[0],
-  "validThrough": new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-  "employmentType": [
-    "FULL_TIME",
-    "PART_TIME",
-    "TEMPORARY"
-  ],
-  "hiringOrganization": {
-    "@type": "Organization",
-    "name": "Koneti Café",
-    "sameAs": "https://koneti.com",
-    "logo": "https://koneti.com/logo.png"
-  },
-  "jobLocation": {
-    "@type": "Place",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Your Street Address",
-      "addressLocality": "Novi Sad",
-      "addressRegion": "Vojvodina",
-      "postalCode": "21000",
-      "addressCountry": "RS"
-    }
-  },
-  "baseSalary": {
-    "@type": "PriceSpecification",
-    "priceCurrency": "RSD",
-    "price": "Prema dogovoru"
-  },
-  "applicantLocationRequirements": {
-    "@type": "Country",
-    "name": "RS"
-  }
-};
-
-const faqJsonLd = {
+const getFAQJsonLd = (lang: string) => ({
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Koje pozicije su dostupne u Koneti Café-u?",
+      "name": lang === 'sr' ? "Koje pozicije su dostupne?" : "What positions are available?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Koneti Café redovno traži kandidate za različite pozicije uključujući baristase, konobara, kuvarsku ekipu i menadžere. Sve dostupne pozicije možete videti na našoj stranici za karijeru."
+        "text": lang === 'sr'
+          ? "Tražimo baristase, konobara, kuvarsku ekipu i menadžere. Redovno se pojavljuju nove pozicije."
+          : "We're hiring baristas, servers, kitchen staff and managers. New positions open regularly."
       }
     },
     {
       "@type": "Question",
-      "name": "Kako mogu da pošaljem svoju prijavu?",
+      "name": lang === 'sr' ? "Kako mogu da se prijavim?" : "How can I apply?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Prijavu možete poslati kroz naš online obrazac na ovoj stranici. Trebate da unesete svoje osnovne podatke, odaberete poziciju, napišete motivaciono pismo i priložite CV. Proces je jednostavan i traje samo nekoliko minuta."
+        "text": lang === 'sr'
+          ? "Popunite online obrazac na ovoj stranici i pošaljite CV. Biće vam javljena povratna informacija u roku od 5 radnih dana."
+          : "Fill out the online form on this page and submit your CV. You'll receive feedback within 5 business days."
       }
     },
     {
       "@type": "Question",
-      "name": "Koji su zahtevi za poziciju baristase?",
+      "name": lang === 'sr' ? "Da li je iskustvo obavezno?" : "Is experience required?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Za poziciju baristase tražimo kandidate sa iskustvom u pripremi kafe, znanjem o različitim vrstama kafe, odličnim komunikacijskim veštinama i sposobnošću da rade u brzom okruženju. Certifikati za bariste su prednost."
+        "text": lang === 'sr'
+          ? "Iskustvo je poželjno ali ne obavezno. Tražimo motivirane kandidate koje će obučiti naš tim."
+          : "Experience is preferred but not required. We train motivated candidates on our team."
       }
     },
     {
       "@type": "Question",
-      "name": "Da li je iskustvo obavezno?",
+      "name": lang === 'sr' ? "Koji su benefiti rada?" : "What are the work benefits?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Iskustvo je poželjno, ali nismo strogo. Tražimo motivirane kandidate sa željom da se razvijaju. Pružamo obuku za sve nove zaposlene kako bi se brzo uključili u tim."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Koliko dugo traje proces selekcije?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Obično proces selekcije traje 1-2 nedelje. Nakon što pošaljete prijavu, naš tim će je pregledati i kontaktirati vas ako ste prošli na sledeću fazu. Razgovor se obično održava u našem kaficu."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Koje su prednosti rada u Koneti Café-u?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Prednosti rada kod nas uključuju fleksibilan raspored, mogućnost profesionalnog razvoja, odličan timski ambijent, besplatne napitke tokom smene, mogućnost napredovanja i rad u modernom okruženju."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Da li nudi Koneti Café sezonske poslove?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Da, Koneti Café nudi sezonske poslove tokom letnjeg perioda i praznika. Ako ste zainteresovani za sezonski posao, slobodno nam pošaljite prijavu sa napomenom da tražite sezonsku poziciju."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Kako mogu da saznjem više o kulturi kompanije?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Više o kulturi Koneti Café-a možete saznati na našim društvenim mrežama (Facebook, Instagram), kroz razgovore sa našim timom ili posećivanjem kafića. Naš tim je uvek spreman da odgovori na vaša pitanja."
+        "text": lang === 'sr'
+          ? "Fleksibilan raspored, besplatni napici, mogućnost napredovanja, dobra atmosfera i profesionalni razvoj."
+          : "Flexible schedule, free beverages, advancement opportunities, great atmosphere and professional development."
       }
     }
   ]
-};
+})
 
+export default function CareerPage({ params }: Props) {
+  const lang = (params as any).lang || 'sr'
 
-export default function CareerPage() {
   return (
     <>
       <Script
-        id="career-jsonld"
+        id="career-breadcrumb-jsonld"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(getBreadcrumb(lang)) }}
+        strategy="afterInteractive"
       />
       <Script
-        id="breadcrumb-career-jsonld"
+        id="career-job-posting-jsonld"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(getJobPostingJsonLd(lang)) }}
+        strategy="afterInteractive"
       />
       <Script
-        id="job-posting-jsonld"
+        id="career-organization-jsonld"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(getOrganizationJsonLd(lang)) }}
+        strategy="afterInteractive"
       />
       <Script
-        id="faq-career-jsonld"
+        id="career-faq-jsonld"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(getFAQJsonLd(lang)) }}
+        strategy="afterInteractive"
       />
       <main>
         <CareerApplication />
       </main>
     </>
-  );
+  )
 }
-

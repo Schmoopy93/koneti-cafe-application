@@ -1,12 +1,17 @@
-"use client";
+import type { Metadata } from 'next'
+import AdminPageWrapper from "@/components/admin/AdminPageWrapper"
 
-import AdminPage from "../../../components/admin/AdminPage";
-import { ProtectedRoute } from "../../../contexts/ProtectedRoute";
+type Props = { params: Promise<{ lang: 'sr' | 'en' }> }
 
-export default function AdminDashboardPage() {
-  return (
-    <ProtectedRoute>
-      <AdminPage />
-    </ProtectedRoute>
-  );
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { lang } = await params
+  return {
+    title: 'Admin Panel | Koneti Café',
+    robots: { index: false, follow: false },
+    alternates: { canonical: `https://koneti.com/${lang}/admin` }
+  }
+}
+
+export default function AdminPage() {
+  return <AdminPageWrapper />
 }
