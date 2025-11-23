@@ -1,4 +1,3 @@
-
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -36,6 +35,24 @@ const nextConfig: NextConfig = {
           {
             key: 'Cache-Control',
             value: 'no-cache, no-store, must-revalidate'
+          }
+        ]
+      },
+      {
+        source: '/robots.txt',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'text/plain'
+          }
+        ]
+      },
+      {
+        source: '/sitemap.xml',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/xml'
           }
         ]
       }
