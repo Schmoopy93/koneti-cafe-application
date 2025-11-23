@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ClientProviders from "../../contexts/ClientProviders";
 import Script from "next/script";
+import AnalyticsWrapper from "@/components/analytics/AnalyticsWrapper";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -327,7 +328,9 @@ export default async function LangLayout({ children, params }: Props) {
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#cfa68a" />
         <meta name="msapplication-TileColor" content="#cfa68a" />
+        {/* Google Analytics-dodaj ovo */}
         <meta name="google-site-verification" content="your-verification-code" />
+        <AnalyticsWrapper />
       </head>
       <body className={inter.className} suppressHydrationWarning>
         <Script
