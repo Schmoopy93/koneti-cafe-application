@@ -13,16 +13,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const descriptions = {
-    sr: "Saznajte priču iza Koneti Café-a – našu misiju, vrednosti i posvećenost kvaliteti u svakoj šolji kafe.",
-    en: "Learn the story behind Koneti Café – our mission, values and commitment to quality in every cup of coffee."
+    sr: "Koneti Café je otvoren 2022. godine u srcu Novog Sada, na Bulevaru Oslobođenja 97. Naša misija je pružiti premium specialty kafu, brunch i prostor za nezaboravne događaje sa toplom atmosferom i pažnjom prema svakom detalju.",
+    en: "Koneti Café opened in 2022 in the heart of Novi Sad at Bulevar Oslobođenja 97. Our mission is to provide premium specialty coffee, brunch and space for unforgettable events with warm atmosphere and attention to every detail."
   }
 
   return {
     title: titles[lang],
     description: descriptions[lang],
     keywords: lang === 'sr'
-      ? ["o nama", "koneti café", "priča", "misija", "vrednosti", "kafić", "Novi Sad"]
-      : ["about us", "koneti café", "story", "mission", "values", "cafe", "Novi Sad"],
+      ? ["o nama", "koneti café", "priča", "misija", "vrednosti", "kafić", "Novi Sad", "2022"]
+      : ["about us", "koneti café", "story", "mission", "values", "cafe", "Novi Sad", "2022"],
     authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
     creator: "Koneti Café",
     alternates: {
@@ -100,8 +100,8 @@ const getOrganizationJsonLd = (lang: string) => ({
   "logo": "https://koneti.com/koneti-logo.png",
   "image": "https://koneti.com/koneti-cafe.jpg",
   "description": lang === 'sr'
-    ? "Moderan kafić u Novom Sadu specijalizovan za premium specialty kafu, brunch i organizaciju događaja"
-    : "Modern café in Novi Sad specialized in premium specialty coffee, brunch and event organization",
+    ? "Koneti Café je moderan kafić u Novom Sadu specijalizovan za premium specialty kafu, brunch i organizaciju poslovnih događaja. Otvoren 2022. godine, brzo smo postali omiljeno mesto za ljubitelje kvalitetnog pića i prijatnog ambijenta."
+    : "Koneti Café is a modern café in Novi Sad specialized in premium specialty coffee, brunch and business event organization. Opened in 2022, we quickly became the favorite spot for quality drink and pleasant atmosphere lovers.",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Bulevar Oslobođenja 97",
@@ -112,11 +112,11 @@ const getOrganizationJsonLd = (lang: string) => ({
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": 44.7866,
-    "longitude": 20.4489
+    "latitude": 45.25012974165488,
+    "longitude": 19.838497955822376
   },
-  "telephone": "+381-XX-XXX-XXXX",
-  "email": "info@koneti.com",
+  "telephone": "+381-65-6337371",
+  "email": "konetibulevar@gmail.com",
   "sameAs": [
     "https://www.facebook.com/KonetiCafe",
     "https://www.instagram.com/KonetiCafe"
@@ -132,11 +132,18 @@ const getOrganizationJsonLd = (lang: string) => ({
     "reviewCount": "250",
     "bestRating": "5",
     "worstRating": "1"
-  }
+  },
+  "knowsAbout": [
+    "Specialty Coffee",
+    "Premium Service",
+    "Event Organization",
+    "Brunch Cuisine",
+    "Fresh Juices"
+  ]
 })
 
-export default function AboutPage({ params }: Props) {
-  const lang = (params as any).lang || 'sr'
+export default async function AboutPage({ params }: Props) {
+  const { lang } = await params
 
   return (
     <>

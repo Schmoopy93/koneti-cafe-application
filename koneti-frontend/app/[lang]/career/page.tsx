@@ -13,16 +13,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const descriptions = {
-    sr: "Otvoren za baristase, konobara, kuvarsku ekipu i menadžere. Dinamičan tim, fleksibilan raspored, profesionalni razvoj. Podnesi prijavu sada!",
-    en: "Hiring baristas, servers, kitchen staff and managers. Dynamic team, flexible schedule, professional growth. Apply now!"
+    sr: "Tražimo konobara sa iskustvom. Dnevnica 2200 RSD. Dinamičan tim, fleksibilan raspored, mogućnost napredovanja. Podnesi prijavu sada!",
+    en: "Hiring experienced servers. Daily rate 2200 RSD. Dynamic team, flexible schedule, career growth. Apply now!"
   }
 
   return {
     title: titles[lang],
     description: descriptions[lang],
     keywords: lang === 'sr'
-      ? ["poslovi", "karijera", "barista", "konobar", "zaposlenje", "Novi Sad", "kafić", "rad", "tim", "fleksibilan raspored"]
-      : ["jobs", "careers", "barista", "server", "employment", "Novi Sad", "cafe", "work", "team", "flexible schedule"],
+      ? ["poslovi", "karijera", "konobar", "zaposlenje", "Novi Sad", "kafić", "rad", "tim", "fleksibilan raspored", "dnevnica"]
+      : ["jobs", "careers", "server", "employment", "Novi Sad", "cafe", "work", "team", "flexible schedule"],
     authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
     creator: "Koneti Café",
     alternates: {
@@ -98,10 +98,10 @@ const getJobPostingJsonLd = (lang: string) => ({
   "@context": "https://schema.org",
   "@type": "JobPosting",
   "@id": `https://koneti.com/${lang}/career`,
-  "title": lang === 'sr' ? "Različite pozicije - Koneti Café" : "Various Positions - Koneti Café",
+  "title": lang === 'sr' ? "Konobar/Konobarica - Koneti Café" : "Server - Koneti Café",
   "description": lang === 'sr'
-    ? "Koneti Café traži motivirane kandidate za različite pozicije. Dinamičan tim, fleksibilan raspored, mogućnost napredovanja."
-    : "Koneti Café is seeking motivated candidates for various positions. Dynamic team, flexible schedule, advancement opportunities.",
+    ? "Koneti Café traži iskusnog konobare/konobaricu. Dinamičan tim, fleksibilan raspored, mogućnost napredovanja. Dnevnica 2200 RSD."
+    : "Koneti Café is seeking an experienced server. Dynamic team, flexible schedule, advancement opportunities. Daily rate 2200 RSD.",
   "datePosted": new Date().toISOString(),
   "validThrough": new Date(Date.now() + 120 * 24 * 60 * 60 * 1000).toISOString(),
   "employmentType": ["FULL_TIME", "PART_TIME", "TEMPORARY"],
@@ -117,8 +117,8 @@ const getJobPostingJsonLd = (lang: string) => ({
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "Human Resources",
-      "telephone": "+381-XX-XXX-XXXX",
-      "email": "careers@koneti.com",
+      "telephone": "+381-65-6337371",
+      "email": "konetibulevar@gmail.com",
       "url": `https://koneti.com/${lang}/career`
     }
   },
@@ -138,7 +138,7 @@ const getJobPostingJsonLd = (lang: string) => ({
   "baseSalary": {
     "@type": "PriceSpecification",
     "priceCurrency": "RSD",
-    "price": lang === 'sr' ? "Prema dogovoru" : "Negotiable"
+    "price": "2200"
   },
   "applicantLocationRequirements": {
     "@type": "Country",
@@ -155,8 +155,8 @@ const getOrganizationJsonLd = (lang: string) => ({
   "logo": "https://koneti.com/koneti-logo.png",
   "image": "https://koneti.com/koneti-cafe.jpg",
   "description": lang === 'sr'
-    ? "Moderan kafić u Novom Sadu sa bogatom ponudom kafe, poslastica i usluga"
-    : "Modern café in Novi Sad with diverse coffee, pastry and service offerings",
+    ? "Moderan kafić u Novom Sadu sa bogatom ponudom kafe, brunch i usluga za događaje"
+    : "Modern café in Novi Sad with diverse coffee, brunch and event service offerings",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Bulevar Oslobođenja 97",
@@ -167,25 +167,25 @@ const getOrganizationJsonLd = (lang: string) => ({
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": 44.7866,
-    "longitude": 20.4489
+    "latitude": 45.25012974165488,
+    "longitude": 19.838497955822376
   },
-  "telephone": "+381-XX-XXX-XXXX",
-  "email": "info@koneti.com",
+  "telephone": "+381-65-6337371",
+  "email": "konetibulevar@gmail.com",
   "sameAs": [
     "https://www.facebook.com/KonetiCafe",
-    "https://www.instagram.com/KonetiCafe",
-    "https://www.linkedin.com/company/koneti-cafe"
+    "https://www.instagram.com/KonetiCafe"
   ],
   "areaServed": {
     "@type": "City",
     "name": "Novi Sad"
   },
+  "foundingDate": "2022",
   "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "Human Resources",
-    "telephone": "+381-XX-XXX-XXXX",
-    "email": "careers@koneti.com",
+    "telephone": "+381-65-6337371",
+    "email": "konetibulevar@gmail.com",
     "url": `https://koneti.com/${lang}/career`
   }
 })
@@ -196,12 +196,12 @@ const getFAQJsonLd = (lang: string) => ({
   "mainEntity": [
     {
       "@type": "Question",
-      "name": lang === 'sr' ? "Koje pozicije su dostupne?" : "What positions are available?",
+      "name": lang === 'sr' ? "Koja je pozicija dostupna?" : "What position is available?",
       "acceptedAnswer": {
         "@type": "Answer",
         "text": lang === 'sr'
-          ? "Tražimo baristase, konobara, kuvarsku ekipu i menadžere. Redovno se pojavljuju nove pozicije."
-          : "We're hiring baristas, servers, kitchen staff and managers. New positions open regularly."
+          ? "Tražimo iskusnog konobare/konobaricu za rad u našem kafību. Redovno se pojavljuju nove pozicije."
+          : "We're hiring an experienced server for our café. New positions open regularly."
       }
     },
     {
@@ -216,12 +216,22 @@ const getFAQJsonLd = (lang: string) => ({
     },
     {
       "@type": "Question",
+      "name": lang === 'sr' ? "Koja je dnevnica?" : "What is the daily rate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": lang === 'sr'
+          ? "Dnevnica je 2200 RSD sa mogućnošću bonusa prema performansama."
+          : "Daily rate is 2200 RSD with possibility of performance bonuses."
+      }
+    },
+    {
+      "@type": "Question",
       "name": lang === 'sr' ? "Da li je iskustvo obavezno?" : "Is experience required?",
       "acceptedAnswer": {
         "@type": "Answer",
         "text": lang === 'sr'
-          ? "Iskustvo je poželjno ali ne obavezno. Tražimo motivirane kandidate koje će obučiti naš tim."
-          : "Experience is preferred but not required. We train motivated candidates on our team."
+          ? "Iskustvo je obavezno za ovu poziciju. Trebate da imate iskustvo u radu sa gostima i osnovne veštine servisa."
+          : "Experience is required for this position. You need experience working with guests and basic service skills."
       }
     },
     {
@@ -230,15 +240,15 @@ const getFAQJsonLd = (lang: string) => ({
       "acceptedAnswer": {
         "@type": "Answer",
         "text": lang === 'sr'
-          ? "Fleksibilan raspored, besplatni napici, mogućnost napredovanja, dobra atmosfera i profesionalni razvoj."
-          : "Flexible schedule, free beverages, advancement opportunities, great atmosphere and professional development."
+          ? "Fleksibilan raspored, besplatni napici tokom smene, mogućnost napredovanja, dobra atmosfera i profesionalni razvoj."
+          : "Flexible schedule, free beverages during shift, advancement opportunities, great atmosphere and professional development."
       }
     }
   ]
 })
 
-export default function CareerPage({ params }: Props) {
-  const lang = (params as any).lang || 'sr'
+export default async function CareerPage({ params }: Props) {
+  const { lang } = await params
 
   return (
     <>

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
 import "slick-carousel/slick/slick.css";
@@ -17,6 +17,13 @@ type Props = {
   children: React.ReactNode;
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  maximumScale: 5,
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
   
@@ -25,13 +32,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       metadataBase: new URL('https://koneti.com'),
       title: {
         default: "Koneti Café - Dobrodošli",
-        template: "%s ",
+        template: "%s | Koneti Café",
       },
-      description: "Uživajte u najboljoj kafi u prijatnom ambijentu. Rezervišite stolove, uživajte u specijalitetima i doživite nezaboravne trenutke u našem kafeu.",
+      description: "Uživajte u najboljoj kafi u prijatnom ambijentu na Bulevaru Oslobođenja 97, Novi Sad. Rezervišite stolove za poslovne sastanke, proslave ili privatne događaje. Premium specialty coffee, brunch i ketering.",
       keywords: [
-        "kafe", "kafa", "rezervacija", "Novi Sad", "specijaliteti", 
-        "ambijent", "poslovni sastanci", "proslave", "kafić",
-        "specialty coffee", "brunch", "ketering"
+        "kafe Novi Sad", "kafić Novi Sad", "kafa", "specialty coffee", "brunch", "ketering", "proslave", "poslovni sastanci", "rezervacija", "Bulevar Oslobođenja", "Koneti Café"
       ],
       authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
       creator: "Koneti Café",
@@ -44,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
       openGraph: {
         title: "Koneti Café - Dobrodošli",
-        description: "Uživajte u najboljoj kafi u prijatnom ambijentu. Rezervišite stolove za poslovne sastanke ili proslave.",
+        description: "Premium specialty kafa, brunch i prostora za poslovne sastanke i proslave u Novom Sadu",
         url: "https://koneti.com/sr",
         siteName: "Koneti Café",
         images: [
@@ -68,19 +73,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       twitter: {
         card: "summary_large_image",
         title: "Koneti Café - Dobrodošli",
-        description: "Uživajte u najboljoj kafi u prijatnom ambijentu.",
+        description: "Premium specialty kafa i brunch u Novom Sadu",
         images: ["/koneti-logo.png"],
-        creator: "@koneticafe",
-        site: "@koneticafe",
+        creator: "@KonetiCafe",
+        site: "@KonetiCafe",
       },
       robots: {
         index: true,
         follow: true,
-        nocache: true,
         googleBot: {
           index: true,
           follow: true,
-          noimageindex: false,
           'max-video-preview': -1,
           'max-image-preview': 'large',
           'max-snippet': -1,
@@ -101,13 +104,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       metadataBase: new URL('https://koneti.com'),
       title: {
         default: "Koneti Café - Welcome",
-        template: "%s ",
+        template: "%s | Koneti Café",
       },
-      description: "Enjoy the best coffee in a pleasant atmosphere. Reserve tables, enjoy specialties and experience unforgettable moments in our cafe.",
+      description: "Enjoy the best specialty coffee in a pleasant atmosphere on Bulevar Oslobođenja 97, Novi Sad. Reserve tables for business meetings, celebrations or private events. Premium coffee, brunch and catering.",
       keywords: [
-        "cafe", "coffee", "reservation", "Novi Sad", "specialties", 
-        "atmosphere", "business meetings", "celebrations", "coffee shop",
-        "specialty coffee", "brunch", "catering"
+        "cafe Novi Sad", "coffee shop Novi Sad", "coffee", "specialty coffee", "brunch", "catering", "celebrations", "business meetings", "reservation", "Bulevar Oslobođenja", "Koneti Café"
       ],
       authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
       creator: "Koneti Café",
@@ -120,7 +121,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
       openGraph: {
         title: "Koneti Café - Welcome",
-        description: "Enjoy the best coffee in a pleasant atmosphere. Reserve tables for business meetings or celebrations.",
+        description: "Premium specialty coffee, brunch and space for business meetings and celebrations in Novi Sad",
         url: "https://koneti.com/en",
         siteName: "Koneti Café",
         images: [
@@ -144,19 +145,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       twitter: {
         card: "summary_large_image",
         title: "Koneti Café - Welcome",
-        description: "Enjoy the best coffee in a pleasant atmosphere.",
+        description: "Premium specialty coffee and brunch in Novi Sad",
         images: ["/koneti-logo.png"],
-        creator: "@koneticafe",
-        site: "@koneticafe",
+        creator: "@KonetiCafe",
+        site: "@KonetiCafe",
       },
       robots: {
         index: true,
         follow: true,
-        nocache: true,
         googleBot: {
           index: true,
           follow: true,
-          noimageindex: false,
           'max-video-preview': -1,
           'max-image-preview': 'large',
           'max-snippet': -1,
@@ -188,14 +187,14 @@ export default async function LangLayout({ children, params }: Props) {
   const restaurantJsonLd = {
     "@context": "https://schema.org",
     "@type": "Restaurant",
-    "name": "Koneti Café",
     "@id": "https://koneti.com",
+    "name": "Koneti Café",
     "description": lang === 'en' 
-      ? "Enjoy the best coffee in a pleasant atmosphere. Reserve tables for business meetings or celebrations."
-      : "Uživajte u najboljoj kafi u prijatnom ambijentu. Rezervišite stolove za poslovne sastanke ili proslave.",
-    "url": `https://koneti.com/${lang}`,
-    "telephone": "+381-XX-XXX-XXXX",
-    "email": "info@koneti.com",
+      ? "Premium specialty coffee, brunch and event space in Novi Sad. Perfect for business meetings, celebrations and private gatherings."
+      : "Premium specialty kafa, brunch i prostor za događaje u Novom Sadu. Idealno za poslovne sastanke, proslave i privatna okupljanja.",
+    "url": "https://koneti.com",
+    "telephone": "+381-65-6337371",
+    "email": "konetibulevar@gmail.com",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Bulevar Oslobođenja 97",
@@ -206,8 +205,8 @@ export default async function LangLayout({ children, params }: Props) {
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 44.7866,
-      "longitude": 20.4489
+      "latitude": 45.25012974165488,
+      "longitude": 19.838497955822376
     },
     "openingHoursSpecification": [
       {
@@ -229,7 +228,7 @@ export default async function LangLayout({ children, params }: Props) {
         "closes": "21:00"
       }
     ],
-    "servesCuisine": ["Coffee", "Juice", "Business Meetings", "Celebrations"],
+    "servesCuisine": ["Coffee", "Juice", "Brunch", "Desserts"],
     "priceRange": "$$",
     "image": "https://koneti.com/koneti-logo.png",
     "logo": {
@@ -242,36 +241,50 @@ export default async function LangLayout({ children, params }: Props) {
       "https://www.facebook.com/KonetiCafe",
       "https://www.instagram.com/KonetiCafe"
     ],
+    "foundingDate": "2022",
+    "areaServed": {
+      "@type": "City",
+      "name": "Novi Sad"
+    },
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.8",
-      "reviewCount": "150",
+      "reviewCount": "250",
       "bestRating": "5",
       "worstRating": "1"
     },
+    "acceptsReservations": true,
+    "availableLanguage": ["sr-RS", "en-US"],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": lang === 'en' ? "Cafe specialties" : "Kafe specijaliteti",
+      "name": lang === 'en' ? "Koneti Café Services" : "Koneti Café Usluge",
       "itemListElement": [
         {
           "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": lang === 'en' ? "Business meetings" : "Poslovni sastanci",
-            "description": lang === 'en' 
-              ? "Reserve space for business meetings"
-              : "Rezervišite prostor za poslovne sastanke"
-          }
+          "name": lang === 'en' ? "Business Meetings" : "Poslovni Sastanci",
+          "description": lang === 'en'
+            ? "Professional workspace for meetings and presentations with premium catering"
+            : "Profesionalan prostor za sastanke i prezentacije sa premium cateringom",
+          "priceCurrency": "RSD",
+          "availability": "https://schema.org/InStock"
         },
         {
           "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": lang === 'en' ? "Celebrations" : "Proslave",
-            "description": lang === 'en'
-              ? "Organize unforgettable celebrations"
-              : "Organizujte nezaboravne proslave"
-          }
+          "name": lang === 'en' ? "Celebrations & Events" : "Proslave i Događaji",
+          "description": lang === 'en'
+            ? "Exclusive venue for celebrations, birthdays, and private gatherings"
+            : "Ekskluzivan prostor za proslave, rođendane i privatna okupljanja",
+          "priceCurrency": "RSD",
+          "availability": "https://schema.org/InStock"
+        },
+        {
+          "@type": "Offer",
+          "name": lang === 'en' ? "Specialty Coffee & Brunch" : "Specialty Kafa i Brunch",
+          "description": lang === 'en'
+            ? "Premium specialty coffee, fresh juices and brunch offerings"
+            : "Premium specialty kafa, cedjeni sokovi i brunch ponuda",
+          "priceCurrency": "RSD",
+          "availability": "https://schema.org/InStock"
         }
       ]
     }
@@ -295,6 +308,7 @@ export default async function LangLayout({ children, params }: Props) {
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />

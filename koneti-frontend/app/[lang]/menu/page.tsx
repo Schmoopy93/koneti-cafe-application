@@ -8,21 +8,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params
   
   const titles = {
-    sr: "Meni | Koneti Café - Kafa, Piće, Brunch i Ketering u Novom Sadu",
-    en: "Menu | Koneti Café - Coffee, Drinks, Brunch & Catering in Novi Sad"
+    sr: "Meni | Koneti Café - Premium Kafa, Brunch i Piće u Novom Sadu",
+    en: "Menu | Koneti Café - Premium Coffee, Brunch & Drinks in Novi Sad"
   }
   
   const descriptions = {
-    sr: "Otkrijte naš bogat meni sa premium specialty kafom, osvežavajućim pićima, brunch ponudom i mogućnošću keteringa. Espresso, cappuccino, filter kafa, cedjeni sokovi i poslastice.",
-    en: "Explore our diverse menu featuring specialty coffee, refreshing drinks, brunch options and catering. Espresso, cappuccino, filter coffee, freshly pressed juices and pastries."
+    sr: "Otkrijte naš bogat meni sa premium specialty kafom, osvežavajućim pićima, brunch ponudom i poslasticama. Cedjeni sokovi, espresso, cappuccino i više na Bulevaru Oslobođenja 97.",
+    en: "Explore our diverse menu featuring premium specialty coffee, refreshing drinks, brunch options and pastries. Fresh juices, espresso, cappuccino and more at Bulevar Oslobođenja 97."
   }
 
   return {
     title: titles[lang],
     description: descriptions[lang],
     keywords: lang === 'sr'
-      ? ["meni", "kafa", "espresso", "cappuccino", "filter kafa", "piće", "brunch", "ketering", "kafić Novi Sad", "doručak", "cedjeni sokovi", "poslastice", "specialty coffee"]
-      : ["menu", "coffee", "espresso", "cappuccino", "filter coffee", "drinks", "brunch", "catering", "Novi Sad", "breakfast", "fresh juices", "pastries", "specialty coffee"],
+      ? ["meni", "kafa", "espresso", "cappuccino", "filter kafa", "piće", "brunch", "cedjeni sokovi", "kafić Novi Sad", "doručak", "poslastice", "specialty coffee", "Koneti"]
+      : ["menu", "coffee", "espresso", "cappuccino", "filter coffee", "drinks", "brunch", "fresh juices", "cafe Novi Sad", "breakfast", "pastries", "specialty coffee", "Koneti"],
     alternates: {
       canonical: `https://koneti.com/${lang}/menu`,
       languages: {
@@ -98,9 +98,9 @@ const getMenuStructuredData = (lang: string) => ({
   "@id": "https://koneti.com",
   "name": "Koneti Café",
   "image": "https://koneti.com/koneti-cafe.jpg",
-  "url": `https://koneti.com/${lang}`,
-  "telephone": "+381-XX-XXX-XXXX",
-  "email": "info@koneti.com",
+  "url": "https://koneti.com",
+  "telephone": "+381-65-6337371",
+  "email": "konetibulevar@gmail.com",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Bulevar Oslobođenja 97",
@@ -111,8 +111,8 @@ const getMenuStructuredData = (lang: string) => ({
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": 44.7866,
-    "longitude": 20.4489
+    "latitude": 45.25012974165488,
+    "longitude": 19.838497955822376
   },
   "servesCuisine": ["Coffee", "Desserts", "Brunch", "Beverages"],
   "priceRange": "$$",
@@ -162,7 +162,7 @@ const getMenuStructuredData = (lang: string) => ({
         "@type": "MenuSection",
         "name": lang === 'sr' ? "Napici" : "Beverages",
         "description": lang === 'sr'
-          ? "Svežo cednjeni sokovi i smoothie-ji"
+          ? "Sveže cedjeni sokovi i smoothie-ji"
           : "Freshly pressed juices and smoothies",
       },
       {
@@ -176,8 +176,15 @@ const getMenuStructuredData = (lang: string) => ({
         "@type": "MenuSection",
         "name": lang === 'sr' ? "Poslastice" : "Pastries",
         "description": lang === 'sr'
-          ? "Svežo pripremljene poslastice i kolači"
+          ? "Sveže pripremljene poslastice i kolači"
           : "Fresh pastries and cakes",
+      },
+      {
+        "@type": "MenuSection",
+        "name": lang === 'sr' ? "Krofnice" : "Donuts",
+        "description": lang === 'sr'
+          ? "Sveže krofnice sa raznim napljevima"
+          : "Fresh donuts with various fillings",
       }
     ]
   },
