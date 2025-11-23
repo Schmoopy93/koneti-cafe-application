@@ -28,7 +28,9 @@ const Gallery: React.FC = () => {
   const { t, i18n } = useTranslation();
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  
+  // ODVOJENI SLIDE STATES
+  const [welcomeSlide, setWelcomeSlide] = useState(0);
 
   useEffect(() => {
     fetchGalleryImages();
@@ -51,17 +53,18 @@ const Gallery: React.FC = () => {
     }
   };
 
+  // WELCOME SLIDER AUTO-ROTATE
   useEffect(() => {
     if (images.length > 0) {
       const interval = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % images.length);
-      }, 4000);
+        setWelcomeSlide((prev) => (prev + 1) % Math.min(3, images.length));
+      }, 5000);
       return () => clearInterval(interval);
     }
   }, [images.length]);
 
-  const goToPrevious = () => setCurrentSlide((prev) => (prev - 1 + images.length) % images.length);
-  const goToNext = () => setCurrentSlide((prev) => (prev + 1) % images.length);
+  const welcomeImages = images.slice(0, Math.min(3, images.length));
+  const maxWelcomeSlide = welcomeImages.length;
 
   if (loading) {
     return (
@@ -78,127 +81,137 @@ const Gallery: React.FC = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      {/* <div className="about__header">
+      {/* ===== HEADER ===== */}
+      <div className="about__header">
         <h1 className="about__title">
           <FontAwesomeIcon icon={faCoffee} />
           {t("gallery.about.title")}
         </h1>
         <p className="about__subtitle">{t("gallery.about.subtitle")}</p>
-      </div> */}
+      </div>
 
+      {/* ===== WELCOME SEKCIJA ===== */}
       <section className="about__welcome-section">
-        <div className="about__welcome-content">
-          <p className="about__welcome-intro">{t("gallery.about.aboutPage.welcome")}</p>
-          <div className="about__welcome-offers">
-            <div className="about__offer-card">
-              <div className="about__offer-icon">
-                <FontAwesomeIcon icon={faCoffee} />
-              </div>
-              <h4 className="about__offer-text">{t("gallery.about.aboutPage.offer.business")}</h4>
-            </div>
-            <div className="about__offer-card">
-              <div className="about__offer-icon">
-                <FontAwesomeIcon icon={faHeart} />
-              </div>
-              <h4 className="about__offer-text">{t("gallery.about.aboutPage.offer.koneti")}</h4>
-            </div>
-          </div>
-          <p className="about__welcome-cta">{t("gallery.about.aboutPage.cta")}</p>
-        </div>
-      </section>
-
-      <section className="about__section">
-        <div className="about__content">
-          <div className="about__text">
-            <h2>{t("gallery.about.sectionTitle")}</h2>
-            <p>
-              {t("gallery.about.intro1")}
-              <strong>{t("gallery.about.intro1_highlight")}</strong>
-              {t("gallery.about.intro2")}
-            </p>
-            <p>
-              {t("gallery.about.intro3")}
-              <strong>{t("gallery.about.intro3_highlight")}</strong>
-              {t("gallery.about.intro3_rest")}
-            </p>
-            <p>{t("gallery.about.mission")}</p>
-            <div className="about__features">
-              <div className="about__feature-item">
-                <FontAwesomeIcon icon={faCoffee} />
-                <div className="about__feature-text">
-                  <h4>{t("gallery.about.features.quality.title")}</h4>
-                  <p>{t("gallery.about.features.quality.description")}</p>
+        <div className="about__welcome-layout">
+          {/* Leva strana - Tekst */}
+          <div className="about__welcome-text-side">
+            <p className="about__welcome-intro">{t("gallery.about.aboutPage.welcome")}</p>
+            <div className="about__welcome-offers">
+              <div className="about__offer-card">
+                <div className="about__offer-icon">
+                  <FontAwesomeIcon icon={faCoffee} />
                 </div>
+                <h4 className="about__offer-text">{t("gallery.about.aboutPage.offer.business")}</h4>
               </div>
-              <div className="about__feature-item">
-                <FontAwesomeIcon icon={faHeart} />
-                <div className="about__feature-text">
-                  <h4>{t("gallery.about.features.passion.title")}</h4>
-                  <p>{t("gallery.about.features.passion.description")}</p>
+              <div className="about__offer-card">
+                <div className="about__offer-icon">
+                  <FontAwesomeIcon icon={faHeart} />
                 </div>
-              </div>
-              <div className="about__feature-item">
-                <FontAwesomeIcon icon={faUsers} />
-                <div className="about__feature-text">
-                  <h4>{t("gallery.about.features.community.title")}</h4>
-                  <p>{t("gallery.about.features.community.description")}</p>
-                </div>
+                <h4 className="about__offer-text">{t("gallery.about.aboutPage.offer.koneti")}</h4>
               </div>
             </div>
+            <p className="about__welcome-cta">{t("gallery.about.aboutPage.cta")}</p>
           </div>
 
-          <div className="about__image">
-            {images.length === 0 ? (
-              <div className="about__empty-slider">
-                <FontAwesomeIcon icon={faImage} size="3x" />
-                <p>{t("gallery.noImages")}</p>
-              </div>
-            ) : (
-              <div className="about__image-slider">
+          {/* Desna strana - Slider sa 3 slike */}
+          {images.length > 0 && (
+            <div className="about__welcome-image-side">
+              <div className="about__welcome-slider">
                 <div
-                  className="about__slider-wrapper"
-                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                  className="about__welcome-slider-wrapper"
+                  style={{ transform: `translateX(-${welcomeSlide * 100}%)` }}
                 >
-                  {images.map((image) => (
-                    <div key={image._id} className="about__slider-slide">
+                  {welcomeImages.map((image) => (
+                    <div key={image._id} className="about__welcome-slider-slide">
                       <img
                         src={image.image}
-                        alt={
-                          i18n.language === "en" && image.title.en
-                            ? image.title.en
-                            : image.title.sr
-                        }
+                        alt={i18n.language === "en" && image.title.en ? image.title.en : image.title.sr}
                         loading="lazy"
                       />
                     </div>
                   ))}
                 </div>
-                <div className="about__slider-indicators">
-                  {images.map((_, index) => (
+                <div className="about__welcome-slider-indicators">
+                  {welcomeImages.map((_, index) => (
                     <button
                       key={index}
-                      className={`about__slider-indicator ${currentSlide === index ? "about__slider-indicator--active" : ""}`}
-                      onClick={() => setCurrentSlide(index)}
+                      className={`about__welcome-indicator ${welcomeSlide === index ? "about__welcome-indicator--active" : ""}`}
+                      onClick={() => setWelcomeSlide(index)}
                       aria-label={`Go to slide ${index + 1}`}
                     />
                   ))}
                 </div>
-                <button
-                  className="about__slider-nav about__slider-nav--prev"
-                  onClick={goToPrevious}
-                  aria-label="Previous slide"
-                >
-                  <FontAwesomeIcon icon={faChevronLeft} />
-                </button>
-                <button
-                  className="about__slider-nav about__slider-nav--next"
-                  onClick={goToNext}
-                  aria-label="Next slide"
-                >
-                  <FontAwesomeIcon icon={faChevronRight} />
-                </button>
               </div>
-            )}
+              
+              {/* Scroll Arrow */}
+              <button
+                className="about__scroll-arrow"
+                onClick={() => {
+                  document.querySelector('.about__section')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                aria-label="Scroll to about section"
+              >
+                <FontAwesomeIcon icon={faChevronRight} />
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ===== O NAMA SEKCIJA - SA TEKSTOM I FEATURES ===== */}
+      <section className="about__section">
+        {/* GORNJI DEO - Tekst sa story-jem */}
+        <div className="about__story-part">
+          <div className="about__story-header">
+            <h2>{t("gallery.about.sectionTitle")}</h2>
+            <div className="about__story-divider"></div>
+          </div>
+          
+          <div className="about__story-content">
+            <div className="about__story-text">
+              <p>{t("gallery.about.intro1")}<strong>{t("gallery.about.intro1_highlight")}</strong>{t("gallery.about.intro2")}</p>
+            </div>
+            
+            <div className="about__story-text">
+              <p>{t("gallery.about.intro3")}<strong>{t("gallery.about.intro3_highlight")}</strong>{t("gallery.about.intro3_rest")}</p>
+            </div>
+            
+            <div className="about__story-mission">
+              <p>{t("gallery.about.mission")}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* DONJI DEO - Features Grid */}
+        <div className="about__features-grid">
+          <div className="about__feature-card">
+            <div className="about__feature-card-icon">
+              <FontAwesomeIcon icon={faCoffee} />
+            </div>
+            <div className="about__feature-card-content">
+              <h3>{t("gallery.about.features.quality.title")}</h3>
+              <p>{t("gallery.about.features.quality.description")}</p>
+            </div>
+          </div>
+
+          <div className="about__feature-card">
+            <div className="about__feature-card-icon">
+              <FontAwesomeIcon icon={faHeart} />
+            </div>
+            <div className="about__feature-card-content">
+              <h3>{t("gallery.about.features.passion.title")}</h3>
+              <p>{t("gallery.about.features.passion.description")}</p>
+            </div>
+          </div>
+
+          <div className="about__feature-card">
+            <div className="about__feature-card-icon">
+              <FontAwesomeIcon icon={faUsers} />
+            </div>
+            <div className="about__feature-card-content">
+              <h3>{t("gallery.about.features.community.title")}</h3>
+              <p>{t("gallery.about.features.community.description")}</p>
+            </div>
           </div>
         </div>
       </section>
