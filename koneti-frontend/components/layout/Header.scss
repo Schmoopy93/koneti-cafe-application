@@ -210,7 +210,6 @@ $shadow-inset: inset 0 2px 8px rgba(255, 255, 255, 0.3);
   z-index: 1001;
   min-width: 140px;
   margin-top: $spacing-md;
-  animation: slideDownFade 0.3s $transition-smooth;
   backdrop-filter: blur(10px);
 }
 
