@@ -33,12 +33,12 @@ export const createAdmin = async (req, res) => {
       }
     }
 
-    // Ograniči na jednog admin-a
-    if (adminCount >= 1) {
+    // Ograniči na 2 admin-a
+    if (adminCount >= 2) {
       logger.warn(`Pokušaj kreiranja viška admin-a. Trenutno: ${adminCount}`);
       return res.status(403).json({ 
         success: false,
-        message: "Već postoji admin korisnik" 
+        message: "Maksimalno 2 admin korisnika dozvoljeno" 
       });
     }
 

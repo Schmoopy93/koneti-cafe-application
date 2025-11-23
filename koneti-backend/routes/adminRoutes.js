@@ -32,7 +32,7 @@ router.post("/logout", csrfProtection, (req, res) => {
 });
 
 // Create a new admin user (samo jedan dozvoljeno)
-router.post("/create", adminLimiter, csrfProtection, validateAdminCreate, createAdmin);
+router.post("/create", adminLimiter, validateAdminCreate, createAdmin);
 
 // Admin login - sets authentication cookie
 router.post("/login", authLimiter, validateAdminLogin, loginAdmin);
