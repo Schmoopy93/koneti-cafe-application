@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faChevronLeft, faChevronRight, faCoffee, faHeart, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faImage, faChevronLeft, faChevronRight, faCoffee, faHeart, faMusic, faBusinessTime, faUsers, faUserClock, faCalendarPlus, faCalendarWeek } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { apiRequest } from "@/utils/api";
@@ -99,13 +99,13 @@ const Gallery: React.FC = () => {
             <div className="about__welcome-offers">
               <div className="about__offer-card">
                 <div className="about__offer-icon">
-                  <FontAwesomeIcon icon={faCoffee} />
+                  <FontAwesomeIcon icon={faBusinessTime} />
                 </div>
                 <h4 className="about__offer-text">{t("gallery.about.aboutPage.offer.business")}</h4>
               </div>
               <div className="about__offer-card">
                 <div className="about__offer-icon">
-                  <FontAwesomeIcon icon={faHeart} />
+                  <FontAwesomeIcon icon={faCalendarWeek} />
                 </div>
                 <h4 className="about__offer-text">{t("gallery.about.aboutPage.offer.koneti")}</h4>
               </div>
@@ -196,7 +196,7 @@ const Gallery: React.FC = () => {
 
           <div className="about__feature-card">
             <div className="about__feature-card-icon">
-              <FontAwesomeIcon icon={faHeart} />
+              <FontAwesomeIcon icon={faMusic} />
             </div>
             <div className="about__feature-card-content">
               <h3>{t("gallery.about.features.passion.title")}</h3>
@@ -206,7 +206,7 @@ const Gallery: React.FC = () => {
 
           <div className="about__feature-card">
             <div className="about__feature-card-icon">
-              <FontAwesomeIcon icon={faUsers} />
+              <FontAwesomeIcon icon={faHeart} />
             </div>
             <div className="about__feature-card-content">
               <h3>{t("gallery.about.features.community.title")}</h3>
