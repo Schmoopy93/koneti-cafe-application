@@ -24,22 +24,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? ["meni", "kafa", "espresso", "cappuccino", "filter kafa", "piće", "brunch", "cedjeni sokovi", "kafić Novi Sad", "doručak", "poslastice", "specialty coffee", "Koneti"]
       : ["menu", "coffee", "espresso", "cappuccino", "filter coffee", "drinks", "brunch", "fresh juices", "cafe Novi Sad", "breakfast", "pastries", "specialty coffee", "Koneti"],
     alternates: {
-      canonical: `https://koneti.com/${lang}/menu`,
+      canonical: `https://koneticaffee.com/${lang}/menu`,
       languages: {
-        sr: "https://koneti.com/sr/menu",
-        en: "https://koneti.com/en/menu",
+        sr: "https://koneticaffee.com/sr/menu",
+        en: "https://koneticaffee.com/en/menu",
       },
     },
     openGraph: {
       title: titles[lang],
       description: descriptions[lang],
-      url: `https://koneti.com/${lang}/menu`,
+      url: `https://koneticaffee.com/${lang}/menu`,
       type: "website",
       locale: lang === 'sr' ? "sr_RS" : "en_US",
       siteName: "Koneti Café",
       images: [
         {
-          url: "https://koneti.com/menu-og-image.jpg",
+          url: "https://koneticaffee.com/menu-og-image.jpg",
           width: 1200,
           height: 630,
           alt: titles[lang],
@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: titles[lang],
       description: descriptions[lang],
-      images: ["https://koneti.com/menu-og-image.jpg"],
+      images: ["https://koneticaffee.com/menu-og-image.jpg"],
       creator: "@KonetiCafe",
       site: "@KonetiCafe",
     },
@@ -81,13 +81,13 @@ const getBreadcrumb = (lang: string) => ({
       "@type": "ListItem",
       "position": 1,
       "name": lang === 'sr' ? "Početna" : "Home",
-      "item": "https://koneti.com"
+      "item": "https://koneticaffee.com"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": lang === 'sr' ? "Meni" : "Menu",
-      "item": `https://koneti.com/${lang}/menu`
+      "item": `https://koneticaffee.com/${lang}/menu`
     }
   ]
 })
@@ -95,10 +95,10 @@ const getBreadcrumb = (lang: string) => ({
 const getMenuStructuredData = (lang: string) => ({
   "@context": "https://schema.org",
   "@type": "Restaurant",
-  "@id": "https://koneti.com",
+  "@id": "https://koneticaffee.com",
   "name": "Koneti Café",
-  "image": "https://koneti.com/koneti-cafe.jpg",
-  "url": "https://koneti.com",
+  "image": "https://koneticaffee.com/koneti-cafe.jpg",
+  "url": "https://koneticaffee.com",
   "telephone": "+381-65-6337371",
   "email": "konetibulevar@gmail.com",
   "address": {
@@ -149,7 +149,7 @@ const getMenuStructuredData = (lang: string) => ({
     "description": lang === 'sr'
       ? "Kompletan meni sa specijalitetima, napicima i brunch ponudom"
       : "Complete menu with specialties, drinks and brunch options",
-    "url": `https://koneti.com/${lang}/menu`,
+    "url": `https://koneticaffee.com/${lang}/menu`,
     "hasMenuSection": [
       {
         "@type": "MenuSection",

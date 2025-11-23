@@ -23,25 +23,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     keywords: lang === 'sr'
       ? ["rezervacije", "proslave", "poslovni sastanci", "team building", "događaji", "ketering", "Novi Sad", "privatni događaji", "rodzendani", "kumstva"]
       : ["reservations", "celebrations", "business meetings", "team building", "events", "catering", "Novi Sad", "private events", "birthdays", "weddings"],
-    authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
+    authors: [{ name: "Koneti Café", url: "https://koneticaffee.com" }],
     creator: "Koneti Café",
     alternates: {
-      canonical: `https://koneti.com/${lang}/reservation`,
+      canonical: `https://koneticaffee.com/${lang}/reservation`,
       languages: {
-        sr: "https://koneti.com/sr/reservation",
-        en: "https://koneti.com/en/reservation",
+        sr: "https://koneticaffee.com/sr/reservation",
+        en: "https://koneticaffee.com/en/reservation",
       },
     },
     openGraph: {
       title: titles[lang],
       description: descriptions[lang],
-      url: `https://koneti.com/${lang}/reservation`,
+      url: `https://koneticaffee.com/${lang}/reservation`,
       type: "website",
       locale: lang === 'sr' ? "sr_RS" : "en_US",
       siteName: "Koneti Café",
       images: [
         {
-          url: "https://koneti.com/reservation-og-image.jpg",
+          url: "https://koneticaffee.com/reservation-og-image.jpg",
           width: 1200,
           height: 630,
           alt: titles[lang],
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: titles[lang],
       description: descriptions[lang],
-      images: ["https://koneti.com/reservation-og-image.jpg"],
+      images: ["https://koneticaffee.com/reservation-og-image.jpg"],
       creator: "@KonetiCafe",
       site: "@KonetiCafe",
     },
@@ -83,13 +83,13 @@ const getBreadcrumb = (lang: string) => ({
       "@type": "ListItem",
       "position": 1,
       "name": lang === 'sr' ? "Početna" : "Home",
-      "item": "https://koneti.com"
+      "item": "https://koneticaffee.com"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": lang === 'sr' ? "Rezervacije" : "Reservations",
-      "item": `https://koneti.com/${lang}/reservation`
+      "item": `https://koneticaffee.com/${lang}/reservation`
     }
   ]
 })
@@ -97,10 +97,10 @@ const getBreadcrumb = (lang: string) => ({
 const getEventJsonLd = (lang: string) => ({
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "@id": "https://koneti.com",
+  "@id": "https://koneticaffee.com",
   "name": "Koneti Café",
-  "image": "https://koneti.com/koneti-cafe.jpg",
-  "url": "https://koneti.com",
+  "image": "https://koneticaffee.com/koneti-cafe.jpg",
+  "url": "https://koneticaffee.com",
   "telephone": "+381-65-6337371",
   "email": "konetibulevar@gmail.com",
   "address": {
@@ -174,7 +174,7 @@ const getEventJsonLd = (lang: string) => ({
     "@type": "ReserveAction",
     "target": {
       "@type": "EntryPoint",
-      "urlTemplate": `https://koneti.com/${lang}/reservation`,
+      "urlTemplate": `https://koneticaffee.com/${lang}/reservation`,
       "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]
     }
   },
@@ -198,7 +198,7 @@ const getEventJsonLd = (lang: string) => ({
           "unitCode": "HUR"
         },
         "availability": "https://schema.org/InStock",
-        "url": `https://koneti.com/${lang}/reservation?type=business&package=basic`
+        "url": `https://koneticaffee.com/${lang}/reservation?type=business&package=basic`
       },
       {
         "@type": "Offer",
@@ -213,7 +213,7 @@ const getEventJsonLd = (lang: string) => ({
           "unitCode": "HUR"
         },
         "availability": "https://schema.org/InStock",
-        "url": `https://koneti.com/${lang}/reservation?type=business&package=premium`
+        "url": `https://koneticaffee.com/${lang}/reservation?type=business&package=premium`
       },
       {
         "@type": "Offer",
@@ -228,7 +228,7 @@ const getEventJsonLd = (lang: string) => ({
           "unitCode": "DAY"
         },
         "availability": "https://schema.org/InStock",
-        "url": `https://koneti.com/${lang}/reservation?type=business&package=corporate`
+        "url": `https://koneticaffee.com/${lang}/reservation?type=business&package=corporate`
       },
       {
         "@type": "Offer",
@@ -243,7 +243,7 @@ const getEventJsonLd = (lang: string) => ({
           "unitCode": "PER"
         },
         "availability": "https://schema.org/InStock",
-        "url": `https://koneti.com/${lang}/reservation?type=experience&package=basic`
+        "url": `https://koneticaffee.com/${lang}/reservation?type=experience&package=basic`
       },
       {
         "@type": "Offer",
@@ -258,7 +258,7 @@ const getEventJsonLd = (lang: string) => ({
           "unitCode": "PER"
         },
         "availability": "https://schema.org/InStock",
-        "url": `https://koneti.com/${lang}/reservation?type=experience&package=premium`
+        "url": `https://koneticaffee.com/${lang}/reservation?type=experience&package=premium`
       },
       {
         "@type": "Offer",
@@ -273,7 +273,7 @@ const getEventJsonLd = (lang: string) => ({
           "unitCode": "PER"
         },
         "availability": "https://schema.org/InStock",
-        "url": `https://koneti.com/${lang}/reservation?type=experience&package=vip`
+        "url": `https://koneticaffee.com/${lang}/reservation?type=experience&package=vip`
       }
     ]
   }

@@ -23,25 +23,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     keywords: lang === 'sr'
       ? ["o nama", "koneti café", "priča", "misija", "vrednosti", "kafić", "Novi Sad", "2022"]
       : ["about us", "koneti café", "story", "mission", "values", "cafe", "Novi Sad", "2022"],
-    authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
+    authors: [{ name: "Koneti Café", url: "https://koneticaffee.com" }],
     creator: "Koneti Café",
     alternates: {
-      canonical: `https://koneti.com/${lang}/about`,
+      canonical: `https://koneticaffee.com/${lang}/about`,
       languages: {
-        sr: "https://koneti.com/sr/about",
-        en: "https://koneti.com/en/about",
+        sr: "https://koneticaffee.com/sr/about",
+        en: "https://koneticaffee.com/en/about",
       },
     },
     openGraph: {
       title: titles[lang],
       description: descriptions[lang],
-      url: `https://koneti.com/${lang}/about`,
+      url: `https://koneticaffee.com/${lang}/about`,
       type: "website",
       locale: lang === 'sr' ? "sr_RS" : "en_US",
       siteName: "Koneti Café",
       images: [
         {
-          url: "https://koneti.com/og/about.jpg",
+          url: "https://koneticaffee.com/og/about.jpg",
           width: 1200,
           height: 630,
           alt: titles[lang],
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: titles[lang],
       description: descriptions[lang],
-      images: ["https://koneti.com/og/about.jpg"],
+      images: ["https://koneticaffee.com/og/about.jpg"],
       creator: "@KonetiCafe",
       site: "@KonetiCafe",
     },
@@ -80,13 +80,13 @@ const getBreadcrumb = (lang: string) => ({
       "@type": "ListItem",
       "position": 1,
       "name": lang === 'sr' ? "Početna" : "Home",
-      "item": "https://koneti.com"
+      "item": "https://koneticaffee.com"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": lang === 'sr' ? "O Nama" : "About",
-      "item": `https://koneti.com/${lang}/about`
+      "item": `https://koneticaffee.com/${lang}/about`
     }
   ]
 })
@@ -94,11 +94,11 @@ const getBreadcrumb = (lang: string) => ({
 const getOrganizationJsonLd = (lang: string) => ({
   "@context": "https://schema.org",
   "@type": "Organization",
-  "@id": "https://koneti.com",
+  "@id": "https://koneticaffee.com",
   "name": "Koneti Café",
-  "url": "https://koneti.com",
-  "logo": "https://koneti.com/koneti-logo.png",
-  "image": "https://koneti.com/koneti-cafe.jpg",
+  "url": "https://koneticaffee.com",
+  "logo": "https://koneticaffee.com/koneti-logo.png",
+  "image": "https://koneticaffee.com/koneti-cafe.jpg",
   "description": lang === 'sr'
     ? "Koneti Café je moderan kafić u Novom Sadu specijalizovan za premium specialty kafu, brunch i organizaciju poslovnih događaja. Otvoren 2022. godine, brzo smo postali omiljeno mesto za ljubitelje kvalitetnog pića i prijatnog ambijenta."
     : "Koneti Café is a modern café in Novi Sad specialized in premium specialty coffee, brunch and business event organization. Opened in 2022, we quickly became the favorite spot for quality drink and pleasant atmosphere lovers.",

@@ -8,7 +8,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: lang === 'sr' ? 'Upravljanje Galerijom | Admin' : 'Gallery Management | Admin',
     robots: { index: false, follow: false },
-    alternates: { canonical: `https://koneti.com/${lang}/admin/gallery` }
+    alternates: { canonical: `https://koneticaffee.com/${lang}/admin/gallery` }
   }
 }
 

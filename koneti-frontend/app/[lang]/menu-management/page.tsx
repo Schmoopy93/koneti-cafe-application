@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Menu Management | Admin",
     robots: { index: false, follow: false },
     alternates: {
-      canonical: `https://koneti.com/${lang}/menu-management`,
+      canonical: `https://koneticaffee.com/${lang}/menu-management`,
     },
   };
 }

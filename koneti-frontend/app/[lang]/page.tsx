@@ -14,13 +14,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description:
         "Uživajte u specialty kafi, poslasticama i prijatnom ambijentu. Rezervišite prostor za poslovne sastanke ili proslave u Koneti Café-u u Novom Sadu.",
       alternates: {
-        canonical: "https://koneti.com/sr",
+        canonical: "https://koneticaffee.com/sr",
       },
       openGraph: {
         title: "Koneti Café - Dobrodošli",
         description:
           "Specialty coffee, poslastice i rezervacije prostora za događaje i sastanke.",
-        url: "https://koneti.com/sr",
+        url: "https://koneticaffee.com/sr",
         type: "website",
         images: [
           {
@@ -48,13 +48,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description:
         "Enjoy specialty coffee, desserts and pleasant atmosphere. Reserve space for business meetings or celebrations at Koneti Café in Novi Sad.",
       alternates: {
-        canonical: "https://koneti.com/en",
+        canonical: "https://koneticaffee.com/en",
       },
       openGraph: {
         title: "Koneti Café - Welcome",
         description:
           "Specialty coffee, desserts and space reservations for events and meetings.",
-        url: "https://koneti.com/en",
+        url: "https://koneticaffee.com/en",
         type: "website",
         images: [
           {

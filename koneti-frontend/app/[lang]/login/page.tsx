@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? 'Interna prijava za osoblje.'
       : 'Internal staff login.',
     robots: { index: false, follow: false },
-    alternates: { canonical: `https://koneti.com/${lang}/login` }
+    alternates: { canonical: `https://koneticaffee.com/${lang}/login` }
   }
 }
 

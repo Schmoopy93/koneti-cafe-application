@@ -23,25 +23,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     keywords: lang === 'sr'
       ? ["poslovi", "karijera", "konobar", "zaposlenje", "Novi Sad", "kafić", "rad", "tim", "fleksibilan raspored", "dnevnica"]
       : ["jobs", "careers", "server", "employment", "Novi Sad", "cafe", "work", "team", "flexible schedule"],
-    authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
+    authors: [{ name: "Koneti Café", url: "https://koneticaffee.com" }],
     creator: "Koneti Café",
     alternates: {
-      canonical: `https://koneti.com/${lang}/career`,
+      canonical: `https://koneticaffee.com/${lang}/career`,
       languages: {
-        sr: "https://koneti.com/sr/career",
-        en: "https://koneti.com/en/career",
+        sr: "https://koneticaffee.com/sr/career",
+        en: "https://koneticaffee.com/en/career",
       },
     },
     openGraph: {
       title: titles[lang],
       description: descriptions[lang],
-      url: `https://koneti.com/${lang}/career`,
+      url: `https://koneticaffee.com/${lang}/career`,
       type: "website",
       locale: lang === 'sr' ? "sr_RS" : "en_US",
       siteName: "Koneti Café",
       images: [
         {
-          url: "https://koneti.com/career-og-image.jpg",
+          url: "https://koneticaffee.com/career-og-image.jpg",
           width: 1200,
           height: 630,
           alt: titles[lang],
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: titles[lang],
       description: descriptions[lang],
-      images: ["https://koneti.com/career-og-image.jpg"],
+      images: ["https://koneticaffee.com/career-og-image.jpg"],
       creator: "@KonetiCafe",
       site: "@KonetiCafe",
     },
@@ -83,13 +83,13 @@ const getBreadcrumb = (lang: string) => ({
       "@type": "ListItem",
       "position": 1,
       "name": lang === 'sr' ? "Početna" : "Home",
-      "item": "https://koneti.com"
+      "item": "https://koneticaffee.com"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": lang === 'sr' ? "Karijera" : "Careers",
-      "item": `https://koneti.com/${lang}/career`
+      "item": `https://koneticaffee.com/${lang}/career`
     }
   ]
 })
@@ -97,7 +97,7 @@ const getBreadcrumb = (lang: string) => ({
 const getJobPostingJsonLd = (lang: string) => ({
   "@context": "https://schema.org",
   "@type": "JobPosting",
-  "@id": `https://koneti.com/${lang}/career`,
+  "@id": `https://koneticaffee.com/${lang}/career`,
   "title": lang === 'sr' ? "Konobar/Konobarica - Koneti Café" : "Server - Koneti Café",
   "description": lang === 'sr'
     ? "Koneti Café traži iskusnog konobare/konobaricu. Dinamičan tim, fleksibilan raspored, mogućnost napredovanja. Dnevnica 2200 RSD."
@@ -108,18 +108,18 @@ const getJobPostingJsonLd = (lang: string) => ({
   "hiringOrganization": {
     "@type": "Organization",
     "name": "Koneti Café",
-    "@id": "https://koneti.com",
+    "@id": "https://koneticaffee.com",
     "sameAs": [
       "https://www.facebook.com/KonetiCafe",
       "https://www.instagram.com/KonetiCafe"
     ],
-    "logo": "https://koneti.com/koneti-logo.png",
+    "logo": "https://koneticaffee.com/koneti-logo.png",
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "Human Resources",
       "telephone": "+381-65-6337371",
       "email": "konetibulevar@gmail.com",
-      "url": `https://koneti.com/${lang}/career`
+      "url": `https://koneticaffee.com/${lang}/career`
     }
   },
   "jobLocation": [
@@ -149,11 +149,11 @@ const getJobPostingJsonLd = (lang: string) => ({
 const getOrganizationJsonLd = (lang: string) => ({
   "@context": "https://schema.org",
   "@type": "Organization",
-  "@id": "https://koneti.com",
+  "@id": "https://koneticaffee.com",
   "name": "Koneti Café",
-  "url": "https://koneti.com",
-  "logo": "https://koneti.com/koneti-logo.png",
-  "image": "https://koneti.com/koneti-cafe.jpg",
+  "url": "https://koneticaffee.com",
+  "logo": "https://koneticaffee.com/koneti-logo.png",
+  "image": "https://koneticaffee.com/koneti-cafe.jpg",
   "description": lang === 'sr'
     ? "Moderan kafić u Novom Sadu sa bogatom ponudom kafe, brunch i usluga za događaje"
     : "Modern café in Novi Sad with diverse coffee, brunch and event service offerings",
@@ -186,7 +186,7 @@ const getOrganizationJsonLd = (lang: string) => ({
     "contactType": "Human Resources",
     "telephone": "+381-65-6337371",
     "email": "konetibulevar@gmail.com",
-    "url": `https://koneti.com/${lang}/career`
+    "url": `https://koneticaffee.com/${lang}/career`
   }
 })
 

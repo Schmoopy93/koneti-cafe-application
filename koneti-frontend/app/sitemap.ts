@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://koneti.com'
+  const baseUrl = 'https://koneticaffee.com'
   const languages = ['sr', 'en']
   const publicRoutes = ['', '/about', '/menu', '/reservation', '/career']
 

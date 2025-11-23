@@ -8,7 +8,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: lang === 'sr' ? 'Statistika | Admin' : 'Statistics | Admin',
     robots: { index: false, follow: false },
-    alternates: { canonical: `https://koneti.com/${lang}/statistics` }
+    alternates: { canonical: `https://koneticaffee.com/${lang}/statistics` }
   }
 }
 

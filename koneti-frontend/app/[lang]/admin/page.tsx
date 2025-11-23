@@ -8,7 +8,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: 'Admin Panel | Koneti Café',
     robots: { index: false, follow: false },
-    alternates: { canonical: `https://koneti.com/${lang}/admin` }
+    alternates: { canonical: `https://koneticaffee.com/${lang}/admin` }
   }
 }
 

@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   const metadata: Record<string, Metadata> = {
     sr: {
-      metadataBase: new URL('https://koneti.com'),
+      metadataBase: new URL('https://koneticaffee.com'),
       title: {
         default: "Koneti Café - Dobrodošli",
         template: "%s | Koneti Café",
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       keywords: [
         "kafe Novi Sad", "kafić Novi Sad", "kafa", "specialty coffee", "brunch", "ketering", "proslave", "poslovni sastanci", "rezervacija", "Bulevar Oslobođenja", "Koneti Café"
       ],
-      authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
+      authors: [{ name: "Koneti Café", url: "https://koneticaffee.com" }],
       creator: "Koneti Café",
       publisher: "Koneti Café",
       category: "Restaurant",
@@ -50,17 +50,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       openGraph: {
         title: "Koneti Café - Dobrodošli",
         description: "Premium specialty kafa, brunch i prostora za poslovne sastanke i proslave u Novom Sadu",
-        url: "https://koneti.com/sr",
+        url: "https://koneticaffee.com/sr",
         siteName: "Koneti Café",
         images: [
           {
-            url: "https://koneti.com/og-image.jpg",
+            url: "https://koneticaffee.com/og-image.jpg",
             width: 1200,
             height: 630,
             alt: "Koneti Café - Ambijent i specijaliteti",
           },
           {
-            url: "https://koneti.com/og-image-alt.jpg",
+            url: "https://koneticaffee.com/og-image-alt.jpg",
             width: 1200,
             height: 630,
             alt: "Koneti Café - Enterijer",
@@ -93,15 +93,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         google: 'your-google-site-verification-code',
       },
       alternates: {
-        canonical: 'https://koneti.com/sr',
+        canonical: 'https://koneticaffee.com/sr',
         languages: {
-          'sr': 'https://koneti.com/sr',
-          'en': 'https://koneti.com/en',
+          'sr': 'https://koneticaffee.com/sr',
+          'en': 'https://koneticaffee.com/en',
         },
       },
     },
     en: {
-      metadataBase: new URL('https://koneti.com'),
+      metadataBase: new URL('https://koneticaffee.com'),
       title: {
         default: "Koneti Café - Welcome",
         template: "%s | Koneti Café",
@@ -110,7 +110,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       keywords: [
         "cafe Novi Sad", "coffee shop Novi Sad", "coffee", "specialty coffee", "brunch", "catering", "celebrations", "business meetings", "reservation", "Bulevar Oslobođenja", "Koneti Café"
       ],
-      authors: [{ name: "Koneti Café", url: "https://koneti.com" }],
+      authors: [{ name: "Koneti Café", url: "https://koneticaffee.com" }],
       creator: "Koneti Café",
       publisher: "Koneti Café",
       category: "Restaurant",
@@ -122,17 +122,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       openGraph: {
         title: "Koneti Café - Welcome",
         description: "Premium specialty coffee, brunch and space for business meetings and celebrations in Novi Sad",
-        url: "https://koneti.com/en",
+        url: "https://koneticaffee.com/en",
         siteName: "Koneti Café",
         images: [
           {
-            url: "https://koneti.com/og-image.jpg",
+            url: "https://koneticaffee.com/og-image.jpg",
             width: 1200,
             height: 630,
             alt: "Koneti Café - Atmosphere and specialties",
           },
           {
-            url: "https://koneti.com/og-image-alt.jpg",
+            url: "https://koneticaffee.com/og-image-alt.jpg",
             width: 1200,
             height: 630,
             alt: "Koneti Café - Interior",
@@ -165,10 +165,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         google: 'your-google-site-verification-code',
       },
       alternates: {
-        canonical: 'https://koneti.com/en',
+        canonical: 'https://koneticaffee.com/en',
         languages: {
-          'sr': 'https://koneti.com/sr',
-          'en': 'https://koneti.com/en',
+          'sr': 'https://koneticaffee.com/sr',
+          'en': 'https://koneticaffee.com/en',
         },
       },
     },
@@ -187,12 +187,12 @@ export default async function LangLayout({ children, params }: Props) {
   const restaurantJsonLd = {
     "@context": "https://schema.org",
     "@type": "Restaurant",
-    "@id": "https://koneti.com",
+    "@id": "https://koneticaffee.com",
     "name": "Koneti Café",
     "description": lang === 'en' 
       ? "Premium specialty coffee, brunch and event space in Novi Sad. Perfect for business meetings, celebrations and private gatherings."
       : "Premium specialty kafa, brunch i prostor za događaje u Novom Sadu. Idealno za poslovne sastanke, proslave i privatna okupljanja.",
-    "url": "https://koneti.com",
+    "url": "https://koneticaffee.com",
     "telephone": "+381-65-6337371",
     "email": "konetibulevar@gmail.com",
     "address": {
@@ -230,10 +230,10 @@ export default async function LangLayout({ children, params }: Props) {
     ],
     "servesCuisine": ["Coffee", "Juice", "Brunch", "Desserts"],
     "priceRange": "$$",
-    "image": "https://koneti.com/koneti-logo.png",
+    "image": "https://koneticaffee.com/koneti-logo.png",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://koneti.com/koneti-logo.png",
+      "url": "https://koneticaffee.com/koneti-logo.png",
       "width": 250,
       "height": 60
     },
@@ -293,12 +293,12 @@ export default async function LangLayout({ children, params }: Props) {
   const webSiteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "url": "https://koneti.com",
+    "url": "https://koneticaffee.com",
     "name": "Koneti Café",
     "inLanguage": lang === 'sr' ? 'sr-RS' : 'en-US',
     "potentialAction": {
       "@type": "SearchAction",
-      "target": `https://koneti.com/${lang}/search?q={search_term_string}`,
+      "target": `https://koneticaffee.com/${lang}/search?q={search_term_string}`,
       "query-input": "required name=search_term_string"
     }
   };

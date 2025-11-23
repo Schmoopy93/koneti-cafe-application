@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-const BASE_URL = 'https://koneti.com'
+const BASE_URL = 'https://koneticaffee.com'
 const LOCALE_MAP: Record<string, string> = { sr: 'sr_RS', en: 'en_US' }
 
 interface BuildMetaOptions {
