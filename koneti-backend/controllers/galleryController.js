@@ -3,6 +3,40 @@ import Gallery from "../models/Gallery.js";
 import cloudinary from "../middleware/cloudinary.js";
 import translate from "@iamtraction/google-translate";
 
+const translateWithKoneti = async (text) => {
+  if (!text) return "";
+
+  // Ako ne sadrži "Koneti", samo prevedi normalno
+  if (!/^Koneti\b/i.test(text.trim())) {
+    try {
+      const translation = await translate(text, { from: "sr", to: "en" });
+      return translation.text;
+    } catch (err) {
+      console.warn("Translation error:", err);
+      return text;
+    }
+  }
+
+  // Ako počinje sa "Koneti ..."
+  const words = text.trim().split(/\s+/);
+  const firstWord = words[0];
+  const rest = words.slice(1).join(" ");
+
+  // Ako ima samo "Koneti" bez drugih reči
+  if (!rest) return "Koneti";
+
+  // Prevedi samo ostatak
+  try {
+    const translatedRest = await translate(rest, { from: "sr", to: "en" });
+    return `Koneti ${translatedRest.text}`;
+  } catch (err) {
+    console.warn("Translation error:", err);
+    return text;
+  }
+};
+
+
+
 /* Get all gallery images */
 export const getGalleryImages = async (req, res) => {
   try {
@@ -56,18 +90,11 @@ export const createGalleryImage = async (req, res) => {
       return res.status(400).json({ message: "Title is required." });
     }
 
-    // Auto-translate title to English, excluding "Koneti"
-    const titlePlaceholder = title.replace(/Koneti/gi, "__KONETI_PLACEHOLDER__");
-    const titleTranslation = await translate(titlePlaceholder, { from: "sr", to: "en" });
-    const titleEn = titleTranslation.text.replace(/__KONETI_PLACEHOLDER__/g, "Koneti");
+    // Auto-translate title to English
+    const titleEn = await translateWithKoneti(title);
 
-    // Auto-translate description to English, excluding "Koneti"
-    let descEn = "";
-    if (description) {
-      const descPlaceholder = description.replace(/Koneti/gi, "__KONETI_PLACEHOLDER__");
-      const descTranslation = await translate(descPlaceholder, { from: "sr", to: "en" });
-      descEn = descTranslation.text.replace(/__KONETI_PLACEHOLDER__/g, "Koneti");
-    }
+    // Auto-translate description to English
+    const descEn = description ? await translateWithKoneti(description) : "";
 
     // Get next order
     const lastImage = await Gallery.findOne().sort({ order: -1 });
@@ -99,19 +126,17 @@ export const updateGalleryImage = async (req, res) => {
 
     const { title, description, order } = req.body;
 
-    // Handle title translation, excluding "Koneti"
+    // Handle title translation
     if (title) {
-      const titlePlaceholder = title.replace(/Koneti/gi, "__KONETI_PLACEHOLDER__");
-      const titleTranslation = await translate(titlePlaceholder, { from: "sr", to: "en" });
-      image.title = { sr: title, en: titleTranslation.text.replace(/__KONETI_PLACEHOLDER__/g, "Koneti") };
+      const titleEn = await translateWithKoneti(title);
+      image.title = { sr: title, en: titleEn };
     }
 
-    // Handle description translation, excluding "Koneti"
+    // Handle description translation
     if (description !== undefined) {
       if (description) {
-        const descPlaceholder = description.replace(/Koneti/gi, "__KONETI_PLACEHOLDER__");
-        const descTranslation = await translate(descPlaceholder, { from: "sr", to: "en" });
-        image.description = { sr: description, en: descTranslation.text.replace(/__KONETI_PLACEHOLDER__/g, "Koneti") };
+        const descEn = await translateWithKoneti(description);
+        image.description = { sr: description, en: descEn };
       } else {
         image.description = { sr: "", en: "" };
       }
