@@ -6,10 +6,13 @@
 $color-primary: #cfa68a;
 $color-secondary: #d4a574;
 $color-accent: #e6c79a;
+$color-accent-light: #f2ddb8;
 $color-text-dark: #5a3e36;
+$color-text-light: #8b6355;
 $color-white: #fff;
 $color-bg-light: #f5e6d3;
 $color-bg-lighter: #f8f0e6;
+$color-overlay: rgba(90, 62, 54, 0.05);
 
 // Spacing
 $spacing-xs: 0.4rem;
@@ -21,22 +24,26 @@ $spacing-2xl: 2.5rem;
 
 // Border radius
 $radius-sm: 0.5rem;
-$radius-md: 0.6rem;
+$radius-md: 0.8rem;
 $radius-lg: 1.2rem;
 $radius-xl: 1.5rem;
 $radius-2xl: 2rem;
+$radius-3xl: 3rem;
 $radius-full: 50%;
 
 // Transitions
 $transition-fast: 0.2s ease;
 $transition-base: 0.3s ease;
 $transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-premium: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 
 // Shadows
-$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
-$shadow-md: 0 4px 12px rgba(90, 62, 54, 0.2);
-$shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.15);
-$shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 16px rgba(90, 62, 54, 0.15);
+$shadow-lg: 0 8px 32px rgba(90, 62, 54, 0.2);
+$shadow-xl: 0 12px 48px rgba(90, 62, 54, 0.25);
+$shadow-2xl: 0 20px 60px rgba(90, 62, 54, 0.3);
+$shadow-inset: inset 0 2px 8px rgba(255, 255, 255, 0.3);
 
 // =========================
 // MIXINS
@@ -49,26 +56,37 @@ $shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
 
 @mixin glass-effect($opacity: 0.2) {
   background: rgba(255, 255, 255, $opacity);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 @mixin gradient-primary {
-  background: linear-gradient(135deg, $color-primary, $color-secondary);
+  background: linear-gradient(135deg, $color-primary 0%, $color-secondary 100%);
 }
 
 @mixin gradient-light {
   background: linear-gradient(135deg, $color-bg-light, $color-bg-lighter);
 }
 
+@mixin gradient-hover {
+  background: linear-gradient(135deg, $color-secondary 0%, $color-accent 100%);
+}
+
+@mixin premium-border {
+  border: 1px solid rgba(207, 166, 138, 0.4);
+}
+
 @mixin hover-lift {
+  transition: all $transition-smooth;
+  
   &:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: $shadow-md;
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: $shadow-xl;
   }
 
   &:active {
-    transform: translateY(-1px) scale(1.02);
+    transform: translateY(-2px) scale(1.01);
   }
 }
 
@@ -76,21 +94,35 @@ $shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
 // NAVBAR
 // =========================
 .navbar {
-  background-color: $color-primary;
-  box-shadow: $shadow-sm;
+  @include gradient-primary;
+  box-shadow: $shadow-lg;
   position: sticky;
   top: 0;
   z-index: 1000;
   width: 100%;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  }
 }
 
 .nav-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: $spacing-md $spacing-lg;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  z-index: 1;
 }
 
 .header-right {
@@ -101,13 +133,15 @@ $shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
 }
 
 .logo-img {
-  height: 35px;
+  height: 40px;
   width: auto;
   object-fit: contain;
-  transition: transform $transition-base;
+  transition: all $transition-smooth;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.08) rotate(2deg);
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
   }
 }
 
@@ -121,68 +155,111 @@ $shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
 .language-switcher {
   @include flex-center;
   gap: $spacing-sm;
-  @include gradient-primary;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: $radius-md;
-  padding: $spacing-sm 0.75rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: $radius-xl;
+  padding: $spacing-sm 1.2rem;
   cursor: pointer;
   color: $color-white;
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  font-size: 0.85rem;
-  transition: all 0.25s ease;
-  box-shadow: $shadow-sm;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all $transition-smooth;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity $transition-smooth;
+  }
 
   &:hover {
-    background: linear-gradient(135deg, $color-secondary, $color-accent);
-    transform: scale(1.05);
-    box-shadow: $shadow-md;
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.7);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    
+    &::before {
+      opacity: 1;
+    }
   }
 
   &:active {
-    transform: scale(0.97);
+    transform: translateY(-1px);
   }
 }
 
 .language-dropdown-menu {
   position: absolute;
-  top: 110%;
+  top: 115%;
   right: 0;
-  @include gradient-light;
-  border-radius: $radius-md;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: $shadow-md;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid rgba(207, 166, 138, 0.6);
+  border-radius: $radius-lg;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   overflow: hidden;
-  z-index: 1000;
-  min-width: 120px;
-  margin-top: $spacing-sm;
-  animation: fadeIn $transition-fast;
+  z-index: 1001;
+  min-width: 140px;
+  margin-top: $spacing-md;
+  animation: slideDownFade 0.3s $transition-smooth;
+  backdrop-filter: blur(10px);
 }
 
 .language-option {
   @include flex-center;
   gap: $spacing-sm;
   width: 100%;
-  padding: 0.7rem $spacing-md;
+  padding: 0.8rem $spacing-lg;
   background: transparent;
   border: none;
   color: $color-text-dark;
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  font-size: 0.85rem;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all $transition-fast;
   white-space: nowrap;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: $color-primary;
+    opacity: 0;
+    transition: opacity $transition-fast;
+  }
 
   &:hover {
-    @include gradient-primary;
-    color: $color-white;
+    background: rgba(207, 166, 138, 0.12);
+    color: $color-primary;
+    padding-left: 1.2rem;
+    
+    &::before {
+      opacity: 1;
+    }
   }
 
   &.active {
-    background: linear-gradient(135deg, $color-secondary, $color-accent);
-    color: $color-white;
+    background: linear-gradient(90deg, rgba(207, 166, 138, 0.2), transparent);
+    color: $color-primary;
+    font-weight: 800;
+    
+    &::before {
+      opacity: 1;
+    }
   }
 }
 
@@ -201,39 +278,39 @@ $shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
   @include flex-center;
   gap: $spacing-md;
   width: 100%;
-  @include glass-effect(0.2);
+  @include glass-effect(0.3);
   color: $color-white;
-  font-family: "Poppins", sans-serif;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-weight: 700;
   font-size: 1.1rem;
-  padding: 1rem $spacing-lg;
-  border-radius: $radius-xl;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 1.1rem $spacing-xl;
+  border-radius: $radius-2xl;
+  @premium-border;
   cursor: pointer;
   transition: all $transition-smooth;
   white-space: nowrap;
-  box-shadow: $shadow-lg, inset 0 2px 0 rgba(255, 255, 255, 0.2);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: $shadow-lg, $shadow-inset;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: $shadow-xl, inset 0 2px 0 rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
+    @include glass-effect(0.4);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: $shadow-xl, $shadow-inset;
+    border-color: rgba(255, 255, 255, 0.6);
   }
 
   &:active {
-    transform: translateY(-1px) scale(0.98);
+    transform: translateY(-2px) scale(1);
   }
 }
 
 .language-dropdown-menu-mobile {
   display: flex;
   flex-direction: column;
-  gap: $spacing-md;
+  gap: $spacing-lg;
   width: 100%;
-  margin-top: 1rem;
-  border-radius: $radius-xl;
+  margin-top: 1.2rem;
+  border-radius: $radius-2xl;
   overflow: hidden;
   animation: slideDown 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 
@@ -241,28 +318,45 @@ $shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
     @include flex-center;
     gap: $spacing-md;
     width: 100%;
-    padding: 1rem $spacing-lg;
-    @include glass-effect(0.15);
+    padding: 1.1rem $spacing-xl;
+    @include glass-effect(0.25);
     color: $color-white;
-    font-family: "Poppins", sans-serif;
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-weight: 700;
     font-size: 1rem;
-    border: 2px solid rgba(255, 255, 255, 0.25);
-    border-radius: $radius-lg;
+    @premium-border;
+    border-radius: $radius-xl;
     cursor: pointer;
     transition: all $transition-smooth;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: $shadow-lg, $shadow-inset;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: left $transition-smooth;
+    }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.25);
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 2px 0 rgba(255, 255, 255, 0.3);
-      border-color: rgba(255, 255, 255, 0.4);
+      @include glass-effect(0.35);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: $shadow-xl, $shadow-inset;
+      border-color: rgba(255, 255, 255, 0.6);
+
+      &::before {
+        left: 100%;
+      }
     }
 
     &:active {
-      transform: translateY(-1px) scale(0.98);
+      transform: translateY(-1px) scale(1);
     }
   }
 }
@@ -273,18 +367,19 @@ $shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
   border: none;
   color: $color-white;
   cursor: pointer;
-  font-size: 1rem;
-  width: 1.2rem;
-  height: 1.2rem;
+  font-size: 1.2rem;
+  width: 1.4rem;
+  height: 1.4rem;
   padding: 0;
-  transition: transform 0.25s ease;
+  transition: all $transition-smooth;
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.15) rotate(10deg);
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
   }
 
   &.open {
-    transform: rotate(180deg);
+    transform: rotate(180deg) scale(1.15);
   }
 }
 
@@ -293,25 +388,28 @@ $shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
 // =========================
 .nav-links {
   display: flex;
-  gap: $spacing-lg;
+  gap: $spacing-xl;
   align-items: center;
   margin-left: auto;
-  margin-right: $spacing-lg;
+  margin-right: $spacing-xl;
 
   a {
     position: relative;
     @include flex-center;
-    padding: $spacing-xs $spacing-md;
-    border-radius: $radius-xl;
+    padding: $spacing-xs $spacing-lg;
+    border-radius: $radius-lg;
     @include glass-effect(0.2);
+    @premium-border;
     color: $color-text-dark;
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-    font-size: 0.85rem;
+    font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
     text-decoration: none;
     cursor: pointer;
     transition: all $transition-smooth;
     overflow: hidden;
+    box-shadow: $shadow-sm, $shadow-inset;
+    letter-spacing: 0.3px;
 
     &::before {
       content: "";
@@ -321,21 +419,38 @@ $shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
       width: 100%;
       height: 100%;
       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-      transition: left 0.6s ease;
+      transition: left $transition-smooth;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: $color-primary;
+      transform: translateX(-50%);
+      transition: width $transition-smooth;
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.9);
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 6px 20px rgba(90, 62, 54, 0.3);
+      @include glass-effect(0.35);
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: $shadow-lg, $shadow-inset;
+      color: $color-primary;
 
       &::before {
         left: 100%;
       }
+
+      &::after {
+        width: 60%;
+      }
     }
 
     &:active {
-      transform: translateY(-1px) scale(1.02);
+      transform: translateY(-2px) scale(1.02);
     }
   }
 }
@@ -352,70 +467,90 @@ $shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
   background: linear-gradient(
     135deg,
     rgba(207, 166, 138, 0.98) 0%,
-    rgba(212, 165, 116, 0.95) 50%,
+    rgba(212, 165, 116, 0.96) 50%,
     rgba(207, 166, 138, 0.98) 100%
   );
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(30px);
   padding: 3rem $spacing-xl;
-  gap: $spacing-lg;
+  gap: $spacing-2xl;
   z-index: 9999;
   justify-content: center;
   align-items: center;
   animation: slideInFromTop 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
 
   .mobile-close-btn {
     position: absolute;
-    top: $spacing-2xl;
+    top: $spacing-lg;
     right: $spacing-2xl;
     width: 60px;
     height: 60px;
-    @include glass-effect(0.25);
-    border: 2px solid rgba(255, 255, 255, 0.4);
+    @include glass-effect(0.3);
+    @premium-border;
     border-radius: $radius-full;
     color: $color-white;
     font-size: 1.8rem;
     cursor: pointer;
     @include flex-center;
-    box-shadow: $shadow-lg, inset 0 2px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: $shadow-lg, $shadow-inset;
     transition: all $transition-smooth;
     animation: fadeInScale 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.4);
-      transform: scale(1.15) rotate(90deg);
-      box-shadow: $shadow-xl, inset 0 2px 0 rgba(255, 255, 255, 0.5);
-      border-color: rgba(255, 255, 255, 0.6);
+      @include glass-effect(0.4);
+      transform: scale(1.2) rotate(90deg);
+      box-shadow: $shadow-xl, $shadow-inset;
+      border-color: rgba(255, 255, 255, 0.7);
     }
 
     &:active {
-      transform: scale(1.05) rotate(90deg);
+      transform: scale(1.08) rotate(90deg);
     }
   }
 
   a {
     width: 85%;
     max-width: 320px;
-    @include glass-effect(0.15);
+    @include glass-effect(0.2);
+    @premium-border;
     color: $color-white;
-    font-size: 1.3rem;
+    font-size: 1.35rem;
     font-weight: 700;
-    padding: 1.4rem $spacing-2xl;
+    padding: 1.5rem $spacing-2xl;
     border-radius: $radius-2xl;
     text-align: center;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    box-shadow: $shadow-lg, inset 0 2px 0 rgba(255, 255, 255, 0.2);
+    box-shadow: $shadow-lg, $shadow-inset;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     animation: slideInFromBottom 0.6s cubic-bezier(0.4, 0, 0.2, 1) calc(var(--delay, 0) * 0.1s) both;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+      opacity: 0;
+      transition: opacity $transition-smooth;
+    }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.25);
-      transform: translateY(-5px) scale(1.05);
-      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25), inset 0 2px 0 rgba(255, 255, 255, 0.4);
-      border-color: rgba(255, 255, 255, 0.5);
+      @include glass-effect(0.3);
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: $shadow-xl, $shadow-inset;
+      border-color: rgba(255, 255, 255, 0.6);
+
+      &::before {
+        opacity: 1;
+      }
     }
 
     &:active {
-      transform: translateY(-2px) scale(1.02);
+      transform: translateY(-3px) scale(1.02);
     }
   }
 }
@@ -425,19 +560,23 @@ $shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
 // =========================
 .menu-toggle {
   display: none;
-  @include glass-effect(0.25);
-  border-radius: $radius-md;
+  @include glass-effect(0.3);
+  @premium-border;
+  border-radius: $radius-lg;
   padding: $spacing-sm;
   cursor: pointer;
   color: $color-text-dark;
-  font-size: 1.1rem;
-  transition: all $transition-base;
-  box-shadow: $shadow-sm;
+  font-size: 1.3rem;
+  transition: all $transition-smooth;
+  box-shadow: $shadow-md, $shadow-inset;
+  width: 48px;
+  height: 48px;
+  @include flex-center;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.9);
-    transform: scale(1.05);
-    box-shadow: $shadow-md;
+    @include glass-effect(0.4);
+    transform: scale(1.1);
+    box-shadow: $shadow-lg, $shadow-inset;
   }
 
   &:active {
@@ -451,7 +590,18 @@ $shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
   }
   to {
     opacity: 1;
@@ -495,7 +645,7 @@ $shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
 @keyframes fadeInScale {
   from {
     opacity: 0;
-    transform: scale(0.8);
+    transform: scale(0.7);
   }
   to {
     opacity: 1;
@@ -506,15 +656,29 @@ $shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
 // =========================
 // RESPONSIVE
 // =========================
+@media screen and (max-width: 1200px) {
+  .nav-links {
+    gap: $spacing-lg;
+  }
+
+  .logo-img {
+    height: 38px;
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .language-switcher {
-    padding: $spacing-xs 0.6rem;
-    font-size: 0.8rem;
+    padding: $spacing-xs 0.8rem;
+    font-size: 0.85rem;
   }
 
   .language-option {
-    padding: 0.6rem 0.7rem;
-    font-size: 0.8rem;
+    padding: 0.75rem $spacing-md;
+    font-size: 0.85rem;
+  }
+
+  .nav-container {
+    padding: $spacing-md 1rem;
   }
 }
 
@@ -536,36 +700,67 @@ $shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
   }
 
   .menu-toggle {
-    display: block;
+    display: flex;
   }
 
   .header-right {
-    gap: $spacing-sm;
+    gap: $spacing-md;
+  }
+
+  .logo-img {
+    height: 36px;
   }
 }
 
 @media screen and (max-width: 480px) {
   .language-switcher-mobile {
-    font-size: 0.75rem;
-    padding: $spacing-xs 0.6rem;
-    gap: 0.3rem;
+    font-size: 0.8rem;
+    padding: $spacing-xs 0.7rem;
+    gap: 0.4rem;
   }
 
   .language-dropdown-menu-mobile {
-    gap: 0.3rem;
+    gap: 0.5rem;
 
     button {
-      font-size: 0.75rem;
-      padding: $spacing-xs 0.6rem;
+      font-size: 0.8rem;
+      padding: $spacing-md 0.8rem;
     }
   }
 
   .nav-links.open {
     padding: $spacing-lg;
+    gap: $spacing-lg;
 
     a {
       font-size: 1.1rem;
-      padding: $spacing-md $spacing-lg;
+      padding: 1.1rem $spacing-lg;
     }
+
+    .mobile-close-btn {
+      width: 54px;
+      height: 54px;
+      font-size: 1.6rem;
+    }
+  }
+
+  .nav-container {
+    padding: $spacing-md;
+  }
+
+  .logo-img {
+    height: 32px;
+  }
+
+  .menu-toggle {
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .menu-toggle {
+    display: none !important;
   }
 }
