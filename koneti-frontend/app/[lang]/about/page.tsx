@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: "Koneti Café",
       images: [
         {
-          url: "https://koneticaffee.com/og/about.jpg",
+          url: "https://koneticaffee.com/koneti-onama.jpg",
           width: 1200,
           height: 630,
           alt: titles[lang],
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: titles[lang],
       description: descriptions[lang],
-      images: ["https://koneticaffee.com/og/about.jpg"],
+      images: ["https://koneticaffee.com/koneti-onama.jpg"],
       creator: "@KonetiCafe",
       site: "@KonetiCafe",
     },
@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         'max-video-preview': -1,
       },
     },
-    category: "Restaurant",
+    category: "Café",
     applicationName: "Koneti Café",
   }
 }

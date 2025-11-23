@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: "Koneti Café",
       images: [
         {
-          url: "https://koneticaffee.com/reservation-og-image.jpg",
+          url: "https://koneticaffee.com/koneti-rezervacije.jpg",
           width: 1200,
           height: 630,
           alt: titles[lang],
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: titles[lang],
       description: descriptions[lang],
-      images: ["https://koneticaffee.com/reservation-og-image.jpg"],
+      images: ["https://koneticaffee.com/koneti-rezervacije.jpg"],
       creator: "@KonetiCafe",
       site: "@KonetiCafe",
     },

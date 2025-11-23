@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: "Koneti Café",
       images: [
         {
-          url: "https://koneticaffee.com/career-og-image.jpg",
+          url: "https://koneticaffee.com/koneti-karijera.jpg",
           width: 1200,
           height: 630,
           alt: titles[lang],
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: titles[lang],
       description: descriptions[lang],
-      images: ["https://koneticaffee.com/career-og-image.jpg"],
+      images: ["https://koneticaffee.com/koneti-karijera.jpg"],
       creator: "@KonetiCafe",
       site: "@KonetiCafe",
     },
@@ -70,7 +70,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     verification: {
       google: "your-google-verification-code",
     },
-    category: "Careers",
+    category: "Employment",
     applicationName: "Koneti Café Careers Portal",
   }
 }

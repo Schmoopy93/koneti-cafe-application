@@ -1,8 +1,7 @@
-
 {
   "name": "Koneti Café",
   "short_name": "Koneti",
-  "description": "Uživajte u najboljoj kafi u prijatnom ambijentu",
+  "description": "Premium specialty kafa, brunch i prostor za poslovne sastanke i privatne događaje u Novom Sadu",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -38,19 +37,6 @@
       "purpose": "any"
     }
   ],
-  "categories": ["food", "restaurant"],
-  "screenshots": [
-    {
-      "src": "/screenshot-1.png",
-      "sizes": "540x720",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/screenshot-2.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide"
-    }
-  ]
+  "categories": ["coffee", "food", "event-venue"],
+  "screenshots": []
 }

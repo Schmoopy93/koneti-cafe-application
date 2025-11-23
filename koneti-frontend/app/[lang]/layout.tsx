@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       authors: [{ name: "Koneti Café", url: "https://koneticaffee.com" }],
       creator: "Koneti Café",
       publisher: "Koneti Café",
-      category: "Restaurant",
+      category: "Café",
       applicationName: "Koneti Café",
       other: {
         'google-site-verification': 'your-verification-code',
@@ -54,16 +54,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         siteName: "Koneti Café",
         images: [
           {
-            url: "https://koneticaffee.com/og-image.jpg",
+            url: "https://koneticaffee.com/koneti-kafe.jpg",
             width: 1200,
             height: 630,
             alt: "Koneti Café - Ambijent i specijaliteti",
-          },
-          {
-            url: "https://koneticaffee.com/og-image-alt.jpg",
-            width: 1200,
-            height: 630,
-            alt: "Koneti Café - Enterijer",
           }
         ],
         locale: "sr_RS",
@@ -74,7 +68,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         card: "summary_large_image",
         title: "Koneti Café - Dobrodošli",
         description: "Premium specialty kafa i brunch u Novom Sadu",
-        images: ["/koneti-logo.png"],
+        images: ["https://koneticaffee.com/koneti-kafe.jpg"],
         creator: "@KonetiCafe",
         site: "@KonetiCafe",
       },
@@ -113,7 +107,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       authors: [{ name: "Koneti Café", url: "https://koneticaffee.com" }],
       creator: "Koneti Café",
       publisher: "Koneti Café",
-      category: "Restaurant",
+      category: "Café",
       applicationName: "Koneti Café",
       other: {
         'google-site-verification': 'your-verification-code',
@@ -126,16 +120,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         siteName: "Koneti Café",
         images: [
           {
-            url: "https://koneticaffee.com/og-image.jpg",
+            url: "https://koneticaffee.com/koneti-kafe.jpg",
             width: 1200,
             height: 630,
             alt: "Koneti Café - Atmosphere and specialties",
-          },
-          {
-            url: "https://koneticaffee.com/og-image-alt.jpg",
-            width: 1200,
-            height: 630,
-            alt: "Koneti Café - Interior",
           }
         ],
         locale: "en_US",
@@ -184,10 +172,11 @@ export async function generateStaticParams() {
 export default async function LangLayout({ children, params }: Props) {
   const { lang } = await params;
   
-  const restaurantJsonLd = {
+  const cafeJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Restaurant",
+    "@type": "LocalBusiness",
     "@id": "https://koneticaffee.com",
+    "additionalType": "CafeOrCoffeeShop",
     "name": "Koneti Café",
     "description": lang === 'en' 
       ? "Premium specialty coffee, brunch and event space in Novi Sad. Perfect for business meetings, celebrations and private gatherings."
@@ -228,9 +217,9 @@ export default async function LangLayout({ children, params }: Props) {
         "closes": "21:00"
       }
     ],
-    "servesCuisine": ["Coffee", "Juice", "Brunch", "Desserts"],
+    "servesCuisine": ["Coffee", "Brunch", "Desserts", "Beverages"],
     "priceRange": "$$",
-    "image": "https://koneticaffee.com/koneti-logo.png",
+    "image": "https://koneticaffee.com/koneti-kafe.jpg",
     "logo": {
       "@type": "ImageObject",
       "url": "https://koneticaffee.com/koneti-logo.png",
@@ -246,6 +235,28 @@ export default async function LangLayout({ children, params }: Props) {
       "@type": "City",
       "name": "Novi Sad"
     },
+    "amenityFeature": [
+      {
+        "@type": "LocationFeatureSpecification",
+        "name": lang === 'sr' ? "Poslovni sastanci" : "Business Meetings",
+        "value": true
+      },
+      {
+        "@type": "LocationFeatureSpecification",
+        "name": lang === 'sr' ? "Privatni događaji" : "Private Events",
+        "value": true
+      },
+      {
+        "@type": "LocationFeatureSpecification",
+        "name": "WiFi",
+        "value": true
+      },
+      {
+        "@type": "LocationFeatureSpecification",
+        "name": lang === 'sr' ? "Parking" : "Parking",
+        "value": true
+      }
+    ],
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.8",
@@ -320,10 +331,10 @@ export default async function LangLayout({ children, params }: Props) {
       </head>
       <body className={inter.className} suppressHydrationWarning>
         <Script
-          id="restaurant-jsonld"
+          id="cafe-jsonld"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(restaurantJsonLd),
+            __html: JSON.stringify(cafeJsonLd),
           }}
           strategy="afterInteractive"
         />
