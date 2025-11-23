@@ -57,13 +57,13 @@ const Gallery: React.FC = () => {
   useEffect(() => {
     if (images.length > 0) {
       const interval = setInterval(() => {
-        setWelcomeSlide((prev) => (prev + 1) % Math.min(3, images.length));
+        setWelcomeSlide((prev) => (prev + 1) % Math.min(10, images.length));
       }, 5000);
       return () => clearInterval(interval);
     }
   }, [images.length]);
 
-  const welcomeImages = images.slice(0, Math.min(3, images.length));
+  const welcomeImages = images.slice(0, Math.min(10, images.length));
   const maxWelcomeSlide = welcomeImages.length;
 
   if (loading) {
@@ -113,7 +113,7 @@ const Gallery: React.FC = () => {
             <p className="about__welcome-cta">{t("gallery.about.aboutPage.cta")}</p>
           </div>
 
-          {/* Desna strana - Slider sa 3 slike */}
+          {/* Desna strana - Slider sa 10 slika */}
           {images.length > 0 && (
             <div className="about__welcome-image-side">
               <div className="about__welcome-slider">
