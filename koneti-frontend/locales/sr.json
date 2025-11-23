@@ -534,11 +534,11 @@
       }
     },
     "addGalleryImage": {
-            "errors": {
-              "titleSr": "Naslov je obavezan.",
-              "image": "Slika je obavezna.",
-              "checkFormErrors": "Proverite formu za greške."
-            },
+      "errors": {
+        "titleSr": "Naslov je obavezan.",
+        "image": "Slika je obavezna.",
+        "checkFormErrors": "Proverite formu za greške."
+      },
       "title": "Dodaj novu sliku galerije",
       "editTitle": "Uredi sliku galerije",
       "titleSr": "Naziv",
@@ -549,7 +549,11 @@
       "saving": "Čuvanje...",
       "savingChanges": "Čuvanje izmena...",
       "save": "Sačuvaj",
-      "saveChanges": "Sačuvaj izmene"
+      "saveChanges": "Sačuvaj izmene",
+      "imageAdded": "Slika je uspešno dodata.",
+      "imageUpdated": "Slika je uspešno ažurirana.",
+      "saveError": "Greška pri čuvanju slike.",
+      "serverError": "Greška servera. Pokušajte ponovo."
     }
   },
   "menu": {
