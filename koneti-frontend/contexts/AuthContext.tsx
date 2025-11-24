@@ -8,7 +8,7 @@ import React, {
   ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
-import { apiRequest } from "@/utils/api";
+import { apiRequest, clearCSRFToken } from "@/utils/api";
 import { setCookie, getCookie, deleteCookie } from "@/utils/cookies";
 
 interface Admin {
@@ -113,20 +113,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       await apiRequest('/admin/logout', {
         method: "POST",
+        requireCSRF: true,
       });
       
-      // Ukloni token iz cookies i localStorage
       deleteCookie('adminToken');
       localStorage.removeItem('adminToken');
+      clearCSRFToken();
       
       setUser(null);
       setIsAuthenticated(false);
       router.push("/");
     } catch (err) {
       console.error("Greška prilikom logout-a:", err);
-      // Ukloni token čak i ako logout zahtev ne uspe
       deleteCookie('adminToken');
       localStorage.removeItem('adminToken');
+      clearCSRFToken();
     }
   };
 

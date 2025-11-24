@@ -2,7 +2,7 @@ import express from "express";
 import { createAdmin, loginAdmin, getAdmins, deleteAdmin, verifyToken, getDashboardData, activateAdmin } from "../controllers/adminController.js";
 import { protectAdmin } from "../middleware/adminMiddleware.js";
 import Admin from "../models/Admin.js";
-import { csrfProtection, getCSRFToken } from "../middleware/csrfProtection.js";
+import { csrfProtection, getCSRFToken, clearCSRFToken } from "../middleware/csrfProtection.js";
 
 import { validateAdminCreate, validateAdminLogin, validateObjectId } from "../middleware/inputValidation.js";
 import { authLimiter, adminLimiter } from "../middleware/security.js";
@@ -20,8 +20,14 @@ router.get("/me", protectAdmin, (req, res) => {
   res.json({ admin: req.admin });
 });
 
-// Logout - clear the authentication cookie
+// Logout - clear the authentication cookie AND CSRF token
 router.post("/logout", csrfProtection, (req, res) => {
+  // Očisti CSRF token sa servera
+  const sessionId = req.cookies.adminToken || req.headers.authorization?.split(' ')[1];
+  if (sessionId) {
+    clearCSRFToken(sessionId);
+  }
+  
   res.clearCookie('adminToken', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',

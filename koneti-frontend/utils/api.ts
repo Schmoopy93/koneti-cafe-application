@@ -102,7 +102,7 @@ export const apiRequest = async (endpoint: string, options: ApiOptions = {}) => 
     }
 
     // Dodaj CSRF token za POST/PUT/DELETE zahteve (samo u produkciji)
-    if (requireCSRF && process.env.NODE_ENV === 'production' && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(fetchOptions.method || 'GET')) {
+    if (requireCSRF && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(fetchOptions.method || 'GET')) {
       const csrf = await getCSRFToken();
       if (csrf) {
         requestOptions.headers = {
