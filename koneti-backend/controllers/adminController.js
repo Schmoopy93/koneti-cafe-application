@@ -23,16 +23,8 @@ export const createAdmin = async (req, res) => {
           message: "Neautorizovan pristup" 
         });
       }
-    } else {
-      // Ostali admin-i - zahtevaju autentifikaciju
-      if (!req.admin) {
-        return res.status(401).json({ 
-          success: false,
-          message: "Potrebna je autentifikacija" 
-        });
-      }
-    }
-
+    } 
+    
     // Ograniči na 2 admin-a
     if (adminCount >= 2) {
       logger.warn(`Pokušaj kreiranja viška admin-a. Trenutno: ${adminCount}`);
