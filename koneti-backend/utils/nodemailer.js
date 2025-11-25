@@ -1,16 +1,16 @@
-import nodemailer from 'nodemailer';
-import { logger } from './logger.js';
-import dotenv from 'dotenv';
-import DOMPurify from 'isomorphic-dompurify';
+import nodemailer from "nodemailer";
+import { logger } from "./logger.js";
+import dotenv from "dotenv";
+import DOMPurify from "isomorphic-dompurify";
 
 // Učitaj .env fajl
 dotenv.config();
 
 // URL do logo slike - koristi Vercel frontend
-const logoUrl = process.env.NODE_ENV === 'production' 
-  ? 'https://koneti-cafe-application.vercel.app/koneti-logo.png'
-  : 'https://koneti-cafe-application.vercel.app/koneti-logo.png'; // Uvek koristi Vercel za logo
-
+const logoUrl =
+  process.env.NODE_ENV === "production"
+    ? "https://koneti-cafe-application.vercel.app/koneti-logo.png"
+    : "https://koneti-cafe-application.vercel.app/koneti-logo.png"; // Uvek koristi Vercel za logo
 
 // --- Ulepšani Stilovi ---
 const baseStyle = `
@@ -77,13 +77,16 @@ const logoTemplate = `
 
 const getUserConfirmationHTML = (reservation) => {
   // Sanitizuj sve user input-e
-  const safeName = DOMPurify.sanitize(reservation.name || '');
-  const safeDate = new Date(reservation.date).toLocaleDateString('sr-RS');
-  const safeTime = DOMPurify.sanitize(reservation.time || '');
-  const safeEndTime = reservation.endTime ? DOMPurify.sanitize(reservation.endTime) : null;
+  const safeName = DOMPurify.sanitize(reservation.name || "");
+  const safeDate = new Date(reservation.date).toLocaleDateString("sr-RS");
+  const safeTime = DOMPurify.sanitize(reservation.time || "");
+  const safeEndTime = reservation.endTime
+    ? DOMPurify.sanitize(reservation.endTime)
+    : null;
   const safeGuests = parseInt(reservation.guests) || 0;
-  const safeType = reservation.type === 'experience' ? 'Koneti Experience' : 'Biznis Sastanak';
-  
+  const safeType =
+    reservation.type === "experience" ? "Koneti Experience" : "Biznis Sastanak";
+
   return `
     <div style="${baseStyle}">
       <div style="${cardStyle}">
@@ -110,15 +113,21 @@ const getUserConfirmationHTML = (reservation) => {
               <span style="${badgeStyle}">${safeDate}</span>
             </div>
             <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(90,62,54,0.1);">
-              <span style="font-weight:600; color:#5a3e36;">⏰ ${safeEndTime ? 'Početak' : 'Vreme'}:</span>
+              <span style="font-weight:600; color:#5a3e36;">⏰ ${
+                safeEndTime ? "Početak" : "Vreme"
+              }:</span>
               <span style="${badgeStyle}">${safeTime}</span>
             </div>
-            ${safeEndTime ? `
+            ${
+              safeEndTime
+                ? `
             <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(90,62,54,0.1);">
               <span style="font-weight:600; color:#5a3e36;">⏰ Završetak:</span>
               <span style="${badgeStyle}">${safeEndTime}</span>
             </div>
-            ` : ''}
+            `
+                : ""
+            }
             <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(90,62,54,0.1);">
               <span style="font-weight:600; color:#5a3e36;">👥 Gosti:</span>
               <span style="${badgeStyle}">${safeGuests}</span>
@@ -145,16 +154,21 @@ const getUserConfirmationHTML = (reservation) => {
 
 const getAdminNotificationHTML = (reservation) => {
   // Sanitizuj sve user input-e
-  const safeName = DOMPurify.sanitize(reservation.name || '');
-  const safeEmail = DOMPurify.sanitize(reservation.email || '');
-  const safePhone = DOMPurify.sanitize(reservation.phone || '');
-  const safeDate = new Date(reservation.date).toLocaleDateString('sr-RS');
-  const safeTime = DOMPurify.sanitize(reservation.time || '');
-  const safeEndTime = reservation.endTime ? DOMPurify.sanitize(reservation.endTime) : null;
+  const safeName = DOMPurify.sanitize(reservation.name || "");
+  const safeEmail = DOMPurify.sanitize(reservation.email || "");
+  const safePhone = DOMPurify.sanitize(reservation.phone || "");
+  const safeDate = new Date(reservation.date).toLocaleDateString("sr-RS");
+  const safeTime = DOMPurify.sanitize(reservation.time || "");
+  const safeEndTime = reservation.endTime
+    ? DOMPurify.sanitize(reservation.endTime)
+    : null;
   const safeGuests = parseInt(reservation.guests) || 0;
-  const safeType = reservation.type === 'experience' ? 'Koneti Experience' : 'Biznis Sastanak';
-  const safeSubType = reservation.subType ? reservation.subType.charAt(0).toUpperCase() + reservation.subType.slice(1) : 'Basic';
-  
+  const safeType =
+    reservation.type === "experience" ? "Koneti Experience" : "Biznis Sastanak";
+  const safeSubType = reservation.subType
+    ? reservation.subType.charAt(0).toUpperCase() + reservation.subType.slice(1)
+    : "Basic";
+
   return `
     <div style="${baseStyle}">
       <div style="${cardStyle}">
@@ -175,7 +189,9 @@ const getAdminNotificationHTML = (reservation) => {
             <div style="display:grid; gap:12px;">
               <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #eee;">
                 <span style="font-weight:600; color:#1565c0;">🆔 ID:</span>
-                <code style="background:#f8f9fa; padding:4px 8px; border-radius:4px; font-size:12px;">${reservation._id}</code>
+                <code style="background:#f8f9fa; padding:4px 8px; border-radius:4px; font-size:12px;">${
+                  reservation._id
+                }</code>
               </div>
               <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #eee;">
                 <span style="font-weight:600; color:#1565c0;">👤 Ime:</span>
@@ -194,15 +210,21 @@ const getAdminNotificationHTML = (reservation) => {
                 <span style="${badgeStyle}">${safeDate}</span>
               </div>
               <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #eee;">
-                <span style="font-weight:600; color:#1565c0;">⏰ ${safeEndTime ? 'Početak' : 'Vreme'}:</span>
+                <span style="font-weight:600; color:#1565c0;">⏰ ${
+                  safeEndTime ? "Početak" : "Vreme"
+                }:</span>
                 <span style="${badgeStyle}">${safeTime}</span>
               </div>
-              ${safeEndTime ? `
+              ${
+                safeEndTime
+                  ? `
               <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #eee;">
                 <span style="font-weight:600; color:#1565c0;">⏰ Završetak:</span>
                 <span style="${badgeStyle}">${safeEndTime}</span>
               </div>
-              ` : ''}
+              `
+                  : ""
+              }
               <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #eee;">
                 <span style="font-weight:600; color:#1565c0;">👥 Gosti:</span>
                 <span style="${badgeStyle}">${safeGuests}</span>
@@ -230,11 +252,13 @@ const getAdminNotificationHTML = (reservation) => {
 };
 
 const getApprovedEmailHTML = (reservation) => {
-  const safeName = DOMPurify.sanitize(reservation.name || '');
-  const safeDate = new Date(reservation.date).toLocaleDateString('sr-RS');
-  const safeTime = DOMPurify.sanitize(reservation.time || '');
-  const safeEndTime = reservation.endTime ? DOMPurify.sanitize(reservation.endTime) : null;
-  
+  const safeName = DOMPurify.sanitize(reservation.name || "");
+  const safeDate = new Date(reservation.date).toLocaleDateString("sr-RS");
+  const safeTime = DOMPurify.sanitize(reservation.time || "");
+  const safeEndTime = reservation.endTime
+    ? DOMPurify.sanitize(reservation.endTime)
+    : null;
+
   return `
     <div style="${baseStyle}">
       <div style="${cardStyle}">
@@ -242,7 +266,9 @@ const getApprovedEmailHTML = (reservation) => {
         <h2 style="color:#28a745; text-align:center;">✅ Vaša Rezervacija je Prihvaćena!</h2>
         <p>Poštovani/a <strong>${safeName}</strong>,</p>
         <p>Sa zadovoljstvom Vas obaveštavamo da je Vaša rezervacija za 
-          <strong>${safeDate} ${safeEndTime ? `od ${safeTime} do ${safeEndTime}` : `u ${safeTime}`}</strong> prihvaćena.</p>
+          <strong>${safeDate} ${
+    safeEndTime ? `od ${safeTime} do ${safeEndTime}` : `u ${safeTime}`
+  }</strong> prihvaćena.</p>
 
         <div style="text-align:center; margin:20px 0;">
           <span style="${badgeStyle}; background-color:#c3f7c7; color:#155724;">
@@ -258,11 +284,13 @@ const getApprovedEmailHTML = (reservation) => {
 };
 
 const getRejectedEmailHTML = (reservation) => {
-  const safeName = DOMPurify.sanitize(reservation.name || '');
-  const safeDate = new Date(reservation.date).toLocaleDateString('sr-RS');
-  const safeTime = DOMPurify.sanitize(reservation.time || '');
-  const safeEndTime = reservation.endTime ? DOMPurify.sanitize(reservation.endTime) : null;
-  
+  const safeName = DOMPurify.sanitize(reservation.name || "");
+  const safeDate = new Date(reservation.date).toLocaleDateString("sr-RS");
+  const safeTime = DOMPurify.sanitize(reservation.time || "");
+  const safeEndTime = reservation.endTime
+    ? DOMPurify.sanitize(reservation.endTime)
+    : null;
+
   return `
     <div style="${baseStyle}">
       <div style="${cardStyle}">
@@ -270,7 +298,9 @@ const getRejectedEmailHTML = (reservation) => {
         <h2 style="color:#dc3545; text-align:center;">❌ Vaša Rezervacija je Odbijena</h2>
         <p>Poštovani/a <strong>${safeName}</strong>,</p>
         <p>Nažalost, Vaša rezervacija za 
-          <strong>${safeDate} ${safeEndTime ? `od ${safeTime} do ${safeEndTime}` : `u ${safeTime}`}</strong> nije moguća i odbijena je.</p>
+          <strong>${safeDate} ${
+    safeEndTime ? `od ${safeTime} do ${safeEndTime}` : `u ${safeTime}`
+  }</strong> nije moguća i odbijena je.</p>
 
         <div style="text-align:center; margin:20px 0;">
           <span style="${badgeStyle}; background-color:#f8d7da; color:#721c24;">
@@ -286,30 +316,34 @@ const getRejectedEmailHTML = (reservation) => {
 };
 
 const getCareerStatusHTML = (application, status) => {
-  const safeFirstName = DOMPurify.sanitize(application.firstName || '');
-  const safeLastName = DOMPurify.sanitize(application.lastName || '');
-  const safePosition = DOMPurify.sanitize(application.position || '');
-  
+  const safeFirstName = DOMPurify.sanitize(application.firstName || "");
+  const safeLastName = DOMPurify.sanitize(application.lastName || "");
+  const safePosition = DOMPurify.sanitize(application.position || "");
+
   const statusMessages = {
     contacted: {
-      title: '📞 Kontaktiraćemo Vas uskoro!',
-      message: 'Vaša prijava je pregledana i zainteresovani smo za razgovor sa Vama.',
-      description: 'Naš tim će Vas kontaktirati u narednih nekoliko dana radi dogovaranja intervjua.'
+      title: "📞 Kontaktiraćemo Vas uskoro!",
+      message:
+        "Vaša prijava je pregledana i zainteresovani smo za razgovor sa Vama.",
+      description:
+        "Naš tim će Vas kontaktirati u narednih nekoliko dana radi dogovaranja intervjua.",
     },
     reviewed: {
-      title: '👀 Vaša prijava je pregledana',
-      message: 'Hvala Vam na interesovanju za rad u Koneti Café.',
-      description: 'Vaša prijava je pregledana i obavestićemo Vas o daljem toku procesa.'
+      title: "👀 Vaša prijava je pregledana",
+      message: "Hvala Vam na interesovanju za rad u Koneti Café.",
+      description:
+        "Vaša prijava je pregledana i obavestićemo Vas o daljem toku procesa.",
     },
     rejected: {
-      title: '🙏 Hvala na prijavi',
-      message: 'Nažalost, trenutno ne možemo da Vam ponudimo poziciju.',
-      description: 'Čuvaćemo Vašu prijavu i kontaktirati Vas ako se ukaže prilika u budućnosti.'
-    }
+      title: "🙏 Hvala na prijavi",
+      message: "Nažalost, trenutno ne možemo da Vam ponudimo poziciju.",
+      description:
+        "Čuvaćemo Vašu prijavu i kontaktirati Vas ako se ukaže prilika u budućnosti.",
+    },
   };
-  
+
   const statusInfo = statusMessages[status] || statusMessages.reviewed;
-  
+
   return `
     <div style="${baseStyle}">
       <div style="${cardStyle}">
@@ -339,10 +373,10 @@ const getCareerStatusHTML = (application, status) => {
 };
 
 const getCareerConfirmationHTML = (application) => {
-  const safeFirstName = DOMPurify.sanitize(application.firstName || '');
-  const safeLastName = DOMPurify.sanitize(application.lastName || '');
-  const safePosition = DOMPurify.sanitize(application.position || '');
-  
+  const safeFirstName = DOMPurify.sanitize(application.firstName || "");
+  const safeLastName = DOMPurify.sanitize(application.lastName || "");
+  const safePosition = DOMPurify.sanitize(application.position || "");
+
   return `
     <div style="${baseStyle}">
       <div style="${cardStyle}">
@@ -385,13 +419,13 @@ const getCareerConfirmationHTML = (application) => {
 };
 
 const getCareerApplicationHTML = (application) => {
-  const safeFirstName = DOMPurify.sanitize(application.firstName || '');
-  const safeLastName = DOMPurify.sanitize(application.lastName || '');
-  const safeEmail = DOMPurify.sanitize(application.email || '');
-  const safePhone = DOMPurify.sanitize(application.phone || '');
-  const safePosition = DOMPurify.sanitize(application.position || '');
-  const safeCoverLetter = DOMPurify.sanitize(application.coverLetter || '');
-  
+  const safeFirstName = DOMPurify.sanitize(application.firstName || "");
+  const safeLastName = DOMPurify.sanitize(application.lastName || "");
+  const safeEmail = DOMPurify.sanitize(application.email || "");
+  const safePhone = DOMPurify.sanitize(application.phone || "");
+  const safePosition = DOMPurify.sanitize(application.position || "");
+  const safeCoverLetter = DOMPurify.sanitize(application.coverLetter || "");
+
   return `
     <div style="${baseStyle}">
       <div style="${cardStyle}">
@@ -443,27 +477,28 @@ const getCareerApplicationHTML = (application) => {
   `;
 };
 
-
 // --- Konfiguracija Nodemailer Transportera ---
 const transporterOptions = {
   host: process.env.SMTP_HOST,
   port: parseInt(process.env.SMTP_PORT, 10),
-  secure: process.env.SMTP_SECURE === 'true',
+  secure: process.env.SMTP_SECURE === "true",
   connectionTimeout: 10000, // 10 sekundi
-  greetingTimeout: 5000,     // 5 sekundi
-  socketTimeout: 10000,      // 10 sekundi
+  greetingTimeout: 5000, // 5 sekundi
+  socketTimeout: 10000, // 10 sekundi
   auth: {
     user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS
+    pass: process.env.SMTP_PASS,
   },
   pool: true,
   maxConnections: 1,
-  maxMessages: 3
+  maxMessages: 3,
 };
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === "development") {
   transporterOptions.tls = { rejectUnauthorized: false };
-  logger.warn('TLS certificate check is disabled in development mode for nodemailer.');
+  logger.warn(
+    "TLS certificate check is disabled in development mode for nodemailer."
+  );
 }
 
 const transporter = nodemailer.createTransport(transporterOptions);
@@ -475,14 +510,17 @@ const sendEmailWithRetry = async (mailOptions, maxRetries = 2) => {
       const result = await transporter.sendMail(mailOptions);
       return result;
     } catch (error) {
-      logger.warn(`Email attempt ${attempt}/${maxRetries} failed:`, error.message);
-      
+      logger.warn(
+        `Email attempt ${attempt}/${maxRetries} failed:`,
+        error.message
+      );
+
       if (attempt === maxRetries) {
         throw error;
       }
-      
+
       // Čekaj 2 sekunde pre ponovnog pokušaja
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
     }
   }
 };
@@ -491,29 +529,40 @@ const sendEmailWithRetry = async (mailOptions, maxRetries = 2) => {
 
 export const sendUserConfirmationEmail = async (reservation) => {
   if (!reservation || !reservation.email) {
-    logger.warn('Skipping user confirmation email: missing reservation data or email.');
+    logger.warn(
+      "Skipping user confirmation email: missing reservation data or email."
+    );
     return;
   }
   try {
-    console.log('[DEBUG] Sending user confirmation email to:', reservation.email);
-    console.log('[DEBUG] SMTP Config:', {
+    console.log(
+      "[DEBUG] Sending user confirmation email to:",
+      reservation.email
+    );
+    console.log("[DEBUG] SMTP Config:", {
       host: process.env.SMTP_HOST,
       port: process.env.SMTP_PORT,
-      user: process.env.SMTP_USER
+      user: process.env.SMTP_USER,
     });
-    
+
     const result = await sendEmailWithRetry({
-      from: `Koneti Café <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
+      from: {
+        name: "Koneti Café",
+        address: process.env.MAIL_FROM || process.env.SMTP_USER,
+      },
       to: reservation.email,
-      subject: 'Potvrda prijema rezervacije - Koneti Café',
+      subject: "Potvrda prijema rezervacije - Koneti Café",
       html: getUserConfirmationHTML(reservation),
     });
-    
-    console.log('[DEBUG] User email sent successfully:', result.messageId);
+
+    console.log("[DEBUG] User email sent successfully:", result.messageId);
     logger.info(`Confirmation email sent to ${reservation.email}`);
   } catch (emailError) {
-    console.error('[DEBUG] User email failed:', emailError);
-    logger.error(`Failed to send confirmation email to ${reservation.email}:`, emailError);
+    console.error("[DEBUG] User email failed:", emailError);
+    logger.error(
+      `Failed to send confirmation email to ${reservation.email}:`,
+      emailError
+    );
     throw emailError;
   }
 };
@@ -521,23 +570,26 @@ export const sendUserConfirmationEmail = async (reservation) => {
 export const sendAdminNotificationEmail = async (reservation) => {
   const adminEmail = process.env.ADMIN_EMAIL;
   if (!adminEmail) {
-    logger.warn('ADMIN_EMAIL not set, skipping admin notification email.');
+    logger.warn("ADMIN_EMAIL not set, skipping admin notification email.");
     return;
   }
   try {
-    console.log('[DEBUG] Sending admin notification email to:', adminEmail);
-    
+    console.log("[DEBUG] Sending admin notification email to:", adminEmail);
+
     const result = await sendEmailWithRetry({
-      from: `Koneti Café Notifikacije <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
+      from: {
+        name: "Koneti Café Notifikacije",
+        address: process.env.MAIL_FROM || process.env.SMTP_USER,
+      },
       to: adminEmail,
       subject: `Nova rezervacija: ${reservation.name}`,
       html: getAdminNotificationHTML(reservation),
     });
-    
-    console.log('[DEBUG] Admin email sent successfully:', result.messageId);
+
+    console.log("[DEBUG] Admin email sent successfully:", result.messageId);
     logger.info(`Admin notification sent for reservation ${reservation._id}`);
   } catch (adminEmailError) {
-    console.error('[DEBUG] Admin email failed:', adminEmailError);
+    console.error("[DEBUG] Admin email failed:", adminEmailError);
     logger.error(`Failed to send admin notification email:`, adminEmailError);
     throw adminEmailError;
   }
@@ -545,38 +597,44 @@ export const sendAdminNotificationEmail = async (reservation) => {
 
 export const sendApprovedEmail = async (reservation) => {
   if (!reservation || !reservation.email) {
-    logger.warn('Skipping approval email: missing reservation data or email.');
+    logger.warn("Skipping approval email: missing reservation data or email.");
     return;
   }
   try {
     await sendEmailWithRetry({
-      from: `Koneti Café <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
+      from: {
+        name: "Koneti Café",
+        address: process.env.MAIL_FROM || process.env.SMTP_USER,
+      },
       to: reservation.email,
-      subject: 'Vaša rezervacija je prihvaćena!',
+      subject: "Vaša rezervacija je prihvaćena!",
       html: getApprovedEmailHTML(reservation),
     });
     logger.info(`Approval email sent to ${reservation.email}`);
   } catch (e) {
-    logger.error('Failed to send approval email:', e);
+    logger.error("Failed to send approval email:", e);
     throw e;
   }
 };
 
 export const sendRejectedEmail = async (reservation) => {
   if (!reservation || !reservation.email) {
-    logger.warn('Skipping rejection email: missing reservation data or email.');
+    logger.warn("Skipping rejection email: missing reservation data or email.");
     return;
   }
   try {
     await sendEmailWithRetry({
-      from: `Koneti Café <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
+      from: {
+        name: "Koneti Café",
+        address: process.env.MAIL_FROM || process.env.SMTP_USER,
+      },
       to: reservation.email,
-      subject: 'Vaša rezervacija je odbijena',
+      subject: "Vaša rezervacija je odbijena",
       html: getRejectedEmailHTML(reservation),
     });
     logger.info(`Rejection email sent to ${reservation.email}`);
   } catch (e) {
-    logger.error('Failed to send rejection email:', e);
+    logger.error("Failed to send rejection email:", e);
     throw e;
   }
 };
@@ -584,68 +642,88 @@ export const sendRejectedEmail = async (reservation) => {
 export const sendCareerApplicationEmail = async (application) => {
   const adminEmail = process.env.ADMIN_EMAIL;
   if (!adminEmail) {
-    logger.warn('ADMIN_EMAIL not set, skipping career application email.');
+    logger.warn("ADMIN_EMAIL not set, skipping career application email.");
     return;
   }
   try {
     await sendEmailWithRetry({
-      from: `Koneti Café Karijere <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
+      from: {
+        name: "Koneti Café Karijere",
+        address: process.env.MAIL_FROM || process.env.SMTP_USER,
+      },
       to: adminEmail,
       subject: `Nova prijava za posao: ${application.firstName} ${application.lastName} - ${application.position}`,
       html: getCareerApplicationHTML(application),
     });
-    logger.info(`Career application email sent for ${application.firstName} ${application.lastName}`);
+    logger.info(
+      `Career application email sent for ${application.firstName} ${application.lastName}`
+    );
   } catch (e) {
-    logger.error('Failed to send career application email:', e);
+    logger.error("Failed to send career application email:", e);
     throw e;
   }
 };
 
 export const sendCareerConfirmationEmail = async (application) => {
   if (!application || !application.email) {
-    logger.warn('Skipping career confirmation email: missing application data or email.');
+    logger.warn(
+      "Skipping career confirmation email: missing application data or email."
+    );
     return;
   }
   try {
     await sendEmailWithRetry({
-      from: `Koneti Café <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
+      from: {
+        name: "Koneti Café",
+        address: process.env.MAIL_FROM || process.env.SMTP_USER,
+      },
       to: application.email,
-      subject: 'Potvrda prijema prijave za posao - Koneti Café',
+      subject: "Potvrda prijema prijave za posao - Koneti Café",
       html: getCareerConfirmationHTML(application),
     });
     logger.info(`Career confirmation email sent to ${application.email}`);
   } catch (e) {
-    logger.error('Failed to send career confirmation email:', e);
+    logger.error("Failed to send career confirmation email:", e);
     throw e;
   }
 };
 
 export const sendCareerStatusEmail = async (application, status) => {
   if (!application || !application.email) {
-    logger.warn('Skipping career status email: missing application data or email.');
+    logger.warn(
+      "Skipping career status email: missing application data or email."
+    );
     return;
   }
   try {
-    const subject = status === 'contacted' 
-      ? 'Kontaktiraćemo Vas uskoro - Koneti Café'
-      : `Ažuriranje statusa prijave - Koneti Café`;
-      
+    const subject =
+      status === "contacted"
+        ? "Kontaktiraćemo Vas uskoro - Koneti Café"
+        : `Ažuriranje statusa prijave - Koneti Café`;
+
     await sendEmailWithRetry({
-      from: `Koneti Café <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
+      from: {
+        name: "Koneti Café",
+        address: process.env.MAIL_FROM || process.env.SMTP_USER,
+      },
       to: application.email,
       subject: subject,
       html: getCareerStatusHTML(application, status),
     });
-    logger.info(`Career status email sent to ${application.email} for status: ${status}`);
+    logger.info(
+      `Career status email sent to ${application.email} for status: ${status}`
+    );
   } catch (e) {
-    logger.error('Failed to send career status email:', e);
+    logger.error("Failed to send career status email:", e);
     throw e;
   }
 };
 
 export const sendAdminActivationEmail = async (admin, activationLink) => {
   if (!admin || !admin.email) {
-    logger.warn('Skipping admin activation email: missing admin data or email.');
+    logger.warn(
+      "Skipping admin activation email: missing admin data or email."
+    );
     return;
   }
   try {
@@ -654,7 +732,9 @@ export const sendAdminActivationEmail = async (admin, activationLink) => {
         <div style="${cardStyle}">
           ${logoTemplate}
           <h2 style="color:#5a3e36; text-align:center;">Aktivacija admin naloga</h2>
-          <p style="font-size:18px;">Zdravo <strong>${DOMPurify.sanitize(admin.name || admin.email)}</strong>,</p>
+          <p style="font-size:18px;">Zdravo <strong>${DOMPurify.sanitize(
+            admin.name || admin.email
+          )}</strong>,</p>
           <p>Za aktivaciju Vašeg admin naloga kliknite na sledeći link:</p>
           <div style="text-align:center; margin:30px 0;">
             <a href="${activationLink}" style="${buttonStyle}; text-decoration:none;">Aktiviraj nalog</a>
@@ -665,14 +745,17 @@ export const sendAdminActivationEmail = async (admin, activationLink) => {
     `;
 
     await sendEmailWithRetry({
-      from: `Koneti Café <${process.env.MAIL_FROM || process.env.SMTP_USER}>`,
+      from: {
+        name: "Koneti Café",
+        address: process.env.MAIL_FROM || process.env.SMTP_USER,
+      },
       to: admin.email,
-      subject: 'Aktivacija admin naloga - Koneti Café',
+      subject: "Aktivacija admin naloga - Koneti Café",
       html,
     });
     logger.info(`Admin activation email sent to ${admin.email}`);
   } catch (e) {
-    logger.error('Failed to send admin activation email:', e);
+    logger.error("Failed to send admin activation email:", e);
     throw e;
   }
 };
