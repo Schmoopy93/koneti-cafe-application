@@ -18,6 +18,7 @@ import {
 import { useTranslation } from "react-i18next";
 import "./Footer.scss";
 import GoogleMap from "../utils/GoogleMap";
+import Image from "next/image";
 
 const Footer: React.FC = () => {
   const { t } = useTranslation();
@@ -31,10 +32,12 @@ const Footer: React.FC = () => {
       <div className="footer-top">
         <div className="footer-logo-section">
           <div className="footer-logo">
-            <img
+            <Image
               src="/koneti-logo.png"
               alt="Koneti Logo"
               className="logo-img"
+              width={200}
+              height={60}
             />
           </div>
           <p className="footer-description">

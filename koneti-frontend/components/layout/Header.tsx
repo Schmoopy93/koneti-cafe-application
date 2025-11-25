@@ -16,6 +16,7 @@ import {
 import { useAuth } from "../../contexts/AuthContext";
 import { useTranslation } from "react-i18next";
 import ReactCountryFlag from "react-country-flag";
+import Image from "next/image";
 import "./Header.scss";
 
 const Header: React.FC = () => {
@@ -88,9 +89,12 @@ const Header: React.FC = () => {
       <header className="navbar">
         <div className="nav-container">
           <Link href="/" className="logo">
-            <img
+            <Image
               src="/koneti-logo-header.png"
               alt="Café Koneti"
+              width={150}
+              height={50}
+              priority
               className="logo-img"
             />
           </Link>
@@ -107,9 +111,12 @@ const Header: React.FC = () => {
           href={mounted && !loading && isAuthenticated ? getLocalizedPath("/") : "/login"}
           className="logo"
         >
-          <img
-            src="/koneti-logo-header.png"
+          <Image 
+            src="/koneti-logo-header.png" 
             alt="Café Koneti"
+            width={150}
+            height={50}
+            priority
             className="logo-img"
           />
         </Link>
