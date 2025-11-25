@@ -216,7 +216,7 @@ const getAdminNotificationHTML = (reservation) => {
         </div>
 
         <div style="text-align:center; margin:30px 0;">
-          <a href="https://koneti-cafe-application.vercel.app/admin" style="${buttonStyle}; text-decoration:none;">
+          <a href="https://koneticaffee.com/api/admin" style="${buttonStyle}; text-decoration:none;">
             📊 Idi na Admin Panel
           </a>
         </div>
