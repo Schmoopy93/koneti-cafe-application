@@ -139,7 +139,8 @@
         "validationError": "Podaci za rezervaciju nisu validni",
         "serverError": "Došlo je do greške na serveru",
         "dateRequired": "Datum je obavezan",
-        "invalidDateFormat": "Nevažeći format datuma"
+        "invalidDateFormat": "Nevažeći format datuma",
+        "outsideWorkingHours": "Radno vreme kafica je 07:30 - 23:00"
       },
       "submit": "Pošalji rezervaciju",
       "submitting": "Šalje se...",

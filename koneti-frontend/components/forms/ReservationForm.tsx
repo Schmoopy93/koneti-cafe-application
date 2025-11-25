@@ -477,18 +477,26 @@ export default function ReservationForm() {
     if (!formData.phone) errors.phone = t("home.reservation.errors.phone");
     if (!formData.time) errors.time = t("home.reservation.errors.time");
 
-    // Date validation with package-specific requirements
+    // Date validation - check if date is in the past
     if (!formData.date) {
       errors.date = t("home.reservation.errors.date");
     } else {
-      const pkg = getPackageBySubType(formData.subType);
-      if (pkg && pkg.daysRequired > 0) {
-        const selectedDate = new Date(formData.date);
-        const minDate = calculateMinDate(pkg.daysRequired);
+      const selectedDate = new Date(formData.date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
-        if (selectedDate < minDate) {
-          const errorKey = getDateErrorKey(pkg.daysRequired);
-          errors.date = t(`home.reservation.errors.${errorKey}`);
+      // Check if date is in the past
+      if (selectedDate < today) {
+        errors.date = t("home.reservation.errors.datePast");
+      } else {
+        // Then check for package-specific date requirements
+        const pkg = getPackageBySubType(formData.subType);
+        if (pkg && pkg.daysRequired > 0) {
+          const minDate = calculateMinDate(pkg.daysRequired);
+          if (selectedDate < minDate) {
+            const errorKey = getDateErrorKey(pkg.daysRequired);
+            errors.date = t(`home.reservation.errors.${errorKey}`);
+          }
         }
       }
     }
@@ -521,6 +529,21 @@ export default function ReservationForm() {
             }
           }
         }
+      }
+    }
+
+    // Time validation - check if time is within working hours (07:30 - 23:00)
+    if (formData.time) {
+      const [hour, minute] = formData.time.split(":").map(Number);
+      const timeInMinutes = hour * 60 + minute;
+      const startWorkingHours = 7 * 60 + 30; // 07:30
+      const endWorkingHours = 23 * 60; // 23:00
+
+      if (
+        timeInMinutes < startWorkingHours ||
+        timeInMinutes >= endWorkingHours
+      ) {
+        errors.time = t("home.reservation.errors.outsideWorkingHours");
       }
     }
 

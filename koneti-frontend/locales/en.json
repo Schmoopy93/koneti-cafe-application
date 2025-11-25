@@ -141,7 +141,8 @@
         "validationError": "Reservation data is not valid",
         "serverError": "A server error occurred",
         "dateRequired": "Date is required",
-        "invalidDateFormat": "Invalid date format"
+        "invalidDateFormat": "Invalid date format",
+        "outsideWorkingHours": "Cafe working hours are 07:30 - 23:00"
       },
       "submit": "Send reservation",
       "submitting": "Sending...",
