@@ -182,7 +182,7 @@ export default async function LangLayout({ children, params }: Props) {
       ? "Premium specialty coffee, brunch and event space in Novi Sad. Perfect for business meetings, celebrations and private gatherings."
       : "Premium specialty kafa, brunch i prostor za događaje u Novom Sadu. Idealno za poslovne sastanke, proslave i privatna okupljanja.",
     "url": "https://koneticaffee.com",
-    "telephone": "+381-65-6337371",
+    "telephone": "+381-69-2565563",
     "email": "konetibulevar@gmail.com",
     "address": {
       "@type": "PostalAddress",

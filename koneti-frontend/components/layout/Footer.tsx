@@ -67,7 +67,7 @@ const Footer: React.FC = () => {
               <FontAwesomeIcon icon={faPhone} />
               <div>
                 <strong>{t("home.footer.phone")}</strong>
-                <span>+381 65 6337371</span>
+                <span>+381 69 2565563 (Aleksandra)</span>
               </div>
             </div>
             <div className="contact-item">
@@ -86,15 +86,15 @@ const Footer: React.FC = () => {
             <div className="hours-card">
               <div className="hours-item">
                 <span className="day">{t("home.footer.mondayFriday")}</span>
-                <span className="time">07:00 - 23:00</span>
+                <span className="time">07:30 - 23:00</span>
               </div>
               <div className="hours-item weekend">
                 <span className="day">{t("home.footer.saturday")}</span>
-                <span className="time">08:00 - 00:00</span>
+                <span className="time">07:30 - 23:00</span>
               </div>
               <div className="hours-item weekend separate">
                 <span className="day">{t("home.footer.sunday")}</span>
-                <span className="time">08:00 - 23:00</span>
+                <span className="time">09:00 - 23:00</span>
               </div>
             </div>
           </div>

@@ -115,7 +115,7 @@ const getOrganizationJsonLd = (lang: string) => ({
     "latitude": 45.25012974165488,
     "longitude": 19.838497955822376
   },
-  "telephone": "+381-65-6337371",
+  "telephone": "+381-69-2565563",
   "email": "konetibulevar@gmail.com",
   "sameAs": [
     "https://www.facebook.com/KonetiCafe",

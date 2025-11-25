@@ -101,7 +101,7 @@ const getEventJsonLd = (lang: string) => ({
   "name": "Koneti Café",
   "image": "https://koneticaffee.com/koneti-cafe.jpg",
   "url": "https://koneticaffee.com",
-  "telephone": "+381-65-6337371",
+  "telephone": "+381-69-2565563",
   "email": "konetibulevar@gmail.com",
   "address": {
     "@type": "PostalAddress",
