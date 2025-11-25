@@ -23,6 +23,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     keywords: lang === 'sr'
       ? ["meni", "kafa", "espresso", "cappuccino", "filter kafa", "piće", "brunch", "cedjeni sokovi", "kafić Novi Sad", "doručak", "poslastice", "specialty coffee", "Koneti"]
       : ["menu", "coffee", "espresso", "cappuccino", "filter coffee", "drinks", "brunch", "fresh juices", "cafe Novi Sad", "breakfast", "pastries", "specialty coffee", "Koneti"],
+    verification: {
+      google: '1vHXZcaq_PxJ4JsGFbrV5PCygadNzzjPeUi',
+    },
     alternates: {
       canonical: `https://koneticaffee.com/${lang}/menu`,
       languages: {

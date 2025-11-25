@@ -60,6 +60,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           'max-snippet': -1,
         },
       },
+      verification: {
+        google: '1vHXZcaq_PxJ4JsGFbrV5PCygadNzzjPeUi',
+      },
     },
     en: {
       title: "Koneti Café – Perfect place for coffee, celebrations and business meetings in Novi Sad",
@@ -111,6 +114,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           'max-image-preview': 'large',
           'max-snippet': -1,
         },
+      },
+      verification: {
+        google: '1vHXZcaq_PxJ4JsGFbrV5PCygadNzzjPeUi',
       },
     },
   };

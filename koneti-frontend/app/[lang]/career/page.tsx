@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     verification: {
-      google: "your-google-verification-code",
+      google: "1vHXZcaq_PxJ4JsGFbrV5PCygadNzzjPeUi",
     },
     category: "Employment",
     applicationName: "Koneti Café Careers Portal",

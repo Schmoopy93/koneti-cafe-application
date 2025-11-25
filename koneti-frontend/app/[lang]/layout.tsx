@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       category: "Café",
       applicationName: "Koneti Café",
       other: {
-        'google-site-verification': 'your-verification-code',
+        'google-site-verification': '1vHXZcaq_PxJ4JsGFbrV5PCygadNzzjPeUi',
         'facebook-domain-verification': 'your-verification-code',
       },
       openGraph: {
@@ -84,7 +84,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
       },
       verification: {
-        google: 'your-google-site-verification-code',
+        google: '1vHXZcaq_PxJ4JsGFbrV5PCygadNzzjPeUi',
       },
       alternates: {
         canonical: 'https://koneticaffee.com/sr',
@@ -110,7 +110,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       category: "Café",
       applicationName: "Koneti Café",
       other: {
-        'google-site-verification': 'your-verification-code',
+        'google-site-verification': '1vHXZcaq_PxJ4JsGFbrV5PCygadNzzjPeUi',
         'facebook-domain-verification': 'your-verification-code',
       },
       openGraph: {
@@ -150,7 +150,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
       },
       verification: {
-        google: 'your-google-site-verification-code',
+        google: '1vHXZcaq_PxJ4JsGFbrV5PCygadNzzjPeUi',
       },
       alternates: {
         canonical: 'https://koneticaffee.com/en',

@@ -25,6 +25,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       : ["about us", "koneti café", "story", "mission", "values", "cafe", "Novi Sad", "2022"],
     authors: [{ name: "Koneti Café", url: "https://koneticaffee.com" }],
     creator: "Koneti Café",
+    verification: {
+      google: '1vHXZcaq_PxJ4JsGFbrV5PCygadNzzjPeUi',
+    },
     alternates: {
       canonical: `https://koneticaffee.com/${lang}/about`,
       languages: {
