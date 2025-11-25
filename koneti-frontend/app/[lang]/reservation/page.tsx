@@ -154,12 +154,12 @@ const getEventJsonLd = (lang: string) => ({
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": "Saturday",
       "opens": "07:30",
-      "closes": "24:00"
+      "closes": "23:00"
     },
     {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": "Sunday",
-      "opens": "08:00",
+      "opens": "09:00",
       "closes": "23:00"
     }
   ],
