@@ -13,14 +13,14 @@ import {
   faBusinessTime,
   faImage
 } from "@fortawesome/free-solid-svg-icons";
-import { useAuth } from "../../contexts/AuthContext";
 import { useTranslation } from "react-i18next";
 import ReactCountryFlag from "react-country-flag";
 import Image from "next/image";
 import "./Header.scss";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Header: React.FC = () => {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const pathname = usePathname();
@@ -31,22 +31,22 @@ const Header: React.FC = () => {
 
   // Extract current language from pathname
   const currentLang = pathname?.startsWith('/sr') ? 'sr' : pathname?.startsWith('/en') ? 'en' : 'sr';
-  
+
   // Helper function to switch language in URL
   const switchLanguage = (newLang: string) => {
     const currentPath = pathname || '/';
     let newPath = currentPath;
-    
+
     // Remove current language prefix
     if (currentPath.startsWith('/sr')) {
       newPath = currentPath.substring(3) || '/';
     } else if (currentPath.startsWith('/en')) {
       newPath = currentPath.substring(3) || '/';
     }
-    
+
     // Add new language prefix
     newPath = `/${newLang}${newPath}`;
-    
+
     router.push(newPath);
     setIsLangDropdownOpen(false);
     setIsOpen(false);
@@ -84,6 +84,18 @@ const Header: React.FC = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isLangDropdownOpen]);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("body--no-scroll");
+    } else {
+      document.body.classList.remove("body--no-scroll");
+    }
+    // Clean up on unmount
+    return () => {
+      document.body.classList.remove("body--no-scroll");
+    };
+  }, [isOpen]);
+
   if (!mounted) {
     return (
       <header className="navbar">
@@ -108,7 +120,7 @@ const Header: React.FC = () => {
       <div className="nav-container">
         {/* Logo vodi na /login ako nije autentifikovan, / ako jeste */}
         <Link
-          href={mounted && !loading && isAuthenticated ? getLocalizedPath("/") : "/login"}
+          href={isAuthenticated ? getLocalizedPath("/") : "/login"}
           className="logo"
         >
           <Image 
@@ -144,44 +156,39 @@ const Header: React.FC = () => {
             <FontAwesomeIcon icon={faMartiniGlass} /> {t("header.menu")}
           </Link>
 
-          {!loading && !isAuthenticated && (
-            <Link
-              href={getLocalizedPath("/reservation")}
-              onClick={() => setIsOpen(false)}
-              title={t("header.reservation")}
-              style={{ '--delay': 3 } as React.CSSProperties}
-            >
-              <FontAwesomeIcon icon={faCalendarCheck} />{" "}
-              {t("header.reservation")}
-            </Link>
+          {!isAuthenticated && (
+            <>
+              <Link
+                href={getLocalizedPath("/reservation")}
+                onClick={() => setIsOpen(false)}
+                title={t("header.reservation")}
+                style={{ '--delay': 3 } as React.CSSProperties}
+              >
+                <FontAwesomeIcon icon={faCalendarCheck} />{" "}
+                {t("header.reservation")}
+              </Link>
+              <Link
+                href={getLocalizedPath("/about")}
+                onClick={() => setIsOpen(false)}
+                title={t("header.about")}
+                style={{ '--delay': 4 } as React.CSSProperties}
+              >
+                <FontAwesomeIcon icon={faImage} />{" "}
+                {t("header.about")}
+              </Link>
+              <Link
+                href={getLocalizedPath("/career")}
+                onClick={() => setIsOpen(false)}
+                title={t("header.career")}
+                style={{ '--delay': 5 } as React.CSSProperties}
+              >
+                <FontAwesomeIcon icon={faBusinessTime} />{" "}
+                {t("header.career")}
+              </Link>
+            </>
           )}
 
-          
-          {!loading && !isAuthenticated && (
-            <Link
-              href={getLocalizedPath("/about")}
-              onClick={() => setIsOpen(false)}
-              title={t("header.about")}
-              style={{ '--delay': 4 } as React.CSSProperties}
-            >
-              <FontAwesomeIcon icon={faImage} />{" "}
-              {t("header.about")}
-            </Link>
-          )}
-
-          {!loading && !isAuthenticated && (
-            <Link
-              href={getLocalizedPath("/career")}
-              onClick={() => setIsOpen(false)}
-              title={t("header.career")}
-              style={{ '--delay': 5 } as React.CSSProperties}
-            >
-              <FontAwesomeIcon icon={faBusinessTime} />{" "}
-              {t("header.career")}
-            </Link>
-          )}
-
-          {!loading && isAuthenticated && (
+          {isAuthenticated && (
             <Link
               href={getLocalizedPath("/admin")}
               onClick={() => setIsOpen(false)}
@@ -255,7 +262,6 @@ const Header: React.FC = () => {
           </div>
         </nav>
 
-        {/* Desktop language dropdown */}
         {/* Desktop language dropdown */}
         <div className="header-right">
           <div className="language-dropdown">

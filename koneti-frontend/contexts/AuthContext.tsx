@@ -130,7 +130,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       clearCSRFToken();
     }
   };
-
+  
   return (
     <AuthContext.Provider
       value={{ isAuthenticated, loading, login, logout, checkAuth, user }}
@@ -147,3 +147,17 @@ export const useAuth = (): IAuthContext => {
   }
   return context;
 };
+
+export function getAuthStatus(): boolean {
+  if (typeof window === "undefined") return false;
+  const cached = sessionStorage.getItem("authResult");
+  if (cached) {
+    try {
+      const { isAuthenticated } = JSON.parse(cached);
+      return !!isAuthenticated;
+    } catch {
+    }
+  }
+  const token = getCookie("adminToken") || localStorage.getItem("adminToken");
+  return !!token;
+}

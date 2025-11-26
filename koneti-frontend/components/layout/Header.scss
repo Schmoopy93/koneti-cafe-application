@@ -764,3 +764,9 @@ $shadow-inset: inset 0 2px 8px rgba(255, 255, 255, 0.3);
     display: none !important;
   }
 }
+
+.body--no-scroll {
+  overflow: hidden !important;
+  position: fixed;
+  width: 100vw;
+}

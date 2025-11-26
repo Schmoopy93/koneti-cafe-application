@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { I18nextProvider } from "react-i18next";
 import i18n from "../i18n";
-import { AuthProvider } from "./AuthContext";
+import { AuthProvider, getAuthStatus } from "./AuthContext";
 import Header from "../components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/utils/CookieConsent";
@@ -19,6 +19,7 @@ export default function ClientProviders({
   lang: string;
 }) {
   const [mounted, setMounted] = useState(false);
+   const isAuthenticated = getAuthStatus();
 
   useEffect(() => {
     setMounted(true);
