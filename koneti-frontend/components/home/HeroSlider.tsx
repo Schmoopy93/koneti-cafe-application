@@ -6,6 +6,7 @@ import type { Settings } from "react-slick";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import Spinner from "../ui/Spinner";
+import Image from "next/image";
 import "./HeroSlider.scss";
 
 // Dinamički import Slider komponente da izbegnemo SSR probleme
@@ -111,6 +112,16 @@ const HeroSlider: React.FC = () => {
                   backgroundImage: `url(${slide.image})`,
                 }}
               >
+                {slide.image && (
+                  <Image
+                    src={slide.image}
+                    alt={slide.title}
+                    width={1200}
+                    height={400}
+                    style={{ objectFit: 'cover', width: '100%', height: '400px' }}
+                    priority
+                  />
+                )}
                 <div className="slide-overlay"></div>
               </div>
             )}

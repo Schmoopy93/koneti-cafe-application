@@ -101,12 +101,15 @@ $animation-delay: 0.3s;
 
 // ===== Main Slider =====
 .hero-slider {
+  min-height: 400px; // Adjust as needed for your design
   position: relative;
+  width: 100%;
+  overflow: hidden;
+
   height: $hero-height;
   background: $color-black;
   border-radius: 0 0 $radius-sm $radius-sm;
   margin-top: 0;
-  overflow: hidden;
   opacity: 0;
   transform: translateY(30px) scale(0.98);
   animation: slideUpFade $animation-main ease-out $animation-delay forwards;
@@ -123,7 +126,12 @@ $animation-delay: 0.3s;
   .slide,
   .slide-image,
   .slide-video {
+    min-height: 400px; // Match the slider height
     height: $hero-height;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
   }
 
   .slide-image {
