@@ -5,6 +5,14 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://koneticaffee.com'),
   title: "Koneti Café - Premium Specialty Kafa i Proslave u Novom Sadu",
   description: "Koneti Café je premium kafić na Bulevaru Oslobođenja 97 u Novom Sadu. Specialty coffee, brunch, poslovni sastanci, proslave i privatni događaji. Rezervacije dostupne 24/7.",
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
   keywords: [
     "koneti café", "kafić", "kafa", "specialty coffee", "brunch", "Novi Sad",
     "poslovni sastanci", "proslave", "privatni događaji", "ketering",
