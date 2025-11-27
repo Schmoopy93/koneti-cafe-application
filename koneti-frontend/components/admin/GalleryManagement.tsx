@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faImage,
@@ -272,11 +273,14 @@ const GalleryManagement: React.FC = () => {
               {currentImages.map((image) => (
                 <div key={image._id} className="gallery-mgmt-item">
                   <div className="gallery-mgmt-image-wrapper">
-                    <img
+                    <Image
                       src={image.image}
                       alt={getLocalizedText(image.title)}
                       className="gallery-mgmt-image"
                       loading="lazy"
+                      width={300}
+                      height={200}
+                      quality={75}
                     />
                     <div className="gallery-mgmt-overlay">
                       <button
@@ -397,10 +401,13 @@ const GalleryManagement: React.FC = () => {
               <button className="gallery-mgmt-modal-close" onClick={() => setSelectedImage(null)}>
                 <FontAwesomeIcon icon={faTimes} />
               </button>
-              <img
+              <Image
                 src={selectedImage.image}
                 alt={getLocalizedText(selectedImage.title)}
                 className="gallery-mgmt-modal-image"
+                width={600}
+                height={400}
+                quality={85}
               />
             </div>
           </div>

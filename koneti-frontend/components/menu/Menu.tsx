@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCoffee,
@@ -456,11 +457,14 @@ const MenuClient: React.FC<MenuClientProps> = ({
                   }}
                 >
                   {drink.image && !imageErrors.has(drink._id) ? (
-                    <img
+                    <Image
                       src={drink.image}
                       alt={`Koneti Cafe - ${getDrinkName(drink)} - ${getCategoryName(drink.category)}`}
                       className="menu-public-drink-img"
                       loading="lazy"
+                      width={400}
+                      height={300}
+                      quality={75}
                       itemProp="image"
                       onError={() => {
                         setImageErrors(prev => new Set(prev).add(drink._id));
@@ -540,10 +544,13 @@ const MenuClient: React.FC<MenuClientProps> = ({
               <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
             </button>
             <div className="image-preview-container">
-              <img 
+              <Image 
                 src={selectedImage.src} 
                 alt={selectedImage.name}
                 className="preview-image"
+                width={600}
+                height={600}
+                quality={85}
               />
             </div>
             <h3>{getDrinkName({ name: selectedImage.name } as Drink)}</h3>

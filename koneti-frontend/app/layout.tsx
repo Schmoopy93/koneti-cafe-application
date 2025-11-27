@@ -80,6 +80,11 @@ export const metadata: Metadata = {
       'x-default': 'https://koneticaffee.com/sr',
     },
   },
+  other: {
+    // Preload hints for critical images - will be added to <head>
+    'preload-image-1': 'https://koneticaffee.com/koneti-kafe.jpg',
+    'preload-image-2': 'https://koneticaffee.com/koneti-logo.png',
+  },
 };
 
 export default function RootLayout({

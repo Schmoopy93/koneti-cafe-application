@@ -328,6 +328,21 @@ export default async function LangLayout({ children, params }: Props) {
         <meta name="theme-color" content="#cfa68a" />
         <meta name="msapplication-TileColor" content="#cfa68a" />
         <meta name="google-site-verification" content="your-verification-code" />
+        {/* Preload critical images and fonts */}
+        <link
+          rel="preload"
+          as="image"
+          href="https://koneticaffee.com/koneti-kafe.jpg"
+          type="image/jpeg"
+          fetchPriority="high"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="https://koneticaffee.com/koneti-logo.png"
+          type="image/png"
+          fetchPriority="high"
+        />
       </head>
       <body className={inter.className} suppressHydrationWarning>
         <Script
@@ -336,7 +351,7 @@ export default async function LangLayout({ children, params }: Props) {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(cafeJsonLd),
           }}
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
         />
         <Script
           id="website-jsonld"
@@ -344,7 +359,7 @@ export default async function LangLayout({ children, params }: Props) {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(webSiteJsonLd),
           }}
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
         />
         <ClientProviders lang={lang}>
           {children}
