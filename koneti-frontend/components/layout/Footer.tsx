@@ -115,7 +115,7 @@ const Footer: React.FC = () => {
               <FontAwesomeIcon icon={faMapMarkerAlt} />
               <div>
                 <strong>{t("home.footer.address")}</strong>
-                <span>
+                <span className="address-text">
                   Bulevar oslobođenja 97
                   <br />
                   Novi Sad, Srbija
