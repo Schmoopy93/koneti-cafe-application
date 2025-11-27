@@ -239,6 +239,7 @@ export default function ReservationForm() {
   const [shakeFields, setShakeFields] = useState<ShakeFields>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [isOpen, setIsOpen] = useState(false);
 
   // =========================
   // EFFECTS
@@ -320,6 +321,17 @@ export default function ReservationForm() {
     formErrors.time,
     formErrors.endTime,
   ]);
+
+  useEffect(() => {
+    if (isOpen || showPopup) {
+      document.body.classList.add("body--no-scroll");
+    } else {
+      document.body.classList.remove("body--no-scroll");
+    }
+    return () => {
+      document.body.classList.remove("body--no-scroll");
+    };
+  }, [isOpen, showPopup]);
 
   // =========================
   // HANDLERS

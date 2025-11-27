@@ -1,5 +1,6 @@
 import Home from "../../components/home/Home";
 import type { Metadata } from "next";
+import Script from "next/script";
 
 type Props = {
   params: Promise<{ lang: string }>;
@@ -125,5 +126,47 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function HomePage() {
-  return <Home />;
+  return (
+    <>
+      <Script
+        id="breadcrumb-home"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Početna",
+                "item": "https://koneticaffee.com/sr"
+              }
+            ]
+          })
+        }}
+      />
+      <Script
+        id="website-home"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Koneti Café",
+            "url": "https://koneticaffee.com",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://koneticaffee.com/sr/menu?search={search_term_string}"
+              },
+              "query-input": "required name=search_term_string"
+            }
+          })
+        }}
+      />
+      <Home />
+    </>
+  );
 }

@@ -3,25 +3,48 @@ import type { MetadataRoute } from 'next'
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://koneticaffee.com';
   const languages = ['sr', 'en'];
-  // Home je '' (prazan string), ostale rute bez 'home'
-  const publicRoutes = ['', '/about', '/menu', '/reservation', '/career'];
+  
+  // Rute sa prioritetima - home je primaran (1.0)
+  const routes = [
+    { path: '', priority: 1.0, freq: 'daily' as const },
+    { path: '/menu', priority: 0.9, freq: 'daily' as const },
+    { path: '/reservation', priority: 0.85, freq: 'daily' as const },
+    { path: '/about', priority: 0.8, freq: 'weekly' as const },
+    { path: '/career', priority: 0.75, freq: 'weekly' as const },
+  ];
 
   const entries: MetadataRoute.Sitemap = [];
 
+  // Dodaj root URL
+  entries.push({
+    url: baseUrl,
+    lastModified: new Date(),
+    changeFrequency: 'daily',
+    priority: 1.0,
+    alternates: {
+      languages: {
+        sr: `${baseUrl}/sr`,
+        en: `${baseUrl}/en`,
+        'x-default': `${baseUrl}/sr`,
+      },
+    },
+  });
+
+  // Dodaj lokalizovane URL-e
   languages.forEach((lang) => {
-    publicRoutes.forEach((route) => {
-      // Izbegni duple slash-eve
-      const cleanRoute = route.startsWith('/') ? route : `/${route}`;
-      const url = route === '' ? `${baseUrl}/${lang}` : `${baseUrl}/${lang}${cleanRoute}`;
+    routes.forEach(({ path, priority, freq }) => {
+      const cleanPath = path.startsWith('/') ? path : `/${path}`;
+      const url = `${baseUrl}/${lang}${cleanPath}`;
+      
       entries.push({
         url,
         lastModified: new Date(),
-        changeFrequency: route === '' ? 'daily' : 'weekly',
-        priority: route === '' ? 1.0 : route === '/about' ? 0.8 : 0.7,
+        changeFrequency: freq,
+        priority,
         alternates: {
           languages: {
-            sr: route === '' ? `${baseUrl}/sr` : `${baseUrl}/sr${cleanRoute}`,
-            en: route === '' ? `${baseUrl}/en` : `${baseUrl}/en${cleanRoute}`,
+            sr: `${baseUrl}/sr${cleanPath}`,
+            en: `${baseUrl}/en${cleanPath}`,
           },
         },
       });

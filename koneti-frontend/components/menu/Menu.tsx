@@ -193,14 +193,18 @@ const MenuClient: React.FC<MenuClientProps> = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       ref={topRef}
+      role="region"
+      aria-label="Meni - Sveže kafe i piće"
+      itemScope
+      itemType="https://schema.org/Menu"
     >
       {!isMobile && (
-        <aside className={`menu-public-sidebar ${collapsed ? "menu-public-collapsed" : ""}`}>
+        <aside className={`menu-public-sidebar ${collapsed ? "menu-public-collapsed" : ""}`} role="navigation" aria-label="Kategorije menija">
           {/* Centered Logo */}
           <div className="menu-public-sidebar-logo">
             <img
               src="/koneti-logo.png"
-              alt="Koneti Logo"
+              alt="Koneti Café Logo"
               className="menu-public-logo-img"
             />
           </div>
@@ -208,9 +212,12 @@ const MenuClient: React.FC<MenuClientProps> = ({
           <button
             className="menu-public-collapse-btn"
             onClick={() => setCollapsed(!collapsed)}
+            aria-expanded={!collapsed}
+            aria-controls="category-list"
           >
             <FontAwesomeIcon
               icon={collapsed ? faChevronRight : faChevronLeft}
+              aria-hidden="true"
             />
           </button>
           <div className="menu-public-sidebar-title">
@@ -219,7 +226,7 @@ const MenuClient: React.FC<MenuClientProps> = ({
               : t("menu.title")}
           </div>
 
-          <div className="menu-public-category-list">
+          <div className="menu-public-category-list" id="category-list">
             {Array.isArray(categories) && categories.map((cat) => (
                 <motion.button
                   key={cat._id}
@@ -228,19 +235,24 @@ const MenuClient: React.FC<MenuClientProps> = ({
                   }`}
                   onClick={() => setSelectedCategory(cat._id)}
                   title={getCategoryName(cat)}
+                  aria-label={`${getCategoryName(cat)} kategorija`}
+                  aria-pressed={activeCategory === cat._id}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ duration: 0.2 }}
+                  itemScope
+                  itemType="https://schema.org/MenuSection"
                 >
                   {cat.icon && (
                     <FontAwesomeIcon
                       icon={faIconsMap[cat.icon]}
                       className="menu-public-icon"
+                      aria-hidden="true"
                     />
                   )}
-                  {!collapsed && <span>{getCategoryName(cat)}</span>}
+                  {!collapsed && <span itemProp="name">{getCategoryName(cat)}</span>}
                   {!collapsed && (
-                    <span className="menu-public-category-count">
+                    <span className="menu-public-category-count" aria-label={`${drinks.filter(d => d.category?._id === cat._id).length} stavki`}>
                       {drinks.filter(d => d.category?._id === cat._id).length}
                     </span>
                   )}
@@ -328,30 +340,33 @@ const MenuClient: React.FC<MenuClientProps> = ({
         <div className="menu-public-menu-controls">
           <div className="menu-public-search-filter-row">
             <div className="menu-public-search-container">
-              <FontAwesomeIcon icon={faSearch} className="menu-public-search-icon" />
+              <FontAwesomeIcon icon={faSearch} className="menu-public-search-icon" aria-hidden="true" />
               <input
                 type="text"
                 className="menu-public-search-input"
                 placeholder={t("menu.searchPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                aria-label={t("menu.searchPlaceholder")}
               />
               {searchTerm && (
                 <button
                   className="menu-public-clear-search"
                   onClick={() => setSearchTerm('')}
+                  aria-label="Očisti pretragu"
                 >
-                  <FontAwesomeIcon icon={faTimes} />
+                  <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
                 </button>
               )}
             </div>
 
             <div className="menu-public-filter-container">
-              <FontAwesomeIcon icon={faSort} className="menu-public-filter-icon" />
+              <FontAwesomeIcon icon={faSort} className="menu-public-filter-icon" aria-hidden="true" />
               <select
                 className="menu-public-filter-dropdown"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
+                aria-label="Sortiraj meni stavke"
               >
                 <option value="name">{t("menu.sortOptions.name")}</option>
                 <option value="price-low">{t("menu.sortOptions.priceLow")}</option>
@@ -366,8 +381,9 @@ const MenuClient: React.FC<MenuClientProps> = ({
             <button
               className="menu-public-pdf-menu-btn menu-public-view-pdf"
               onClick={() => window.open('/Cenovnik.pdf', '_blank')}
+              aria-label="Pregledaj PDF meni"
             >
-              <FontAwesomeIcon icon={faEye} />
+              <FontAwesomeIcon icon={faEye} aria-hidden="true" />
               <span>{t("menu.viewPDF")}</span>
             </button>
             <button
@@ -378,8 +394,9 @@ const MenuClient: React.FC<MenuClientProps> = ({
                 link.download = 'Koneti-Cenovnik.pdf';
                 link.click();
               }}
+              aria-label="Preuzmi PDF meni"
             >
-              <FontAwesomeIcon icon={faDownload} />
+              <FontAwesomeIcon icon={faDownload} aria-hidden="true" />
               <span>{t("menu.downloadPDF")}</span>
             </button>
           </div>
@@ -392,9 +409,9 @@ const MenuClient: React.FC<MenuClientProps> = ({
             <p>{t("menu.tryDifferent")}</p>
           </div>
         ) : (
-          <div className="menu-public-drinks-grid">
+          <div className="menu-public-drinks-grid" role="list">
             {currentDrinks.map((drink, index) => (
-            <motion.div
+            <motion.article
               key={drink._id}
               className="menu-public-drink-card"
               initial={mounted ? { opacity: 0, y: 40, scale: 0.9 } : false}
@@ -410,6 +427,9 @@ const MenuClient: React.FC<MenuClientProps> = ({
                 transition: { duration: 0.3 }
               }}
               tabIndex={0}
+              role="listitem"
+              itemScope
+              itemType="https://schema.org/MenuItem"
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
@@ -423,6 +443,7 @@ const MenuClient: React.FC<MenuClientProps> = ({
                 outline: keyboardFocusIndex === index ? '2px solid var(--color-accent-light)' : 'none',
                 outlineOffset: '2px'
               }}
+              aria-label={`${getDrinkName(drink)} - ${drink.price} RSD`}
             >
               <div className="menu-public-card-inner">
                 <div
@@ -430,7 +451,7 @@ const MenuClient: React.FC<MenuClientProps> = ({
                   onClick={() => {
                     if (drink.image) {
                       setSelectedImage({src: drink.image, name: getDrinkName(drink)});
-                      setShowImageModal(true);
+                      setShowImageModal(true)
                     }
                   }}
                 >
@@ -440,27 +461,31 @@ const MenuClient: React.FC<MenuClientProps> = ({
                       alt={`Koneti Cafe - ${getDrinkName(drink)} - ${getCategoryName(drink.category)}`}
                       className="menu-public-drink-img"
                       loading="lazy"
+                      itemProp="image"
                       onError={() => {
                         setImageErrors(prev => new Set(prev).add(drink._id));
                       }}
                     />
                   ) : (
                     <div className="menu-public-placeholder-image">
-                      <FontAwesomeIcon icon={faCoffee} />
+                      <FontAwesomeIcon icon={faCoffee} aria-hidden="true" />
                     </div>
                   )}
                   <div className="menu-public-image-overlay">
-                    <FontAwesomeIcon icon={faEye} className="preview-icon" />
+                    <FontAwesomeIcon icon={faEye} className="preview-icon" aria-hidden="true" />
                     {/* <span className="preview-text">{t('menu.preview')}</span> */}
                   </div>
                 </div>
                 <div className="menu-public-drink-info">
-                  <h4>{getDrinkName(drink)}</h4>
-                  <p>{getCategoryName(drink.category)}</p>
-                  <span className="menu-public-price">{drink.price} RSD</span>
+                  <h4 itemProp="name">{getDrinkName(drink)}</h4>
+                  <p itemProp="description">{getCategoryName(drink.category)}</p>
+                  <span className="menu-public-price" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                    <span itemProp="price">{drink.price}</span>
+                    <span itemProp="priceCurrency" content="RSD"> RSD</span>
+                  </span>
                 </div>
               </div>
-            </motion.div>
+            </motion.article>
             ))}
           </div>
         )}
@@ -473,13 +498,14 @@ const MenuClient: React.FC<MenuClientProps> = ({
               <span className="menu-public-page-separator">{t("menu.pagination.of")}</span>
               <span className="menu-public-page-total">{totalPages}</span>
             </div>
-            <div className="menu-public-pagination">
+            <div className="menu-public-pagination" role="navigation" aria-label="Navigacija po stranicama">
               <button
                 className="menu-public-pagination-btn"
                 onClick={goToPrevious}
                 disabled={currentPage === 1}
+                aria-label="Prethodna stranica"
               >
-                <FontAwesomeIcon icon={faChevronLeft} />
+                <FontAwesomeIcon icon={faChevronLeft} aria-hidden="true" />
               </button>
 
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
@@ -487,6 +513,8 @@ const MenuClient: React.FC<MenuClientProps> = ({
                   key={page}
                   className={`menu-public-pagination-btn ${currentPage === page ? 'menu-public-active' : ''}`}
                   onClick={() => goToPage(page)}
+                  aria-label={`Stranica ${page}`}
+                  aria-current={currentPage === page ? "page" : undefined}
                 >
                   {page}
                 </button>
@@ -496,8 +524,9 @@ const MenuClient: React.FC<MenuClientProps> = ({
                 className="menu-public-pagination-btn"
                 onClick={goToNext}
                 disabled={currentPage === totalPages}
+                aria-label="Sledeća stranica"
               >
-                <FontAwesomeIcon icon={faChevronRight} />
+                <FontAwesomeIcon icon={faChevronRight} aria-hidden="true" />
               </button>
             </div>
           </>
@@ -507,8 +536,8 @@ const MenuClient: React.FC<MenuClientProps> = ({
       {showImageModal && selectedImage && (
         <div className="menu-modal-overlay" onClick={() => setShowImageModal(false)}>
           <div className="menu-modal-content image-preview-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="menu-modal-close" onClick={() => setShowImageModal(false)}>
-              <FontAwesomeIcon icon={faTimes} />
+            <button className="menu-modal-close" onClick={() => setShowImageModal(false)} aria-label="Zatvori pregled slike">
+              <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
             </button>
             <div className="image-preview-container">
               <img 

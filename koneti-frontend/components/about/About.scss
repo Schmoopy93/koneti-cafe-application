@@ -475,17 +475,22 @@ $breakpoint-desktop-large: 1440px;
   display: flex;
   height: 100%;
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .about__welcome-slider-slide {
   flex: 0 0 100%;
   height: 100%;
+  will-change: auto;
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    contain: layout style paint;
   }
 }
 
@@ -497,6 +502,7 @@ $breakpoint-desktop-large: 1440px;
   display: flex;
   gap: $spacing-sm;
   z-index: 2;
+  will-change: auto;
 }
 
 .about__welcome-indicator {
@@ -508,6 +514,7 @@ $breakpoint-desktop-large: 1440px;
   cursor: pointer;
   transition: all $transition-base;
   padding: 0;
+  contain: layout style paint;
 
   &--active {
     background: $color-white;
@@ -535,6 +542,7 @@ $breakpoint-desktop-large: 1440px;
   overflow: hidden;
   animation: zoomIn 0.8s ease-out;
   z-index: 1;
+  contain: layout style paint;
 
   @include gradient-border-top(6px);
 
@@ -567,6 +575,7 @@ $breakpoint-desktop-large: 1440px;
   padding-bottom: $spacing-4xl;
   border-bottom: 2px solid rgba($color-primary, 0.15);
   animation: slideUp 0.8s ease-out;
+  contain: layout style;
 
   @media (max-width: $breakpoint-tablet-portrait) {
     margin-bottom: $spacing-3xl;
@@ -730,6 +739,7 @@ $breakpoint-desktop-large: 1440px;
   gap: $spacing-3xl;
   margin-top: $spacing-4xl;
   animation: slideUp 0.8s ease-out 0.3s backwards;
+  contain: layout style;
 
   @media (max-width: $breakpoint-tablet-landscape) {
     grid-template-columns: repeat(2, 1fr);
@@ -753,6 +763,8 @@ $breakpoint-desktop-large: 1440px;
   box-shadow: $shadow-md;
   transition: all $transition-smooth;
   overflow: hidden;
+  contain: layout style paint;
+  will-change: transform, box-shadow;
 
   &::before {
     content: "";
@@ -765,6 +777,7 @@ $breakpoint-desktop-large: 1440px;
     transform: scaleX(0);
     transform-origin: left;
     transition: transform $transition-smooth;
+    will-change: transform;
   }
 
   &:hover {
@@ -810,6 +823,8 @@ $breakpoint-desktop-large: 1440px;
   box-shadow: $shadow-md;
   transition: all $transition-base;
   flex-shrink: 0;
+  contain: layout style;
+  will-change: transform;
 
   @media (max-width: $breakpoint-mobile-small) {
     width: 56px;
@@ -822,6 +837,7 @@ $breakpoint-desktop-large: 1440px;
 .about__feature-card-content {
   position: relative;
   z-index: 1;
+  contain: layout style;
 
   h3 {
     font-size: 1.35rem;

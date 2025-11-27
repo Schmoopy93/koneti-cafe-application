@@ -98,12 +98,17 @@ const Header: React.FC = () => {
 
   if (!mounted) {
     return (
-      <header className="navbar">
+      <header className="navbar" role="banner" aria-label={t("header.main") || "Glavna navigacija"}>
         <div className="nav-container">
-          <Link href="/" className="logo">
+          <Link 
+            href="/" 
+            className="logo"
+            title={t("header.home") || "Početna"}
+            aria-label="Koneti Café - Početna stranica"
+          >
             <Image
               src="/koneti-logo-header.png"
-              alt="Café Koneti"
+              alt="Café Koneti Logo - Specialty Kafa i Proslave u Novom Sadu"
               width={150}
               height={50}
               priority
@@ -116,16 +121,18 @@ const Header: React.FC = () => {
   }
 
   return (
-    <header className="navbar">
+    <header className="navbar" role="banner" aria-label="Glavna navigacija">
       <div className="nav-container">
         {/* Logo vodi na /login ako nije autentifikovan, / ako jeste */}
         <Link
           href={isAuthenticated ? getLocalizedPath("/") : "/login"}
           className="logo"
+          title="Koneti Café - Početna stranica"
+          aria-label="Koneti Café - Početna stranica"
         >
           <Image 
             src="/koneti-logo-header.png" 
-            alt="Café Koneti"
+            alt="Café Koneti Logo - Specialty Kafa i Proslave u Novom Sadu"
             width={150}
             height={50}
             priority
@@ -133,27 +140,29 @@ const Header: React.FC = () => {
           />
         </Link>
 
-        <nav className={`nav-links ${isOpen ? "open" : ""}`}>
+        <nav className={`nav-links ${isOpen ? "open" : ""}`} role="navigation" aria-label="Glavna navigacija">
           {isOpen && (
-            <button className="mobile-close-btn" onClick={() => setIsOpen(false)}>
-              <X size={24} />
+            <button className="mobile-close-btn" onClick={() => setIsOpen(false)} aria-label="Zatvori navigaciju">
+              <X size={24} aria-hidden="true" />
             </button>
           )}
           <Link
             href={getLocalizedPath("/")}
             onClick={() => setIsOpen(false)}
             title={t("header.home")}
+            aria-label={t("header.home")}
             style={{ '--delay': 1 } as React.CSSProperties}
           >
-            <FontAwesomeIcon icon={faHouse} /> {t("header.home")}
+            <FontAwesomeIcon icon={faHouse} aria-hidden="true" /> {t("header.home")}
           </Link>
           <Link
             href={getLocalizedPath("/menu")}
             onClick={() => setIsOpen(false)}
             title={t("header.menu")}
+            aria-label={t("header.menu")}
             style={{ '--delay': 2 } as React.CSSProperties}
           >
-            <FontAwesomeIcon icon={faMartiniGlass} /> {t("header.menu")}
+            <FontAwesomeIcon icon={faMartiniGlass} aria-hidden="true" /> {t("header.menu")}
           </Link>
 
           {!isAuthenticated && (
@@ -162,27 +171,30 @@ const Header: React.FC = () => {
                 href={getLocalizedPath("/reservation")}
                 onClick={() => setIsOpen(false)}
                 title={t("header.reservation")}
+                aria-label={t("header.reservation")}
                 style={{ '--delay': 3 } as React.CSSProperties}
               >
-                <FontAwesomeIcon icon={faCalendarCheck} />{" "}
+                <FontAwesomeIcon icon={faCalendarCheck} aria-hidden="true" />{" "}
                 {t("header.reservation")}
               </Link>
               <Link
                 href={getLocalizedPath("/about")}
                 onClick={() => setIsOpen(false)}
                 title={t("header.about")}
+                aria-label={t("header.about")}
                 style={{ '--delay': 4 } as React.CSSProperties}
               >
-                <FontAwesomeIcon icon={faImage} />{" "}
+                <FontAwesomeIcon icon={faImage} aria-hidden="true" />{" "}
                 {t("header.about")}
               </Link>
               <Link
                 href={getLocalizedPath("/career")}
                 onClick={() => setIsOpen(false)}
                 title={t("header.career")}
+                aria-label={t("header.career")}
                 style={{ '--delay': 5 } as React.CSSProperties}
               >
-                <FontAwesomeIcon icon={faBusinessTime} />{" "}
+                <FontAwesomeIcon icon={faBusinessTime} aria-hidden="true" />{" "}
                 {t("header.career")}
               </Link>
             </>
@@ -193,9 +205,10 @@ const Header: React.FC = () => {
               href={getLocalizedPath("/admin")}
               onClick={() => setIsOpen(false)}
               title={t("header.admin")}
+              aria-label={t("header.admin")}
               style={{ '--delay': 3 } as React.CSSProperties}
             >
-              <FontAwesomeIcon icon={faUserShield} />  {t("header.admin")}
+              <FontAwesomeIcon icon={faUserShield} aria-hidden="true" />  {t("header.admin")}
             </Link>
           )}
 
@@ -204,6 +217,10 @@ const Header: React.FC = () => {
             <button
               onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
               className="language-switcher-mobile"
+              aria-label={`Promeni jezik - ${currentLang === "sr" ? "Srpski" : "Engleski"}`}
+              aria-expanded={isLangDropdownOpen}
+              aria-controls="mobile-lang-dropdown"
+              type="button"
             >
               {currentLang === "sr" ? (
                 <>
@@ -211,6 +228,7 @@ const Header: React.FC = () => {
                     countryCode="RS"
                     svg
                     style={{ width: 16, height: 12 }}
+                    aria-hidden="true"
                   />
                   SR
                 </>
@@ -220,6 +238,7 @@ const Header: React.FC = () => {
                     countryCode="GB"
                     svg
                     style={{ width: 16, height: 12 }}
+                    aria-hidden="true"
                   />
                   EN
                 </>
@@ -229,30 +248,39 @@ const Header: React.FC = () => {
                 className={`language-dropdown-toggle ${
                   isLangDropdownOpen ? "open" : ""
                 }`}
+                aria-hidden="true"
               />
             </button>
 
             {isLangDropdownOpen && (
-              <div className="language-dropdown-menu-mobile">
+              <div className="language-dropdown-menu-mobile" id="mobile-lang-dropdown" role="menu">
                 {currentLang === "sr" ? (
                   <button
                     onClick={() => switchLanguage("en")}
+                    role="menuitem"
+                    aria-label="Engleski"
+                    type="button"
                   >
                     <ReactCountryFlag
                       countryCode="GB"
                       svg
                       style={{ width: 16, height: 12 }}
+                      aria-hidden="true"
                     />{" "}
                     EN
                   </button>
                 ) : (
                   <button
                     onClick={() => switchLanguage("sr")}
+                    role="menuitem"
+                    aria-label="Srpski"
+                    type="button"
                   >
                     <ReactCountryFlag
                       countryCode="RS"
                       svg
                       style={{ width: 16, height: 12 }}
+                      aria-hidden="true"
                     />{" "}
                     SR
                   </button>
@@ -268,6 +296,10 @@ const Header: React.FC = () => {
             <button
               onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
               className="language-switcher"
+              aria-label={`Promeni jezik - ${currentLang === "sr" ? "Srpski" : "Engleski"}`}
+              aria-expanded={isLangDropdownOpen}
+              aria-controls="desktop-lang-dropdown"
+              type="button"
             >
               {currentLang === "sr" ? (
                 <>
@@ -275,6 +307,7 @@ const Header: React.FC = () => {
                     countryCode="RS"
                     svg
                     style={{ width: 16, height: 12, marginRight: 6 }}
+                    aria-hidden="true"
                   />
                   SR
                 </>
@@ -284,24 +317,29 @@ const Header: React.FC = () => {
                     countryCode="GB"
                     svg
                     style={{ width: 16, height: 12, marginRight: 6 }}
+                    aria-hidden="true"
                   />
                   EN
                 </>
               )}
-              <ChevronDown size={14} />
+              <ChevronDown size={14} aria-hidden="true" />
             </button>
 
             {isLangDropdownOpen && (
-              <div className="language-dropdown-menu">
+              <div className="language-dropdown-menu" id="desktop-lang-dropdown" role="menu">
                 {currentLang === "sr" ? (
                   <button
                     className="language-option"
                     onClick={() => switchLanguage("en")}
+                    role="menuitem"
+                    aria-label="Engleski"
+                    type="button"
                   >
                     <ReactCountryFlag
                       countryCode="GB"
                       svg
                       style={{ width: 16, height: 12, marginRight: 6 }}
+                      aria-hidden="true"
                     />{" "}
                     EN
                   </button>
@@ -309,11 +347,15 @@ const Header: React.FC = () => {
                   <button
                     className="language-option"
                     onClick={() => switchLanguage("sr")}
+                    role="menuitem"
+                    aria-label="Srpski"
+                    type="button"
                   >
                     <ReactCountryFlag
                       countryCode="RS"
                       svg
                       style={{ width: 16, height: 12, marginRight: 6 }}
+                      aria-hidden="true"
                     />{" "}
                     SR
                   </button>
@@ -322,8 +364,15 @@ const Header: React.FC = () => {
             )}
           </div>
 
-          <button className="menu-toggle" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X size={26} /> : <Menu size={26} />}
+          <button 
+            className="menu-toggle" 
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Zatvori meni" : "Otvori meni"}
+            aria-expanded={isOpen}
+            aria-controls="nav-menu"
+            type="button"
+          >
+            {isOpen ? <X size={26} aria-hidden="true" /> : <Menu size={26} aria-hidden="true" />}
           </button>
         </div>
       </div>

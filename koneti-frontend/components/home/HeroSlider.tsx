@@ -87,10 +87,10 @@ const HeroSlider: React.FC = () => {
   }
 
   return (
-    <div className="hero-slider">
+    <section className="hero-slider" role="region" aria-label="Sekcija sa hero sadržajem">
       <Slider {...settings}>
         {slides.map((slide: SlideData, index: number) => (
-          <div key={index} className="slide">
+          <article key={index} className="slide" role="group" aria-roledescription="slide">
             {slide.type === 'video' ? (
               <div className="slide-video">
                 <video
@@ -150,7 +150,7 @@ const HeroSlider: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </article>
         ))}
       </Slider>
       
@@ -169,7 +169,7 @@ const HeroSlider: React.FC = () => {
         <div className="scroll-text">{t('home.hero.scrollDown')}</div>
         <div className="scroll-arrow">↓</div>
       </div>
-    </div>
+    </section>
   );
 };
 

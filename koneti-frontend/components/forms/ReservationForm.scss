@@ -1087,3 +1087,9 @@
     margin-right: 0.3rem;
   }
 }
+
+.body--no-scroll {
+  overflow: hidden !important;
+  position: fixed;
+  width: 100vw;
+}

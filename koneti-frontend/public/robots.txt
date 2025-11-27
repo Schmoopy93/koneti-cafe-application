@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
+Allow: /sr/
+Allow: /en/
 Disallow: /admin
 Disallow: /sr/admin
 Disallow: /en/admin
@@ -13,14 +15,63 @@ Disallow: /sr/login
 Disallow: /en/login
 Disallow: /_next/
 Disallow: /api/
+Disallow: /uploads/
+Disallow: /*.json$
+Disallow: /*.webp$
+Disallow: /*?*version*
+Disallow: /*?*sort*
+Disallow: /*?*price*
+Disallow: /*?*filter*
 
-# Sitemaps
-Sitemap: https://koneticaffee.com/sitemap.xml
+# Sitelinks extensions
+Allow: /sr
+Allow: /en
 
+# CSS and JavaScript optimization
+Allow: /_next/static/
+
+# Image optimization
+Allow: /public/
+
+# Googlebot
 User-agent: Googlebot
 Allow: /
 Crawl-delay: 0
+Request-rate: 30/1s
 
+# Bingbot
 User-agent: Bingbot
 Allow: /
 Crawl-delay: 1
+Request-rate: 10/1s
+
+# Slurp (Yahoo)
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+Request-rate: 5/1s
+
+# DuckDuckBot
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 0
+
+# Specific bot rules
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+# Sitemaps
+Sitemap: https://koneticaffee.com/sitemap.xml
+Sitemap: https://koneticaffee.com/sitemap-sr.xml
+Sitemap: https://koneticaffee.com/sitemap-en.xml
+
+# Site rules
+User-agent: *
+Clean-param: utm_source&utm_medium&utm_campaign
+Clean-param: fbclid

@@ -21,7 +21,7 @@ interface Service {
 
 export default function Offer() {
   const { t } = useTranslation();
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const cardsRef = useRef<(HTMLElement | null)[]>([]);
 
   // Sigurnosna funkcija koja osigurava da su 'features' uvijek polje
   const getFeatures = (key: string): string[] => {
@@ -91,20 +91,20 @@ export default function Offer() {
   }, []);
 
   return (
-    <section className="offer">
+    <section className="offer" itemScope itemType="https://schema.org/LocalBusiness">
       <div className="offer-header">
-        <h2 className="section-title">
+        <h2 className="section-title" itemProp="name">
           <span className="title-icon">💎</span>
           {t('home.offer.title')}
         </h2>
-        <p className="section-subtitle">
+        <p className="section-subtitle" itemProp="description">
           {t('home.offer.subtitle')}
         </p>
       </div>
 
       <div className="offer-grid">
         {services.map((service, index) => (
-          <div
+          <article
             key={index}
             className="service-card"
             ref={(el) => { cardsRef.current[index] = el; }}
@@ -112,6 +112,10 @@ export default function Offer() {
               transitionDelay: `${index * 0.2}s`,
               '--accent-color': service.color
             } as React.CSSProperties}
+            itemScope
+            itemType="https://schema.org/Service"
+            role="region"
+            aria-label={`${service.title} - ${service.subtitle}`}
           >
             <div className="card-header">
               <Image
@@ -121,16 +125,17 @@ export default function Offer() {
                 width={400}
                 height={250}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                itemProp="image"
               />
             </div>
             
             <div className="card-content">
               <div className="card-title-section">
-                <h3>{service.title}</h3>
+                <h3 itemProp="name">{service.title}</h3>
                 <span className="subtitle">{service.subtitle}</span>
               </div>
               
-              <p className="description">{service.text}</p>
+              <p className="description" itemProp="description">{service.text}</p>
               
               <div className="features">
                 {service.features.map((feature, idx) => (
@@ -142,12 +147,12 @@ export default function Offer() {
               
               <Link href={service.link} className="btn-card">
                 <span>{service.linkText}</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M5 12h14m-7-7l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </Link>
             </div>
-          </div>
+          </article>
         ))}
       </div>
     </section>

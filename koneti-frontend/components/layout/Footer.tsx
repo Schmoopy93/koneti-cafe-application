@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Script from "next/script";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebookF,
@@ -21,15 +22,70 @@ import GoogleMap from "../utils/GoogleMap";
 import Image from "next/image";
 
 const Footer: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handleScrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const contactSchema = {
+    "@context": "https://schema.org",
+    "@type": "ContactPoint",
+    "contactType": "Customer Service",
+    "telephone": "+381-69-2565563",
+    "email": "konetibulevar@gmail.com",
+    "areaServed": ["RS", "EN"],
+    "availableLanguage": ["Serbian", "English"]
+  };
+
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://koneticaffee.com",
+    "name": "Koneti Café",
+    "url": "https://koneticaffee.com",
+    "logo": "https://koneticaffee.com/koneti-logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Customer Service",
+      "telephone": "+381-69-2565563",
+      "email": "konetibulevar@gmail.com"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Bulevar Oslobođenja 97",
+      "addressLocality": "Novi Sad",
+      "addressRegion": "Vojvodina",
+      "postalCode": "21000",
+      "addressCountry": "RS"
+    },
+    "sameAs": [
+      "https://www.facebook.com/KonetiCafe",
+      "https://www.instagram.com/KonetiCafe",
+      "https://www.tiktok.com/@koneti.cafe"
+    ]
+  };
+
   return (
-    <footer className="footer">
-      <div className="footer-top">
+    <>
+      <Script
+        id="footer-contact-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(contactSchema),
+        }}
+        strategy="afterInteractive"
+      />
+      <Script
+        id="footer-organization-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(organizationSchema),
+        }}
+        strategy="afterInteractive"
+      />
+      <footer className="footer" role="contentinfo" aria-label="Informacije i kontakt">
+        <div className="footer-top">
         <div className="footer-logo-section">
           <div className="footer-logo">
             <Image
@@ -165,10 +221,11 @@ const Footer: React.FC = () => {
           onClick={handleScrollToTop}
           aria-label="Scroll to top"
         >
-          <FontAwesomeIcon icon={faArrowUp} />
+          <FontAwesomeIcon icon={faArrowUp} aria-hidden="true" />
         </button>
       </div>
-    </footer>
+      </footer>
+    </>
   );
 };
 
