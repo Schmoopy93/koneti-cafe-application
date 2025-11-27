@@ -83,6 +83,17 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
+  // Webpack fallback konfiguracija za dev
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.module.rules.unshift({
+        test: /\.html$/,
+        type: 'asset/resource',
+      });
+    }
+    return config;
+  },
+
   // Turbopack konfiguracija
   turbopack: {
     resolveAlias: {
