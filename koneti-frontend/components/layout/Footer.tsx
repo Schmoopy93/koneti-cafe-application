@@ -116,9 +116,7 @@ const Footer: React.FC = () => {
               <div>
                 <strong>{t("home.footer.address")}</strong>
                 <span className="address-text">
-                  Bulevar oslobođenja 97
-                  <br />
-                  Novi Sad, Srbija
+                  {t("home.footer.addressValue")}
                 </span>
               </div>
             </div>
@@ -126,14 +124,14 @@ const Footer: React.FC = () => {
               <FontAwesomeIcon icon={faPhone} />
               <div>
                 <strong>{t("home.footer.phone")}</strong>
-                <span>+381 69 2565563 (Aleksandra)</span>
+                <span>{t("home.footer.phoneValue")}</span>
               </div>
             </div>
             <div className="contact-item">
               <FontAwesomeIcon icon={faEnvelope} />
               <div>
                 <strong>{t("home.footer.email")}</strong>
-                <span>konetibulevar@gmail.com</span>
+                <span>{t("home.footer.emailValue")}</span>
               </div>
             </div>
           </div>
