@@ -182,17 +182,17 @@
         },
         "basic": {
           "title": "🥉 KONETI BUSINESS BASIC",
-          "description": "Koneti Business Basic / Koneti Room rental / 100€ per hour",
+          "description": "Koneti Business Basic / Koneti Room rental / 100€ per hour up to 10 people",
           "details": [
             "☕ Coffee of choice, fresh juice, croissant",
             "🏢 Private environment with technical support"
           ],
           "price": "100€ per hour",
-          "extraInfo": "Ideal for smaller business meetings and presentations."
+          "extraInfo": "Ideal for smaller business meetings and presentations up to 10 people."
         },
         "premium": {
           "title": "⭐ KONETI BUSINESS HIGH",
-          "description": "Koneti Business High / Koneti Room rental / 200€ per hour",
+          "description": "Koneti Business High / Koneti Room rental / 200€ per hour up to 10 people",
           "details": [
             "🍽️ Coffee and refreshments",
             "🧀 Plates (Njeguška prosciutto, ham, kulen, 4 types of cheese, green and black olives)",
@@ -200,7 +200,7 @@
             "🏢 Private environment with technical support"
           ],
           "price": "200€ per hour",
-          "extraInfo": "Premium business package with additional services."
+          "extraInfo": "Premium business package with additional services up to 10 people."
         },
         "corporate_day": {
           "title": "🏢 KONETI BUSINESS CORPORATE DAY",
@@ -214,33 +214,33 @@
             "👥 Professional staff to serve and welcome your guests",
             "📶 Free Wi-Fi and presentation equipment"
           ],
-          "price": "800€ for 6 hours up to 10 people",
-          "extraInfo": "Perfect solution for a full-day business event with all necessary services and premium amenities."
+          "price": "800€ for 6 hours",
+          "extraInfo": "Perfect solution for a full-day business event with all necessary services and premium amenities up to 10 people."
         },
         "experience_basic": {
           "title": "🥉 KONETI START",
-          "description": "KONETI START / 35 euros per person / min. 450 euros per package",
+          "description": "KONETI START / 35 euros per person / min. 450 euros per package up to 35 people",
           "details": [
             "🍷 Domestic drinks (wines, beers, rakija, pelinkovac, vermouth)",
             "🧀 Plates (Njeguška prosciutto, ham, kulen, 4 types of cheese, green and black olives)"
           ],
           "price": "35€ per person / min. 450€ per package",
-          "extraInfo": "Perfect start for intimate celebrations with friends and family."
+          "extraInfo": "Perfect start for intimate celebrations with friends and family up to 35 people."
         },
         "experience_premium": {
           "title": "⭐ KONETI CLASSIC",
-          "description": "KONETI CLASSIC / 45 euros per person / min. 550 euros per package",
+          "description": "KONETI CLASSIC / 45 euros per person / min. 550 euros per package up to 35 people",
           "details": [
             "🍷 Domestic drinks (wines, beers, rakija, pelinkovac, vermouth)",
             "🥃 Foreign drinks (Jameson, Campari, Chivas, Olmeca Tequila, Jack Daniels, Bombay Gin)",
             "🧀 Plates (Njeguška prosciutto, ham, kulen, 4 types of cheese, green and black olives)"
           ],
           "price": "45€ per person / min. 550€ per package",
-          "extraInfo": "Classic elegance with expanded drink selection."
+          "extraInfo": "Classic elegance with expanded drink selection up to 35 people."
         },
         "experience_vip": {
           "title": "👑 KONETI CELEBRATION EXPERIENCE",
-          "description": "The pinnacle of luxury dining and celebration. Exclusive service for the most important occasions.",
+          "description": "The pinnacle of luxury dining and celebration. Exclusive service for the most important occasions up to 35 people.",
           "details": [
             "🎂 Cake of your choice (up to 10kg)",
             "🎨 Decoration",
@@ -249,7 +249,7 @@
             "🧀 Plates (Njeguška prosciutto, ham, kulen, 4 types of cheese, green and black olives)"
           ],
           "price": "70€ per person / min. 800€ per package",
-          "extraInfo": "The pinnacle of luxury dining and celebration. Exclusive service for the most important occasions."
+          "extraInfo": "The pinnacle of luxury dining and celebration up to 35 people. Exclusive service for the most important occasions."
         }
       }
     },

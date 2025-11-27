@@ -180,17 +180,17 @@
         },
         "basic": {
           "title": "🥉 KONETI BUSINESS BASIC",
-          "description": "Koneti Business Basic / zakup Koneti Sobe / 100€ po satu",
+          "description": "Koneti Business Basic / zakup Koneti Sobe / 100€ po satu do 10 osoba",
           "details": [
             "☕ Kafa po izboru, ceđeni sok, kroasan",
             "🏢 Privatni ambijent sa tehničkom podrškom"
           ],
           "price": "100€ po satu",
-          "extraInfo": "Idealno za manje poslovne sastanke i prezentacije."
+          "extraInfo": "Idealno za manje poslovne sastanke i prezentacije do 10 osoba."
         },
         "premium": {
           "title": "⭐ KONETI BUSINESS HIGH",
-          "description": "Koneti Business High / zakup Koneti Sobe / 200€ po satu",
+          "description": "Koneti Business High / zakup Koneti Sobe / 200€ po satu do 10 osoba",
           "details": [
             "🍽️ Kafa i osveženje",
             "🧀 Plate (njeguška pršut, pečenica, kulen, 4 vrste sira, zelene i crne masline)",
@@ -198,7 +198,7 @@
             "🏢 Privatni ambijent sa tehničkom podrškom"
           ],
           "price": "200€ po satu",
-          "extraInfo": "Premium poslovni paket sa dodatnim uslugama."
+          "extraInfo": "Premium poslovni paket sa dodatnim uslugama do 10 osoba."
         },
         "corporate_day": {
           "title": "🏢 KONETI BUSINESS CORPORATE DAY",
@@ -212,33 +212,33 @@
             "👥 Profesionalno osoblje koje uslužuje i dočekuje vaše goste",
             "📶 Besplatan Wi-Fi i prezentacijska oprema"
           ],
-          "price": "800€ na 6 sati do 10 osoba",
-          "extraInfo": "Idealno za celodan poslovni događaj sa svim potrebnim uslugama."
+          "price": "800€ na 6 sati",
+          "extraInfo": "Idealno za celodan poslovni događaj sa svim potrebnim uslugama do 10 osoba."
         },
         "experience_basic": {
           "title": "🥉 KONETI START",
-          "description": "KONETI START / 35 evra po osobi / min. 450 evra po paketu",
+          "description": "KONETI START / 35 evra po osobi / min. 450 evra po paketu do 35 osoba",
           "details": [
             "🍷 Domaće pića (vina, piva, rakije, pelinkovac, vermuth)",
             "🧀 Plate (njeguška pršut, pečenica, kulen, 4 vrste sira, zelene i crne masline)"
           ],
           "price": "35€ po osobi / min. 450€ po paketu",
-          "extraInfo": "Savršen početak za intimne proslave sa prijateljima i porodicom."
+          "extraInfo": "Savršen početak za intimne proslave sa prijateljima i porodicom do 35 osoba."
         },
         "experience_premium": {
           "title": "⭐ KONETI CLASSIC",
-          "description": "KONETI CLASSIC / 45 evra po osobi / min. 550 evra po paketu",
+          "description": "KONETI CLASSIC / 45 evra po osobi / min. 550 evra po paketu do 35 osoba",
           "details": [
             "🍷 Domaća pića (vina, piva, rakije, pelinkovac, vermuth)",
             "🥃 Strana pića (Jameson, Campari, Chivas, Olmeca Tekila, Jack Daniels, Bombay Gin)",
             "🧀 Plate (njeguška pršut, pečenica, kulen, 4 vrste sira, zelene i crne masline)"
           ],
           "price": "45€ po osobi / min. 550€ po paketu",
-          "extraInfo": "Klasična elegancija sa proširenim izborom pića."
+          "extraInfo": "Klasična elegancija sa proširenim izborom pića do 35 osoba."
         },
         "experience_vip": {
           "title": "👑 KONETI CELEBRATION EXPERIENCE",
-          "description": "Vrhunac luksuznog ugostiteljstva i proslave. Ekskluzivna usluga za najvažnije prilike.",
+          "description": "Vrhunac luksuznog ugostiteljstva i proslave. Ekskluzivna usluga za najvažnije prilike do 35 osoba.",
           "details": [
             "🎂 Torta po izboru (do 10kg)",
             "🎨 Dekoracija",
@@ -247,7 +247,7 @@
             "🧀 Plate (njeguška pršut, pečenica, kulen, 4 vrste sira, zelene i crne masline)"
           ],
           "price": "70€ po osobi / min. 800€ po paketu",
-          "extraInfo": "Vrhunac luksuznog ugostiteljstva i proslave. Ekskluzivna usluga za najvažnije prilike."
+          "extraInfo": "Vrhunac luksuznog ugostiteljstva i proslave do 35 osoba. Ekskluzivna usluga za najvažnije prilike."
         },
         "vip": {
           "title": "👑 KONETI CELEBRATION EXPERIENCE",
