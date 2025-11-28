@@ -149,7 +149,6 @@ const AdminPage: React.FC = () => {
 
   const handleLogout = async (): Promise<void> => {
     await logout();
-    router.push("/");
   };
 
   const containerVariants: Variants = {

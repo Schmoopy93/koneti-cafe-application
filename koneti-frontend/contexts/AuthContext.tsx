@@ -122,7 +122,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       setUser(null);
       setIsAuthenticated(false);
-      router.push("/");
+      const currentLang = window.location.pathname.startsWith('/en') ? 'en' : 'sr';
+      router.push(`/${currentLang}`);
     } catch (err) {
       console.error("Greška prilikom logout-a:", err);
       deleteCookie('adminToken');
