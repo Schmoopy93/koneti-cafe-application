@@ -31,16 +31,6 @@ const HeroSlider: React.FC = () => {
 
   useEffect(() => {
     setMounted(true);
-    
-    // Preload video fajl u background
-    if (typeof window !== "undefined") {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'video';
-      link.href = '/koneti-promo.mp4';
-      link.type = 'video/mp4';
-      document.head.appendChild(link);
-    }
   }, []);
 
   const settings: Settings = {

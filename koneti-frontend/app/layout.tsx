@@ -96,7 +96,7 @@ export default function RootLayout({
   return (
     <>
       {/* Preload critical video for faster loading */}
-      <link rel="preload" href="/koneti-promo.mp4" as="video" type="video/mp4" />
+      <link rel="preload" href="/koneti-promo.mp4" as="fetch" type="video/mp4" crossOrigin="anonymous" />
       
       {children}
       <Script
