@@ -68,6 +68,11 @@ const nextConfig: NextConfig = {
         source: '/index.html',
         destination: '/sr',
         permanent: true,
+      },
+      {
+        source: '/login',
+        destination: '/sr/login',
+        permanent: false,
       }
     ];
   },

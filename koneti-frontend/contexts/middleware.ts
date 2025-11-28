@@ -7,8 +7,13 @@ export function middleware(request: NextRequest) {
 
   // Ako token ne postoji i korisnik pokušava pristupiti zaštićenoj ruti
   if (!token) {
-    // Preusmjeri ga na stranicu za prijavu
-    return NextResponse.redirect(new URL("/login", request.url));
+    // Extraktuuj jezični parametar iz URL-a
+    const pathname = request.nextUrl.pathname;
+    const langMatch = pathname.match(/^\/(sr|en)/);
+    const lang = langMatch ? langMatch[1] : 'sr'; // Default na srpski ako jezik nije pronađen
+    
+    // Preusmjeri ga na stranicu za prijavu sa jezičkim parametrom
+    return NextResponse.redirect(new URL(`/${lang}/login`, request.url));
   }
 
   // Ako token postoji, dopusti pristup
@@ -17,5 +22,5 @@ export function middleware(request: NextRequest) {
 
 // Konfiguracija koja određuje na kojim rutama će se middleware izvršavati
 export const config = {
-  matcher: ["/admin/:path*", "/menu-management/:path*"],
+  matcher: ["/sr/admin/:path*", "/en/admin/:path*", "/sr/menu-management/:path*", "/en/menu-management/:path*"],
 };

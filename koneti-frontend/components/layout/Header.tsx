@@ -123,9 +123,9 @@ const Header: React.FC = () => {
   return (
     <header className="navbar" role="banner" aria-label="Glavna navigacija">
       <div className="nav-container">
-        {/* Logo vodi na /login ako nije autentifikovan, / ako jeste */}
+        {/* Logo vodi na login ako nije autentifikovan, / ako jeste */}
         <Link
-          href={isAuthenticated ? getLocalizedPath("/") : "/login"}
+          href={isAuthenticated ? getLocalizedPath("/") : getLocalizedPath("/login")}
           className="logo"
           title="Koneti Café - Početna stranica"
           aria-label="Koneti Café - Početna stranica"
