@@ -187,6 +187,16 @@ $animation-delay: 0.3s;
       object-fit: cover;
       z-index: $z-index-video;
       animation: slowZoom $animation-zoom ease-in-out infinite alternate;
+      
+      // Optimizacije za brže ucitavanje
+      contain: strict;
+      will-change: transform;
+      
+      // GPU acceleration
+      transform-origin: center;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      perspective: 1000px;
     }
   }
 

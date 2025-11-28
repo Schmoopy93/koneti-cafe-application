@@ -22,6 +22,7 @@ interface SlideData {
   subtitle: string;
   description: string;
   type: 'image' | 'video';
+  poster?: string;
 }
 
 const HeroSlider: React.FC = () => {
@@ -30,6 +31,16 @@ const HeroSlider: React.FC = () => {
 
   useEffect(() => {
     setMounted(true);
+    
+    // Preload video fajl u background
+    if (typeof window !== "undefined") {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'video';
+      link.href = '/koneti-promo.mp4';
+      link.type = 'video/mp4';
+      document.head.appendChild(link);
+    }
   }, []);
 
   const settings: Settings = {
@@ -51,7 +62,8 @@ const HeroSlider: React.FC = () => {
       type: 'video',
       title: t('home.hero.slide1.title'),
       subtitle: t('home.hero.slide1.subtitle'),
-      description: t('home.hero.slide1.description')
+      description: t('home.hero.slide1.description'),
+      poster: "/koneti-hero-poster.jpg" // Placeholder slika dok se video učitava
     },
     // {
     //   image: "cafe2.jpg",
@@ -100,6 +112,9 @@ const HeroSlider: React.FC = () => {
                   playsInline
                   className="video-background"
                   style={{ filter: 'brightness(0.8)' }}
+                  preload="metadata"
+                  crossOrigin="anonymous"
+                  poster={slide.poster}
                 >
                   <source src={slide.video} type="video/mp4" />
                 </video>

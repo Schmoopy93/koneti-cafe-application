@@ -38,6 +38,20 @@ const nextConfig: NextConfig = {
             value: 'no-cache, no-store, must-revalidate'
           }
         ]
+      },
+      // Video cache optimization
+      {
+        source: '/:path*.(mp4|webm|ogg|mov|avi)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=2592000, immutable'
+          },
+          {
+            key: 'Accept-Ranges',
+            value: 'bytes'
+          }
+        ]
       }
     ];
   },

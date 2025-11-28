@@ -81,9 +81,10 @@ export const metadata: Metadata = {
     },
   },
   other: {
-    // Preload hints for critical images - will be added to <head>
+    // Preload hints for critical resources
     'preload-image-1': 'https://koneticaffee.com/koneti-kafe.jpg',
     'preload-image-2': 'https://koneticaffee.com/koneti-logo.png',
+    'preload-video': '/koneti-promo.mp4',
   },
 };
 
@@ -94,6 +95,9 @@ export default function RootLayout({
 }) {
   return (
     <>
+      {/* Preload critical video for faster loading */}
+      <link rel="preload" href="/koneti-promo.mp4" as="video" type="video/mp4" />
+      
       {children}
       <Script
         id="root-service-worker"
