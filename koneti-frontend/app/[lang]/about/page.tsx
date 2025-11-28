@@ -4,6 +4,21 @@ import Script from 'next/script'
 
 type Props = { params: Promise<{ lang: 'sr' | 'en' }> }
 
+interface GalleryImage {
+  _id: string;
+  title: {
+    sr: string;
+    en: string;
+  };
+  description: {
+    sr: string;
+    en: string;
+  };
+  image: string;
+  order: number;
+  createdAt: string;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params
 
@@ -145,8 +160,30 @@ const getOrganizationJsonLd = (lang: string) => ({
   ]
 })
 
+// Fetch gallery images on the server side
+async function getGalleryImages(): Promise<GalleryImage[]> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    const response = await fetch(`${baseUrl}/gallery/about`, {
+      next: { revalidate: 3600 } // Cache for 1 hour
+    });
+    
+    if (!response.ok) {
+      console.error("Error loading gallery:", response.status);
+      return [];
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error loading gallery:", error);
+    return [];
+  }
+}
+
 export default async function AboutPage({ params }: Props) {
-  const { lang } = await params
+  const { lang } = await params;
+  const initialImages = await getGalleryImages();
 
   return (
     <>
@@ -163,7 +200,7 @@ export default async function AboutPage({ params }: Props) {
         strategy="afterInteractive"
       />
       <main>
-        <About />
+        <About initialImages={initialImages} />
       </main>
     </>
   )

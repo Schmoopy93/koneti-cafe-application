@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/reservation', priority: 0.85, freq: 'daily' as const },
     { path: '/about', priority: 0.8, freq: 'weekly' as const },
     { path: '/career', priority: 0.75, freq: 'weekly' as const },
+    { path: '/sitemap-keywords', priority: 0.7, freq: 'weekly' as const },
   ];
 
   const entries: MetadataRoute.Sitemap = [];

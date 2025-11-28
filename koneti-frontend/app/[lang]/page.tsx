@@ -11,11 +11,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   const metadata: Record<string, Metadata> = {
     sr: {
-      title: "Koneti Café – Savršeno mesto za kafu, proslave i poslovne sastanke u Novom Sadu",
+      title: "Koneti – Najbolji kafić u Novom Sadu | Specialty Coffee & Proslave",
       description:
-        "Uživajte u specialty kafi, poslasticama i prijatnom ambijentu. Rezervišite prostor za poslovne sastanke ili proslave u Koneti Café-u u Novom Sadu.",
+        "Koneti - premijum kafić u Novom Sadu sa specialty kafi, brunchom i prostorima za poslovne sastanke i proslave. Bulevar Oslobođenja 97. Brze rezervacije online.",
       keywords: [
-        "kafe Novi Sad", "kafić Novi Sad", "specialty coffee", "brunch", "proslave", "poslovni sastanci", "rezervacije", "ketering", "events Novi Sad"
+        "Koneti", "Koneti Novi Sad", "najbolji kafić Novi Sad", "kafe Novi Sad", "specialty coffee", "brunch Novi Sad", "proslave Novi Sad", "poslovni sastanci", "ketering", "events", "caffe bar", "reservation", "Bulevar Oslobođenja 97", "Koneti Experience", "privatni događaji"
       ],
       category: "Café",
       alternates: {
@@ -26,8 +26,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
       },
       openGraph: {
-        title: "Koneti Café - Dobrodošli",
-        description: "Specialty coffee, brunch i rezervacije prostora za poslovne sastanke, proslave i privatne događaje.",
+        title: "Koneti – Najbolji kafić u Novom Sadu",
+        description: "Premium specialty coffee, brunch, proslave i poslovni prostori. Rezervacije na Bulevaru Oslobođenja 97.",
         url: "https://koneticaffee.com/sr",
         type: "website",
         locale: "sr_RS",
@@ -38,14 +38,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             url: "https://koneticaffee.com/koneti-kafe.jpg",
             width: 1200,
             height: 630,
-            alt: "Koneti Café - Premium Ambijent",
+            alt: "Koneti Café - Ambijent u Novom Sadu",
           },
         ],
       },
       twitter: {
         card: "summary_large_image",
-        title: "Koneti Café - Dobrodošli",
-        description: "Specialty coffee, brunch i prostor za poslovne sastanke i proslave.",
+        title: "Koneti - Najbolji kafić u Novom Sadu",
+        description: "Specialty coffee, brunch, proslave i poslovni prostori.",
         images: ["https://koneticaffee.com/koneti-kafe.jpg"],
         creator: "@KonetiCafe",
         site: "@KonetiCafe",
@@ -66,11 +66,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     en: {
-      title: "Koneti Café – Perfect place for coffee, celebrations and business meetings in Novi Sad",
+      title: "Koneti – Best Café in Novi Sad | Specialty Coffee & Events",
       description:
-        "Enjoy specialty coffee, desserts and pleasant atmosphere. Reserve space for business meetings or celebrations at Koneti Café in Novi Sad.",
+        "Koneti - premium café in Novi Sad with specialty coffee, brunch and spaces for business meetings and celebrations. Bulevar Oslobođenja 97. Quick online reservations.",
       keywords: [
-        "cafe Novi Sad", "coffee shop Novi Sad", "specialty coffee", "brunch", "celebrations", "business meetings", "reservations", "catering", "events Novi Sad"
+        "Koneti", "Koneti Novi Sad", "best café Novi Sad", "cafe Novi Sad", "coffee shop", "specialty coffee", "brunch", "celebrations", "business meetings", "catering", "events", "reservation", "Bulevar Oslobođenja 97", "Koneti Experience", "private events"
       ],
       category: "Café",
       alternates: {
@@ -81,8 +81,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         },
       },
       openGraph: {
-        title: "Koneti Café - Welcome",
-        description: "Specialty coffee, brunch and space for business meetings, celebrations and private events.",
+        title: "Koneti – Best Café in Novi Sad",
+        description: "Premium specialty coffee, brunch, celebrations and business spaces. Reservations at Bulevar Oslobođenja 97.",
         url: "https://koneticaffee.com/en",
         type: "website",
         locale: "en_US",
@@ -93,7 +93,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             url: "https://koneticaffee.com/koneti-kafe.jpg",
             width: 1200,
             height: 630,
-            alt: "Koneti Café - Premium Atmosphere",
+            alt: "Koneti Café - Atmosphere in Novi Sad",
           },
         ],
       },

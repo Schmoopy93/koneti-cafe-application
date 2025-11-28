@@ -34,9 +34,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         default: "Koneti Café - Dobrodošli",
         template: "%s | Koneti Café",
       },
-      description: "Uživajte u najboljoj kafi u prijatnom ambijentu na Bulevaru Oslobođenja 97, Novi Sad. Rezervišite stolove za poslovne sastanke, proslave ili privatne događaje. Premium specialty coffee, brunch i ketering.",
+      description: "Koneti - najbolji kafić u Novom Sadu na Bulevaru Oslobođenja 97. Premium specialty coffee, brunch, ketering i poslovni prostori. Rezervacije za proslave, sastanke i privatne događaje.",
       keywords: [
-        "kafe Novi Sad", "kafić Novi Sad", "kafa", "specialty coffee", "brunch", "ketering", "proslave", "poslovni sastanci", "rezervacija", "Bulevar Oslobođenja", "Koneti Café"
+        "Koneti", "Koneti café", "Koneti kafić", "Koneti Novi Sad", "kafe Novi Sad", "kafić Novi Sad", "best kafić", "najbolji kafić", "specialty coffee Novi Sad", "brunch Novi Sad", "ketering Novi Sad", "poslovni sastanci", "proslave Novi Sad", "privatni događaji", "caffe bar", "coffee shop", "Bulevar Oslobođenja 97", "Koneti Experience", "Koneti Café Bulevar"
       ],
       authors: [{ name: "Koneti Café", url: "https://koneticaffee.com" }],
       creator: "Koneti Café",
@@ -100,9 +100,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         default: "Koneti Café - Welcome",
         template: "%s | Koneti Café",
       },
-      description: "Enjoy the best specialty coffee in a pleasant atmosphere on Bulevar Oslobođenja 97, Novi Sad. Reserve tables for business meetings, celebrations or private events. Premium coffee, brunch and catering.",
+      description: "Koneti Café - Premium specialty coffee, brunch and catering in Novi Sad. Reserve for business meetings, celebrations and private events at Bulevar Oslobođenja 97.",
       keywords: [
-        "cafe Novi Sad", "coffee shop Novi Sad", "coffee", "specialty coffee", "brunch", "catering", "celebrations", "business meetings", "reservation", "Bulevar Oslobođenja", "Koneti Café"
+        "Koneti", "Koneti café", "Koneti Novi Sad", "cafe Novi Sad", "coffee shop Novi Sad", "specialty coffee", "brunch", "catering", "celebrations", "business meetings", "reservation", "Bulevar Oslobođenja 97", "Koneti Experience", "best café", "coffee Serbia", "premium coffee Novi Sad", "event space Novi Sad"
       ],
       authors: [{ name: "Koneti Café", url: "https://koneticaffee.com" }],
       creator: "Koneti Café",
@@ -314,6 +314,53 @@ export default async function LangLayout({ children, params }: Props) {
     }
   };
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": lang === 'sr' ? "Gde se nalazi Koneti Café?" : "Where is Koneti Café located?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": lang === 'sr' 
+            ? "Koneti Café se nalazi na Bulevaru Oslobođenja 97, Novi Sad, Srbija." 
+            : "Koneti Café is located at Bulevar Oslobođenja 97, Novi Sad, Serbia."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": lang === 'sr' ? "Kako mogu da napravim rezervaciju?" : "How can I make a reservation?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": lang === 'sr'
+            ? "Možete da napravite rezervaciju online kroz našu web stranicu ili kontaktirajte nas na +381 69 2565563."
+            : "You can make a reservation online through our website or contact us at +381 69 2565563."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": lang === 'sr' ? "Da li Koneti nudi ketering?" : "Does Koneti offer catering?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": lang === 'sr'
+            ? "Da, Koneti nudi premium ketering usluge za poslovne sastanke, proslave i privatne događaje."
+            : "Yes, Koneti offers premium catering services for business meetings, celebrations and private events."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": lang === 'sr' ? "Koja su radna vremena?" : "What are the opening hours?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": lang === 'sr'
+            ? "Ponedeljak-Petak: 07:30-23:00, Subota: 07:30-23:00, Nedelja: 09:00-23:00"
+            : "Monday-Friday: 07:30-23:00, Saturday: 07:30-23:00, Sunday: 09:00-23:00"
+        }
+      }
+    ]
+  };
+
   return (
     <html lang={lang} className={inter.variable} suppressHydrationWarning>
       <head>
@@ -358,6 +405,14 @@ export default async function LangLayout({ children, params }: Props) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(webSiteJsonLd),
+          }}
+          strategy="beforeInteractive"
+        />
+        <Script
+          id="faq-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(faqJsonLd),
           }}
           strategy="beforeInteractive"
         />

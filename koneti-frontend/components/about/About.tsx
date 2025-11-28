@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo, memo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faChevronLeft, faChevronRight, faCoffee, faHeart, faMusic, faBusinessTime, faUsers, faUserClock, faCalendarPlus, faCalendarWeek } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { apiRequest } from "@/utils/api";
-import Spinner from "../ui/Spinner";
 import "./About.scss";
 
 interface GalleryImage {
@@ -24,32 +22,95 @@ interface GalleryImage {
   createdAt: string;
 }
 
-const Gallery: React.FC = () => {
+interface AboutProps {
+  initialImages?: GalleryImage[];
+}
+
+// Memozovane komponente za optimizaciju
+const SliderImage = memo(({ image, isFirst, isActive, i18n }: {
+  image: GalleryImage;
+  isFirst: boolean;
+  isActive: boolean;
+  i18n: any;
+}) => (
+  <article className="about__welcome-slider-slide" itemScope itemType="https://schema.org/ImageObject">
+    <img
+      src={image.image}
+      alt={i18n.language === "en" && image.title.en ? image.title.en : image.title.sr}
+      loading={isFirst ? "eager" : "lazy"}
+      itemProp="image"
+      decoding="async"
+    />
+  </article>
+), (prev, next) => prev.image._id === next.image._id && prev.isActive === next.isActive);
+
+SliderImage.displayName = "SliderImage";
+
+const SliderIndicators = memo(({ count, activeIndex, onSlideChange }: {
+  count: number;
+  activeIndex: number;
+  onSlideChange: (index: number) => void;
+}) => (
+  <div className="about__welcome-slider-indicators" role="tablist" aria-label="Indikatori slajdova">
+    {Array.from({ length: count }).map((_, index) => (
+      <button
+        key={index}
+        className={`about__welcome-indicator ${activeIndex === index ? "about__welcome-indicator--active" : ""}`}
+        onClick={() => onSlideChange(index)}
+        role="tab"
+        aria-selected={activeIndex === index}
+        aria-label={`Slajd ${index + 1}`}
+      />
+    ))}
+  </div>
+));
+
+SliderIndicators.displayName = "SliderIndicators";
+
+const FeatureCard = memo(({ icon, title, description, itemProp }: {
+  icon: any;
+  title: string;
+  description: string;
+  itemProp?: string;
+}) => (
+  <article className="about__feature-card" role="listitem" itemScope itemType="https://schema.org/Service">
+    <div className="about__feature-card-icon">
+      <FontAwesomeIcon icon={icon} aria-hidden="true" />
+    </div>
+    <div className="about__feature-card-content">
+      <h3 itemProp="name">{title}</h3>
+      <p itemProp="description">{description}</p>
+    </div>
+  </article>
+));
+
+FeatureCard.displayName = "FeatureCard";
+
+const OfferCard = memo(({ icon, text }: {
+  icon: any;
+  text: string;
+}) => (
+  <article className="about__offer-card" role="listitem" itemScope itemType="https://schema.org/Service">
+    <div className="about__offer-icon">
+      <FontAwesomeIcon icon={icon} aria-hidden="true" />
+    </div>
+    <h4 className="about__offer-text" itemProp="name">{text}</h4>
+  </article>
+));
+
+OfferCard.displayName = "OfferCard";
+
+const About: React.FC<AboutProps> = ({ initialImages = [] }) => {
   const { t, i18n } = useTranslation();
-  const [images, setImages] = useState<GalleryImage[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState<GalleryImage[]>(initialImages);
   const [welcomeSlide, setWelcomeSlide] = useState(0);
 
+  // Sync state sa initialImages
   useEffect(() => {
-    fetchGalleryImages();
-  }, []);
-
-  const fetchGalleryImages = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await apiRequest("/gallery/about");
-      if (response.ok) {
-        const data = await response.json();
-        setImages(data);
-      } else {
-        console.error("Error loading gallery:", response.status);
-      }
-    } catch (error) {
-      console.error("Error loading gallery:", error);
-    } finally {
-      setLoading(false);
+    if (initialImages.length > 0) {
+      setImages(initialImages);
     }
-  }, []);
+  }, [initialImages]);
 
   // WELCOME SLIDER AUTO-ROTATE - memozovano
   useEffect(() => {
@@ -77,14 +138,6 @@ const Gallery: React.FC = () => {
     setWelcomeSlide(index);
   }, []);
 
-  if (loading) {
-    return (
-      <div className="about__container">
-        <Spinner size="lg" text={t("gallery.loading")} />
-      </div>
-    );
-  }
-
   return (
     <motion.article
       className="about__management"
@@ -111,18 +164,8 @@ const Gallery: React.FC = () => {
           <div className="about__welcome-text-side">
             <p className="about__welcome-intro">{t("gallery.about.aboutPage.welcome")}</p>
             <div className="about__welcome-offers" role="list">
-              <article className="about__offer-card" role="listitem" itemScope itemType="https://schema.org/Service">
-                <div className="about__offer-icon">
-                  <FontAwesomeIcon icon={faBusinessTime} aria-hidden="true" />
-                </div>
-                <h4 className="about__offer-text" itemProp="name">{t("gallery.about.aboutPage.offer.business")}</h4>
-              </article>
-              <article className="about__offer-card" role="listitem" itemScope itemType="https://schema.org/Service">
-                <div className="about__offer-icon">
-                  <FontAwesomeIcon icon={faCalendarWeek} aria-hidden="true" />
-                </div>
-                <h4 className="about__offer-text" itemProp="name">{t("gallery.about.aboutPage.offer.koneti")}</h4>
-              </article>
+              <OfferCard icon={faBusinessTime} text={t("gallery.about.aboutPage.offer.business")} />
+              <OfferCard icon={faCalendarWeek} text={t("gallery.about.aboutPage.offer.koneti")} />
             </div>
             <p className="about__welcome-cta">{t("gallery.about.aboutPage.cta")}</p>
           </div>
@@ -136,29 +179,20 @@ const Gallery: React.FC = () => {
                   style={{ transform: `translateX(-${welcomeSlide * 100}%)` }}
                 >
                   {welcomeImages.map((image, idx) => (
-                    <article key={image._id} className="about__welcome-slider-slide" itemScope itemType="https://schema.org/ImageObject">
-                      <img
-                        src={image.image}
-                        alt={i18n.language === "en" && image.title.en ? image.title.en : image.title.sr}
-                        loading={idx === 0 ? "eager" : "lazy"}
-                        itemProp="image"
-                        decoding="async"
-                      />
-                    </article>
-                  ))}
-                </div>
-                <div className="about__welcome-slider-indicators" role="tablist" aria-label="Indikatori slajdova">
-                  {welcomeImages.map((_, index) => (
-                    <button
-                      key={index}
-                      className={`about__welcome-indicator ${welcomeSlide === index ? "about__welcome-indicator--active" : ""}`}
-                      onClick={() => handleSlideChange(index)}
-                      role="tab"
-                      aria-selected={welcomeSlide === index}
-                      aria-label={`Slajd ${index + 1}`}
+                    <SliderImage 
+                      key={image._id} 
+                      image={image} 
+                      isFirst={idx === 0}
+                      isActive={welcomeSlide === idx}
+                      i18n={i18n}
                     />
                   ))}
                 </div>
+                <SliderIndicators 
+                  count={welcomeImages.length} 
+                  activeIndex={welcomeSlide}
+                  onSlideChange={handleSlideChange}
+                />
               </div>
               
               {/* Scroll Arrow */}
@@ -200,39 +234,25 @@ const Gallery: React.FC = () => {
 
         {/* DONJI DEO - Features Grid */}
         <div className="about__features-grid" role="list">
-          <article className="about__feature-card" role="listitem" itemScope itemType="https://schema.org/Service">
-            <div className="about__feature-card-icon">
-              <FontAwesomeIcon icon={faCoffee} aria-hidden="true" />
-            </div>
-            <div className="about__feature-card-content">
-              <h3 itemProp="name">{t("gallery.about.features.quality.title")}</h3>
-              <p itemProp="description">{t("gallery.about.features.quality.description")}</p>
-            </div>
-          </article>
-
-          <article className="about__feature-card" role="listitem" itemScope itemType="https://schema.org/Service">
-            <div className="about__feature-card-icon">
-              <FontAwesomeIcon icon={faMusic} aria-hidden="true" />
-            </div>
-            <div className="about__feature-card-content">
-              <h3 itemProp="name">{t("gallery.about.features.passion.title")}</h3>
-              <p itemProp="description">{t("gallery.about.features.passion.description")}</p>
-            </div>
-          </article>
-
-          <article className="about__feature-card" role="listitem" itemScope itemType="https://schema.org/Service">
-            <div className="about__feature-card-icon">
-              <FontAwesomeIcon icon={faHeart} aria-hidden="true" />
-            </div>
-            <div className="about__feature-card-content">
-              <h3 itemProp="name">{t("gallery.about.features.community.title")}</h3>
-              <p itemProp="description">{t("gallery.about.features.community.description")}</p>
-            </div>
-          </article>
+          <FeatureCard 
+            icon={faCoffee}
+            title={t("gallery.about.features.quality.title")}
+            description={t("gallery.about.features.quality.description")}
+          />
+          <FeatureCard 
+            icon={faMusic}
+            title={t("gallery.about.features.passion.title")}
+            description={t("gallery.about.features.passion.description")}
+          />
+          <FeatureCard 
+            icon={faHeart}
+            title={t("gallery.about.features.community.title")}
+            description={t("gallery.about.features.community.description")}
+          />
         </div>
       </section>
     </motion.article>
   );
 };
 
-export default Gallery;
+export default About;
