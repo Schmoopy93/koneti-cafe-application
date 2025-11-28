@@ -21,6 +21,7 @@ import { motion, Variants } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../contexts/AuthContext";
 import { apiRequest } from "@/utils/api";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import CareerManagement from "./CareerManagement";
 import Spinner from "../ui/Spinner";
 
@@ -96,6 +97,8 @@ const AdminPage: React.FC = () => {
     window.scrollTo(0, 0);
     fetchData();
   }, []);
+
+  useScrollLock(showModal !== null);
   
   // Prevent scroll restoration on back button
   useEffect(() => {

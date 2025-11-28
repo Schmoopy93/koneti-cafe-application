@@ -16,6 +16,7 @@ import {
 import { useTranslation } from "react-i18next";
 import ReactCountryFlag from "react-country-flag";
 import Image from "next/image";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import "./Header.scss";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -95,6 +96,8 @@ const Header: React.FC = () => {
       document.body.classList.remove("body--no-scroll");
     };
   }, [isOpen]);
+
+  useScrollLock(isOpen);
 
   if (!mounted) {
     return (

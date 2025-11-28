@@ -20,6 +20,7 @@ import {
   faCrown,
 } from "@fortawesome/free-solid-svg-icons";
 import { apiRequest } from "@/utils/api";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import Spinner from "../ui/Spinner";
 import "./ReservationForm.scss";
 import { Tooltip } from "react-tooltip";
@@ -332,6 +333,8 @@ export default function ReservationForm() {
       document.body.classList.remove("body--no-scroll");
     };
   }, [isOpen, showPopup]);
+
+  useScrollLock(isOpen || showPopup);
 
   // =========================
   // HANDLERS

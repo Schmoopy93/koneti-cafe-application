@@ -15,6 +15,11 @@ body {
   overflow-x: hidden;
 }
 
+/* Prevent scroll when modal/popup is open */
+body.body--no-scroll {
+  overflow: hidden;
+}
+
 #__next {
   margin: 0;
   padding: 0;

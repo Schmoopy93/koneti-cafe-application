@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import "./Modal.scss";
 
 interface ModalProps {
@@ -15,6 +16,8 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ show, onClose, title, emoji, className, children }) => {
+  useScrollLock(show);
+
   if (!show) return null;
 
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback, memo } from "react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -32,6 +32,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { motion } from "framer-motion";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import "./Menu.scss";
 
 interface Category {
@@ -71,6 +72,97 @@ const faIconsMap: Record<string, any> = {
   faLemon,
 };
 
+const ItemsPerPage = 8;
+
+// Memoized Drink Card Component
+interface DrinkCardProps {
+  drink: Drink;
+  index: number;
+  mounted: boolean;
+  imageErrors: Set<string>;
+  getDrinkName: (drink: Drink) => string;
+  getCategoryName: (cat?: Category) => string;
+  onImageClick: (drink: Drink) => void;
+  onImageError: (drinkId: string) => void;
+}
+
+const DrinkCard = memo<DrinkCardProps>(({
+  drink,
+  index,
+  mounted,
+  imageErrors,
+  getDrinkName,
+  getCategoryName,
+  onImageClick,
+  onImageError,
+}) => (
+  <motion.article
+    key={drink._id}
+    className="menu-public-drink-card"
+    initial={mounted ? { opacity: 0, y: 40, scale: 0.9 } : false}
+    animate={mounted ? { opacity: 1, y: 0, scale: 1 } : {}}
+    transition={{
+      duration: 0.8,
+      delay: index * 0.1,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    }}
+    whileHover={{
+      y: -8,
+      scale: 1.03,
+      transition: { duration: 0.3 }
+    }}
+    tabIndex={0}
+    role="listitem"
+    itemScope
+    itemType="https://schema.org/MenuItem"
+    onKeyDown={(e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onImageClick(drink);
+      }
+    }}
+    aria-label={`${getDrinkName(drink)} - ${drink.price} RSD`}
+  >
+    <div className="menu-public-card-inner">
+      <div
+        className="menu-public-image-container"
+        onClick={() => onImageClick(drink)}
+      >
+        {drink.image && !imageErrors.has(drink._id) ? (
+          <Image
+            src={drink.image}
+            alt={`Koneti Cafe - ${getDrinkName(drink)}`}
+            className="menu-public-drink-img"
+            loading="lazy"
+            width={400}
+            height={300}
+            quality={75}
+            itemProp="image"
+            onError={() => onImageError(drink._id)}
+          />
+        ) : (
+          <div className="menu-public-placeholder-image">
+            <FontAwesomeIcon icon={faCoffee} aria-hidden="true" />
+          </div>
+        )}
+        <div className="menu-public-image-overlay">
+          <FontAwesomeIcon icon={faEye} className="preview-icon" aria-hidden="true" />
+        </div>
+      </div>
+      <div className="menu-public-drink-info">
+        <h4 itemProp="name">{getDrinkName(drink)}</h4>
+        <p itemProp="description">{getCategoryName(drink.category)}</p>
+        <span className="menu-public-price" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+          <span itemProp="price">{drink.price}</span>
+          <span itemProp="priceCurrency" content="RSD"> RSD</span>
+        </span>
+      </div>
+    </div>
+  </motion.article>
+));
+
+DrinkCard.displayName = 'DrinkCard';
+
 const MenuClient: React.FC<MenuClientProps> = ({
   initialCategories,
   initialDrinks,
@@ -83,7 +175,6 @@ const MenuClient: React.FC<MenuClientProps> = ({
     initialCategories[0]?._id || ""
   );
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [lastFilterKey, setLastFilterKey] = useState<string>("");
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -93,8 +184,6 @@ const MenuClient: React.FC<MenuClientProps> = ({
   const [selectedImage, setSelectedImage] = useState<{src: string, name: string} | null>(null);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState<boolean>(false);
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
-  const [keyboardFocusIndex, setKeyboardFocusIndex] = useState<number>(-1);
-  const itemsPerPage = 8;
   const topRef = useRef<HTMLDivElement>(null);
 
   const activeCategory = selectedCategory || categories[0]?._id || "";
@@ -111,81 +200,106 @@ const MenuClient: React.FC<MenuClientProps> = ({
 
   // Reset page when category or filters change
   useEffect(() => {
-    const currentFilterKey = `${activeCategory}-${searchTerm}-${sortBy}`;
-    if (lastFilterKey !== currentFilterKey) {
-      setCurrentPage(1);
-      setLastFilterKey(currentFilterKey);
-    }
-  }, [activeCategory, searchTerm, sortBy, lastFilterKey]);
+    setCurrentPage(1);
+  }, [activeCategory, searchTerm, sortBy]);
+
+  useScrollLock(showImageModal);
+
   const activeCategoryObj = Array.isArray(categories) 
     ? categories.find((cat) => cat._id === activeCategory)
     : undefined;
 
-  const getCategoryName = (cat?: Category) => {
+  const getCategoryName = useCallback((cat?: Category) => {
     if (!cat || !i18n.isInitialized) return "";
     return typeof cat.name === "object"
       ? cat.name[i18n.language] ?? cat.name.en
       : cat.name;
-  };
+  }, [i18n.language, i18n.isInitialized]);
 
-  const getDrinkName = (drink: Drink) => {
+  const getDrinkName = useCallback((drink: Drink) => {
     if (!i18n.isInitialized) return "";
     return typeof drink.name === "object"
       ? drink.name[i18n.language] ?? drink.name.sr ?? drink.name.en ?? ""
       : drink.name;
-  };
+  }, [i18n.language, i18n.isInitialized]);
 
-  const filteredDrinks = drinks
-    .filter((d) => d.category?._id === activeCategory)
-    .filter((d) => {
-      const drinkName = getDrinkName(d);
-      return drinkName.toLowerCase().includes(searchTerm.toLowerCase());
-    })
-    .sort((a, b) => {
-      if (sortBy === "name") {
-        const nameA = getDrinkName(a);
-        const nameB = getDrinkName(b);
-        return nameA.localeCompare(nameB);
-      }
-      if (sortBy === "price-low") return a.price - b.price;
-      if (sortBy === "price-high") return b.price - a.price;
-      return 0;
-    });
+  const filteredDrinks = useMemo(() => {
+    const getLocalDrinkName = (drink: Drink) => {
+      if (!i18n.isInitialized) return "";
+      return typeof drink.name === "object"
+        ? drink.name[i18n.language] ?? drink.name.sr ?? drink.name.en ?? ""
+        : drink.name;
+    };
 
-  const totalPages = Math.ceil(filteredDrinks.length / itemsPerPage) || 1;
-  const startIndex = (currentPage - 1) * itemsPerPage;
+    return drinks
+      .filter((d) => d.category?._id === activeCategory)
+      .filter((d) => {
+        const drinkName = getLocalDrinkName(d);
+        return drinkName.toLowerCase().includes(searchTerm.toLowerCase());
+      })
+      .sort((a, b) => {
+        if (sortBy === "name") {
+          const nameA = getLocalDrinkName(a);
+          const nameB = getLocalDrinkName(b);
+          return nameA.localeCompare(nameB);
+        }
+        if (sortBy === "price-low") return a.price - b.price;
+        if (sortBy === "price-high") return b.price - a.price;
+        return 0;
+      });
+  }, [drinks, activeCategory, searchTerm, sortBy, i18n.language, i18n.isInitialized]);
+
+  const totalPages = Math.ceil(filteredDrinks.length / ItemsPerPage) || 1;
+  const startIndex = (currentPage - 1) * ItemsPerPage;
   const currentDrinks = filteredDrinks.slice(
     startIndex,
-    startIndex + itemsPerPage
+    startIndex + ItemsPerPage
   );
 
-  const goToPage = (page: number) => {
+  const goToPage = useCallback((page: number) => {
     setCurrentPage(page);
-    // Scroll to top after state update
     setTimeout(() => {
       topRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, 0);
-  };
+  }, []);
 
-  const goToPrevious = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-      // Scroll to top after state update
-      setTimeout(() => {
-        topRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }, 0);
-    }
-  };
+  const goToPrevious = useCallback(() => {
+    setCurrentPage(prev => {
+      if (prev > 1) {
+        setTimeout(() => {
+          topRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }, 0);
+        return prev - 1;
+      }
+      return prev;
+    });
+  }, []);
 
-  const goToNext = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-      // Scroll to top after state update
-      setTimeout(() => {
-        topRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }, 0);
+  const goToNext = useCallback(() => {
+    setCurrentPage(prev => {
+      // totalPages will be available from closure
+      const maxPages = Math.ceil(filteredDrinks.length / ItemsPerPage) || 1;
+      if (prev < maxPages) {
+        setTimeout(() => {
+          topRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }, 0);
+        return prev + 1;
+      }
+      return prev;
+    });
+  }, [filteredDrinks.length]);
+
+  const handleImageClick = useCallback((drink: Drink) => {
+    if (drink.image) {
+      setSelectedImage({src: drink.image, name: getDrinkName(drink)});
+      setShowImageModal(true);
     }
-  };
+  }, []);
+
+  const handleCategoryChange = useCallback((catId: string) => {
+    setSelectedCategory(catId);
+    setShowCategoryDropdown(false);
+  }, []);
 
   return (
     <motion.div
@@ -412,89 +526,24 @@ const MenuClient: React.FC<MenuClientProps> = ({
         ) : (
           <div className="menu-public-drinks-grid" role="list">
             {currentDrinks.map((drink, index) => (
-            <motion.article
-              key={drink._id}
-              className="menu-public-drink-card"
-              initial={mounted ? { opacity: 0, y: 40, scale: 0.9 } : false}
-              animate={mounted ? { opacity: 1, y: 0, scale: 1 } : {}}
-              transition={{
-                duration: 0.8,
-                delay: index * 0.1,
-                ease: [0.25, 0.46, 0.45, 0.94],
-              }}
-              whileHover={{
-                y: -8,
-                scale: 1.03,
-                transition: { duration: 0.3 }
-              }}
-              tabIndex={0}
-              role="listitem"
-              itemScope
-              itemType="https://schema.org/MenuItem"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  if (drink.image) {
-                    setSelectedImage({src: drink.image, name: getDrinkName(drink)});
-                    setShowImageModal(true);
-                  }
-                }
-              }}
-              style={{
-                outline: keyboardFocusIndex === index ? '2px solid var(--color-accent-light)' : 'none',
-                outlineOffset: '2px'
-              }}
-              aria-label={`${getDrinkName(drink)} - ${drink.price} RSD`}
-            >
-              <div className="menu-public-card-inner">
-                <div
-                  className="menu-public-image-container"
-                  onClick={() => {
-                    if (drink.image) {
-                      setSelectedImage({src: drink.image, name: getDrinkName(drink)});
-                      setShowImageModal(true)
-                    }
-                  }}
-                >
-                  {drink.image && !imageErrors.has(drink._id) ? (
-                    <Image
-                      src={drink.image}
-                      alt={`Koneti Cafe - ${getDrinkName(drink)} - ${getCategoryName(drink.category)}`}
-                      className="menu-public-drink-img"
-                      loading="lazy"
-                      width={400}
-                      height={300}
-                      quality={75}
-                      itemProp="image"
-                      onError={() => {
-                        setImageErrors(prev => new Set(prev).add(drink._id));
-                      }}
-                    />
-                  ) : (
-                    <div className="menu-public-placeholder-image">
-                      <FontAwesomeIcon icon={faCoffee} aria-hidden="true" />
-                    </div>
-                  )}
-                  <div className="menu-public-image-overlay">
-                    <FontAwesomeIcon icon={faEye} className="preview-icon" aria-hidden="true" />
-                    {/* <span className="preview-text">{t('menu.preview')}</span> */}
-                  </div>
-                </div>
-                <div className="menu-public-drink-info">
-                  <h4 itemProp="name">{getDrinkName(drink)}</h4>
-                  <p itemProp="description">{getCategoryName(drink.category)}</p>
-                  <span className="menu-public-price" itemProp="offers" itemScope itemType="https://schema.org/Offer">
-                    <span itemProp="price">{drink.price}</span>
-                    <span itemProp="priceCurrency" content="RSD"> RSD</span>
-                  </span>
-                </div>
-              </div>
-            </motion.article>
+              <DrinkCard
+                key={drink._id}
+                drink={drink}
+                index={index}
+                mounted={mounted}
+                imageErrors={imageErrors}
+                getDrinkName={getDrinkName}
+                getCategoryName={getCategoryName}
+                onImageClick={handleImageClick}
+                onImageError={(drinkId) => {
+                  setImageErrors(prev => new Set(prev).add(drinkId));
+                }}
+              />
             ))}
           </div>
         )}
 
-        {filteredDrinks.length > itemsPerPage && (
+        {filteredDrinks.length > ItemsPerPage && (
           <>
             <div className="menu-public-page-info">
               <span className="menu-public-page-label">{t("menu.pagination.pageLabel")}:</span>

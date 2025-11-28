@@ -22,6 +22,7 @@ import AddGalleryImage from "../forms/AddGalleryImage";
 import { apiRequest } from "@/utils/api";
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import "./GalleryManagement.scss";
 
 interface GalleryImage {
@@ -58,6 +59,8 @@ const GalleryManagement: React.FC = () => {
   useEffect(() => {
     fetchGalleryImages();
   }, []);
+
+  useScrollLock(!!selectedImage || showAddModal || !!showDeleteConfirm);
 
   const fetchGalleryImages = async () => {
     try {

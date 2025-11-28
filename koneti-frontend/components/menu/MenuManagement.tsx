@@ -34,6 +34,7 @@ import {
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 import type { Drink } from "../../app/[lang]/types/drink";
 import type { Category } from "../../app/[lang]/types/category";
@@ -127,6 +128,8 @@ const MenuManagement: React.FC<MenuManagementProps> = ({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  useScrollLock(!!showDeleteConfirm || showImagePreview);
 
   const getCategoryName = (cat?: Category) => {
     if (!cat) return "";

@@ -1,76 +1,125 @@
 //=================================================================
-// CareerManagement.scss - Premium Table Layout
+// CareerManagement.scss - Optimized Table & Modal Layout
 //=================================================================
-@use "sass:color";
 
 //-----------------------------------------------------------------
-// 1. Palette & Base
+// 1. Design Tokens
 //-----------------------------------------------------------------
-$primary-color: #cfa68a;
-$secondary-color: #d4a574;
-$accent-color: #e6c79a;
-$light-bg: #f8f0e6;
+$primary: #cfa68a;
+$secondary: #d4a574;
+$accent: #e6c79a;
+$bg-light: #f8f0e6;
 $text-primary: #4a342d;
 $text-secondary: #7b5e50;
-$danger-color: #e74c3c;
-$success-color: #27ae60;
-$info-color: #3498db;
-$warning-color: #f39c12;
-$border-color: rgba(0, 0, 0, 0.08);
+$danger: #e74c3c;
+$success: #27ae60;
+$info: #3498db;
+$warning: #f39c12;
 
-$transition-fast: 0.25s ease;
+$transition: 0.25s ease;
 $shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.08);
 $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
+$shadow-modal: 0 30px 80px rgba(90, 62, 54, 0.5), 0 15px 40px rgba($primary, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.8);
 
 //-----------------------------------------------------------------
-// 2. Mixins (from AddDrink.scss)
+// 2. Reusable Mixins
 //-----------------------------------------------------------------
-@mixin input-focus-state {
-  border-color: var(--drink-primary);
-  box-shadow: var(--drink-shadow-focus);
-  outline: none;
-  background: white;
-  transform: translateY(-2px);
-}
-
-@mixin button-hover {
-  transform: translateY(-2px);
-  box-shadow: var(--drink-shadow-lg);
-}
-
 @mixin flex-center {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-@mixin custom-scrollbar {
+@mixin button-base {
+  border: none;
+  cursor: pointer;
+  transition: all $transition;
+  font-family: "Poppins", sans-serif;
+}
+
+@mixin button-primary {
+  @include button-base;
+  background: linear-gradient(135deg, $primary, $secondary);
+  color: white;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  font-weight: 600;
+  box-shadow: $shadow-soft;
+  letter-spacing: 0.3px;
+
+  &:hover {
+    background: linear-gradient(135deg, #b88a5a, #b88a5a);
+    box-shadow: $shadow-hover;
+    transform: translateY(-2px);
+  }
+}
+
+@mixin button-icon($bg-color) {
+  @include button-base;
+  @include flex-center;
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  background: $bg-color;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  min-width: 38px;
+  gap: 0.4rem;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: $shadow-hover;
+  }
+
+  svg { font-size: 1rem; }
+}
+
+@mixin input-base {
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  border: 2px solid $primary;
+  font-size: 1rem;
+  font-family: "Poppins", sans-serif;
+  background: #fff;
+  color: $text-primary;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:focus {
+    outline: none;
+    border-color: $secondary;
+    box-shadow: 0 0 0 3px rgba($primary, 0.2);
+    transform: translateY(-2px);
+  }
+}
+
+@mixin scrollbar-custom {
+  scrollbar-width: thin;
+  scrollbar-color: $primary rgba($primary, 0.15);
+
   &::-webkit-scrollbar {
     width: 6px;
   }
   &::-webkit-scrollbar-thumb {
-    background: var(--drink-border);
+    background: $primary;
     border-radius: 3px;
   }
   &::-webkit-scrollbar-track {
-    background: rgba(207, 166, 138, 0.1);
+    background: rgba($primary, 0.1);
   }
-
-  scrollbar-width: thin;
-  scrollbar-color: var(--drink-border) rgba(207, 166, 138, 0.1);
 }
 
 //-----------------------------------------------------------------
-// 2. Base Container
+// 3. Base Container
 //-----------------------------------------------------------------
 .career-management {
   font-family: "Inter", "Poppins", sans-serif;
-  color: #4a342d;
+  color: $text-primary;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   padding: 1.5rem 2rem;
-  background: #f8f0e6;
+  background: $bg-light;
 
   //-----------------------------------------------------------------
   // Header
@@ -91,27 +140,11 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
       justify-content: space-between;
 
       .career-management__btn-add-position {
+        @include button-primary;
         margin-left: auto;
-        background: linear-gradient(135deg, #cfa68a, #d4a574);
-        color: white;
-        border: none;
-        padding: 0.7rem 1.4rem;
-        border-radius: 10px;
-        font-weight: 600;
-        font-size: 0.95rem;
-        cursor: pointer;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        letter-spacing: 0.3px;
-
-        &:hover {
-          background: linear-gradient(135deg, #b88a5a, #b88a5a);
-          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-          transform: translateY(-2px);
-        }
       }
 
       .career-management__stats {
@@ -121,33 +154,33 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
         align-items: center;
 
         .career-management__stat-item {
-          background: linear-gradient(145deg, #fff, rgba(248, 240, 230, 0.9));
-          border: 1px solid rgba(207, 166, 138, 0.4);
+          background: linear-gradient(145deg, #fff, rgba($bg-light, 0.9));
+          border: 1px solid rgba($primary, 0.4);
           border-radius: 12px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          box-shadow: $shadow-soft;
           padding: 0.6rem 1.4rem;
           display: flex;
           flex-direction: column;
           align-items: center;
           min-width: 90px;
           text-align: center;
-          transition: 0.25s ease;
+          transition: $transition;
 
           &:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+            box-shadow: $shadow-hover;
           }
 
           .stat-number {
             font-weight: 700;
             font-size: 1.3rem;
-            color: #cfa68a;
+            color: $primary;
           }
 
           .stat-label {
             font-size: 0.8rem;
             font-weight: 600;
-            color: #7b5e50;
+            color: $text-secondary;
             margin-top: 0.2rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -158,75 +191,103 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
   }
 
   //-----------------------------------------------------------------
-  // Add Position Form
+  // Add Position Form (in Modal)
   //-----------------------------------------------------------------
   &__add-position-form {
-    font-family: "Poppins", sans-serif;
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
-    padding: 0;
-    margin: 0;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    border-radius: 0;
 
-    .career-management__form-row {
+    form {
       display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    &__group,
+    .career-management__group {
+      display: flex;
+      flex-direction: column;
       gap: 0.5rem;
-      align-items: center;
+
+      label {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: $text-primary;
+      }
 
       input {
-        flex: 1;
-        padding: 0.7rem 1rem;
-        border-radius: 10px;
-        border: 2px solid #cfa68a;
-        font-size: 1rem;
-        font-family: "Poppins", sans-serif;
-        background: #fff;
-        color: #4a342d;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        @include input-base;
 
-        &:focus {
-          border-color: #d4a574;
-          box-shadow: 0 0 0 3px rgba(207, 166, 138, 0.2);
-          outline: none;
-          background: #fff;
-          transform: translateY(-2px);
-        }
-      }
-
-      .career-management__btn-submit-position,
-      .career-management__btn-cancel {
-        padding: 0.7rem 1.1rem;
-        border-radius: 10px;
-        border: none;
-        font-size: 1.1rem;
-        font-weight: 700;
-        cursor: pointer;
-        background: #cfa68a;
-        color: #fff;
-        transition: all 0.2s;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-
-        &:hover {
-          background: #b88a5a;
-        }
-      }
-      .career-management__btn-cancel {
-        background: #e74c3c;
-        color: #fff;
-        &:hover {
-          background: #c0392b;
+        &.career-management__error,
+        &.error {
+          border-color: $danger;
+          
+          &:focus {
+            box-shadow: 0 0 0 3px rgba($danger, 0.2);
+          }
         }
       }
     }
-    .career-management__error-text {
-      color: #e74c3c;
-      font-size: 0.95rem;
-      margin-top: 0.2rem;
+
+    .career-management__error-text,
+    .error {
+      color: $danger;
+      font-size: 0.9rem;
       font-weight: 600;
+      margin-top: 0.3rem;
+    }
+
+    .career-management__submit,
+    &__submit {
+      @include button-primary;
+      align-self: flex-start;
+      min-width: 140px;
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+  
+  // Legacy form row style (backwards compatible)
+  &__add-position-form .career-management__form-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+
+    input {
+      @include input-base;
+      flex: 1;
+    }
+
+    .career-management__btn-submit-position,
+    .career-management__btn-cancel {
+      @include button-base;
+      padding: 0.7rem 1.1rem;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      box-shadow: $shadow-soft;
+    }
+
+    .career-management__btn-submit-position {
+      background: $primary;
+      color: #fff;
+
+      &:hover {
+        background: #b88a5a;
+      }
+    }
+
+    .career-management__btn-cancel {
+      background: $danger;
+      color: #fff;
+
+      &:hover {
+        background: #c0392b;
+      }
     }
   }
 
@@ -242,7 +303,6 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
   //-----------------------------------------------------------------
   &__menu-controls {
     width: 100%;
-    max-width: 100%;
     margin-bottom: 2rem;
     display: flex;
     flex-direction: column;
@@ -252,7 +312,6 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
       display: flex;
       gap: 1.5rem;
       align-items: center;
-      justify-content: flex-start;
       flex-wrap: wrap;
     }
 
@@ -267,7 +326,7 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
         left: 1rem;
         top: 50%;
         transform: translateY(-50%);
-        color: rgba(123, 94, 80, 0.7);
+        color: rgba($text-secondary, 0.7);
         font-size: 1.1rem;
         z-index: 1;
         pointer-events: none;
@@ -278,41 +337,39 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
         padding: 0.8rem 1rem 0.8rem 2.5rem;
         border: 2px solid rgba(0, 0, 0, 0.08);
         border-radius: 30px;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 244, 240, 0.9));
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba($bg-light, 0.9));
         font-family: "Inter", "Poppins", sans-serif;
         font-size: 1rem;
-        color: #4a342d;
+        color: $text-primary;
         box-sizing: border-box;
-        box-shadow: 0 4px 15px rgba(207, 166, 138, 0.1);
+        box-shadow: 0 4px 15px rgba($primary, 0.1);
 
         &:focus {
           outline: none;
-          border-color: #cfa68a;
-          box-shadow: 0 6px 25px rgba(207, 166, 138, 0.2), 0 0 0 3px rgba(207, 166, 138, 0.1);
+          border-color: $primary;
+          box-shadow: 0 6px 25px rgba($primary, 0.2), 0 0 0 3px rgba($primary, 0.1);
           transform: translateY(-2px);
         }
       }
 
       .career-management__clear-search {
+        @include flex-center;
         position: absolute;
         right: 0.75rem;
         top: 50%;
         transform: translateY(-50%);
-        background: rgba(207, 166, 138, 0.1);
+        background: rgba($primary, 0.1);
         border: none;
         border-radius: 50%;
         width: 24px;
         height: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         cursor: pointer;
-        color: rgba(207, 166, 138, 0.7);
-        transition: all 0.3s ease;
+        color: rgba($primary, 0.7);
+        transition: all $transition;
 
         &:hover {
-          background: rgba(207, 166, 138, 0.2);
-          color: #cfa68a;
+          background: rgba($primary, 0.2);
+          color: $primary;
           transform: translateY(-50%) scale(1.1);
         }
       }
@@ -325,7 +382,7 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
       position: relative;
 
       .career-management__filter-icon {
-        color: #cfa68a;
+        color: $primary;
         font-size: 1.2rem;
       }
 
@@ -333,14 +390,14 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
         padding: 0.8rem 1rem 0.8rem 2.5rem;
         border: 2px solid rgba(0, 0, 0, 0.08);
         border-radius: 25px;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 244, 240, 0.9));
-        color: #4a342d;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba($bg-light, 0.9));
+        color: $text-primary;
         font-family: "Inter", "Poppins", sans-serif;
         font-size: 0.95rem;
         font-weight: 600;
         cursor: pointer;
         min-width: 160px;
-        box-shadow: 0 4px 15px rgba(207, 166, 138, 0.1);
+        box-shadow: 0 4px 15px rgba($primary, 0.1);
         appearance: none;
         background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23cfa68a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
         background-repeat: no-repeat;
@@ -350,8 +407,8 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
 
         &:focus {
           outline: none;
-          border-color: #cfa68a;
-          box-shadow: 0 6px 25px rgba(207, 166, 138, 0.2), 0 0 0 3px rgba(207, 166, 138, 0.1);
+          border-color: $primary;
+          box-shadow: 0 6px 25px rgba($primary, 0.2), 0 0 0 3px rgba($primary, 0.1);
         }
       }
     }
@@ -363,8 +420,8 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
   &__applications-table-container {
     background: white;
     border-radius: 14px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(207, 166, 138, 0.3);
+    box-shadow: $shadow-soft;
+    border: 1px solid rgba($primary, 0.3);
     overflow: hidden;
     overflow-x: auto;
 
@@ -377,7 +434,7 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
       thead {
         position: sticky;
         top: 0;
-        background: linear-gradient(135deg, #cfa68a, #d4a574);
+        background: linear-gradient(135deg, $primary, $secondary);
         color: white;
         z-index: 2;
 
@@ -395,14 +452,14 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
 
       tbody tr {
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        transition: background 0.25s ease;
+        transition: background $transition;
 
         &:nth-child(even) {
-          background: rgba(248, 240, 230, 0.25);
+          background: rgba($bg-light, 0.25);
         }
 
         &:hover {
-          background: rgba(207, 166, 138, 0.1);
+          background: rgba($primary, 0.1);
         }
 
         td {
@@ -411,7 +468,7 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
 
           &.career-management__applicant-name {
             font-weight: 600;
-            color: #4a342d;
+            color: $text-primary;
           }
 
           .career-management__status-badge {
@@ -424,9 +481,6 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             letter-spacing: 0.3px;
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 60px;
           }
         }
       }
@@ -436,47 +490,17 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      justify-content: flex-start;
 
-      .career-management__btn-view { background: #3498db; }
-      .career-management__btn-download { background: #d4a574; }
-      .career-management__btn-approve { background: #27ae60; }
-      .career-management__btn-reject { background: #f39c12; }
-      .career-management__btn-delete { background: #e74c3c; }
-
-      button,
-      a {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.4rem;
-        padding: 0.45rem 0.6rem;
-        border-radius: 8px;
-        color: white;
-        font-size: 0.9rem;
-        font-weight: 600;
-        border: none;
-        cursor: pointer;
-        transition: all 0.25s ease;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-        text-transform: capitalize;
-        letter-spacing: 0.2px;
-        min-width: 38px;
-
-        svg {
-          font-size: 1rem;
-        }
-
-        &:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-        }
-      }
+      .career-management__btn-view { @include button-icon($info); }
+      .career-management__btn-download { @include button-icon($secondary); }
+      .career-management__btn-approve { @include button-icon($success); }
+      .career-management__btn-reject { @include button-icon($warning); }
+      .career-management__btn-delete { @include button-icon($danger); }
     }
   }
 
   //-----------------------------------------------------------------
-  // Mobile Card Layout (Alternative to table on very small screens)
+  // Mobile Card Layout
   //-----------------------------------------------------------------
   &__applications-cards {
     display: none;
@@ -486,13 +510,13 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
       background: white;
       border-radius: 12px;
       padding: 1rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      border: 1px solid rgba(207, 166, 138, 0.2);
-      transition: all 0.3s ease;
+      box-shadow: $shadow-soft;
+      border: 1px solid rgba($primary, 0.2);
+      transition: all $transition;
 
       &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+        box-shadow: $shadow-hover;
       }
 
       .career-management__card-header {
@@ -504,7 +528,7 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
         .career-management__applicant-name {
           font-weight: 700;
           font-size: 1.1rem;
-          color: #4a342d;
+          color: $text-primary;
         }
 
         .career-management__status-badge {
@@ -533,14 +557,14 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
 
           .career-management__detail-label {
             font-weight: 600;
-            color: #7b5e50;
+            color: $text-secondary;
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
           }
 
           .career-management__detail-value {
-            color: #4a342d;
+            color: $text-primary;
             font-weight: 500;
             word-break: break-word;
           }
@@ -550,42 +574,13 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
       .career-management__card-actions {
         display: flex;
         gap: 0.5rem;
-        justify-content: flex-end;
         flex-wrap: wrap;
 
-        .career-management__btn-view { background: #3498db; }
-        .career-management__btn-download { background: #d4a574; }
-        .career-management__btn-approve { background: #27ae60; }
-        .career-management__btn-reject { background: #f39c12; }
-        .career-management__btn-delete { background: #e74c3c; }
-
-        button,
-        a {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.3rem;
-          padding: 0.4rem 0.6rem;
-          border-radius: 6px;
-          color: white;
-          font-size: 0.8rem;
-          font-weight: 600;
-          border: none;
-          cursor: pointer;
-          transition: all 0.25s ease;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          text-transform: capitalize;
-          letter-spacing: 0.2px;
-
-          svg {
-            font-size: 0.9rem;
-          }
-
-          &:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-          }
-        }
+        .career-management__btn-view { @include button-icon($info); }
+        .career-management__btn-download { @include button-icon($secondary); }
+        .career-management__btn-approve { @include button-icon($success); }
+        .career-management__btn-reject { @include button-icon($warning); }
+        .career-management__btn-delete { @include button-icon($danger); }
       }
     }
   }
@@ -602,22 +597,22 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
     .career-management__pagination-btn {
       background: white;
       border: 1px solid rgba(0, 0, 0, 0.08);
-      color: #4a342d;
+      color: $text-primary;
       padding: 0.5rem 0.8rem;
       border-radius: 6px;
       font-weight: 600;
       cursor: pointer;
-      transition: 0.25s ease;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: $transition;
+      box-shadow: $shadow-soft;
 
       &--active {
-        background: #cfa68a;
+        background: $primary;
         color: white;
         border-color: transparent;
       }
 
       &:hover:not(:disabled) {
-        background: #e6c79a;
+        background: $accent;
         color: white;
       }
 
@@ -625,52 +620,6 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
         opacity: 0.6;
         cursor: not-allowed;
       }
-    }
-  }
-
-  //-----------------------------------------------------------------
-  // Empty State
-  //-----------------------------------------------------------------
-  &__empty-state {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: #7b5e50;
-
-    h3 {
-      margin-top: 1rem;
-      font-size: 1.4rem;
-      font-weight: 600;
-    }
-
-    p {
-      font-size: 0.95rem;
-      margin-top: 0.3rem;
-    }
-  }
-
-  //-----------------------------------------------------------------
-  // No Results State
-  //-----------------------------------------------------------------
-  &__no-results {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: #7b5e50;
-
-    .career-management__no-results-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      opacity: 0.6;
-    }
-
-    h3 {
-      margin-top: 1rem;
-      font-size: 1.4rem;
-      font-weight: 600;
-    }
-
-    p {
-      font-size: 0.95rem;
-      margin-top: 0.3rem;
     }
   }
 
@@ -688,27 +637,27 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
       align-items: center;
       gap: 0.8rem;
       padding: 0.8rem;
-      background: rgba(248, 240, 230, 0.5);
+      background: rgba($bg-light, 0.5);
       border-radius: 8px;
-      transition: 0.25s ease;
+      transition: $transition;
 
       &:hover {
-        background: rgba(207, 166, 138, 0.1);
+        background: rgba($primary, 0.1);
       }
 
       svg {
-        color: #cfa68a;
+        color: $primary;
         font-size: 1.2rem;
         min-width: 20px;
       }
 
       span {
         font-size: 0.95rem;
-        color: #4a342d;
+        color: $text-primary;
         font-weight: 600;
 
         strong {
-          color: #7b5e50;
+          color: $text-secondary;
           font-weight: 700;
         }
       }
@@ -724,26 +673,27 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
       gap: 0.5rem;
       font-size: 1.1rem;
       font-weight: 700;
-      color: #4a342d;
+      color: $text-primary;
       margin-bottom: 1rem;
 
       svg {
-        color: #cfa68a;
+        color: $primary;
       }
     }
 
     .career-management__letter-content {
-      background: rgba(248, 240, 230, 0.5);
+      background: rgba($bg-light, 0.5);
       padding: 1.5rem;
       border-radius: 12px;
-      border-left: 4px solid #cfa68a;
+      border-left: 4px solid $primary;
       font-size: 0.95rem;
       line-height: 1.7;
-      color: #4a342d;
+      color: $text-primary;
       max-height: 300px;
       overflow-y: auto;
       white-space: pre-wrap;
       word-wrap: break-word;
+      @include scrollbar-custom;
     }
   }
 
@@ -751,7 +701,7 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
     h4 {
       font-size: 1.1rem;
       font-weight: 700;
-      color: #4a342d;
+      color: $text-primary;
       margin-bottom: 1rem;
     }
 
@@ -763,6 +713,7 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
       justify-items: center;
 
       .career-management__status-btn {
+        @include flex-center;
         width: 50px;
         height: 50px;
         border: 2px solid transparent;
@@ -770,17 +721,14 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
         font-weight: 600;
         font-size: 0.9rem;
         cursor: pointer;
-        transition: all 0.3s ease;
-        background: rgba(248, 240, 230, 0.8);
-        color: #4a342d;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        transition: all $transition;
+        background: rgba($bg-light, 0.8);
+        color: $text-primary;
         padding: 0;
 
         &:hover:not(:disabled) {
           transform: translateY(-2px) scale(1.1);
-          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+          box-shadow: $shadow-hover;
         }
 
         &:disabled {
@@ -789,14 +737,19 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
         }
 
         &--active {
-          background: #3498db;
+          background: $info;
           color: white;
-          border-color: #3498db;
-          box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+          border-color: $info;
+          box-shadow: 0 4px 12px rgba($info, 0.4);
+
+          &.reviewed { background: $info; border-color: $info; }
+          &.contacted { background: $success; border-color: $success; }
+          &.rejected { background: $danger; border-color: $danger; }
         }
       }
 
       .career-management__btn-delete-modal {
+        @include flex-center;
         width: 50px;
         height: 50px;
         border: 2px solid transparent;
@@ -804,20 +757,17 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
         font-weight: 600;
         font-size: 0.9rem;
         cursor: pointer;
-        transition: all 0.3s ease;
-        background: rgba(248, 240, 230, 0.8);
-        color: #4a342d;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        transition: all $transition;
+        background: rgba($bg-light, 0.8);
+        color: $text-primary;
         padding: 0;
 
         &:hover:not(:disabled) {
           transform: translateY(-2px) scale(1.1);
-          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-          background: #e74c3c;
+          box-shadow: $shadow-hover;
+          background: $danger;
           color: white;
-          border-color: #e74c3c;
+          border-color: $danger;
         }
 
         &:disabled {
@@ -833,119 +783,191 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
   //-----------------------------------------------------------------
   &__modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 9999; /* Veći od modala */
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    inset: 0;
+    background: linear-gradient(135deg,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(90, 62, 54, 0.9) 50%,
+      rgba(0, 0, 0, 0.8) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    @include flex-center;
+    z-index: 9999;
+    animation: careerMgmtModalBackdropFadeIn 0.3s ease-out;
+    
+    /* iOS optimizations */
+    will-change: opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-overflow-scrolling: touch;
+    touch-action: none;
+
+    @keyframes careerMgmtModalBackdropFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
     .career-management__delete-confirm-popup {
-      background: linear-gradient(145deg, #ffffff 0%, #fdfaf6 40%, #f8f5f1 70%, #f0ebe4 100%);
+      background: linear-gradient(145deg,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(248, 244, 240, 0.9) 50%,
+        rgba(241, 235, 225, 0.85) 100%);
+      border-radius: 20px;
       padding: 2.5rem;
-      border-radius: 18px;
-      max-width: 450px;
-      width: 92%;
+      max-width: min(90%, 500px);
+      max-height: 90vh;
+      overflow: auto;
       position: relative;
-      box-shadow: 0 30px 80px rgba(90, 62, 54, 0.5), 0 15px 40px rgba(207, 166, 138, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.8);
-      border: 3px solid rgba(207, 166, 138, 0.4);
+      box-shadow:
+        0 25px 50px rgba($primary, 0.3),
+        0 15px 30px rgba(90, 62, 54, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      border: 2px solid rgba($primary, 0.2);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      animation: careerMgmtModalSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       font-family: "Poppins", sans-serif;
       margin: auto;
-      animation: popupSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      overflow-y: auto;
-      overflow-x: hidden;
+      
+      /* iOS optimizations */
+      will-change: transform, opacity;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-font-smoothing: antialiased;
+      -webkit-perspective: 1000;
+      perspective: 1000;
+
+      @keyframes careerMgmtModalSlideIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9) translateY(20px) translateZ(0);
+          -webkit-transform: scale(0.9) translateY(20px) translateZ(0);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0) translateZ(0);
+          -webkit-transform: scale(1) translateY(0) translateZ(0);
+        }
+      }
 
       .career-management__close-btn {
         position: absolute;
         top: 1.2rem;
         right: 1.2rem;
-        font-size: 1.6rem;
-        background: linear-gradient(135deg, rgba(207, 166, 138, 0.15), rgba(212, 165, 116, 0.1));
-        border: 2px solid rgba(207, 166, 138, 0.4);
-        cursor: pointer;
-        color: #cfa68a;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: linear-gradient(135deg,
+          rgba(255, 255, 255, 0.9),
+          rgba(248, 244, 240, 0.8));
+        border: 2px solid rgba($primary, 0.2);
+        border-radius: 12px;
         width: 40px;
         height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 4px 15px rgba(207, 166, 138, 0.2);
-        z-index: 9999;
-        pointer-events: all;
+        @include flex-center;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: $text-secondary;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        box-shadow: 0 4px 12px rgba($primary, 0.15);
+        z-index: 10;
+        -webkit-tap-highlight-color: transparent;
 
         &:hover {
-          background: linear-gradient(135deg, #cfa68a, #d4a574);
-          color: white;
-          transform: scale(1.15) rotate(90deg);
-          box-shadow: 0 8px 25px rgba(207, 166, 138, 0.4);
+          background: linear-gradient(135deg,
+            rgba($primary, 0.1),
+            rgba($secondary, 0.08));
+          color: $primary;
+          transform: scale(1.1) rotate(90deg);
+          box-shadow: 0 6px 20px rgba($primary, 0.25);
+        }
+
+        &:active {
+          transform: scale(0.95) rotate(90deg);
         }
       }
 
       h3 {
         margin: 0 0 1rem 0;
-        font-size: 1.4rem;
+        font-size: 1.5rem;
         font-weight: 700;
-        color: #4a342d;
+        color: $text-primary;
         text-align: center;
         padding-right: 3rem;
         position: relative;
+        background: linear-gradient(135deg, $text-primary, $text-secondary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
       p {
         margin: 0 0 2rem 0;
-        font-size: 1rem;
-        color: #7b5e50;
-        line-height: 1.6;
+        font-size: 1.05rem;
+        color: $text-secondary;
+        line-height: 1.7;
         text-align: center;
-        font-weight: 600;
+        font-weight: 500;
       }
 
       .career-management__confirm-actions {
         display: flex;
         gap: 1rem;
+        flex-direction: row;
 
-        .career-management__btn-cancel {
+        button {
+          @include button-base;
           flex: 1;
-          padding: 0.9rem 1.5rem;
-          border: none;
-          border-radius: 10px;
+          padding: 0.95rem 1.5rem;
+          border-radius: 12px;
           font-weight: 600;
           font-size: 0.95rem;
-          cursor: pointer;
-          background: #f8f0e6;
-          color: #4a342d;
+          transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          text-transform: capitalize;
+          letter-spacing: 0.4px;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        .career-management__btn-cancel {
+          background: linear-gradient(145deg, rgba($bg-light, 0.9), rgba(255, 255, 255, 0.8));
+          color: $text-primary;
           border: 2px solid rgba(0, 0, 0, 0.08);
-          transition: all 0.3s ease;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 
           &:hover {
-            background: #fff;
+            background: linear-gradient(145deg, #fff, rgba($bg-light, 0.95));
             transform: translateY(-2px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+          }
+
+          &:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
           }
         }
 
         .career-management__btn-confirm {
-          flex: 1;
-          padding: 0.9rem 1.5rem;
-          border: none;
-          border-radius: 10px;
-          font-weight: 600;
-          font-size: 0.95rem;
-          cursor: pointer;
-          background: #e74c3c;
+          background: linear-gradient(145deg, $danger, #c0392b);
           color: white;
-          transition: all 0.3s ease;
+          box-shadow:
+            0 4px 12px rgba($danger, 0.25),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+          border: none;
 
           &:hover:not(:disabled) {
-            background: #c0392b;
+            background: linear-gradient(145deg, #c0392b, #a93226);
             transform: translateY(-2px);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+            box-shadow:
+              0 8px 24px rgba($danger, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+          }
+
+          &:active:not(:disabled) {
+            transform: translateY(0);
+            box-shadow:
+              0 2px 6px rgba($danger, 0.2),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
           }
 
           &:disabled {
@@ -958,21 +980,16 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
   }
 
   //-----------------------------------------------------------------
-  // Modal Animations
+  // Animations
   //-----------------------------------------------------------------
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  @keyframes slideUp {
+  @keyframes popupSlideIn {
     from {
+      transform: translateY(40px);
       opacity: 0;
-      transform: translateY(30px);
     }
     to {
-      opacity: 1;
       transform: translateY(0);
+      opacity: 1;
     }
   }
 
@@ -980,32 +997,34 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
   // Responsive Design
   //-----------------------------------------------------------------
   @media (max-width: 768px) {
-    &__menu-controls {
-      .career-management__search-filter-row {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 1rem;
-      }
+    &__menu-controls .career-management__search-filter-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+
       .career-management__search-container {
         max-width: none;
         min-width: auto;
       }
+
       .career-management__filter-container {
         justify-content: center;
       }
     }
-    &__applications-table-container {
-      .career-management__applications-table {
+
+    &__applications-table-container .career-management__applications-table {
+      font-size: 0.85rem;
+
+      thead th {
+        padding: 0.8rem 0.6rem;
         font-size: 0.85rem;
-        thead th {
-          padding: 0.8rem 0.6rem;
-          font-size: 0.85rem;
-        }
-        tbody td {
-          padding: 0.7rem 0.6rem;
-        }
+      }
+
+      tbody td {
+        padding: 0.7rem 0.6rem;
       }
     }
+
     &__pagination {
       flex-wrap: wrap;
       justify-content: center;
@@ -1015,26 +1034,24 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
   @media (max-width: 480px) {
     padding: 1rem;
 
-    &__header {
-      &-actions {
+    &__header-actions {
+      flex-direction: column;
+      gap: 1rem;
+
+      .career-management__stats {
         flex-direction: column;
-        gap: 1rem;
+        align-items: stretch;
 
-        .career-management__stats {
-          flex-direction: column;
-          align-items: stretch;
-
-          .career-management__stat-item {
-            min-width: auto;
-            padding: 0.5rem 1rem;
-          }
+        .career-management__stat-item {
+          min-width: auto;
+          padding: 0.5rem 1rem;
         }
+      }
 
-        .career-management__btn-add-position {
-          margin-left: 0;
-          align-self: stretch;
-          text-align: center;
-        }
+      .career-management__btn-add-position {
+        margin-left: 0;
+        align-self: stretch;
+        text-align: center;
       }
     }
 
@@ -1075,21 +1092,5 @@ $shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.15);
         font-size: 0.9rem;
       }
     }
-  }
-
-  .career-management__status-btn--active.reviewed {
-    background: #3498db;
-    border-color: #3498db;
-    color: white;
-  }
-  .career-management__status-btn--active.contacted {
-    background: #27ae60;
-    border-color: #27ae60;
-    color: white;
-  }
-  .career-management__status-btn--active.rejected {
-    background: #e74c3c;
-    border-color: #e74c3c;
-    color: white;
   }
 }

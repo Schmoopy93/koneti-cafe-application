@@ -26,6 +26,7 @@ import Modal from "../ui/Modal";
 import { apiRequest, API_URL } from "@/utils/api";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import "./CareerManagement.scss";
 
 interface CareerApplication {
@@ -72,6 +73,8 @@ const CareerManagement: React.FC = () => {
     fetchApplications();
     fetchPositions();
   }, []);
+
+  useScrollLock(!!selectedApplication || !!showDeleteConfirm || showAddPositionPopup);
 
   const fetchApplications = async () => {
     try {
