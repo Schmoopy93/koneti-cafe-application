@@ -270,12 +270,6 @@ export default async function CareerPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(getOrganizationJsonLd(lang)) }}
         strategy="afterInteractive"
       />
-      <Script
-        id="career-faq-jsonld"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(getFAQJsonLd(lang)) }}
-        strategy="afterInteractive"
-      />
       <main>
         <CareerApplication />
       </main>
