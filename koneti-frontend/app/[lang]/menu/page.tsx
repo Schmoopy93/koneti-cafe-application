@@ -120,13 +120,6 @@ const getMenuStructuredData = (lang: string) => ({
   },
   "servesCuisine": ["Coffee", "Desserts", "Brunch", "Beverages"],
   "priceRange": "$$",
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.8",
-    "reviewCount": "250",
-    "bestRating": "5",
-    "worstRating": "1"
-  },
   "openingHoursSpecification": [
     {
       "@type": "OpeningHoursSpecification",
