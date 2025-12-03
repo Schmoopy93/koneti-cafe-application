@@ -13,7 +13,7 @@ export async function GET() {
       <video:description>Upoznajte Koneti Café - premium kafić u Novom Sadu sa specialty kafi, brunchom i prostorom za Events</video:description>
       <video:thumbnail_loc>${baseUrl}/koneti-hero-poster.jpg</video:thumbnail_loc>
       <video:content_loc>${baseUrl}/koneti-promo.mp4</video:content_loc>
-      <video:player_loc>${baseUrl}/sr</video:player_loc>
+      <video:player_loc allow_embed="yes">${baseUrl}/sr?video=promo</video:player_loc>
       <video:duration>30</video:duration>
       <video:publication_date>${new Date().toISOString().split('T')[0]}</video:publication_date>
       <video:family_friendly>yes</video:family_friendly>
@@ -30,7 +30,7 @@ export async function GET() {
       <video:description>Discover Koneti Café - premium café in Novi Sad with specialty coffee, brunch and space for Events</video:description>
       <video:thumbnail_loc>${baseUrl}/koneti-hero-poster.jpg</video:thumbnail_loc>
       <video:content_loc>${baseUrl}/koneti-promo.mp4</video:content_loc>
-      <video:player_loc>${baseUrl}/en</video:player_loc>
+      <video:player_loc allow_embed="yes">${baseUrl}/en?video=promo</video:player_loc>
       <video:duration>30</video:duration>
       <video:publication_date>${new Date().toISOString().split('T')[0]}</video:publication_date>
       <video:family_friendly>yes</video:family_friendly>
