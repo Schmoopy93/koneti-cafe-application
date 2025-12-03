@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useParams, usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "./Offer.scss";
 
@@ -21,7 +22,17 @@ interface Service {
 
 export default function Offer() {
   const { t } = useTranslation();
+  const params = useParams();
+  const pathname = usePathname();
   const cardsRef = useRef<(HTMLElement | null)[]>([]);
+
+  // Extract current language from pathname
+  const currentLang = pathname?.startsWith('/sr') ? 'sr' : pathname?.startsWith('/en') ? 'en' : 'sr';
+
+  // Helper function to get localized path
+  const getLocalizedPath = (path: string) => {
+    return `/${currentLang}${path}`;
+  };
 
   // Sigurnosna funkcija koja osigurava da su 'features' uvijek polje
   const getFeatures = (key: string): string[] => {
@@ -37,7 +48,7 @@ export default function Offer() {
       features: getFeatures('home.offer.services.coffee.features'),
       icon: "☕",
       img: "/koneti_kafa.png",
-      link: "/menu",
+      link: getLocalizedPath("/menu"),
       linkText: t('home.offer.services.coffee.linkText'),
       color: "#8B4513"
     },
@@ -48,7 +59,7 @@ export default function Offer() {
       features: getFeatures('home.offer.services.business.features'),
       icon: "💼",
       img: "/biznis_prostor.jpg",
-      link: "/reservation?type=business",
+      link: getLocalizedPath("/reservation?type=business"),
       linkText: t('home.offer.services.business.linkText'),
       color: "#2C3E50"
     },
@@ -59,7 +70,7 @@ export default function Offer() {
       features: getFeatures('home.offer.services.party.features'),
       icon: "🎉",
       img: "/koneti_party.png",
-      link: "/reservation?type=experience",
+      link: getLocalizedPath("/reservation?type=experience"),
       linkText: t('home.offer.services.party.linkText'),
       color: "#E74C3C"
     },
