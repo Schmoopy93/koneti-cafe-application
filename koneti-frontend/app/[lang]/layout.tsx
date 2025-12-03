@@ -259,8 +259,8 @@ export default async function LangLayout({ children, params }: Props) {
     ],
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "reviewCount": "250",
+      "ratingValue": "4.7",
+      "reviewCount": "92",
       "bestRating": "5",
       "worstRating": "1"
     },
