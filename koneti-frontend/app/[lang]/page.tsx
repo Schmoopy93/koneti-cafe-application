@@ -168,6 +168,25 @@ export default function HomePage() {
           })
         }}
       />
+      <Script
+        id="video-schema-promo"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "VideoObject",
+            "name": "Koneti Café - Promo Video",
+            "description": "Upoznajte Koneti Café - premium kafić u Novom Sadu sa specialty kafi, brunchom i prostorom za Events",
+            "thumbnailUrl": "https://koneticaffee.com/koneti-hero-poster.jpg",
+            "uploadDate": new Date().toISOString().split('T')[0],
+            "duration": "PT30S",
+            "contentUrl": "https://koneticaffee.com/koneti-promo.mp4",
+            "videoDetails": {
+              "url": "https://koneticaffee.com/"
+            }
+          })
+        }}
+      />
       <Home />
     </>
   );
