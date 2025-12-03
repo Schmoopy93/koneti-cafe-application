@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import type { Settings } from "react-slick";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import Spinner from "../ui/Spinner";
 import Image from "next/image";
@@ -28,6 +29,15 @@ interface SlideData {
 const HeroSlider: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   const { t } = useTranslation();
+  const pathname = usePathname();
+
+  // Extract current language from pathname
+  const currentLang = pathname?.startsWith('/sr') ? 'sr' : pathname?.startsWith('/en') ? 'en' : 'sr';
+
+  // Helper function to get localized path
+  const getLocalizedPath = (path: string) => {
+    return `/${currentLang}${path}`;
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -137,7 +147,7 @@ const HeroSlider: React.FC = () => {
                 <h2 className="slide-subtitle">{slide.subtitle}</h2>
                 <p className="slide-description">{slide.description}</p>
                 <div className="slide-actions">
-                  <Link href="/menu" className="btn-primary">
+                  <Link href={getLocalizedPath("/menu")} className="btn-primary">
                     <span>{t('home.hero.exploreMenu')}</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                       <path 
@@ -149,7 +159,7 @@ const HeroSlider: React.FC = () => {
                       />
                     </svg>
                   </Link>
-                  <Link href="/reservation" className="btn-secondary">
+                  <Link href={getLocalizedPath("/reservation")} className="btn-secondary">
                     <span>{t('home.hero.reserveTable')}</span>
                   </Link>
                 </div>
