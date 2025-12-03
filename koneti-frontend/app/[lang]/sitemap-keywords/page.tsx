@@ -15,11 +15,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: "Koneti - Ključne reči i važni linkovi | Sitemap",
       description: "Pronađite sve važne linkove, ključne reči i informacije o Koneti Café-u u Novom Sadu. Specialty coffee, proslave, poslovni sastanci.",
       keywords: ["Koneti", "sitemap", "ključne reči", "linkovi", "kafić Novi Sad"],
+      alternates: {
+        canonical: "https://koneticaffee.com/sr/sitemap-keywords",
+        languages: {
+          sr: "https://koneticaffee.com/sr/sitemap-keywords",
+          en: "https://koneticaffee.com/en/sitemap-keywords",
+          'x-default': "https://koneticaffee.com/sr/sitemap-keywords",
+        },
+      },
     },
     en: {
       title: "Koneti - Keywords and Important Links | Sitemap",
       description: "Find all important links, keywords and information about Koneti Café in Novi Sad. Specialty coffee, celebrations, business meetings.",
       keywords: ["Koneti", "sitemap", "keywords", "links", "café Novi Sad"],
+      alternates: {
+        canonical: "https://koneticaffee.com/en/sitemap-keywords",
+        languages: {
+          sr: "https://koneticaffee.com/sr/sitemap-keywords",
+          en: "https://koneticaffee.com/en/sitemap-keywords",
+          'x-default': "https://koneticaffee.com/sr/sitemap-keywords",
+        },
+      },
     },
   };
 

@@ -30,6 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       languages: {
         sr: "https://koneticaffee.com/sr/reservation",
         en: "https://koneticaffee.com/en/reservation",
+        'x-default': "https://koneticaffee.com/sr/reservation",
       },
     },
     openGraph: {
