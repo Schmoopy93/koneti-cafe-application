@@ -496,17 +496,21 @@
 // ==================== GRID LAYOUTS ====================
 .reservation-form-type-grid {
   @include grid-responsive(2);
+  margin-top: var(--spacing-2xl);
 
   @media screen and (max-width: 480px) {
     gap: var(--spacing-sm);
+    margin-top: var(--spacing-xl);
   }
 }
 
 .reservation-form-type-grid-two {
   @include grid-responsive(2);
+  margin-top: var(--spacing-2xl);
 
   @media screen and (max-width: 480px) {
     gap: var(--spacing-sm);
+    margin-top: var(--spacing-xl);
   }
 }
 
@@ -515,10 +519,12 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--spacing-md);
   max-width: 100%;
+  margin-top: var(--spacing-2xl);
 
   @media screen and (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: var(--spacing-sm);
+    margin-top: var(--spacing-xl);
   }
 
   .reservation-form-subtype-card {

@@ -323,17 +323,6 @@ export default function ReservationForm() {
     formErrors.endTime,
   ]);
 
-  useEffect(() => {
-    if (isOpen || showPopup) {
-      document.body.classList.add("body--no-scroll");
-    } else {
-      document.body.classList.remove("body--no-scroll");
-    }
-    return () => {
-      document.body.classList.remove("body--no-scroll");
-    };
-  }, [isOpen, showPopup]);
-
   useScrollLock(isOpen || showPopup);
 
   // =========================
