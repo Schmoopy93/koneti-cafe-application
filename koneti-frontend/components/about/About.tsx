@@ -145,16 +145,14 @@ const About: React.FC<AboutProps> = ({ initialImages = [] }) => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
       role="main"
-      itemScope
-      itemType="https://schema.org/LocalBusiness"
     >
       {/* ===== HEADER ===== */}
       <header className="about__header">
-        <h1 className="about__title" itemProp="name">
+        <h1 className="about__title">
           <FontAwesomeIcon icon={faCoffee} aria-hidden="true" />
           {t("gallery.about.title")}
         </h1>
-        <p className="about__subtitle" itemProp="description">{t("gallery.about.subtitle")}</p>
+        <p className="about__subtitle">{t("gallery.about.subtitle")}</p>
       </header>
 
       {/* ===== WELCOME SEKCIJA ===== */}

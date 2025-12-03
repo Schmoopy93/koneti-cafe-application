@@ -144,13 +144,6 @@ const getOrganizationJsonLd = (lang: string) => ({
     "@type": "City",
     "name": "Novi Sad"
   },
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.8",
-    "reviewCount": "250",
-    "bestRating": "5",
-    "worstRating": "1"
-  },
   "knowsAbout": [
     "Specialty Coffee",
     "Premium Service",
