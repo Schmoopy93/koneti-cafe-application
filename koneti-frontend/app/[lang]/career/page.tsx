@@ -13,8 +13,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const descriptions = {
-    sr: "Tražimo konobara sa iskustvom. Dnevnica 2200 RSD. Dinamičan tim, fleksibilan raspored, mogućnost napredovanja. Podnesi prijavu sada!",
-    en: "Hiring experienced servers. Daily rate 2200 RSD. Dynamic team, flexible schedule, career growth. Apply now!"
+    sr: "Tražimo konobara sa iskustvom. Dinamičan tim, fleksibilan raspored, mogućnost napredovanja. Podnesi prijavu sada!",
+    en: "Hiring experienced servers. Dynamic team, flexible schedule, career growth. Apply now!"
   }
 
   return {
@@ -135,11 +135,6 @@ const getJobPostingJsonLd = (lang: string) => ({
       }
     }
   ],
-  "baseSalary": {
-    "@type": "PriceSpecification",
-    "priceCurrency": "RSD",
-    "price": "2200"
-  },
   "applicantLocationRequirements": {
     "@type": "Country",
     "name": "RS"
