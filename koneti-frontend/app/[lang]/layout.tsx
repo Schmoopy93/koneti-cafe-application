@@ -52,7 +52,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       applicationName: "Koneti Café",
       other: {
         'google-site-verification': '1vHXZcaq_PxJ4JsGFbrV5PCygadNzzjPeUi',
-        'facebook-domain-verification': 'your-verification-code',
       },
       openGraph: {
         title: "Koneti Café - Dobrodošli",
@@ -118,7 +117,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       applicationName: "Koneti Café",
       other: {
         'google-site-verification': '1vHXZcaq_PxJ4JsGFbrV5PCygadNzzjPeUi',
-        'facebook-domain-verification': 'your-verification-code',
       },
       openGraph: {
         title: "Koneti Café - Welcome",
@@ -330,7 +328,6 @@ export default async function LangLayout({ children, params }: Props) {
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#cfa68a" />
         <meta name="msapplication-TileColor" content="#cfa68a" />
-        <meta name="google-site-verification" content="your-verification-code" />
         {/* Preload critical images and fonts */}
         <link
           rel="preload"
