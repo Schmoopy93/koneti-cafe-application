@@ -314,53 +314,6 @@ export default async function LangLayout({ children, params }: Props) {
     }
   };
 
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": lang === 'sr' ? "Gde se nalazi Koneti Café?" : "Where is Koneti Café located?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": lang === 'sr' 
-            ? "Koneti Café se nalazi na Bulevaru Oslobođenja 97, Novi Sad, Srbija." 
-            : "Koneti Café is located at Bulevar Oslobođenja 97, Novi Sad, Serbia."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": lang === 'sr' ? "Kako mogu da napravim rezervaciju?" : "How can I make a reservation?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": lang === 'sr'
-            ? "Možete da napravite rezervaciju online kroz našu web stranicu ili kontaktirajte nas na +381 69 2565563."
-            : "You can make a reservation online through our website or contact us at +381 69 2565563."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": lang === 'sr' ? "Da li Koneti nudi ketering?" : "Does Koneti offer catering?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": lang === 'sr'
-            ? "Da, Koneti nudi premium ketering usluge za poslovne sastanke, proslave i privatne događaje."
-            : "Yes, Koneti offers premium catering services for business meetings, celebrations and private events."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": lang === 'sr' ? "Koja su radna vremena?" : "What are the opening hours?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": lang === 'sr'
-            ? "Ponedeljak-Petak: 07:30-23:00, Subota: 07:30-23:00, Nedelja: 09:00-23:00"
-            : "Monday-Friday: 07:30-23:00, Saturday: 07:30-23:00, Sunday: 09:00-23:00"
-        }
-      }
-    ]
-  };
-
   return (
     <html lang={lang} className={inter.variable} suppressHydrationWarning>
       <head>
@@ -405,14 +358,6 @@ export default async function LangLayout({ children, params }: Props) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(webSiteJsonLd),
-          }}
-          strategy="beforeInteractive"
-        />
-        <Script
-          id="faq-jsonld"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(faqJsonLd),
           }}
           strategy="beforeInteractive"
         />

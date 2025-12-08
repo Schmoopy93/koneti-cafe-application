@@ -187,6 +187,50 @@ export default function HomePage() {
           })
         }}
       />
+      <Script
+        id="faq-home-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Gde se nalazi Koneti Café?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Koneti Café se nalazi na Bulevaru Oslobođenja 97, Novi Sad, Srbija."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Kako mogu da napravim rezervaciju?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Možete da napravite rezervaciju online kroz našu web stranicu ili kontaktirajte nas na +381 69 2565563."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Da li Koneti nudi ketering?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Da, Koneti nudi premium ketering usluge za poslovne sastanke, proslave i privatne događaje."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Koja su radna vremena?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Ponedeljak-Petak: 07:30-23:00, Subota: 07:30-23:00, Nedelja: 09:00-23:00"
+                }
+              }
+            ]
+          })
+        }}
+      />
       <Home />
     </>
   );
