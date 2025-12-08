@@ -68,8 +68,6 @@ Crawl-delay: 10
 
 # Sitemaps
 Sitemap: https://koneticaffee.com/sitemap.xml
-Sitemap: https://koneticaffee.com/sitemap-sr.xml
-Sitemap: https://koneticaffee.com/sitemap-en.xml
 Sitemap: https://koneticaffee.com/video-sitemap.xml
 
 # Site rules

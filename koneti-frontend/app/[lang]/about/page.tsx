@@ -4,6 +4,15 @@ import Script from 'next/script'
 
 type Props = { params: Promise<{ lang: 'sr' | 'en' }> }
 
+export const revalidate = 3600; // 1 sati u sekund
+
+export async function generateStaticParams() {
+  return [
+    { lang: 'sr' },
+    { lang: 'en' },
+  ];
+}
+
 interface GalleryImage {
   _id: string;
   title: {

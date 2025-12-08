@@ -53,5 +53,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   });
 
+  // Dodaj XML sitemap fajlove
+  entries.push({
+    url: `${baseUrl}/sitemap.xml`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.5,
+  });
+
+  entries.push({
+    url: `${baseUrl}/video-sitemap.xml`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.5,
+  });
+
   return entries;
 }

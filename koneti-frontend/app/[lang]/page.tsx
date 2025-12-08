@@ -6,6 +6,15 @@ type Props = {
   params: Promise<{ lang: string }>;
 };
 
+export const revalidate = 3600; // 1 sat u sekundama
+
+export async function generateStaticParams() {
+  return [
+    { lang: 'sr' },
+    { lang: 'en' },
+  ];
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
   

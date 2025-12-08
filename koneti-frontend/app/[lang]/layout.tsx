@@ -24,6 +24,13 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
+export async function generateStaticParams() {
+  return [
+    { lang: 'sr' },
+    { lang: 'en' },
+  ];
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
   
@@ -163,10 +170,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 
   return metadata[lang] || metadata.sr;
-}
-
-export async function generateStaticParams() {
-  return [{ lang: 'sr' }, { lang: 'en' }];
 }
 
 export default async function LangLayout({ children, params }: Props) {
