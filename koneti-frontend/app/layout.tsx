@@ -7,11 +7,13 @@ export const metadata: Metadata = {
   description: "Koneti Café je premium kafić na Bulevaru Oslobođenja 97 u Novom Sadu. Specialty coffee, brunch, poslovni sastanci, proslave i privatni događaji. Rezervacije dostupne 24/7.",
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
     ],
     apple: '/apple-touch-icon.png',
+    shortcut: '/favicon-32x32.png',
   },
   keywords: [
     "koneti café", "kafić", "kafa", "specialty coffee", "brunch", "Novi Sad",
